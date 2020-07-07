@@ -1,0 +1,495 @@
+2020.07.07 06:46:58 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TautologyInitState], id: (1,920274034), content:
+TautologyInitState(TermState([trans : 0.14285714285714285, refl : 0.14285714285714285, n : 0.14285714285714285, sym : 0.14285714285714285, mul : 0.14285714285714285, m : 0.14285714285714285, ((mul) (m)) (n) : 0.14285714285714285],[M : 1.0],Vector(),[],[],Empty))
+2020.07.07 06:46:58 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SpecialInitState], id: (2,1524053949), content:
+SpecialInitState(TermState([trans : 0.9, sym : 0.1],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.05,Some(TermGenParams(0.0,0.4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2))
+2020.07.07 06:46:58 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SpecialInitState], id: (3,-376740879), content:
+SpecialInitState(TermState([right-multiply : 0.2, m : 0.2, n : 0.2, left-multiply : 0.2, ((mul) (m)) (n) : 0.2],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.5,Some(TermGenParams(0.3,0.3,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2))
+2020.07.07 06:46:58 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (4,-1714505229), content:
+LocalProver(TermState([m : 0.08333333333333333, refl : 0.08333333333333333, mul : 0.08333333333333333, sym : 0.08333333333333333, left-multiply : 0.08333333333333333, right-multiply : 0.08333333333333333, ass2 : 0.08333333333333333, trans : 0.08333333333333333, n : 0.08333333333333333, ((mul) (m)) (n) : 0.08333333333333333, ass1 : 0.08333333333333333, eqM : 0.08333333333333333],[M : 1.0],Vector(),[],[((eqM) (((mul) (m)) (n))) (((mul) (n)) (m)) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0,Some(500000))
+2020.07.07 06:46:58 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.LocalProver]
+2020.07.07 06:47:10 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 5805 atoms
+2020.07.07 06:47:10 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:47:10 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 1068
+2020.07.07 06:47:10 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 4570
+2020.07.07 06:47:10 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:47:10 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (5,319151433), content:
+provingground.learning.ExpressionEval$$anon$2@1305dd49
+2020.07.07 06:47:10 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.ExpressionEval]
+2020.07.07 06:47:10 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.07.07 06:47:10 [INFO] provingground.learning.HoTTBot.expEvToFinalState:515:26 - computing final state
+2020.07.07 06:47:10 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 06:47:10 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 4128
+2020.07.07 06:47:11 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 810
+2020.07.07 06:47:11 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 2560
+2020.07.07 06:47:11 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:47:11 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 06:47:11 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (6,-720343098)
+2020.07.07 06:47:11 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:47:16 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:47:17 [INFO] provingground.learning.HoTTBot.$anonfun:382:26 - Results: 3
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.6667755488917616E-4; statement weight 4.9192149948159317E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 2.6876782595691674E-4; statement weight 3.264856797210518E-7
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 2.6876782595691674E-4; statement weight 2.8147371294295505E-7
+2020.07.07 06:47:19 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:47:19 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 5116 atoms
+2020.07.07 06:47:19 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:47:19 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 648
+2020.07.07 06:47:19 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 4037
+2020.07.07 06:47:19 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:47:19 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(60000), exponent: 0.5, decay: 1.0
+2020.07.07 06:47:19 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 3712
+2020.07.07 06:47:21 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 337
+2020.07.07 06:47:21 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 1489
+2020.07.07 06:47:21 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:47:21 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (7,644603102)
+2020.07.07 06:47:21 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.HoTTMessages.BaseMixinLemmas :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.Lemmas]
+2020.07.07 06:47:21 [INFO] provingground.learning.HoTTBot.$anonfun:945:24 - excluded lemmas:
+
+2020.07.07 06:47:21 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UsedLemmas], id: (8,-1780218742)
+2020.07.07 06:47:21 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentLemmas], id: (9,-16437047)
+2020.07.07 06:47:21 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (10,696721054)
+2020.07.07 06:47:21 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.post:384:20 - triggered (multiple) responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas]
+2020.07.07 06:47:22 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.taskNest:389:32 - launching 1 branches
+2020.07.07 06:47:22 [INFO] provingground.learning.HoTTBot.$anonfun:1057:22 - previous special init states are 2
+2020.07.07 06:47:22 [INFO] provingground.learning.HoTTBot.$anonfun:1060:22 - Using 6777 equation nodes for base states
+2020.07.07 06:47:22 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun:394:36 - launching 2 responses  of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] in branch
+2020.07.07 06:47:22 [INFO] provingground.learning.HoTTBot.baseState:973:16 - Computing base state
+2020.07.07 06:47:22 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 5182 atoms
+2020.07.07 06:47:22 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:47:22 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 696
+2020.07.07 06:47:22 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 4061
+2020.07.07 06:47:22 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:47:22 [INFO] provingground.learning.HoTTBot.baseState:989:16 - Computed expression evaluator
+2020.07.07 06:47:22 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 06:47:22 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 3733
+2020.07.07 06:47:22 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 184
+2020.07.07 06:47:23 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 389
+2020.07.07 06:47:23 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:47:23 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (11,-433659927)
+2020.07.07 06:47:23 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 1 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.07.07 06:47:23 [INFO] provingground.learning.HoTTBot.baseState:973:16 - Computing base state
+2020.07.07 06:47:23 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 5182 atoms
+2020.07.07 06:47:23 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:47:23 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 706
+2020.07.07 06:47:23 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 4059
+2020.07.07 06:47:23 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:47:23 [INFO] provingground.learning.HoTTBot.baseState:989:16 - Computed expression evaluator
+2020.07.07 06:47:23 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 06:47:23 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 3733
+2020.07.07 06:47:23 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 287
+2020.07.07 06:47:23 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 861
+2020.07.07 06:47:23 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:47:23 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (12,70909160)
+2020.07.07 06:47:23 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 0 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.07.07 06:47:23 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (13,-1666923435), content:
+TangentBaseCompleted
+2020.07.07 06:47:23 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to posts of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.07.07 06:47:23 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.07.07 06:47:23 [INFO] provingground.learning.HoTTBot.$anonfun:1262:28 - generating equations with 2 base states and 18 lemmas (before pruning)
+2020.07.07 06:47:23 [INFO] provingground.learning.HoTTBot.$anonfun:1275:30 - Details for base state: initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply
+Initial state (optional): Some(SpecialInitState(TermState([right-multiply : 0.2, m : 0.2, n : 0.2, left-multiply : 0.2, ((mul) (m)) (n) : 0.2],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.5,Some(TermGenParams(0.3,0.3,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2)))
+2020.07.07 06:47:24 [INFO] provingground.learning.HoTTBot.$anonfun:1290:30 - Terms in base (used with tangents above) with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply: 2
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 0.010466455011687543
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 0.010466455011687543
+2020.07.07 06:47:24 [INFO] provingground.learning.HoTTBot.$anonfun:1302:30 - Lemmas in base state with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply for mixin (used with tangents above): 3
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.07975625195978778
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 0.01768037724779609
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 0.01691077996840224
+2020.07.07 06:47:24 [INFO] provingground.learning.HoTTBot.$anonfun:1315:30 - Inference by unified applications, triples and weight for base state with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply
+(0.0, 0.0, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 0.0, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.010466455011687543, 0.040787164672144105, 4.2689702409528775E-4) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.010466455011687543, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.07.07 06:47:24 [INFO] provingground.learning.HoTTBot.$anonfun:1275:30 - Details for base state: initial terms trans, sym
+Initial state (optional): Some(SpecialInitState(TermState([trans : 0.9, sym : 0.1],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.05,Some(TermGenParams(0.0,0.4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2)))
+2020.07.07 06:47:24 [INFO] provingground.learning.HoTTBot.$anonfun:1290:30 - Terms in base (used with tangents above) with initial terms trans, sym: 1
+Type: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best term: trans with weight 0.45000000000000007
+2020.07.07 06:47:24 [INFO] provingground.learning.HoTTBot.$anonfun:1302:30 - Lemmas in base state with initial terms trans, sym for mixin (used with tangents above): 3
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.09144213799693587
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 0.02027090612214317
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 0.01938854744937253
+2020.07.07 06:47:24 [INFO] provingground.learning.HoTTBot.$anonfun:1315:30 - Inference by unified applications, triples and weight for base state with initial terms trans, sym
+(0.45000000000000007, 0.0, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 0.0, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.0, 0.040787164672144105, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.0, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.07.07 06:47:24 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.07.07 06:47:24 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.07.07 06:47:24 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.07.07 06:47:24 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.07.07 06:47:24 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:182:30 - all pairs considered with cutoff 4.0E-5
+2020.07.07 06:47:25 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.07.07 06:47:25 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.07.07 06:47:27 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.07.07 06:47:28 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.07.07 06:47:28 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:182:30 - all pairs considered with cutoff 1.6000000000000004E-6
+2020.07.07 06:47:28 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (14,-1237456766)
+2020.07.07 06:47:28 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.07 06:47:28 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.07 06:47:38 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 9814 atoms
+2020.07.07 06:47:38 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:47:38 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 945
+2020.07.07 06:47:38 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 7591
+2020.07.07 06:47:38 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:47:38 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (15,720819150), content:
+provingground.learning.ExpressionEval$$anon$2@2af6d3ce
+2020.07.07 06:47:38 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.07.07 06:47:38 [INFO] provingground.learning.HoTTBot.expEvToFinalState:515:26 - computing final state
+2020.07.07 06:47:38 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 06:47:38 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 6868
+2020.07.07 06:47:38 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 488
+2020.07.07 06:47:40 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 5807
+2020.07.07 06:47:40 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:47:40 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 06:47:41 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (16,-661541350)
+2020.07.07 06:47:41 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:47:41 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:47:41 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:47:41 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:47:41 [INFO] provingground.learning.HoTTBot.$anonfun:418:26 - Steps (in final state): 3
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.056500951528565053; statement weight 6.179253321080835E-12
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.005972554781110465; statement weight 1.1641158512347248E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.005949876960606982; statement weight 1.16122837313024E-13
+2020.07.07 06:47:41 [INFO] provingground.learning.HoTTBot.$anonfun:418:26 - Results: 5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.566282723846502E-4; statement weight 1.8713321858518616E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 2.5760641319094957E-4; statement weight 6.016184308921292E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 3.6361633167573647E-6; statement weight 6.144292627996117E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.5968595002098778E-7; statement weight 2.2335105038921932E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 2.5760641319094957E-4; statement weight 5.208715612420196E-8
+2020.07.07 06:48:02 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 25656 atoms
+2020.07.07 06:48:02 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:48:02 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 3675
+2020.07.07 06:48:02 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 19885
+2020.07.07 06:48:02 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:48:02 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(60000), exponent: 0.5, decay: 1.0
+2020.07.07 06:48:02 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 18510
+2020.07.07 06:48:03 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 1009
+2020.07.07 06:48:04 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 6794
+2020.07.07 06:48:04 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:48:04 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (17,1446566196)
+2020.07.07 06:48:04 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.HoTTMessages.BaseMixinLemmas :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.Lemmas]
+2020.07.07 06:48:04 [INFO] provingground.learning.HoTTBot.$anonfun:945:24 - excluded lemmas:
+
+2020.07.07 06:48:04 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UsedLemmas], id: (18,1582713519)
+2020.07.07 06:48:04 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentLemmas], id: (19,122416177)
+2020.07.07 06:48:04 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (20,-2080159275)
+2020.07.07 06:48:04 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.post:384:20 - triggered (multiple) responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas]
+2020.07.07 06:48:12 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.taskNest:389:32 - launching 1 branches
+2020.07.07 06:48:12 [INFO] provingground.learning.HoTTBot.$anonfun:1057:22 - previous special init states are 2
+2020.07.07 06:48:12 [INFO] provingground.learning.HoTTBot.$anonfun:1060:22 - Using 34580 equation nodes for base states
+2020.07.07 06:48:12 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun:394:36 - launching 2 responses  of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] in branch
+2020.07.07 06:48:12 [INFO] provingground.learning.HoTTBot.baseState:973:16 - Computing base state
+2020.07.07 06:48:16 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 26670 atoms
+2020.07.07 06:48:25 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:48:25 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 4477
+2020.07.07 06:48:25 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 20235
+2020.07.07 06:48:25 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:48:25 [INFO] provingground.learning.HoTTBot.baseState:989:16 - Computed expression evaluator
+2020.07.07 06:48:25 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 06:48:25 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 18855
+2020.07.07 06:48:26 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 1080
+2020.07.07 06:48:26 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 1753
+2020.07.07 06:48:26 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:48:26 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 06:48:28 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (21,-1292922585)
+2020.07.07 06:48:28 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 1 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.07.07 06:48:28 [INFO] provingground.learning.HoTTBot.baseState:973:16 - Computing base state
+2020.07.07 06:48:31 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 26670 atoms
+2020.07.07 06:48:44 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:48:44 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 4577
+2020.07.07 06:48:44 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 20233
+2020.07.07 06:48:44 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:48:44 [INFO] provingground.learning.HoTTBot.baseState:989:16 - Computed expression evaluator
+2020.07.07 06:48:44 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 06:48:44 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 18855
+2020.07.07 06:48:45 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 1485
+2020.07.07 06:48:45 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 3091
+2020.07.07 06:48:45 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:48:45 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 06:48:48 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (22,443245509)
+2020.07.07 06:48:48 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 0 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.07.07 06:48:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (23,-1666923435), content:
+TangentBaseCompleted
+2020.07.07 06:48:48 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to posts of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.07.07 06:48:48 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1262:28 - generating equations with 2 base states and 240 lemmas (before pruning)
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1275:30 - Details for base state: initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply
+Initial state (optional): Some(SpecialInitState(TermState([right-multiply : 0.2, m : 0.2, n : 0.2, left-multiply : 0.2, ((mul) (m)) (n) : 0.2],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.5,Some(TermGenParams(0.3,0.3,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2)))
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1290:30 - Terms in base (used with tangents above) with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply: 2
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 0.04174619787835185
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 0.04174619989813193
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1302:30 - Lemmas in base state with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply for mixin (used with tangents above): 5
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.008583008076462012
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 0.0017341093222123774
+Type: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best term: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 0.004722570904517358
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best term: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 0.0022037213069182613
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 0.0016710526948628575
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1315:30 - Inference by unified applications, triples and weight for base state with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply
+(0.0, 7.047670522690065E-4, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 1.0491557076549991E-4, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.04174619787835185, 0.002654872220145428, 1.1083082104393032E-4) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.04174619989813193, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1275:30 - Details for base state: initial terms trans, sym
+Initial state (optional): Some(SpecialInitState(TermState([trans : 0.9, sym : 0.1],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.05,Some(TermGenParams(0.0,0.4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2)))
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1290:30 - Terms in base (used with tangents above) with initial terms trans, sym: 3
+Type: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best term: trans with weight 0.4316732082643617
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 2.2052101927176905E-5
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 2.2055508884000712E-5
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1302:30 - Lemmas in base state with initial terms trans, sym for mixin (used with tangents above): 5
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.014085707811535644
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 0.002514763343236042
+Type: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best term: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 0.008130339565234223
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best term: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 0.003527392698656282
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 0.0024083520688914124
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.$anonfun:1315:30 - Inference by unified applications, triples and weight for base state with initial terms trans, sym
+(0.4316732082643617, 7.047670522690065E-4, 3.0422905453197913E-4) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 1.0491557076549991E-4, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(2.2052101927176905E-5, 0.002654872220145428, 5.854551280227742E-8) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(2.2055508884000712E-5, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (23,-1666923435)
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (20,-2080159275)
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (17,1446566196)
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (16,-661541350)
+2020.07.07 06:48:48 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (15,720819150)
+2020.07.07 06:48:48 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.07.07 06:48:48 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.07.07 06:48:48 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.07.07 06:48:48 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.07.07 06:48:50 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.07.07 06:48:52 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (14,-1237456766)
+2020.07.07 06:48:52 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 3, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.07.07 06:48:53 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 2, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.07.07 06:48:58 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 5, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.07.07 06:48:59 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 6, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.07.07 06:49:07 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 8, less than the time limit 2 minutes, with cutoff 3.2000000000000006E-7; running again
+2020.07.07 06:49:13 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 14, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.07.07 06:49:18 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 11, less than the time limit 2 minutes, with cutoff 6.400000000000002E-8; running again
+2020.07.07 06:49:27 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 13, less than the time limit 2 minutes, with cutoff 3.2000000000000006E-7; running again
+2020.07.07 06:49:31 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 13, less than the time limit 2 minutes, with cutoff 1.2800000000000004E-8; running again
+2020.07.07 06:49:51 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 20, less than the time limit 2 minutes, with cutoff 2.5600000000000007E-9; running again
+2020.07.07 06:49:57 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 29, less than the time limit 2 minutes, with cutoff 6.400000000000002E-8; running again
+2020.07.07 06:50:13 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 21, less than the time limit 2 minutes, with cutoff 5.120000000000001E-10; running again
+2020.07.07 06:50:26 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 29, less than the time limit 2 minutes, with cutoff 1.2800000000000004E-8; running again
+2020.07.07 06:50:30 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 17, less than the time limit 2 minutes, with cutoff 1.0240000000000002E-10; running again
+2020.07.07 06:50:57 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 27, less than the time limit 2 minutes, with cutoff 2.0480000000000003E-11; running again
+2020.07.07 06:50:57 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 31, less than the time limit 2 minutes, with cutoff 2.5600000000000007E-9; running again
+2020.07.07 06:51:25 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 27, less than the time limit 2 minutes, with cutoff 4.096E-12; running again
+2020.07.07 06:51:34 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 36, less than the time limit 2 minutes, with cutoff 5.120000000000001E-10; running again
+2020.07.07 06:51:55 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 29, less than the time limit 2 minutes, with cutoff 8.192000000000001E-13; running again
+2020.07.07 06:52:05 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 31, less than the time limit 2 minutes, with cutoff 1.0240000000000002E-10; running again
+2020.07.07 06:52:25 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 30, less than the time limit 2 minutes, with cutoff 1.6384E-13; running again
+2020.07.07 06:52:35 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 29, less than the time limit 2 minutes, with cutoff 2.0480000000000003E-11; running again
+2020.07.07 06:52:55 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 30, less than the time limit 2 minutes, with cutoff 3.2768E-14; running again
+2020.07.07 06:53:06 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 31, less than the time limit 2 minutes, with cutoff 4.096E-12; running again
+2020.07.07 06:53:25 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 30, less than the time limit 2 minutes, with cutoff 6.553600000000001E-15; running again
+2020.07.07 06:53:25 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:182:30 - all pairs considered with cutoff 6.553600000000001E-15
+2020.07.07 06:53:30 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 23, less than the time limit 2 minutes, with cutoff 8.192000000000001E-13; running again
+2020.07.07 06:53:48 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 17, less than the time limit 2 minutes, with cutoff 1.6384E-13; running again
+2020.07.07 06:53:48 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:182:30 - all pairs considered with cutoff 1.6384E-13
+2020.07.07 06:53:55 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (24,-584905453)
+2020.07.07 06:53:55 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.07 06:53:55 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.07 06:56:13 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 59712 atoms
+2020.07.07 06:56:13 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 06:56:13 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 6201
+2020.07.07 06:56:13 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 45308
+2020.07.07 06:56:13 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 06:56:13 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (25,2079640779), content:
+provingground.learning.ExpressionEval$$anon$2@7bf4cccb
+2020.07.07 06:56:13 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.07.07 06:56:13 [INFO] provingground.learning.HoTTBot.expEvToFinalState:515:26 - computing final state
+2020.07.07 06:56:13 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 06:56:13 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 41631
+2020.07.07 06:56:20 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 1462
+2020.07.07 06:56:24 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 34832
+2020.07.07 06:56:24 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 06:56:24 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 06:56:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (26,1010986571)
+2020.07.07 06:56:35 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:56:35 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:56:35 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:56:35 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 06:56:38 [INFO] provingground.learning.HoTTBot.$anonfun:418:26 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.05649266035676976; statement weight 6.180507219545508E-12
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$szacay :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$szacay)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.1172011221476296E-8; statement weight 2.2318172480236038E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.005968011980465784; statement weight 1.1556972566901738E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.005945396831970024; statement weight 1.1528565573461268E-13
+2020.07.07 06:56:38 [INFO] provingground.learning.HoTTBot.$anonfun:418:26 - Results: 5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.560766122457117E-4; statement weight 1.8672287032475113E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 2.570506782481608E-4; statement weight 5.990766924390465E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 3.6263277008919723E-6; statement weight 6.118305718100489E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.5902336722651608E-7; statement weight 2.2195734249447588E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 2.570506782481608E-4; statement weight 5.187196882620732E-8
+2020.07.07 07:00:05 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 176820 atoms
+2020.07.07 07:00:05 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 07:00:05 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 25010
+2020.07.07 07:00:05 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 138313
+2020.07.07 07:00:05 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 07:00:05 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(60000), exponent: 0.5, decay: 1.0
+2020.07.07 07:00:05 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 130364
+2020.07.07 07:00:16 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 6034
+2020.07.07 07:00:28 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 48444
+2020.07.07 07:00:28 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 07:00:29 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (27,2058804504)
+2020.07.07 07:00:29 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.HoTTMessages.BaseMixinLemmas :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.Lemmas]
+2020.07.07 07:00:29 [INFO] provingground.learning.HoTTBot.$anonfun:945:24 - excluded lemmas:
+
+2020.07.07 07:00:29 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UsedLemmas], id: (28,-1854624457)
+2020.07.07 07:00:29 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentLemmas], id: (29,1792407511)
+2020.07.07 07:00:29 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (30,-800094387)
+2020.07.07 07:00:29 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.post:384:20 - triggered (multiple) responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas]
+2020.07.07 07:01:59 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.taskNest:389:32 - launching 1 branches
+2020.07.07 07:01:59 [INFO] provingground.learning.HoTTBot.$anonfun:1057:22 - previous special init states are 2
+2020.07.07 07:02:03 [INFO] provingground.learning.HoTTBot.$anonfun:1060:22 - Using 244339 equation nodes for base states
+2020.07.07 07:02:03 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun:394:36 - launching 2 responses  of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] in branch
+2020.07.07 07:02:03 [INFO] provingground.learning.HoTTBot.baseState:973:16 - Computing base state
+2020.07.07 07:02:31 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 184273 atoms
+2020.07.07 07:14:29 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 07:14:29 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 31089
+2020.07.07 07:14:29 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 140813
+2020.07.07 07:14:29 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 07:14:29 [INFO] provingground.learning.HoTTBot.baseState:989:16 - Computed expression evaluator
+2020.07.07 07:14:29 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 07:14:29 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 132859
+2020.07.07 07:14:38 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 7870
+2020.07.07 07:14:43 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 12226
+2020.07.07 07:14:43 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 07:14:44 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 07:14:53 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (31,2073047707)
+2020.07.07 07:14:53 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 1 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.07.07 07:14:53 [INFO] provingground.learning.HoTTBot.baseState:973:16 - Computing base state
+2020.07.07 07:15:19 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 184273 atoms
+2020.07.07 07:32:33 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 07:32:33 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 31693
+2020.07.07 07:32:33 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 140811
+2020.07.07 07:32:33 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 07:32:33 [INFO] provingground.learning.HoTTBot.baseState:989:16 - Computed expression evaluator
+2020.07.07 07:32:33 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 07:32:33 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 132859
+2020.07.07 07:32:42 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 10298
+2020.07.07 07:32:48 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 20642
+2020.07.07 07:32:48 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 07:32:50 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 07:32:59 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (32,189792666)
+2020.07.07 07:32:59 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 0 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.07.07 07:32:59 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (33,-1666923435), content:
+TangentBaseCompleted
+2020.07.07 07:32:59 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to posts of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.07.07 07:32:59 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.07.07 07:32:59 [INFO] provingground.learning.HoTTBot.$anonfun:1262:28 - generating equations with 2 base states and 1747 lemmas (before pruning)
+2020.07.07 07:32:59 [INFO] provingground.learning.HoTTBot.$anonfun:1275:30 - Details for base state: initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply
+Initial state (optional): Some(SpecialInitState(TermState([right-multiply : 0.2, m : 0.2, n : 0.2, left-multiply : 0.2, ((mul) (m)) (n) : 0.2],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.5,Some(TermGenParams(0.3,0.3,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2)))
+2020.07.07 07:33:00 [INFO] provingground.learning.HoTTBot.$anonfun:1290:30 - Terms in base (used with tangents above) with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply: 3
+Type: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best term: (`$szacay :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$szacay)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 3.9705520913588706E-5
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 0.040599585249443536
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 0.040599585526952836
+2020.07.07 07:33:00 [INFO] provingground.learning.HoTTBot.$anonfun:1302:30 - Lemmas in base state with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply for mixin (used with tangents above): 5
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 9.404155730768127E-4
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 1.8884013904201015E-4
+Type: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best term: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 5.180181461106113E-4
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best term: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 4.0763879674032805E-4
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 1.8193709635371392E-4
+2020.07.07 07:33:00 [INFO] provingground.learning.HoTTBot.$anonfun:1315:30 - Inference by unified applications, triples and weight for base state with initial terms n, m, ((mul) (m)) (n), left-multiply, right-multiply
+(0.0, 1.356526376456784E-5, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(3.9705520913588706E-5, 2.0185279142298514E-6, 8.014670231311596E-11) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.040599585249443536, 5.1136148731310064E-5, 2.076106429745047E-6) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.040599585526952836, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.07.07 07:33:00 [INFO] provingground.learning.HoTTBot.$anonfun:1275:30 - Details for base state: initial terms trans, sym
+Initial state (optional): Some(SpecialInitState(TermState([trans : 0.9, sym : 0.1],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.05,Some(TermGenParams(0.0,0.4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2)))
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.$anonfun:1290:30 - Terms in base (used with tangents above) with initial terms trans, sym: 4
+Type: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best term: trans with weight 0.4368289967064975
+Type: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best term: (`$szacay :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$szacay)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.41979323345715E-4
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 2.385706234362843E-6
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 2.386086700769446E-6
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.$anonfun:1302:30 - Lemmas in base state with initial terms trans, sym for mixin (used with tangents above): 5
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.0015265717633139518
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 2.723986317241593E-4
+Type: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best term: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 8.807817600546299E-4
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best term: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 3.820669923761364E-4
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 2.6087954540353743E-4
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.$anonfun:1315:30 - Inference by unified applications, triples and weight for base state with initial terms trans, sym
+(0.4368289967064975, 1.356526376456784E-5, 5.9257005603351745E-6) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(5.41979323345715E-4, 2.0185279142298514E-6, 1.0940003931087323E-9) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(2.385706234362843E-6, 5.1136148731310064E-5, 1.2199582882959199E-10) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(2.386086700769446E-6, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (33,-1666923435)
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (30,-800094387)
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (27,2058804504)
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (26,1010986571)
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (25,2079640779)
+2020.07.07 07:33:02 [INFO] provingground.learning.HoTTBot.scribeLog:2036:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (24,-584905453)
+2020.07.07 07:33:03 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.07.07 07:33:03 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.07.07 07:33:05 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.07.07 07:33:07 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 3, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.07.07 07:33:10 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 4, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.07.07 07:33:12 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 5, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.07.07 07:33:18 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 6, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.07.07 07:33:24 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 10, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.07.07 07:33:27 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 9, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.07.07 07:33:51 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 22, less than the time limit 2 minutes, with cutoff 3.2000000000000006E-7; running again
+2020.07.07 07:33:56 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 31, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.07.07 07:34:15 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 23, less than the time limit 2 minutes, with cutoff 6.400000000000002E-8; running again
+2020.07.07 07:34:38 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 41, less than the time limit 2 minutes, with cutoff 3.2000000000000006E-7; running again
+2020.07.07 07:34:55 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 39, less than the time limit 2 minutes, with cutoff 1.2800000000000004E-8; running again
+2020.07.07 07:35:31 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 52, less than the time limit 2 minutes, with cutoff 6.400000000000002E-8; running again
+2020.07.07 07:36:03 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 67, less than the time limit 2 minutes, with cutoff 2.5600000000000007E-9; running again
+2020.07.07 07:37:09 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 97, less than the time limit 2 minutes, with cutoff 1.2800000000000004E-8; running again
+2020.07.07 07:37:40 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 95, less than the time limit 2 minutes, with cutoff 5.120000000000001E-10; running again
+2020.07.07 07:39:42 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:175:30 - ran for time 152, exceeding time limit 2 minutes, with cutoff 2.5600000000000007E-9
+2020.07.07 07:39:47 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:175:30 - ran for time 125, exceeding time limit 2 minutes, with cutoff 1.0240000000000002E-10
+2020.07.07 07:39:56 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (34,565480799)
+2020.07.07 07:39:56 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.07 07:39:56 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.07 07:56:40 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 307475 atoms
+2020.07.07 07:56:43 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 07:56:43 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 40713
+2020.07.07 07:56:43 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 235360
+2020.07.07 07:56:43 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 07:56:43 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (35,2075837969), content:
+provingground.learning.ExpressionEval$$anon$2@7bbac611
+2020.07.07 07:56:43 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.07.07 07:56:43 [INFO] provingground.learning.HoTTBot.expEvToFinalState:515:26 - computing final state
+2020.07.07 07:56:43 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.07 07:56:43 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 218424
+2020.07.07 07:57:11 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 8525
+2020.07.07 07:57:40 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 170037
+2020.07.07 07:57:40 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 07:57:42 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 07:58:56 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (36,2009917019)
+2020.07.07 07:58:56 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 07:58:56 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 07:58:56 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 07:58:56 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.07 07:59:06 [INFO] provingground.learning.HoTTBot.$anonfun:418:26 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.056486431868968845; statement weight 6.180192471919542E-12
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$fubfebo :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$fubfebo)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.115862417703371E-8; statement weight 2.2274421714214058E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.005967126800201363; statement weight 1.1552510313791678E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.005944517921001025; statement weight 1.1524118795077792E-13
+2020.07.07 07:59:08 [INFO] provingground.learning.HoTTBot.$anonfun:418:26 - Results: 6
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.5601526868457536E-4; statement weight 1.866739446522685E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 2.5698897561473514E-4; statement weight 5.988419859103053E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 3.625321080738975E-6; statement weight 6.115903727237229E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.5896492586445278E-7; statement weight 2.2184156148375453E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 2.5698897561473514E-4; statement weight 5.1851491681127204E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)); best proof: (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n))) with weight 3.9364407371286035E-15; statement weight 1.9064793612135588E-5
+2020.07.07 08:21:28 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 920107 atoms
+2020.07.07 08:21:30 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.07 08:21:30 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 125132
+2020.07.07 08:21:30 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 746276
+2020.07.07 08:21:30 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.07 08:21:30 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(60000), exponent: 0.5, decay: 1.0
+2020.07.07 08:21:30 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 722962
+2020.07.07 08:22:23 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, support size : 38695
+2020.07.07 08:22:30 [ERROR] provingground.learning.ExprCalc.stableSupportVec:749:25 - Timeout for stable support vector after 4 steps
+2020.07.07 08:22:30 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.07 08:22:37 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.07 08:23:33 [ERROR] provingground.learning.ExprCalc.stableVec:722:25 - Timeout for stable vector after 19 steps
+2020.07.07 08:23:41 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (37,889494632)
+2020.07.07 08:23:41 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.Ho
