@@ -70,11 +70,21 @@ case class TermState(
 
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
+  lazy val termDistMap = terms.toMap
+
+  lazy val typDistMap = typs.toMap
+
   lazy val funcDist = terms.condMap(FuncOpt)
+
+  lazy val funcDistMap = funcDist.toMap
 
   lazy val typFamilyDist = terms.condMap(TypFamilyOpt)
 
+  lazy val typFamilyDistMap = typFamilyDist.toMap
+
   lazy val typOrFamilyDist = terms.conditioned(isTypFamily)
+
+  lazy val typOrFamilyDistMap = typOrFamilyDist.toMap
 
   lazy val termTyps = terms.support.map(_.typ)
 
@@ -84,12 +94,28 @@ case class TermState(
     )
     .toMap
 
+  lazy val termsWithTypsMap = termTyps
+    .map(
+      typ =>
+        (typ: Typ[Term]) -> (terms.conditioned(_.typ == typ): FD[Term]).toMap
+    )
+    .toMap
+
   lazy val funcsWithDoms = termTyps
     .map(
       typ =>
         (typ: Typ[Term]) -> (terms
           .condMap(FuncOpt)
           .conditioned(_.dom == typ): FD[ExstFunc])
+    )
+    .toMap
+
+  lazy val funcsWithDomsMap = termTyps
+    .map(
+      typ =>
+        (typ: Typ[Term]) -> (terms
+          .condMap(FuncOpt)
+          .conditioned(_.dom == typ): FD[ExstFunc]).toMap
     )
     .toMap
 
@@ -345,6 +371,41 @@ case class TermState(
       goals.mapOpt(ctx.importTypOpt(_)),
       ctx
     )
+  import TermRandomVars._
+
+  def elemVal(elem: Any, randomVar: RandomVar[_]): Double =
+    (elem, randomVar) match {
+      case (x: Term, Terms)           => termDistMap.getOrElse(x, 0)
+      case (x: Typ[u], Typs)          => typDistMap.getOrElse(x, 0)
+      case (x: Typ[u], TargetTyps)    => typDistMap.getOrElse(x, 0)
+      case (x: ExstFunc, Funcs)       => funcDistMap.getOrElse(x, 0)
+      case (x: ExstFunc, TypFamilies) => typFamilyDistMap.getOrElse(x, 0)
+      case (x: Term, TypsAndFamilies) =>
+        ExstFunc
+          .opt(x)
+          .map(fn => typFamilyDistMap.getOrElse(fn, 0.0))
+          .getOrElse(0.0) +
+          typOpt(x).map(typ => typDistMap.getOrElse(typ, 0.0)).getOrElse(0.0)
+      case (x: ExstInducDefn, InducDefns)    => inds(x)
+      case (x: ExstInducStrucs, InducStrucs) => inds.map(_.ind)(x)
+      case (x: Typ[Term], Goals)             => goals(x)
+      case (x: Typ[Term], IsleDomains)       => typDistMap.getOrElse(x, 0)
+      case (x, RandomVar.AtCoord(fmly: RandomVarFamily[u, t], arg)) =>
+        (x, fmly, arg) match {
+          case (x: Term, TermsWithTyp, (typ: Typ[u]) :: HNil) =>
+            termsWithTypsMap.get(typ).map(_.getOrElse(x, 0.0)).getOrElse(0.0)
+          case (x: ExstFunc, FuncsWithDomain, (typ: Typ[u]) :: HNil) =>
+            funcsWithDomsMap.get(typ).map(_.getOrElse(x, 0.0)).getOrElse(0.0)
+          case (x: Term, FuncForCod, (cod : Typ[u]) :: HNil) =>
+            terms
+              .condMap(Unify.targetCodomain(_, cod))(x)
+          case _ =>
+            throw new IllegalArgumentException(
+              s"cannot find valueAt of TermState for $fmly at $arg"
+            )
+        }
+
+    }
 }
 
 object TermState {

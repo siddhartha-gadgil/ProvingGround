@@ -2,7 +2,7 @@ package provingground.learning
 
 import provingground._, HoTT._
 import monix.eval._, monix.tail._
-import monix.execution.Scheduler.Implicits.global
+// import monix.execution.Scheduler.Implicits.global
 import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
@@ -10,7 +10,7 @@ import scala.collection.View
 import scala.util._
 import scala.reflect.runtime.universe._
 import Utils.logger
-
+import Utils.ec
 
 
 /**

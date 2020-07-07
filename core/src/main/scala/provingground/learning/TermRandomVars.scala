@@ -396,7 +396,9 @@ object TermRandomVars {
   def variableSubs[Y](
       x: Term,
       y: Term
-  )(v: Variable[Y]): Variable[Y] = (v: Variable[Y]) match {
+  )(v: Variable[Y]): Variable[Y] = 
+    if (x == y) v
+  else  (v: Variable[Y]) match {
     case Elem(element, randomVar) =>
       Elem(valueSubs(x, y)(element), randomVarSubs(x, y)(randomVar))
     case ev: Event[a, b] =>
@@ -489,7 +491,8 @@ object TermRandomVars {
   }
 
   def expressionSubs(x: Term, y: Term)(exp: Expression): Expression =
-    exp match {
+    if (x == y) exp
+    else    exp match {
       case FinalVal(variable)   => FinalVal(variableSubs(x, y)(variable))
       case InitialVal(variable) => InitialVal(variableSubs(x, y)(variable))
       case Product(a, b) =>

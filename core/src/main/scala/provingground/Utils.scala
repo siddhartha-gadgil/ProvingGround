@@ -4,6 +4,11 @@ import scala.util.Try
 import scala.collection.mutable
 
 object Utils {
+  implicit val ec: scala.concurrent.ExecutionContext =
+    scala.concurrent.ExecutionContext.global
+
+  type MapDist[A] = Map[A, Double]
+
   import scribe._, writer._
   var logger = Logger()
     .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
