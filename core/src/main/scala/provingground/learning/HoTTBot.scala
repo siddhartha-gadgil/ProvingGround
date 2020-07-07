@@ -1267,6 +1267,7 @@ object HoTTBot {
                 val view1 =
                   s"Tangent lemmas (used with bases below): ${tls.size}\n${tls
                     .mkString("\n")}"
+                logger.info(view1)
                 ctbs.contents.foreach { tbs =>
                   val initString: String = tbs.initOpt
                     .map(_.ts.terms.supp)
