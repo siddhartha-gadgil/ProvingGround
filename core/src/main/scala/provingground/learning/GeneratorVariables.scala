@@ -701,9 +701,10 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
 
 object Equation {
   def group(ts: Set[EquationNode]): Set[Equation] =
-    ts.groupBy(_.lhs)
-      .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
-      .toSet
+    ts.groupMapReduce(_.lhs)(_.rhs)(_ + _).map{case (lhs, rhs) => Equation(lhs, rhs)}.toSet
+    // ts.groupBy(_.lhs)
+    //   .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
+    //   .toSet
 
   def split(eq: Equation): Set[EquationNode] = eq match {
     case Equation(lhs, Sum(y1, y2)) =>
