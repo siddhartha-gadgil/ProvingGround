@@ -706,6 +706,9 @@ object Equation {
     //   .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
     //   .toSet
 
+  def groupIt(ts: Set[EquationNode]): Iterable[Equation] =
+    ts.groupMapReduce(_.lhs)(_.rhs)(_ + _).map{case (lhs, rhs) => Equation(lhs, rhs)}
+
   def split(eq: Equation): Set[EquationNode] = eq match {
     case Equation(lhs, Sum(y1, y2)) =>
       split(Equation(lhs, y1)) union (split(Equation(lhs, y2)))

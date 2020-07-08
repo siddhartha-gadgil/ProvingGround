@@ -655,8 +655,10 @@ object HoTTBot {
         eqs =>
           val neqs = eqs.normalized
           Utils.logger.info("Obtained normalized equations")
-          val groupedEqns = Equation.group(eqns union (neqs))
-          Utils.logger.info("Obtained grouped equations")
+          val groupedItEqns = Equation.groupIt(eqns union (neqs))
+          Utils.logger.info("Obtained grouped equations as iterator")
+          val groupedEqns = groupedItEqns.toSet
+          Utils.logger.info("Obtained set of grouped equations")
           import qlp.lp
           Future(
             ExpressionEval.fromInitEqs(
