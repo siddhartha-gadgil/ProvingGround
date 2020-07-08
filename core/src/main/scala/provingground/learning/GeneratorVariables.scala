@@ -210,7 +210,7 @@ sealed trait Expression {
   ): Expression =
     mapVars(InIsle.variableMap(boat, island))
 
-  def +(that: Expression): Sum = Sum(this, that)
+  def +(that: Expression): Sum = Sum(Vector(this, that))
 
   def *(that: Expression): Product = Product(this, that)
 
@@ -236,7 +236,7 @@ object Expression {
     case value: VarVal[_] => Set(value)
     case Log(exp)         => varVals(exp)
     case Exp(x)           => varVals(x)
-    case Sum(x, y)        => varVals(x) union (varVals(y))
+    case Sum(xs)          => xs.flatMap(varVals(_)).toSet
     case Product(x, y)    => varVals(x) union (varVals(y))
     case Literal(_)       => Set()
     case Quotient(x, y)   => varVals(x) union (varVals(y))
@@ -248,7 +248,7 @@ object Expression {
     case value: VarVal[_] => Set(value)
     case Log(exp)         => varValsNum(exp)
     case Exp(x)           => varValsNum(x)
-    case Sum(x, y)        => varValsNum(x) union (varValsNum(y))
+    case Sum(xs)          => xs.flatMap(varValsNum(_)).toSet
     case Product(x, y)    => varValsNum(x) union (varValsNum(y))
     case Literal(_)       => Set()
     case Quotient(x, y)   => varValsNum(x)
@@ -260,7 +260,7 @@ object Expression {
     case value: VarVal[_]     => Set(value)
     case Log(exp)             => atoms(exp)
     case Exp(x)               => atoms(x)
-    case Sum(x, y)            => atoms(x) union (atoms(y))
+    case Sum(xs)              => xs.flatMap(atoms(_)).toSet
     case Product(x, y)        => atoms(x) union (atoms(y))
     case Literal(_)           => Set()
     case Quotient(x, y)       => atoms(x) union (atoms(y))
@@ -273,7 +273,7 @@ object Expression {
       case value: VarVal[_]     => Set()
       case Log(exp)             => Set(exp)
       case Exp(x)               => Set(x)
-      case Sum(x, y)            => Set(x, y)
+      case Sum(xs)              => xs.flatMap(offsprings(_)).toSet
       case Product(x, y)        => Set(x, y)
       case Literal(_)           => Set()
       case Quotient(x, y)       => Set(x, y)
@@ -289,30 +289,38 @@ object Expression {
   }
 
   @annotation.tailrec
-  def allAtoms(exps: Set[Expression], accumAtoms: Set[Expression]) : Set[Expression] =
-    if (exps.isEmpty) accumAtoms 
+  def allAtoms(
+      exps: Set[Expression],
+      accumAtoms: Set[Expression]
+  ): Set[Expression] =
+    if (exps.isEmpty) accumAtoms
     else {
       val newAccum = accumAtoms union (exps.flatMap(atomLeaves(_)))
-      val newExps = exps.flatMap(offsprings(_)) -- newAccum
+      val newExps  = exps.flatMap(offsprings(_)) -- newAccum
       allAtoms(newExps, newAccum)
     }
 
   @annotation.tailrec
-  def allAtomsByGroups(expGps: List[Set[Expression]], accumAtoms: Set[Expression]) : Set[Expression] = 
+  def allAtomsByGroups(
+      expGps: List[Set[Expression]],
+      accumAtoms: Set[Expression]
+  ): Set[Expression] =
     expGps match {
       case scala.collection.immutable.::(head, next) =>
-        allAtomsByGroups(next, allAtoms(head, accumAtoms)) 
+        allAtomsByGroups(next, allAtoms(head, accumAtoms))
       case Nil => accumAtoms
     }
 
-  def allVarVals(exps: Set[Expression], accumAtoms: Set[Expression]) : Set[VarVal[_]]
-    = allAtoms(exps, accumAtoms).collect{
-      case value : VarVal[_] => value 
-    }
+  def allVarVals(
+      exps: Set[Expression],
+      accumAtoms: Set[Expression]
+  ): Set[VarVal[_]] = allAtoms(exps, accumAtoms).collect {
+    case value: VarVal[_] => value
+  }
 
   def sumTerms(exp: Expression): Vector[Expression] = exp match {
-    case Sum(a, b) => sumTerms(a) ++ sumTerms(b)
-    case a         => Vector(a)
+    case Sum(xs) => xs.flatMap(sumTerms(_))
+    case a       => Vector(a)
   }
 
   def varFactors(exp: Expression): Vector[Variable[_]] = exp match {
@@ -347,7 +355,7 @@ object Expression {
     case value: VarVal[_] => Set()
     case Log(exp)         => coefficients(exp)
     case Exp(x)           => coefficients(x)
-    case Sum(x, y)        => coefficients(x) union (coefficients(y))
+    case Sum(xs)          => xs.flatMap(coefficients(_)).toSet
     case Product(x, y)    => coefficients(x) union (coefficients(y))
     case Literal(_)       => Set()
     case Quotient(x, y)   => coefficients(x) union (coefficients(y))
@@ -358,37 +366,37 @@ object Expression {
   def variance(v: Vector[Expression]): Expression =
     if (v.isEmpty) Literal(0)
     else {
-      val mean = v.reduce(Sum(_, _)) / v.size
-      v.map(x => (x - mean) * (x - mean): Expression).reduce(Sum(_, _)) / v.size
+      val mean = Sum(v) / v.size
+      Sum(v.map(x => (x - mean) * (x - mean): Expression)) / v.size
     }
 
   def h[A](pDist: Map[A, Expression]): Expression =
-    pDist.map { case (_, p) => -p * Log(p) }.reduce[Expression](_ + _)
+    Sum(pDist.map { case (_, p) => -p * Log(p) }.toVector)
 
   def kl[A](
       pDist: Map[A, Expression],
       qDist: Map[A, Expression],
       smoothing: Option[Double] = None
   ): Expression =
-    pDist
+    Sum(pDist
       .map {
         case (a, p) =>
           val q = smoothing.map(c => qDist(a) + Literal(c)).getOrElse(qDist(a))
           p * Log(p / q)
-      }
-      .reduce[Expression](_ + _)
+      }.toVector)
+      
 
   def unknownsCost[A](
       pDist: Map[A, Expression],
       smoothing: Option[Double]
   ): Option[Expression] =
     smoothing.map { q =>
-      pDist
+      Sum(pDist
         .map {
           case (a, p) =>
             p * Log(p / q)
-        }
-        .reduce[Expression](_ + _)
+        }.toVector)
+        // .reduce[Expression](_ + _)
     }
 
   sealed trait VarVal[+Y] extends Expression {
@@ -425,11 +433,16 @@ object Expression {
 
   def inverseSigmoid(y: Expression) = Log(y / (Literal(1) - y))
 
-  case class Sum(x: Expression, y: Expression) extends Expression {
+  case class Sum(xs: Vector[Expression]) extends Expression {
     def mapVars(f: VariableMap): Sum =
-      Sum(x.mapVars(f), y.mapVars(f))
+      Sum(xs.map(_.mapVars(f)))
 
-    override def toString = s"($x) + ($y)"
+    override def +(that: Expression): Sum = that match {
+      case Sum(ys) => Sum(xs ++ ys)
+      case _       => Sum(xs :+ that)
+    }
+
+    override def toString = xs.mkString(" + ")
   }
 
   case class Product(x: Expression, y: Expression) extends Expression {
@@ -557,7 +570,7 @@ object Expression {
     def zero: Expression = Literal(0)
 
     // Members declared in algebra.ring.AdditiveSemigroup
-    def plus(x: Expression, y: Expression): Expression = Sum(x, y)
+    def plus(x: Expression, y: Expression): Expression = Sum(Vector(x, y))
 
     // Members declared in spire.algebra.GCDRing
     def gcd(a: Expression, b: Expression)(
@@ -700,18 +713,23 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
 }
 
 object Equation {
-  def group(ts: Set[EquationNode]): Set[Equation] =
-    ts.groupMapReduce(_.lhs)(_.rhs)(_ + _).map{case (lhs, rhs) => Equation(lhs, rhs)}.toSet
-    // ts.groupBy(_.lhs)
-    //   .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
+  def group(ts: Set[EquationNode]): Set[Equation] = groupIt(ts).toSet
+    // ts.groupMapReduce(_.lhs)(_.rhs)(_ + _)
+    //   .map { case (lhs, rhs) => Equation(lhs, rhs) }
     //   .toSet
+  // ts.groupBy(_.lhs)
+  //   .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
+  //   .toSet
 
   def groupIt(ts: Set[EquationNode]): Iterable[Equation] =
-    ts.groupMapReduce(_.lhs)(_.rhs)(_ + _).map{case (lhs, rhs) => Equation(lhs, rhs)}
+    ts.groupMap(_.lhs)(_.rhs).map {
+      case (lhs, rhsV) => Equation(lhs, Sum(rhsV.toVector))
+    }
 
   def split(eq: Equation): Set[EquationNode] = eq match {
-    case Equation(lhs, Sum(y1, y2)) =>
-      split(Equation(lhs, y1)) union (split(Equation(lhs, y2)))
+    case Equation(lhs, Sum(ys)) =>
+      ys.flatMap(y => split(Equation(lhs, y))).toSet
+    // split(Equation(lhs, y1)) union (split(Equation(lhs, y2)))
     case Equation(lhs, rhs) => Set(EquationNode(lhs, rhs))
   }
 

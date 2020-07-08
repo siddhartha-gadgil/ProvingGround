@@ -100,7 +100,7 @@ object ExpressionEval {
       case InitialVal(elem: Elem[y]) =>
         import elem._
         val base = initialState.elemVal(element, randomVar)
-        //  sd.value(initialState)(randomVar)(element) 
+        //  sd.value(initialState)(randomVar)(element)
         if (base > 0) Some(base)
         else if (randomVar == Goals) Some(0.5) // just a quick-fix
         else if (isIsleVar(elem))
@@ -143,7 +143,7 @@ object ExpressionEval {
     init.getOrElse(
       exp,
       exp match {
-        case Sum(a, b)     => recExp(init, a) + recExp(init, b)
+        case Sum(xs)       => xs.map(recExp(init, _)).sum
         case Log(a)        => math.log(recExp(init, a))
         case Exp(a)        => math.exp(recExp(init, a))
         case Product(x, y) => recExp(init, x) * recExp(init, y)
@@ -263,7 +263,10 @@ object ExpressionEval {
     * @return set of expressions
     */
   def eqAtoms(equations: Set[Equation], groupSize: Int = 100): Set[Expression] =
-    Expression.allAtomsByGroups(equations.map(_.rhs).grouped(groupSize).toList, equations.map(_.lhs))
+    Expression.allAtomsByGroups(
+      equations.map(_.rhs).grouped(groupSize).toList,
+      equations.map(_.lhs)
+    )
   // equations
   //   .map(_.lhs)
   //   .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
@@ -400,7 +403,7 @@ object ExpressionEval {
         val base = thmSet.map { typ =>
           typ -> FinalVal(Elem(typ, Typs))
         }.toMap
-        val total = base.map(_._2).reduce[Expression](_ + _)
+        val total = Sum(base.map(_._2).toVector)
         base.map { case (typ, exp) => (typ, exp / total) }
       }
 
@@ -1230,19 +1233,19 @@ trait ExpressionEval { self =>
     }
   }
 
-  lazy val funcTotal: Expression = initTerms
+  lazy val funcTotal: Expression = Sum(initTerms
     .filter(isFunc)
     .map { t =>
       InitialVal(Elem(t, Terms))
-    }
-    .fold[Expression](Literal(0))(_ + _)
+    })
+    // .fold[Expression](Literal(0))(_ + _)
 
-  lazy val typFamilyTotal: Expression = initTerms
+  lazy val typFamilyTotal: Expression = Sum(initTerms
     .filter(isTypFamily)
     .map { t =>
       InitialVal(Elem(t, Terms))
-    }
-    .fold[Expression](Literal(0))(_ + _)
+    })
+    // .fold[Expression](Literal(0))(_ + _)
 
   lazy val initVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
@@ -1297,12 +1300,14 @@ trait ExpressionEval { self =>
       .toVector
 
   lazy val coeffVariance: Expression =
-    Utils
-      .partition[Coeff[_]](coefficients, {
-        case (c1, c2) => c1.sameFamily(c2, tg.nodeCoeffSeq)
-      })
-      .map(v => Expression.variance(v))
-      .fold[Expression](Literal(0))(Sum(_, _))
+    Sum(
+      Utils
+        .partition[Coeff[_]](coefficients, {
+          case (c1, c2) => c1.sameFamily(c2, tg.nodeCoeffSeq)
+        })
+        .map(v => Expression.variance(v))
+    )
+  // .fold[Expression](Literal(0))(Sum(_, _))
 
   lazy val vars = if (coeffsAsVars) valueVars ++ coefficients else valueVars
 
@@ -1336,7 +1341,7 @@ trait ExpressionEval { self =>
         expr match {
           case Log(exp)       => log(jet(exp))
           case Exp(x)         => exp(jet(x))
-          case Sum(x, y)      => jet(x) + jet(y)
+          case Sum(xs)        => xs.map(jet(_)).reduce(_ + _)
           case Product(x, y)  => jet(x) * jet(y)
           case Literal(value) => value
           case Quotient(x, y) => jet(x) / jet(y)
@@ -1361,11 +1366,12 @@ trait ExpressionEval { self =>
           expr match {
             case Log(exp) => jetTask(exp).map(j => log(j))
             case Exp(x)   => jetTask(x).map(j => exp(j))
-            case Sum(x, y) =>
-              for {
-                a <- jetTask(x)
-                b <- jetTask(y)
-              } yield a + b
+            case Sum(xs) =>
+              Task.gather(xs.map(jetTask(_))).map(_.reduce(_ + _))
+              // for {
+              //   a <- jetTask(x)
+              //   b <- jetTask(y)
+              // } yield a + b
             case Product(x, y) =>
               for {
                 a <- jetTask(x)
@@ -1521,10 +1527,10 @@ trait ExpressionEval { self =>
     .toMap
 
   def proofExpression(typ: Typ[Term]): Expression =
-    finalTermSet
+    Sum(finalTermSet
       .filter(_.typ == typ)
-      .map(t => FinalVal(Elem(t, Terms)))
-      .reduce[Expression](_ + _)
+      .map(t => FinalVal(Elem(t, Terms))).toVector )
+      // .reduce[Expression](_ + _)
 
   lazy val thmsByProof: Map[Typ[Term], Expression] =
     thmSet.map(typ => typ -> proofExpression(typ)).toMap
@@ -1557,21 +1563,21 @@ trait ExpressionEval { self =>
 
   lazy val finalTypEntropy: Expression = Expression.h(finalTypMap)
 
-  lazy val initTermsSum = initTerms
+  lazy val initTermsSum = Sum(initTerms
     .map {
       case t => InitialVal(Elem(t, Terms))
-    }
-    .fold(Expression.Literal(0)) { (t1, t2) =>
-      Sum(t1, t2)
-    }
+    })
+    // .fold(Expression.Literal(0)) { (t1, t2) =>
+    //   Sum(t1, t2)
+    // }
 
-  lazy val finalTermSetSum = finalTermSet
+  lazy val finalTermSetSum = Sum(finalTermSet
     .map {
       case t => FinalVal(Elem(t, Terms))
-    }
-    .fold(Expression.Literal(0)) { (t1, t2) =>
-      Sum(t1, t2)
-    }
+    }.toVector)
+    // .fold(Expression.Literal(0)) { (t1, t2) =>
+    //   Sum(t1, t2)
+    // }
 
   /**
     * Expressions for equations.
@@ -1723,7 +1729,7 @@ trait EvolvedEquations[State] {
   val equations: Set[Equation]
 
   def totalSquare(epsilon: Double): Expression =
-    equations.map(_.squareError(epsilon)).reduce(_ + _)
+    Sum(equations.map(_.squareError(epsilon)).toVector )//.reduce(_ + _)
 
   def mse(epsilon: Double): Expression = totalSquare(epsilon) / (equations.size)
 

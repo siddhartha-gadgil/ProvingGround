@@ -60,7 +60,7 @@ case class SpireGradient(
       expr match {
         case Log(exp)       => log(jet(p)(exp))
         case Exp(x)         => exp(jet(p)(x))
-        case Sum(x, y)      => jet(p)(x) + jet(p)(y)
+        case Sum(xs)      =>  xs.map(x => jet(p)(x)).reduce(_ + _)
         case Product(x, y)  => jet(p)(x) * jet(p)(y)
         case Literal(value) => value
         case Quotient(x, y) => jet(p)(x) / jet(p)(y)
@@ -78,11 +78,11 @@ object SpireGradient {
 
   def kl(ts: TermState): Expression = {
     val thmTot =
-      ts.thmsBySt.supp
+      Sum(ts.thmsBySt.supp
         .map { (thm) =>
           FinalVal(Elem(thm, Typs))
-        }
-        .reduce[Expression](_ + _)
+        }.toVector)
+        // .reduce[Expression](_ + _)
 
     val pqs =
       ts.pfMap.map {
@@ -91,13 +91,13 @@ object SpireGradient {
             pfs.map((t) => FinalVal(Elem(t, Terms))).reduce[Expression](_ + _)
           (FinalVal(Elem(thm, Typs)), pfTot)
       }.toVector
-    pqs
-      .map { case (p, q) => (p / thmTot) * Log(q / p) }
-      .reduce[Expression](_ + _)
+    Sum(pqs
+      .map { case (p, q) => (p / thmTot) * Log(q / p) }.toVector)
+      // .reduce[Expression](_ + _)
   }
 
   def h(ts: Vector[Term]): Expression =
-    ts.map((t) => InitialVal(Elem(t, Terms))).map(p => -p * Log(p)).reduce[Expression](_ + _)
+    Sum(ts.map((t) => InitialVal(Elem(t, Terms))).map(p => -p * Log(p)).toVector) //.reduce[Expression](_ + _)
 
   def termGenCost(
       ge: EvolvedEquations[TermState],

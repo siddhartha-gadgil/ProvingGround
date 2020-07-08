@@ -229,8 +229,8 @@ case class GeneratorEquations[State](
         val byBase = d1.groupBy { case (x, _) => quot(x) } // final probs grouped by terms in quotient
         val baseWeights = byBase.view.mapValues(
           v =>
-            v.map(_._2)
-              .reduce[Expression](_ + _)).toMap // weights of terms in the quotient
+            Sum(v.toVector.map(_._2))
+              ).toMap // weights of terms in the quotient
         val eqT =
           for {
             (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
@@ -306,7 +306,7 @@ case class GeneratorEquations[State](
     .view.mapValues(v => v.map { case (_, x) => FinalVal(x) : Expression }).toMap
 
   lazy val finalProbTotals: Set[Expression] =
-    finalProbVars.view.mapValues(_.reduce(_ + _)).values.toSet
+    finalProbVars.view.mapValues(s => Sum(s.toVector)).values.toSet
 
   lazy val totalProbEquations: Set[Equation] =
     finalProbTotals.map(t => Equation(t, Literal(1)))
@@ -315,7 +315,7 @@ case class GeneratorEquations[State](
     val elemProbs: Set[Expression] = finalProbs(ev.base).collect {
       case (x, p) if ev.sort.pred(x) => p
     }
-    if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else FinalVal(ev)
+    if (elemProbs.nonEmpty) Sum(elemProbs.toVector) else FinalVal(ev)
   }
 
   def eventValue[X, Y](ev: Event[X, Y]): Double = ev.sort match {
@@ -334,7 +334,7 @@ case class GeneratorEquations[State](
       (x2, p2) <- finalProbs(ev.base2)
       if (ev.sort.pred(x1, x2))
     } yield p1 * p2
-    if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else FinalVal(ev)
+    if (elemProbs.nonEmpty) Sum(elemProbs.toVector) else FinalVal(ev)
   }
 
   def pairEventValue[X1, X2, Y](ev: PairEvent[X1, X2, Y]): Double = {

@@ -416,7 +416,7 @@ object HoTTBot {
                 }
                 .mkString("\n")}"
               logger.info(view)
-              Utils.report(view)
+              // Utils.report(view)
             }
       }
     }

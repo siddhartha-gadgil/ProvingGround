@@ -83,7 +83,7 @@ object Printer extends FallbackPrinter {
       }
     case Log(exp)       => s"log(${exprView(exp)})"
     case Exp(exp)       => s"exp(${exprView(exp)})"
-    case Sum(x, y)      => s"${exprView(x)} + ${exprView(y)}"
+    case Sum(xs)        => xs.map(exprView(_)).mkString(" + ")
     case Product(x, y)  => s"${exprView(x)} * ${exprView(y)}"
     case Literal(value) => view(value)
     case Quotient(x, y) => s"${exprView(x)} / ${exprView(y)}"

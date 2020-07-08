@@ -347,8 +347,9 @@ case class GeneratorTF[State](
             val d1     = finalProbs(baseInput)
             val byBase = d1.groupBy { case (x, _) => quot(x) } // final probs grouped by terms in quotient
             val baseWeights = byBase.view.mapValues(v =>
-              v.map(_._2)
-                .reduce[Expression](_ + _)).toMap // weights of terms in the quotient
+              Sum(v.map(_._2).toVector)
+              //  .reduce[Expression](_ + _)
+              ).toMap // weights of terms in the quotient
             val eqT =
               for {
                 (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
@@ -544,8 +545,9 @@ case class GeneratorTF[State](
             val d1     = finalProbs(baseInput)
             val byBase = d1.groupBy { case (x, _) => quot(x) } // final probs grouped by terms in quotient
             val baseWeights = byBase.view.mapValues(v =>
-              v.map(_._2)
-                .reduce[Expression](_ + _)).toMap // weights of terms in the quotient
+              Sum(v.map(_._2).toVector)
+                // .reduce[Expression](_ + _)
+                ).toMap // weights of terms in the quotient
             val eqT =
               for {
                 (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
@@ -703,6 +705,6 @@ case class GeneratorTF[State](
     .groupMap(_._1){ case (_, x) => FinalVal(x) : Expression }
 
   lazy val finalProbTotals: Set[Expression] =
-    finalProbVars.view.mapValues(_.reduce(_ + _)).values.toSet
+    finalProbVars.view.mapValues(s => Sum(s.toVector)).values.toSet
 
 }
