@@ -602,7 +602,7 @@ class ExprCalc(ev: ExpressionEval) {
           case InitialVal(variable) => ProdExpr(0, Vector(), Vector())
           case _ =>
             Utils.logger.debug(
-              s"cannot decompose $exp as a product, though it is in the rhs of ${equations
+              s"cannot decompose $exp as a product, though it is in the rhs of ${equationVec
                 .find(eqq => (Expression.atoms(eqq.rhs).contains(exp)))}"
             )
             ProdExpr(0, Vector(), Vector())

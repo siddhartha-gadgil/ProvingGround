@@ -654,10 +654,11 @@ object HoTTBot {
       case eqns :: qlp :: HNil =>
         eqs =>
           val neqs = eqs.normalized
+          val nodes = eqns union(neqs)
           Utils.logger.info("Obtained normalized equations")
-          val groupedItEqns = Equation.groupIt(eqns union (neqs))
+          val groupedItEqns = Equation.groupIt(nodes).toVector
           Utils.logger.info("Obtained grouped equations as iterator")
-          val groupedEqns = groupedItEqns.toSet
+          val groupedEqns = Utils.makeSet(groupedItEqns) 
           Utils.logger.info("Obtained set of grouped equations")
           import qlp.lp
           Future(

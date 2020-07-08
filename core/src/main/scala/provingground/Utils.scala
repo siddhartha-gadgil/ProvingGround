@@ -9,6 +9,15 @@ object Utils {
 
   type MapDist[A] = Map[A, Double]
 
+  @annotation.tailrec
+  def gatherSet[A](l: Vector[Vector[A]], accum: Set[A]): Set[A] = l match {
+    case head +: tail => gatherSet(tail, head.toSet union(accum))
+    case Vector() => accum
+  }
+
+  def makeSet[A](v: Vector[A], groupSize: Int = 1000) = 
+    gatherSet(v.grouped(groupSize).toVector, Set())
+
   import scribe._, writer._
   var logger = Logger()
     .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
