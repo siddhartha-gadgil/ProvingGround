@@ -7,6 +7,7 @@ import scala.language.higherKinds
 import scala.util._
 import spire.util.Opt
 import provingground.learning.Expression.Exp
+import scala.collection.immutable.Nil
 
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
@@ -294,6 +295,14 @@ object Expression {
       val newAccum = accumAtoms union (exps.flatMap(atomLeaves(_)))
       val newExps = exps.flatMap(offsprings(_)) -- newAccum
       allAtoms(newExps, newAccum)
+    }
+
+  @annotation.tailrec
+  def allAtomsByGroups(expGps: List[Set[Expression]], accumAtoms: Set[Expression]) : Set[Expression] = 
+    expGps match {
+      case scala.collection.immutable.::(head, next) =>
+        allAtomsByGroups(next, allAtoms(head, accumAtoms)) 
+      case Nil => accumAtoms
     }
 
   def allVarVals(exps: Set[Expression], accumAtoms: Set[Expression]) : Set[VarVal[_]]

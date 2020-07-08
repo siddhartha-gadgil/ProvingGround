@@ -654,6 +654,7 @@ object HoTTBot {
       case eqns :: qlp :: HNil =>
         eqs =>
           val neqs = eqs.normalized
+          Utils.logger.info("Obtained normalized equations")
           import qlp.lp
           Future(
             ExpressionEval.fromInitEqs(

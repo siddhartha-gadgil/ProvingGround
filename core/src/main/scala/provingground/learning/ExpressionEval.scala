@@ -262,8 +262,8 @@ object ExpressionEval {
     * @param equations the equations
     * @return set of expressions
     */
-  def eqAtoms(equations: Set[Equation]): Set[Expression] =
-    Expression.allAtoms(equations.map(_.rhs), equations.map(_.lhs))
+  def eqAtoms(equations: Set[Equation], groupSize: Int = 100): Set[Expression] =
+    Expression.allAtomsByGroups(equations.map(_.rhs).grouped(groupSize).toList, equations.map(_.lhs))
   // equations
   //   .map(_.lhs)
   //   .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
