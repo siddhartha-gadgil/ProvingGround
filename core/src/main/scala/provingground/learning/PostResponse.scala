@@ -188,11 +188,11 @@ object TypedPostResponse {
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
-      logger.info(s"triggered callback for type ${pw.tag}")
+      logger.info(s"triggered callback ${this.hashCode().toHexString} for type ${pw.tag}")
       val auxFuture = lv.getAt(web, id, predicate)
       val task = auxFuture.flatMap { auxs =>
         Future.sequence(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
-      }
+      }.andThen(_ => logger.info(s"completed callback ${this.hashCode().toHexString} for type ${pw.tag}"))
       task
     }
   }
@@ -227,7 +227,7 @@ object TypedPostResponse {
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
-      logger.info(s"triggered response of type ${qw.tag} to posts of type ${pw.tag}")
+      logger.info(s"triggered response ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
       val auxFuture = lv.getAt(web, id, predicate(content)) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
@@ -240,7 +240,9 @@ object TypedPostResponse {
                   idNewFuture.map(idNew => PostData.get(newPost, idNew)(dg))}
             })
         }
-      val task = taskNest.flatMap(st => Future.sequence(st))
+      val task = taskNest.flatMap(st => Future.sequence(st)).andThen(_ =>
+              logger.info(s"completed response ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+)
       task
     }
 
@@ -341,7 +343,7 @@ object TypedPostResponse {
           content: P,
           id: ID
       ): Future[Vector[PostData[_, W, ID]]] = {
-        logger.info(s"triggered (multiple) responses of type ${qw.tag} to posts of type ${pw.tag}")
+        logger.info(s"triggered (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val taskNest =
           auxFuture.map{
@@ -356,7 +358,9 @@ object TypedPostResponse {
                     )}
               })
           }
-        val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten))
+        val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten)).andThen(_ =>
+                logger.info(s"completed all responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+)
         task
       }
   }
@@ -384,7 +388,7 @@ object TypedPostResponse {
           content: P,
           id: ID
       ): Future[Vector[PostData[_, W, ID]]] = {
-        logger.info(s"triggered (multiple) responses of type ${qw.tag} to posts of type ${pw.tag}")
+        logger.info(s"triggered (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val taskNest =
           auxFuture.flatMap{
@@ -408,7 +412,9 @@ object TypedPostResponse {
                   )
                   newPostsData})
                   }
-          }
+          }.andThen(_ => 
+          logger.info(s"completed (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+          )
         taskNest
       }
 

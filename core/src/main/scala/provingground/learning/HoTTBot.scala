@@ -2057,7 +2057,9 @@ class HoTTWebSession(
 ) extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       bots,
-      Vector(scribeLog(_))
+      Vector(
+        // scribeLog(_)
+        )
     ) {
 
   // just an illustration, should just use rhs
