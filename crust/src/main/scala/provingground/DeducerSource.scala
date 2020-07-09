@@ -265,16 +265,16 @@ object DeducerSource {
   }
 }
 
-import scala.collection.mutable.{Map => mMap}
+import scala.collection.mutable
 
 class DeducerBuffer(terms: List[Term]) {
   var loops: Int = 0
 
   var dist: FD[Term] = FD.empty[Term]
 
-  val timeSeries: mMap[Term, Vector[Double]] = {
+  val timeSeries: mutable.Map[Term, Vector[Double]] = {
     val pairs = terms map (name => (name, Vector()))
-    mMap(pairs: _*)
+    mutable.Map(pairs: _*)
   }
 
   def save(fd: FD[Term]) = {

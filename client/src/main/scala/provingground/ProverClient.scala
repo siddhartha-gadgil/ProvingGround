@@ -140,11 +140,11 @@ object DoublesInput {
 object InteractiveProver {
   import katexSafe.teXSpan
 
-  import scala.collection.mutable.{Map => mMap}
+  import scala.collection.mutable
 
-  val sentJobs: mMap[Int, String] = mMap()
+  val sentJobs: mutable.Map[Int, String] = mutable.Map()
 
-  val responses: mMap[Int, String] = mMap()
+  val responses: mutable.Map[Int, String] = mutable.Map()
 
   var useTeX: Boolean = true
 

@@ -23,7 +23,8 @@ import monix.execution.CancelableFuture
 import provingground.translation.TeXTranslate
 import ujson.Value
 
-import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 import upickle.default.{write => uwrite, read => _, _}
 
 import scala.util.Try

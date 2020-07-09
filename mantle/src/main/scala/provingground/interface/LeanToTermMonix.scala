@@ -9,7 +9,7 @@ import monix.reactive._
 import monix.tail._
 //import cats._
 import translation.FansiShow._
-import scala.collection.mutable.{Set => mSet}
+import scala.collection.mutable
 
 import HoTT.{Name => _, _}
 
@@ -65,7 +65,7 @@ object LeanToTermMonix {
 
   var arg: Term = _
 
-  val applWork: mSet[(Term, Term)] = mSet()
+  val applWork: mutable.Set[(Term, Term)] = mutable.Set()
 
   def applyFuncWitOpt(f: Term, x: Term): Option[Term] = {
     func = f

@@ -6,7 +6,8 @@ import monix.execution.Scheduler.Implicits.global
 import monix.eval._
 import translation.FansiShow._
 
-import scala.collection.mutable.{ArrayBuffer, Map => mMap}
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import HoTT.{Name => _, _}
 import monix.execution.CancelableFuture
 
@@ -18,7 +19,7 @@ import ujson.Arr
 
 import scala.util.Try
 
-import scala.collection.mutable.{Set => mSet}
+import scala.collection.mutable
 
 case class RecFoldException(
     indMod: TermIndMod,
@@ -32,7 +33,7 @@ case class RecFoldException(
     )
 
 object LeanParser {
-  val parseWork: mSet[Expr] = mSet()
+  val parseWork: mutable.Set[Expr] = mutable.Set()
 
   def load(s: String = "basic"): LeanParser = {
     val name = s"$s.lean.export"
@@ -381,9 +382,9 @@ class LeanParser(
 
   import LeanParser._
 
-  val defnMap: mMap[Name, Term] = mMap()
+  val defnMap: mutable.Map[Name, Term] = mutable.Map()
 
-  val termIndModMap: mMap[Name, TermIndMod] = mMap()
+  val termIndModMap: mutable.Map[Name, TermIndMod] = mutable.Map()
 
   def update(): Unit = {
     import library._
@@ -391,7 +392,7 @@ class LeanParser(
     termIndModMap ++= LeanMemo.indMap
   }
 
-  val parseMemo: mMap[(Expr, Vector[Term]), Term] = mMap()
+  val parseMemo: mutable.Map[(Expr, Vector[Term]), Term] = mutable.Map()
 
   def getMemTermIndMod(name: Name, exp: Expr): Task[TermIndMod] =
     getTermIndMod(name)

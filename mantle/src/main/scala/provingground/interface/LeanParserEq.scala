@@ -6,7 +6,8 @@ import monix.execution.Scheduler.Implicits.global
 import monix.eval._
 import translation.FansiShow._
 
-import scala.collection.mutable.{ArrayBuffer, Map => mMap}
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 import HoTT.{Name => _, _}
 import monix.execution.CancelableFuture
 
@@ -134,7 +135,7 @@ class LeanParserEq(
   //     } yield (head._1 +: tail._1) -> (head._2 union tail._2)
   // }
 
-  val defnMapEq: mMap[Name, (Term, Set[EquationNode])] = mMap()
+  val defnMapEq: mutable.Map[Name, (Term, Set[EquationNode])] = mutable.Map()
 
   def withDefnEq(name: Name, exp: Expr): Task[Unit] =
     for {

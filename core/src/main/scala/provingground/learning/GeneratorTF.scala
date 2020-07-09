@@ -5,7 +5,7 @@ import HList._
 
 import scala.language.higherKinds
 import GeneratorVariables._, Expression._
-import scala.collection.mutable.{Map => mMap}
+import scala.collection.mutable
 
 import scala.util.Try
 
@@ -255,7 +255,7 @@ case class GeneratorTF[State](
       Set()
     )
 
-  val nodeMap: mMap[GeneratorNode[_], (Set[EquationNode], TFData)] = mMap()
+  val nodeMap: mutable.Map[GeneratorNode[_], (Set[EquationNode], TFData)] = mutable.Map()
 
   def nodeEquationTerms[Y](
       node: GeneratorNode[Y]): (Set[EquationNode], TFData) =

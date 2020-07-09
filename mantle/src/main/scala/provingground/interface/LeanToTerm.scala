@@ -16,7 +16,8 @@ import LeanToTerm._
 
 import translation.FansiShow._
 
-import scala.collection.mutable.{Map => mMap, ArrayBuffer}
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 
 import LeanInterface._
 
@@ -445,20 +446,20 @@ case class LeanToTerm(defnMap: Map[Name, Term],
 
 object LeanToTermMut {
   def fromMods(mods: Seq[Modification]) = {
-    val init = LeanToTermMut(mMap(), mMap())
+    val init = LeanToTermMut(mutable.Map(), mutable.Map())
     mods.foreach((m) => init.add(m))
     init
   }
 
   def fromModsOpt(mods: Seq[Modification]) = {
-    val init = LeanToTermMut(mMap(), mMap())
+    val init = LeanToTermMut(mutable.Map(), mutable.Map())
     mods.foreach((m) => init.addOpt(m))
     init
   }
 }
 
-case class LeanToTermMut(defnMap: mMap[trepplein.Name, Term],
-                         termIndModMap: mMap[Name, TermIndMod],
+case class LeanToTermMut(defnMap: mutable.Map[trepplein.Name, Term],
+                         termIndModMap: mutable.Map[Name, TermIndMod],
                          unparsed: ArrayBuffer[Name] = ArrayBuffer())
     extends LeanParse { self =>
 

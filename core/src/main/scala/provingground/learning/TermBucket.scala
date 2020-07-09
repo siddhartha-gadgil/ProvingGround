@@ -2,7 +2,7 @@ package provingground.learning
 import provingground._
 import HoTT._
 
-import scala.collection.mutable.{Map => mMap}
+import scala.collection.mutable
 
 class TermBucket {
   var tot: Long = 0
@@ -18,17 +18,17 @@ class TermBucket {
   /**
     * terms counted, sorted by types
     */
-  val terms: mMap[Typ[Term], Vector[Term]] = mMap()
+  val terms: mutable.Map[Typ[Term], Vector[Term]] = mutable.Map()
 
   /**
     * number of  terms of a given type
     */
-  val termTypes: mMap[Typ[Term], Long] = mMap()
+  val termTypes: mutable.Map[Typ[Term], Long] = mutable.Map()
 
   /**
     * count of generation of a type (as a term)
     */
-  val types: mMap[Typ[Term], Long] = mMap()
+  val types: mutable.Map[Typ[Term], Long] = mutable.Map()
 
   def clear() = {
     tot = 0
@@ -86,13 +86,13 @@ class TermBucket {
 }
 
 object TermBucket {
-  def fdMap[A](m: mMap[A, Vector[Term]], tot: Long) = {
+  def fdMap[A](m: mutable.Map[A, Vector[Term]], tot: Long) = {
     //    val tot = m.values.flatten.size
     (m.view.mapValues
       ((l) => FiniteDistribution((l map (Weighted(_, 1.0 / tot))).toVector))).toMap
   }
 
-  def fd(m: mMap[Typ[Term], Long], tot: Long) = {
+  def fd(m: mutable.Map[Typ[Term], Long], tot: Long) = {
     //    val tot = m.values.sum
     val pmf = for ((x, l) <- m) yield Weighted(x, l * 1.0 / tot)
     FiniteDistribution(pmf.toVector)
@@ -139,11 +139,11 @@ class WeightedTermBucket {
 
   import WeightedTermBucket.{fd, fdMap}
 
-  val terms: mMap[Typ[Term], Vector[Weighted[Term]]] = mMap()
+  val terms: mutable.Map[Typ[Term], Vector[Weighted[Term]]] = mutable.Map()
 
-  val termTypes: mMap[Typ[Term], Double] = mMap()
+  val termTypes: mutable.Map[Typ[Term], Double] = mutable.Map()
 
-  val types: mMap[Typ[Term], Double] = mMap()
+  val types: mutable.Map[Typ[Term], Double] = mutable.Map()
 
   def append(t: Weighted[Term]) = {
     tot += t.weight
@@ -169,13 +169,13 @@ class WeightedTermBucket {
 }
 
 object WeightedTermBucket {
-  def fd(m: mMap[Typ[Term], Double], tot: Double) = {
+  def fd(m: mutable.Map[Typ[Term], Double], tot: Double) = {
     //  val tot = m.values.sum
     val pmf = for ((x, l) <- m) yield Weighted(x, l / tot)
     FiniteDistribution(pmf.toVector)
   }
 
-  def fdMap[A](m: mMap[A, Vector[Weighted[Term]]], tot: Double) = {
+  def fdMap[A](m: mutable.Map[A, Vector[Weighted[Term]]], tot: Double) = {
     //  val tot = (m.values.flatten map (_.weight)).sum
     (m.view.mapValues
       ((l) =>

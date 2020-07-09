@@ -14,7 +14,7 @@ import akka.http.scaladsl.server.Route
 //import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
 
-import scala.collection.mutable.{Map => MutMap, Set => MutSet}
+import scala.collection.mutable
 
 
 import HoTT._
@@ -41,13 +41,13 @@ object WebServer {
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
     system.dispatcher
 
-  private val views: MutMap[String, String] = MutMap()
+  private val views: mutable.Map[String, String] = mutable.Map()
 
-  private val texts: MutMap[String, String] = MutMap()
+  private val texts: mutable.Map[String, String] = mutable.Map()
 
   def dummyData = () => s"Dummy data at ${System.currentTimeMillis / 1000}"
 
-  private val data: MutMap[String, () => String] = MutMap()
+  private val data: mutable.Map[String, () => String] = mutable.Map()
 
   def showView(name: String, data: String) = { views(name) = data }
 
@@ -122,9 +122,9 @@ object WebServer {
 
   var fdVec: Vector[(String, String, Double)] = Vector()
 
-  val timeSeries: MutMap[String, Vector[Double]] = MutMap()
+  val timeSeries: mutable.Map[String, Vector[Double]] = mutable.Map()
 
-  val typTimeSeries: MutMap[String, Vector[Double]] = MutMap()
+  val typTimeSeries: mutable.Map[String, Vector[Double]] = mutable.Map()
 
   def showDist[U <: Term with Subs[U]](fd: FiniteDistribution[U],
                                        names: Vector[(Term, String)]) = {
@@ -154,9 +154,9 @@ object WebServer {
       showTimeSeries(x, typFDs map ((fd) => -math.log(fd(x))), names)
   }
 
-  val viewTerms: MutSet[Term] = MutSet()
+  val viewTerms: mutable.Set[Term] = mutable.Set()
 
-  val viewTypes: MutSet[Typ[Term]] = MutSet()
+  val viewTypes: mutable.Set[Typ[Term]] = mutable.Set()
 
   def displayTS(fds: Vector[FiniteDistribution[Term]],
                 names: Vector[(Term, String)] = Vector()) =

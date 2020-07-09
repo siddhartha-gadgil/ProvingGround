@@ -14,7 +14,8 @@ import trepplein._
 
 import translation.FansiShow._
 
-import scala.collection.mutable.{Map => mMap, ArrayBuffer}
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 
 import LeanInterface._
 

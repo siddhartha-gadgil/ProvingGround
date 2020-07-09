@@ -22,7 +22,8 @@ import monix.execution.CancelableFuture
 import provingground.translation.TeXTranslate
 import ujson.Value
 
-import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 import upickle.default.{write => uwrite, read => _, _}
 
 import scala.util.Try
@@ -37,16 +38,16 @@ object LeanResources {
     name -> Task(getModsFromStream(in)).memoize
   }.toMap
 
-  val loadedNames: mSet[Name] = mSet()
+  val loadedNames: mutable.Set[Name] = mutable.Set()
 
   lazy val baseParser: LeanParser =
     new LeanParser(Seq(),
                    library.LeanMemo.defTaskMap,
                    library.LeanMemo.indTaskMap)
 
-  val defnMap: mMap[Name, Term] = mMap()
+  val defnMap: mutable.Map[Name, Term] = mutable.Map()
 
-  val termIndModMap: mMap[Name, TermIndMod] = mMap()
+  val termIndModMap: mutable.Map[Name, TermIndMod] = mutable.Map()
 
   val mods: ArrayBuffer[Modification] = ArrayBuffer.empty[Modification]
 
