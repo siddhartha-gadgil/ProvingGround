@@ -3280,3 +3280,43 @@ Type: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)); best term: (((((trans) (n)) (
 2020.07.08 17:21:48 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:179:30 - ran for time 93, less than the time limit 2 minutes, with cutoff 5.120000000000001E-10; running again
 2020.07.08 17:23:40 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:179:30 - ran for time 104, less than the time limit 2 minutes, with cutoff 1.0240000000000002E-10; running again
 2020.07.08 17:25:50 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:176:30 - ran for time 122, exceeding time limit 2 minutes, with cutoff 2.0480000000000003E-11
+2020.07.08 17:25:55 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (44,994989670)
+2020.07.08 17:25:55 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:230:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.08 17:25:55 [INFO] provingground.learning.TypedPostResponse.Callback.post:191:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.08 17:41:22 [INFO] provingground.learning.HoTTBot.$anonfun:658:28 - Obtained normalized equations
+2020.07.08 17:42:30 [INFO] provingground.learning.HoTTBot.$anonfun:660:28 - Obtained grouped equations as iterator
+2020.07.08 17:42:30 [INFO] provingground.learning.HoTTBot.$anonfun:662:28 - Obtained grouped equations as vector
+2020.07.08 17:42:39 [INFO] provingground.learning.HoTTBot.$anonfun:664:28 - Obtained set of grouped equations
+2020.07.08 17:44:09 [INFO] provingground.learning.ExpressionEval.initMap:122:22 - Computing initial map with 1194493 atoms
+2020.07.08 17:44:09 [INFO] provingground.learning.ExpressionEval.initMap:124:22 - Computed initial values
+2020.07.08 17:44:09 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Computed vector for map, size 157336
+2020.07.08 17:44:09 [INFO] provingground.learning.ExpressionEval.initMap:129:22 - Zero initial values are 969315
+2020.07.08 17:44:09 [INFO] provingground.learning.ExpressionEval.initMap:131:22 - Computed map
+2020.07.08 17:44:09 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (45,1579899893), content:
+provingground.learning.ExpressionEval$$anon$2@5e2b5bf5
+2020.07.08 17:44:09 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:230:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.07.08 17:44:09 [INFO] provingground.learning.HoTTBot.expEvToFinalState:515:26 - computing final state
+2020.07.08 17:44:09 [INFO] provingground.learning.ExprCalc.finalVec:785:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.08 17:44:09 [INFO] provingground.learning.ExprCalc.finalVec:788:22 - Number of equations: 935646
+2020.07.08 17:45:32 [INFO] provingground.learning.ExprCalc.stableSupportVec:759:26 - completed 2 steps without stable support, support size : 64066
+2020.07.08 17:47:31 [INFO] provingground.learning.ExprCalc.stableSupportVec:769:26 - stable support with support size 653407
+2020.07.08 17:47:31 [INFO] provingground.learning.ExprCalc.finalVec:791:22 - Obtained vector with stable support
+2020.07.08 17:47:41 [INFO] provingground.learning.ExprCalc.stableVec:729:46 - completed 2 steps
+2020.07.08 17:52:49 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (46,-664803509)
+2020.07.08 17:52:49 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:230:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.08 17:52:49 [INFO] provingground.learning.TypedPostResponse.Callback.post:191:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.08 17:52:49 [INFO] provingground.learning.TypedPostResponse.Callback.post:191:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.08 17:52:49 [INFO] provingground.learning.TypedPostResponse.Callback.post:191:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.08 17:53:10 [INFO] provingground.learning.HoTTBot.$anonfun:418:26 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.05648424140010224; statement weight 6.179952762466127E-12
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$rrdjva :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$rrdjva)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.115634386673526E-8; statement weight 2.2267628985451152E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.005966889134467943; statement weight 1.1552059396454683E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.005944281237134162; statement weight 1.1523669050537752E-13
+2020.07.08 17:53:13 [INFO] provingground.learning.HoTTBot.$anonfun:418:26 - Results: 7
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.5600441367371637E-4; statement weight 1.866661172948479E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 2.5697807579770556E-4; statement weight 5.988147038819699E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 3.625163431020687E-6; statement weight 6.115625029540358E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.5897915650242322E-7; statement weight 2.2183065090534698E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 2.5697807579770556E-4; statement weight 5.184913216603244E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)); best proof: (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n))) with weight 3.936318312116537E-15; statement weight 1.906399390044224E-5
+Lemma: ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)); best proof: ((((right-multiply) (m)) (n)) (((mul) (((mul) (m)) (n))) (m))) ((((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)))) with weight 3.2668175640166435E-9; statement weight 1.9064357587571694E-10
