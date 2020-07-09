@@ -8,6 +8,7 @@ import cats._, cats.implicits._
 import scala.util.Failure
 import scala.util.Success
 import cats.instances.`package`.parallel
+import scala.collection.mutable
 
 class CompositeProver[D: Monoid] {
   val empty = implicitly[Monoid[D]].empty
@@ -378,9 +379,19 @@ object TermData {
 
   import TermRandomVars.expressionMapVars
 
-  def isleNormalize(eq: EquationNode, varWeight: Double = 0.3): EquationNode = {
+  def isleNormalizeDirect(eq: EquationNode, varWeight: Double = 0.3): EquationNode = {
     TermRandomVars.isleNormalize(eq, varWeight)
   }
+
+  val isleNormalizeMemo : mutable.Map[EquationNode, EquationNode] = mutable.Map()
+
+  def isleNormalize(eq: EquationNode) : EquationNode = 
+    isleNormalizeMemo.getOrElse(eq ,
+    {
+      val result = TermRandomVars.isleNormalize(eq)
+      isleNormalizeMemo.update(eq, result)
+      result
+    })
 
 }
 
