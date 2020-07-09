@@ -508,7 +508,11 @@ case class ProdExpr(
     indices: Vector[Int],
     negIndices: Vector[Int]
 ) {
+  val isPositiveConstant = indices.isEmpty && constant > 0
+
   val isConstant = indices.isEmpty
+
+  val initialValue = if (isConstant) constant else 0.0
 
   def eval(v: Vector[Double]): Double = {
     val subTerms = (indices.map(j => v(j)) ++ negIndices.map { j =>
@@ -520,6 +524,26 @@ case class ProdExpr(
           Utils.logger.error(s"the reciprocal of $y is not a number")
         rec
       }
+    })
+    val result = subTerms.product * constant
+    if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN())
+      Utils.logger.error(
+        s"the product of $subTerms  and constant $constant is not a number"
+      )
+    result
+  }
+
+  def evaluate(m: Map[Int, Double]): Double = {
+    val subTerms = (indices.map(j => m.getOrElse(j, 0.0)) ++ negIndices.map {
+      j =>
+        val y = m.getOrElse(j, 0.0)
+        if (y == 0) 1.0
+        else {
+          val rec = 1.0 / y
+          if (rec.isNaN() && !y.isNaN)
+            Utils.logger.error(s"the reciprocal of $y is not a number")
+          rec
+        }
     })
     val result = subTerms.product * constant
     if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN())
@@ -564,7 +588,14 @@ case class ProdExpr(
 case class SumExpr(terms: Vector[ProdExpr]) {
   val constantTerm: Double = terms.filter(_.isConstant).map(_.constant).sum
   val indices: Vector[Int] = terms.flatMap(_.indices).distinct
-  val hasConstant: Boolean = terms.exists(_.isConstant)
+  val hasConstant: Boolean = terms.exists(_.isPositiveConstant)
+  val isPositiveConstant: Boolean = terms.forall(_.isConstant) && terms.exists(
+    _.isPositiveConstant
+  )
+  val isConstant: Boolean = terms.forall(_.isConstant)
+
+  val initialValue =
+    if (isPositiveConstant)(terms.map(_.initialValue)).sum else 0.0
 
   def eval(v: Vector[Double]): Double = {
     val subTerms = terms.map(_.eval(v))
@@ -578,13 +609,23 @@ case class SumExpr(terms: Vector[ProdExpr]) {
     result
   }
 
+  def evaluate(m: Map[Int, Double]): Double = {
+    val subTerms = terms.map(_.evaluate(m))
+    val result   = subTerms.sum
+    if (result.isNaN() && !subTerms.exists(_.isNaN()))
+      Utils.logger.error(s"the sum of $subTerms is not a number")
+    result
+  }
+
   override def toString() = terms.mkString(" + ")
 }
 
 object SumExpr {}
 
 class ExprCalc(ev: ExpressionEval) {
-  import ev._, SumExpr._
+  import SumExpr._, ev._
+  val size = equationVec.size
+
   def getProd(exp: Expression): ProdExpr =
     init
       .get(exp)
@@ -616,6 +657,57 @@ class ExprCalc(ev: ExpressionEval) {
 
   lazy val rhsExprs: Vector[SumExpr] =
     equationVec.map(eq => simplify(eq.rhs))
+
+  def rhsInvolves(js: Set[Int]): Set[Int] =
+    (0 until (size))
+      .filter(i => js.exists(j => rhsExprs(i).indices.contains(j)))
+      .toSet
+
+  lazy val constantEquations: Set[Int] =
+    (0 until (size)).filter(i => rhsExprs(i).isConstant).toSet
+
+  lazy val (startingMap, startingView) = {
+    val v = rhsExprs.zipWithIndex.filter(_._1.isPositiveConstant)
+    (v.map { case (exp, j) => j -> exp.initialValue }.toMap, rhsInvolves(v.map(_._2).toSet))
+  }
+
+  def nextMapView(
+      m: Map[Int, Double],
+      view: Set[Int]
+  ): (Map[Int, Double], Set[Int], Boolean) = {
+    val lookup = view.map { j =>
+      j -> rhsExprs(j).evaluate(m)
+    }.toMap
+    val newMap     = m ++ lookup
+    val newIndices = newMap.keySet -- m.keySet
+    val newView    = rhsInvolves(newIndices) -- constantEquations
+    (newMap, newView, newIndices.isEmpty)
+  }
+
+  def nextMap(
+      m: Map[Int, Double],
+      view: Set[Int],
+      exponent: Double
+  ): Map[Int, Double] = {
+    view
+      .map { j =>
+        val exp = rhsExprs(j)
+        val y   = exp.evaluate(m)
+        val z   = m.getOrElse(j, 0.0)
+        if (z > 0) {
+          val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
+          if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
+            Utils.logger.error(
+              s"Geometric mean of $y and $z with exponent $exponent is not a number\nEquation with negative value: ${scala.util
+                .Try(equationVec(j))}"
+            )
+          gm
+        } else y
+        j -> z
+      }
+      .filter(_._2 > 0)
+      .toMap
+  }
 
   lazy val termIndices: Vector[Int] = {
     val pfn: PartialFunction[(Equation, Int), Int] = {
@@ -649,6 +741,17 @@ class ExprCalc(ev: ExpressionEval) {
     val base = indices.map { j =>
       v(j)
     }
+    val total = base.sum
+    if (total == 0) base else base.map(_ / total)
+  }
+
+  def restrictMap(
+      m: Map[Int, Double],
+      indices: Vector[Int]
+  ): Vector[Double] = {
+    val base = indices.map { j =>
+      m.get(j)
+    }.flatten
     val total = base.sum
     if (total == 0) base else base.map(_ / total)
   }
@@ -711,7 +814,14 @@ class ExprCalc(ev: ExpressionEval) {
     equalSupport(v, w) &&
     ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
     ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
+  }
 
+  def normalizedMapBounded(
+      v: Map[Int, Double],
+      w: Map[Int, Double]
+  ): Boolean = {
+    ratioBounded(restrictMap(v, termIndices), restrictMap(w, termIndices)) &&
+    ratioBounded(restrictMap(v, typIndices), restrictMap(w, typIndices))
   }
 
   @tailrec
@@ -781,6 +891,73 @@ class ExprCalc(ev: ExpressionEval) {
       }
     }
 
+  @tailrec
+  final def stableSupportMap(
+      initMap: Map[Int, Double],
+      initView: Set[Int],
+      maxTime: Option[Long],
+      steps: Long
+  ): (Map[Int, Double], Set[Int]) =
+    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
+      Utils.logger.error(
+        s"Timeout for stable support vector after $steps steps"
+      )
+      (initMap, initView)
+    } else {
+      if (steps % 100 == 2)
+        Utils.logger.info(
+          s"completed $steps steps without stable support, support size : ${initMap.size}"
+        )
+      val startTime                = System.currentTimeMillis()
+      val (newMap, newView, check) = nextMapView(initMap, initView)
+      if (check) {
+        Utils.logger.info(
+          s"stable support with support size ${newMap.size}"
+        )
+        (newMap, newView)
+      } else {
+        // Utils.logger.info("recursive call for stable support vector")
+        val usedTime = System.currentTimeMillis() - startTime
+        stableSupportMap(
+          newMap,
+          newView,
+          maxTime.map(t => t - usedTime),
+          steps + 1
+        )
+      }
+    }
+
+  @tailrec
+  final def stableMap(
+      initMap: Map[Int, Double],
+      view: Set[Int],
+      exponent: Double = 0.5,
+      decay: Double,
+      maxTime: Option[Long],
+      steps: Long
+  ): Map[Int, Double] =
+    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
+      Utils.logger.error(s"Timeout for stable vector after $steps steps")
+      initMap
+    } else {
+      if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
+      val startTime = System.currentTimeMillis()
+      val newMap    = nextMap(initMap, view, exponent)
+      if (normalizedMapBounded(initMap, newMap))
+        newMap
+      else {
+        val usedTime = System.currentTimeMillis() - startTime
+        stableMap(
+          newMap,
+          view,
+          exponent * decay,
+          decay,
+          maxTime.map(t => t - usedTime),
+          steps + 1
+        )
+      }
+    }
+
   lazy val finalVec: Vector[Double] = {
     Utils.logger.info(
       s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
@@ -791,6 +968,24 @@ class ExprCalc(ev: ExpressionEval) {
     Utils.logger.info("Obtained vector with stable support")
     stableVec(
       stableSupport,
+      exponent,
+      decay,
+      maxTime,
+      0L
+    )
+  }
+
+  lazy val finalStableMap: Map[Int, Double] = {
+    Utils.logger.info(
+      s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
+    )
+    Utils.logger.info(s"Number of equations: ${equationVec.size}")
+    val (stableM, view) =
+      stableSupportMap(startingMap, startingView, maxTime, 0L)
+    Utils.logger.info("Obtained vector with stable support")
+    stableMap(
+      stableM,
+      view,
       exponent,
       decay,
       maxTime,
@@ -1233,19 +1428,23 @@ trait ExpressionEval { self =>
     }
   }
 
-  lazy val funcTotal: Expression = Sum(initTerms
-    .filter(isFunc)
-    .map { t =>
-      InitialVal(Elem(t, Terms))
-    })
-    // .fold[Expression](Literal(0))(_ + _)
+  lazy val funcTotal: Expression = Sum(
+    initTerms
+      .filter(isFunc)
+      .map { t =>
+        InitialVal(Elem(t, Terms))
+      }
+  )
+  // .fold[Expression](Literal(0))(_ + _)
 
-  lazy val typFamilyTotal: Expression = Sum(initTerms
-    .filter(isTypFamily)
-    .map { t =>
-      InitialVal(Elem(t, Terms))
-    })
-    // .fold[Expression](Literal(0))(_ + _)
+  lazy val typFamilyTotal: Expression = Sum(
+    initTerms
+      .filter(isTypFamily)
+      .map { t =>
+        InitialVal(Elem(t, Terms))
+      }
+  )
+  // .fold[Expression](Literal(0))(_ + _)
 
   lazy val initVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
@@ -1368,10 +1567,10 @@ trait ExpressionEval { self =>
             case Exp(x)   => jetTask(x).map(j => exp(j))
             case Sum(xs) =>
               Task.gather(xs.map(jetTask(_))).map(_.reduce(_ + _))
-              // for {
-              //   a <- jetTask(x)
-              //   b <- jetTask(y)
-              // } yield a + b
+            // for {
+            //   a <- jetTask(x)
+            //   b <- jetTask(y)
+            // } yield a + b
             case Product(x, y) =>
               for {
                 a <- jetTask(x)
@@ -1527,10 +1726,13 @@ trait ExpressionEval { self =>
     .toMap
 
   def proofExpression(typ: Typ[Term]): Expression =
-    Sum(finalTermSet
-      .filter(_.typ == typ)
-      .map(t => FinalVal(Elem(t, Terms))).toVector )
-      // .reduce[Expression](_ + _)
+    Sum(
+      finalTermSet
+        .filter(_.typ == typ)
+        .map(t => FinalVal(Elem(t, Terms)))
+        .toVector
+    )
+  // .reduce[Expression](_ + _)
 
   lazy val thmsByProof: Map[Typ[Term], Expression] =
     thmSet.map(typ => typ -> proofExpression(typ)).toMap
@@ -1563,21 +1765,22 @@ trait ExpressionEval { self =>
 
   lazy val finalTypEntropy: Expression = Expression.h(finalTypMap)
 
-  lazy val initTermsSum = Sum(initTerms
-    .map {
-      case t => InitialVal(Elem(t, Terms))
-    })
-    // .fold(Expression.Literal(0)) { (t1, t2) =>
-    //   Sum(t1, t2)
-    // }
+  lazy val initTermsSum = Sum(
+    initTerms
+      .map {
+        case t => InitialVal(Elem(t, Terms))
+      }
+  )
+  // .fold(Expression.Literal(0)) { (t1, t2) =>
+  //   Sum(t1, t2)
+  // }
 
-  lazy val finalTermSetSum = Sum(finalTermSet
-    .map {
-      case t => FinalVal(Elem(t, Terms))
-    }.toVector)
-    // .fold(Expression.Literal(0)) { (t1, t2) =>
-    //   Sum(t1, t2)
-    // }
+  lazy val finalTermSetSum = Sum(finalTermSet.map {
+    case t => FinalVal(Elem(t, Terms))
+  }.toVector)
+  // .fold(Expression.Literal(0)) { (t1, t2) =>
+  //   Sum(t1, t2)
+  // }
 
   /**
     * Expressions for equations.
@@ -1729,7 +1932,7 @@ trait EvolvedEquations[State] {
   val equations: Set[Equation]
 
   def totalSquare(epsilon: Double): Expression =
-    Sum(equations.map(_.squareError(epsilon)).toVector )//.reduce(_ + _)
+    Sum(equations.map(_.squareError(epsilon)).toVector) //.reduce(_ + _)
 
   def mse(epsilon: Double): Expression = totalSquare(epsilon) / (equations.size)
 
