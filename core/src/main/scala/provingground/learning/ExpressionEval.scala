@@ -17,6 +17,7 @@ import fastparse.internal.Util
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
 import scala.math.Ordering.Double.TotalOrdering
+import scala.collection.immutable.Stream.cons
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -666,11 +667,22 @@ class ExprCalc(ev: ExpressionEval) {
   lazy val constantEquations: Set[Int] =
     (0 until (size)).filter(i => rhsExprs(i).isConstant).toSet
 
+  lazy val constantMap = startingMap.filter {
+    case (j, _) => constantEquations.contains(j)
+  }
+
   lazy val (startingMap, startingView) = {
-    val v = rhsExprs.zipWithIndex.filter(_._1.isPositiveConstant)
+    val v = rhsExprs.zipWithIndex.filter(_._1.hasConstant)
     (v.map { case (exp, j) => j -> exp.initialValue }.toMap, rhsInvolves(v.map(_._2).toSet))
   }
 
+  /**
+    * The next step towards a stable map with given equations
+    *
+    * @param m the map so far
+    * @param view the set of indices where we should recompute
+    * @return triple of the next map, next view and whether stable
+    */
   def nextMapView(
       m: Map[Int, Double],
       view: Set[Int]
@@ -680,10 +692,18 @@ class ExprCalc(ev: ExpressionEval) {
     }.toMap
     val newMap     = m ++ lookup
     val newIndices = newMap.keySet -- m.keySet
-    val newView    = rhsInvolves(newIndices) -- constantEquations
+    val newView    = (rhsInvolves(newIndices) union m.keySet) -- constantEquations
     (newMap, newView, newIndices.isEmpty)
   }
 
+  /**
+    * the next map, assuming view is stable and is the support except for terms that stay constant
+    *
+    * @param m the present map
+    * @param view the indices to update
+    * @param exponent exponent for geometric mean
+    * @return a stable map
+    */
   def nextMap(
       m: Map[Int, Double],
       view: Set[Int],
@@ -692,8 +712,8 @@ class ExprCalc(ev: ExpressionEval) {
     view
       .map { j =>
         val exp = rhsExprs(j)
-        val y   = exp.evaluate(m)
-        val z   = m.getOrElse(j, 0.0)
+        val y   = exp.evaluate(m) // the new value
+        val z   = m.getOrElse(j, 0.0) // the old value, if any
         if (z > 0) {
           val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
           if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
@@ -706,7 +726,7 @@ class ExprCalc(ev: ExpressionEval) {
         j -> z
       }
       .filter(_._2 > 0)
-      .toMap
+      .toMap ++ constantMap
   }
 
   lazy val termIndices: Vector[Int] = {
@@ -803,8 +823,6 @@ class ExprCalc(ev: ExpressionEval) {
   ) = {
     val condition: (((Double, Double), Int)) => Boolean = {
       case ((x: Double, y: Double), j: Int) =>
-        if (x < 0 || y < 0)
-          Utils.logger.error(s"negative lhs in ${(x, y)} for ${equationVec(j)}")
         x == 0 || y == 0 || ((x / y) <= bound && y / x <= bound)
     }
     v.zip(w).zipWithIndex.forall(condition)
@@ -916,7 +934,6 @@ class ExprCalc(ev: ExpressionEval) {
         )
         (newMap, newView)
       } else {
-        // Utils.logger.info("recursive call for stable support vector")
         val usedTime = System.currentTimeMillis() - startTime
         stableSupportMap(
           newMap,
@@ -943,9 +960,10 @@ class ExprCalc(ev: ExpressionEval) {
       if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newMap    = nextMap(initMap, view, exponent)
-      if (normalizedMapBounded(initMap, newMap))
+      if (normalizedMapBounded(initMap, newMap)) {
+        Utils.logger.info("Obtained stable map")
         newMap
-      else {
+      } else {
         val usedTime = System.currentTimeMillis() - startTime
         stableMap(
           newMap,
@@ -993,7 +1011,7 @@ class ExprCalc(ev: ExpressionEval) {
     )
   }
 
-  lazy val finalDistMap  : Map[Expression,Double] = finalStableMap.map{
+  lazy val finalDistMap: Map[Expression, Double] = finalStableMap.map {
     case (j, p) => equationVec(j).lhs -> p
   }
 
@@ -1011,7 +1029,7 @@ class ExprCalc(ev: ExpressionEval) {
       }
     ).safeNormalized
 
-  lazy val finalMap : Map[Expression,Double] = {
+  lazy val finalMap: Map[Expression, Double] = {
     val fn: ((Double, Int)) => (Expression, Double) = {
       case (x, j) => equationVec(j).lhs -> x
     }
@@ -1168,7 +1186,7 @@ trait ExpressionEval { self =>
     */
   lazy val finalDist: Map[Expression, Double] =
     exprCalc.finalDistMap
-    // exprCalc.finalMap //.seq
+  // exprCalc.finalMap //.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
