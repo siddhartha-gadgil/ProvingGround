@@ -993,6 +993,10 @@ class ExprCalc(ev: ExpressionEval) {
     )
   }
 
+  lazy val finalDistMap  : Map[Expression,Double] = finalStableMap.map{
+    case (j, p) => equationVec(j).lhs -> p
+  }
+
   lazy val finalTerms =
     FD(
       equationVec.map(_.lhs).zip(finalVec).collect {
@@ -1007,7 +1011,7 @@ class ExprCalc(ev: ExpressionEval) {
       }
     ).safeNormalized
 
-  lazy val finalMap = {
+  lazy val finalMap : Map[Expression,Double] = {
     val fn: ((Double, Int)) => (Expression, Double) = {
       case (x, j) => equationVec(j).lhs -> x
     }
@@ -1163,7 +1167,8 @@ trait ExpressionEval { self =>
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    exprCalc.finalMap //.seq
+    exprCalc.finalDistMap
+    // exprCalc.finalMap //.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
