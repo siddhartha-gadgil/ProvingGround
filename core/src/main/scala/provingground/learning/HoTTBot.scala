@@ -15,7 +15,6 @@ import Utils.logger
 import scala.concurrent._, duration._
 import provingground.learning.Expression.FinalVal
 import scala.math.Ordering.Double.TotalOrdering
-import fastparse.internal.Util
 
 case class QueryProver(lp: LocalProver)
 
@@ -325,11 +324,20 @@ object HoTTBot {
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       val allTerms = fs.ts.terms.support union (fs.ts.typs.support
         .map(t => t: Term))
-      allTerms
+      val newTerms = allTerms -- web.terms
+      newTerms
         .filter(isVar(_))
         .foreach(t => logger.error(s"variable $t considered term"))
-      web.addTerms(allTerms)
-      web.updateDerived()
+      web.addTerms(newTerms)
+      val typs =
+        newTerms.collect { case t: Typ[u] => t: Typ[Term] } union allTerms.map(_.typ)
+      val allEquations = newTerms.flatMap(DE.formalEquations(_)) union (typs
+        .flatMap(
+          DE.formalTypEquations(_)
+        ))
+      Utils.logger.info(s"Obtained ${allEquations.size} formal equations")
+      val normalEquations = allEquations.map(TermData.isleNormalize(_))
+      web.addEqns(normalEquations)
     }
 
   lazy val reportSuccesses: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
@@ -387,7 +395,7 @@ object HoTTBot {
     Callback(response)
   }
 
-    def reportProofsSimple(
+  def reportProofsSimple(
       results: Vector[Typ[Term]],
       text: String = "Results"
   ): Callback[
@@ -422,7 +430,6 @@ object HoTTBot {
     }
     Callback(response)
   }
-
 
   def reportTangentLemmas(
       results: Vector[Typ[Term]]
@@ -653,14 +660,14 @@ object HoTTBot {
         ] = {
       case eqns :: qlp :: HNil =>
         eqs =>
-          val neqs = eqs.normalized
-          val nodes = eqns union(neqs)
+          val neqs  = eqs.normalized
+          val nodes = eqns union (neqs)
           Utils.logger.info("Obtained normalized equations")
           val groupedItEqns = Equation.groupIt(nodes)
           Utils.logger.info("Obtained grouped equations as iterator")
           val groupedVecEqns = groupedItEqns.toVector
           Utils.logger.info("Obtained grouped equations as vector")
-          val groupedEqns = Utils.makeSet(groupedVecEqns) 
+          val groupedEqns = Utils.makeSet(groupedVecEqns)
           Utils.logger.info("Obtained set of grouped equations")
           import qlp.lp
           Future(
@@ -1054,12 +1061,13 @@ object HoTTBot {
     PreviousPosts[SpecialInitState] :: QueryProver :: Set[EquationNode] :: HNil,
     ID
   ] = {
-    val response
-        : PreviousPosts[SpecialInitState] :: QueryProver :: Set[EquationNode] :: HNil => BaseMixinLemmas => Vector[
-          Future[
-            TangentBaseState
-          ]
-        ] = {
+    val response: PreviousPosts[SpecialInitState] :: QueryProver :: Set[
+      EquationNode
+    ] :: HNil => BaseMixinLemmas => Vector[
+      Future[
+        TangentBaseState
+      ]
+    ] = {
       case psps :: qp :: neqs :: HNil =>
         lems => {
           logger.info(s"previous special init states are ${psps.contents.size}")
@@ -1378,7 +1386,6 @@ object HoTTBot {
     }
     Callback(response)
   }
-
 
   def tangentEquations(
       results: Vector[Typ[Term]],
@@ -2059,7 +2066,7 @@ class HoTTWebSession(
       bots,
       Vector(
         // scribeLog(_)
-        )
+      )
     ) {
 
   // just an illustration, should just use rhs
