@@ -1,0 +1,8 @@
+2020.07.11 05:13:27 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computing initial map with 1826132 atoms
+2020.07.11 10:50:40 [INFO] provingground.learning.ExpressionEval.initMap:125:22 - Computed initial values
+2020.07.11 10:51:51 [INFO] provingground.learning.ExpressionEval.initMap:129:22 - Computed vector for map, size 328371
+2020.07.11 10:51:51 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Zero initial values are 1431636
+2020.07.11 10:54:09 [INFO] provingground.learning.ExpressionEval.initMap:132:22 - Computed map
+2020.07.11 10:54:09 [INFO] provingground.learning.HoTTBot.baseState:997:16 - Computed expression evaluator
+2020.07.11 10:54:09 [INFO] provingground.learning.ExprCalc.finalVec:980:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.07.11 10:54:09 [INFO] provingground.learning.ExprCalc.finalVec:983:22 - Number of equations: 1396699
