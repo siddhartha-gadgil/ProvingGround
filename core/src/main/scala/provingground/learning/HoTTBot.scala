@@ -1054,7 +1054,7 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val baseStateFromSpecialInit: DualMiniBot[
+  def baseStateFromSpecialInit(verbose: Boolean = true): DualMiniBot[
     BaseMixinLemmas,
     TangentBaseState,
     HoTTPostWeb,
@@ -1105,7 +1105,7 @@ object HoTTBot {
                   ps.cutoffScale,
                   ps.tgOpt,
                   ps.depthOpt,
-                  Some(expEv),
+                  if (verbose) Some(expEv) else None,
                   Some(ps)
                 )
               }
@@ -1137,9 +1137,9 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val cappedSpecialBaseState
+  def cappedSpecialBaseState(verbose: Boolean = true)
       : TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
-    baseStateFromSpecialInit
+    baseStateFromSpecialInit(verbose)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   def unAppEquations(
@@ -1217,9 +1217,10 @@ object HoTTBot {
       lemmaMix: Double,
       cutoffScale: Double = 1.0,
       tgOpt: Option[TermGenParams] = None,
-      depthOpt: Option[Int] = None
+      depthOpt: Option[Int] = None,
+      verbose: Boolean = true
   ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
-    (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
+    (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit(verbose))
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   def proofEquationLHS(

@@ -146,7 +146,7 @@ object CzSlOly {
         .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)
     ),
     lemRefine,
-    cappedSpecialBaseState,
+    cappedSpecialBaseState(verbose = false),
     timedUnAppEquations(math.pow(10, -3), 2.minutes, 5),
     eqnsToExpEv(
       Some(
@@ -176,7 +176,7 @@ object CzSlOly {
       ws7  <- ws6.act(expFS)
       ws8  <- ws7.act(finalStateFilteredLemmas())
       ws9  <- ws8.act(lemRefine)
-      ws10 <- ws9.act(cappedSpecialBaseState)
+      ws10 <- ws9.act(cappedSpecialBaseState(verbose = false))
     } yield ws10
 
   lazy val sessF = wsF.map(ws => HoTTWebSession.launch(ws, bots))

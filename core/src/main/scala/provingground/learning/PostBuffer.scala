@@ -67,6 +67,8 @@ case class WebBuffer[P, ID](buffer: PostBuffer[P, ID])(
 }
 
 object ErasablePostBuffer {
+  var forgetAll: Boolean = false
+
   def bufferPost[P: TypeTag, W, ID](
       buffer: W => ErasablePostBuffer[P, ID]
   ): BiPostable[P, W, ID] = {
@@ -134,6 +136,8 @@ object PostDiscarder {
 }
 
 trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
+  def forgetPosts: Boolean = ErasablePostBuffer.forgetAll
+
   val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
 
   def redirects: Map[ID, Set[ID]] =
@@ -142,7 +146,8 @@ trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   def post(content: P, prev: Set[ID]): Future[ID] = {
     val idT = postGlobal(content)
     idT.map { id =>
-      buffer += ((Some(content), id, prev))
+      if (forgetPosts) buffer += ((None, id, prev))
+      else buffer += ((Some(content), id, prev))
       id
     }
   }
