@@ -689,7 +689,7 @@ class ExprCalc(ev: ExpressionEval) {
   ): (Map[Int, Double], Set[Int], Boolean) = {
     val lookup = view.map { j =>
       j -> rhsExprs(j).evaluate(m)
-    }.toMap
+    }.filter(_._2 > 0).toMap
     val newMap     = m ++ lookup
     val newIndices = newMap.keySet -- m.keySet
     val newView    = (rhsInvolves(newIndices) union m.keySet) -- constantEquations
@@ -995,12 +995,12 @@ class ExprCalc(ev: ExpressionEval) {
 
   lazy val finalStableMap: Map[Int, Double] = {
     Utils.logger.info(
-      s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
+      s"Computing final map, with maximum time $maxTime, exponent: $exponent, decay: $decay"
     )
     Utils.logger.info(s"Number of equations: ${equationVec.size}")
     val (stableM, view) =
       stableSupportMap(startingMap, startingView, maxTime, 0L)
-    Utils.logger.info("Obtained vector with stable support")
+    Utils.logger.info("Obtained map with stable support")
     stableMap(
       stableM,
       view,
@@ -1185,8 +1185,8 @@ trait ExpressionEval { self =>
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    // exprCalc.finalDistMap
-  exprCalc.finalMap //.seq
+    exprCalc.finalDistMap
+  // exprCalc.finalMap //.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
