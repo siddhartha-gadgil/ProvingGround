@@ -151,7 +151,14 @@ trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
     val idT = postGlobal(content)
     idT.map { id =>
       if (forgetPosts) buffer += ((None, id, prev))
-      else buffer += ((Some(content), id, prev))
+      else {
+        buffer += ((Some(content), id, prev))
+        (0 until(buffer.size - 1)).foreach{
+          j =>
+            val (index, prev) = (buffer(j)._2, buffer(j)._3)
+            buffer.update(j, (None, index, prev))
+        }
+      }
       id
     }
   }
