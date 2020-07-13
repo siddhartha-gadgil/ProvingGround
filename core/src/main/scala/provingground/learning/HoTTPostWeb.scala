@@ -91,7 +91,7 @@ class HoTTPostWeb {
       ErasablePostBuffer.build[TangentBaseState, ID]() ::
       PostBuffer.build[SpecialInitState, ID]() ::
       ErasablePostBuffer.build[TangentLemmas, ID](Some(false)) ::
-      ErasablePostBuffer.build[BaseMixinLemmas, ID]() ::
+      ErasablePostBuffer.build[BaseMixinLemmas, ID](Some(false)) ::
       PostBuffer.build[EquationsCompleted.type, ID]() ::
       PostBuffer.build[TangentBaseCompleted.type, ID]() ::
       PostBuffer.build[TautologyInitState, ID]() ::
