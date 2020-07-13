@@ -66,8 +66,36 @@ case class WebBuffer[P, ID](buffer: PostBuffer[P, ID])(
     buffer.bufferFullData
 }
 
+trait PostDiscarder[P, ID] extends GlobalPost[P, ID] {
+  val zero: ID
+}
+
+object PostDiscarder {
+  def discardPost[P: TypeTag, W, ID](
+      buffer: W => PostDiscarder[P, ID]
+  ): BiPostable[P, W, ID] = new BiPostable[P, W, ID] {
+    def post(content: P, web: W, pred: Set[ID]): Future[ID] =
+      Future(buffer(web).zero)
+    val tag: reflect.runtime.universe.TypeTag[P] = implicitly
+
+    def postAt(content: P, web: W, id: ID, pred: Set[ID]): Future[Unit] =
+      Future(())
+
+    def allPosts(web: W): Vector[(P, ID, Set[ID])] = Vector()
+
+  }
+
+  def build[P, ID](nop: ID)(implicit gp: GlobalID[ID]): PostDiscarder[P, ID] =
+    new PostDiscarder[P, ID] {
+      val zero: ID                           = nop
+      def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
+    }
+}
+
 object ErasablePostBuffer {
   var forgetDefault: Boolean = false
+
+  var eraseOld: Boolean = false
 
   def bufferPost[P: TypeTag, W, ID](
       buffer: W => ErasablePostBuffer[P, ID]
@@ -111,32 +139,6 @@ object ErasablePostBuffer {
 
 }
 
-trait PostDiscarder[P, ID] extends GlobalPost[P, ID] {
-  val zero: ID
-}
-
-object PostDiscarder {
-  def discardPost[P: TypeTag, W, ID](
-      buffer: W => PostDiscarder[P, ID]
-  ): BiPostable[P, W, ID] = new BiPostable[P, W, ID] {
-    def post(content: P, web: W, pred: Set[ID]): Future[ID] =
-      Future(buffer(web).zero)
-    val tag: reflect.runtime.universe.TypeTag[P] = implicitly
-
-    def postAt(content: P, web: W, id: ID, pred: Set[ID]): Future[Unit] =
-      Future(())
-
-    def allPosts(web: W): Vector[(P, ID, Set[ID])] = Vector()
-
-  }
-
-  def build[P, ID](nop: ID)(implicit gp: GlobalID[ID]): PostDiscarder[P, ID] =
-    new PostDiscarder[P, ID] {
-      val zero: ID                           = nop
-      def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
-    }
-}
-
 trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   var forgetThisOpt : Option[Boolean]
 
@@ -153,7 +155,7 @@ trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
       if (forgetPosts) buffer += ((None, id, prev))
       else {
         buffer += ((Some(content), id, prev))
-        (0 until(buffer.size - 1)).foreach{
+        if (ErasablePostBuffer.eraseOld) (0 until(buffer.size - 1)).foreach{
           j =>
             val (index, prev) = (buffer(j)._2, buffer(j)._3)
             buffer.update(j, (None, index, prev))
