@@ -163,8 +163,10 @@ object HoTTMessages {
   case class UsedLemmas(
       lemmas: Vector[(Typ[Term], Double)]
   ) {
+    lazy val weightMap = lemmas.toMap
+
     def weight(typ: Typ[Term]): Double =
-      lemmas.find(_._1 == typ).map(_._2).getOrElse(0.0)
+      weightMap.getOrElse(typ, 0.0)
 
     val support = lemmas.map(_._1).toSet
   }
