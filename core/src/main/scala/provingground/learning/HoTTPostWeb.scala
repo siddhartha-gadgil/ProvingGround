@@ -88,7 +88,7 @@ class HoTTPostWeb {
       PostBuffer.build[NarrowOptimizeGenerators, ID]() ::
       PostBuffer.build[FromAny, ID]() ::
       ErasablePostBuffer.build[UsedLemmas, ID]() ::
-      PostBuffer.build[TangentBaseState, ID]() ::
+      ErasablePostBuffer.build[TangentBaseState, ID](bufferStore = 2) ::
       PostBuffer.build[SpecialInitState, ID]() ::
       ErasablePostBuffer.build[TangentLemmas, ID](Some(false)) ::
       ErasablePostBuffer.build[BaseMixinLemmas, ID](Some(false)) ::
