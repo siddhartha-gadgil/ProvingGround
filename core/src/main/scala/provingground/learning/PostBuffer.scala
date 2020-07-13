@@ -67,7 +67,7 @@ case class WebBuffer[P, ID](buffer: PostBuffer[P, ID])(
 }
 
 object ErasablePostBuffer {
-  var forgetAll: Boolean = false
+  var forgetDefault: Boolean = false
 
   def bufferPost[P: TypeTag, W, ID](
       buffer: W => ErasablePostBuffer[P, ID]
@@ -102,8 +102,10 @@ object ErasablePostBuffer {
     }
   }
 
-  def build[P, ID]()(implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
+  def build[P, ID](frgtThisOpt: Option[Boolean] = None)(implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
     new ErasablePostBuffer[P, ID] {
+      var forgetThisOpt: Option[Boolean] = frgtThisOpt
+
       def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
     }
 
@@ -136,7 +138,9 @@ object PostDiscarder {
 }
 
 trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
-  def forgetPosts: Boolean = ErasablePostBuffer.forgetAll
+  var forgetThisOpt : Option[Boolean]
+
+  def forgetPosts: Boolean = forgetThisOpt.getOrElse(ErasablePostBuffer.forgetDefault)
 
   val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
 
