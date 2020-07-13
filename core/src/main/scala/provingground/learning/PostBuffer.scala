@@ -130,11 +130,13 @@ object ErasablePostBuffer {
     }
   }
 
-  def build[P, ID](frgtThisOpt: Option[Boolean] = None)(implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
+  def build[P, ID](frgtThisOpt: Option[Boolean] = None, bufferStore: Int = 1)(implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
     new ErasablePostBuffer[P, ID] {
       var forgetThisOpt: Option[Boolean] = frgtThisOpt
 
       def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
+
+      val bufferMemory: Int = bufferStore
     }
 
 }
@@ -143,6 +145,8 @@ trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   var forgetThisOpt : Option[Boolean]
 
   def forgetPosts: Boolean = forgetThisOpt.getOrElse(ErasablePostBuffer.forgetDefault)
+
+  val bufferMemory: Int
 
   val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
 
@@ -155,7 +159,7 @@ trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
       if (forgetPosts) buffer += ((None, id, prev))
       else {
         buffer += ((Some(content), id, prev))
-        if (ErasablePostBuffer.eraseOld) (0 until(buffer.size - 1)).foreach{
+        if (ErasablePostBuffer.eraseOld && buffer.size > bufferMemory) (0 until(buffer.size - bufferMemory)).foreach{
           j =>
             val (index, prev) = (buffer(j)._2, buffer(j)._3)
             buffer.update(j, (None, index, prev))
