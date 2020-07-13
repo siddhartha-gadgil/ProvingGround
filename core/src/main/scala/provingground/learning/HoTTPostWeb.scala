@@ -74,7 +74,7 @@ class HoTTPostWeb {
       PostBuffer.build[Proved, ID]() ::
       PostBuffer.build[Contradicted, ID]() ::
       ErasablePostBuffer.build[LocalTangentProver, ID]() ::
-      PostBuffer.build[ExpressionEval, ID]() ::
+      ErasablePostBuffer.build[ExpressionEval, ID]() ::
       PostBuffer.build[ChompResult, ID]() ::
       PostBuffer.build[LocalProver, ID]() ::
       PostBuffer.build[Weight, ID]() ::
