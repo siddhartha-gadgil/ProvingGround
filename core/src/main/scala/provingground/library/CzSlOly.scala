@@ -65,6 +65,7 @@ object CzSlOly {
     (steps(1), results(4), results(6)),
     (steps(2), results(1), results(4)),
     (steps(3), results(6), results(7)),
+    (trans.typ, results(7), steps(4)),
     (steps(4), results(5), results(8)),
     (sym.typ, results(8), results(0))
   )
