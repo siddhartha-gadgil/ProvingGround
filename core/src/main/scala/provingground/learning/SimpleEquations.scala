@@ -111,7 +111,8 @@ object SimpleEquations {
   def taskUnAppEquations(
       funcs: FiniteDistribution[ExstFunc],
       args: FiniteDistribution[Term],
-      cutoff: Double
+      cutoff: Double,
+      prevCutoff: Option[Double]
   ) =
     Task
       .gatherUnordered {
@@ -119,7 +120,9 @@ object SimpleEquations {
           Weighted(fn, p) <- funcs.pmf.toSet
           if p > cutoff
           Weighted(x, q) <- args.pmf.toSet
-          if (p * q > cutoff)
+          if (p * q > cutoff && prevCutoff
+            .map(cf => cf >= p * q)
+            .getOrElse(true))
         } yield
           Task {
             Unify
@@ -165,9 +168,11 @@ object SimpleEquations {
       args: FiniteDistribution[Term],
       cutoff: Double,
       minTime: FiniteDuration,
-      cutoffScale: Double = 2
+      cutoffScale: Double = 2,
+      prevCutoff: Option[Double] = None,
+      accum: Set[EquationNode] = Set()
   ): Task[Set[EquationNode]] =
-    taskUnAppEquations(funcs, args, cutoff).timed
+    taskUnAppEquations(funcs, args, cutoff, prevCutoff).timed
       .map {
         case (t, result) =>
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
@@ -175,10 +180,11 @@ object SimpleEquations {
           if (t > minTime)
             Utils.logger.info(
               s"ran for time ${t.toSeconds}, exceeding time limit $minTime, with cutoff ${cutoff}"
-            ) else 
+            )
+          else
             Utils.logger.info(
               s"ran for time ${t.toSeconds}, less than the time limit $minTime, with cutoff ${cutoff}; running again"
-            ) 
+            )
           if (pmin * qmin > cutoff)
             Utils.logger.info(s"all pairs considered with cutoff $cutoff")
           ((t < minTime) && (pmin * qmin < cutoff), result) // ensuring not all pairs already used
@@ -190,7 +196,9 @@ object SimpleEquations {
             args,
             cutoff / cutoffScale,
             minTime,
-            cutoffScale
+            cutoffScale,
+            Some(cutoff),
+            accum union result
           )
         case (b, result) =>
           Task.now(result)
