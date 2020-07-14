@@ -148,7 +148,7 @@ object CzSlOly {
     ),
     lemRefine,
     cappedSpecialBaseState(verbose = false),
-    timedUnAppEquations(math.pow(10, -3), 2.minutes, 5),
+    timedUnAppEquations(math.pow(10, -3), 3.minutes, 5),
     eqnsToExpEv(
       Some(
         TermGenParams.zero
