@@ -137,7 +137,20 @@ object HoTTMessages {
     * @param eqn resulting equation nodes to use
     */
   case class GeneratedEquationNodes(eqn: Set[EquationNode]){
-    lazy val normalized = Utils.makeSet(eqn.toVector.map(TermData.isleNormalize(_)))
+    lazy val normalized = {
+      val equationVec = eqn.toVector
+      Utils.logger.info(s"normalizing ${equationVec.size} equations")
+      val normVec = equationVec.grouped(1000).toVector.map{
+        v =>
+          val result = v.map(TermData.isleNormalize(_))
+          Utils.logger.info("normalized batch of 1000 equations") 
+          result
+      }
+      Utils.logger.info("all batches normalized, gathering")
+      val result = Utils.gatherSet(normVec, Set())
+      Utils.logger.info(s"gathered to get ${result.size} equations")
+      result
+    }
   }
 
   case object EquationsCompleted
