@@ -201,7 +201,7 @@ object SimpleEquations {
             accum union result
           )
         case (b, result) =>
-          Task.now(result)
+          Task.now(accum union result)
       }
 
 }
