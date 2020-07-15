@@ -140,10 +140,10 @@ object HoTTMessages {
     lazy val normalized = {
       val equationVec = eqn.toVector
       Utils.logger.info(s"normalizing ${equationVec.size} equations")
-      val normVec = equationVec.grouped(1000).toVector.map{
+      val normVec = equationVec.grouped(50000).toVector.map{
         v =>
           val result = v.map(TermData.isleNormalize(_))
-          Utils.logger.info("normalized batch of 1000 equations") 
+          Utils.logger.info("normalized batch of 50000 equations") 
           result
       }
       Utils.logger.info("all batches normalized, gathering")
