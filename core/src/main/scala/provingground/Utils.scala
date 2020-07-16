@@ -2,7 +2,6 @@ package provingground
 import HoTT._
 import scala.util.Try
 import scala.collection.mutable
-import akka.http.impl.util.Util
 
 object Utils {
   implicit val ec: scala.concurrent.ExecutionContext =
