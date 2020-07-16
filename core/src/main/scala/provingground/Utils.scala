@@ -2,6 +2,7 @@ package provingground
 import HoTT._
 import scala.util.Try
 import scala.collection.mutable
+import akka.http.impl.util.Util
 
 object Utils {
   implicit val ec: scala.concurrent.ExecutionContext =
@@ -17,6 +18,18 @@ object Utils {
 
   def makeSet[A](v: Vector[A], groupSize: Int = 1000) = 
     gatherSet(v.grouped(groupSize).toVector, Set())
+
+  @annotation.tailrec  
+  def gatherMapSet[A, B](l: Vector[Vector[A]], accum: Set[B], fn: A => B): Set[B] = l match {
+    case head +: tail =>
+      Utils.logger.info(s"processing ${l.size} batches")
+      val result = head.map(fn) 
+      Utils.logger.info(s"mapped batch of size ${head.size}")
+      gatherMapSet(tail, result.toSet union(accum), fn)
+    case Vector() => 
+      Utils.logger.info(s"All batches mapped and gathered, got set of size ${accum.size}")
+      accum
+  }
 
   import scribe._, writer._
   var logger = Logger()
