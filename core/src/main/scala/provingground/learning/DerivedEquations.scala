@@ -294,6 +294,11 @@ class DerivedEquations(
 
     }
 
+  def scaleValue(boat: Term, el : Elem[_]) : Expression = 
+    if (boat == el.element)
+                (IsleScale(boat, el) * -1) + Literal(1)
+              else IsleScale(boat, el) * FinalVal(el)
+
   def formalEquations(
       t: Term,
       ctx: Context = Context.Empty
@@ -413,9 +418,7 @@ class DerivedEquations(
         val isleIn: Set[EquationNode] =
           (initVarElems + Elem(boat, Terms)).map { el =>
             val rhs =
-              if (boat == el.element)
-                (IsleScale(boat, el) * -1) + Literal(1)
-              else IsleScale(boat, el) * FinalVal(el)
+              scaleValue(boat, el)
             EquationNode(
               InitialVal(InIsle(el, boat, isle)),
               rhs
@@ -464,9 +467,7 @@ class DerivedEquations(
         val isleIn: Set[EquationNode] =
           (initVarElems + Elem(boat, Terms)).map { el =>
             val rhs =
-              if (boat == el.element)
-                (IsleScale(boat, el) * -1) + Literal(1)
-              else IsleScale(boat, el) * InitialVal(el)
+              scaleValue(boat, el)
             EquationNode(
               InitialVal(InIsle(el, boat, isle)),
               rhs
@@ -516,9 +517,7 @@ class DerivedEquations(
         val isleIn: Set[EquationNode] =
           (initVarElems + Elem(boat, Terms)).map { el =>
             val rhs =
-              if (boat == el.element)
-                (IsleScale(boat, el) * -1) + Literal(1)
-              else IsleScale(boat, el) * InitialVal(el)
+              scaleValue(boat, el)
             EquationNode(
               InitialVal(InIsle(el, boat, isle)),
               rhs
@@ -569,9 +568,7 @@ class DerivedEquations(
         val isleIn: Set[EquationNode] =
           (initVarElems + Elem(boat, Terms)).map { el =>
             val rhs =
-              if (boat == el.element)
-                (IsleScale(boat, el) * -1) + Literal(1)
-              else IsleScale(boat, el) * InitialVal(el)
+              scaleValue(boat, el)
             EquationNode(
               InitialVal(InIsle(el, boat, isle)),
               rhs
@@ -758,9 +755,7 @@ class DerivedEquations(
         val isleIn: Set[EquationNode] =
           (initVarElems + Elem(boat, Terms)).map { el =>
             val rhs =
-              if (boat == el.element)
-                (IsleScale(boat, el) * -1) + Literal(1)
-              else IsleScale(boat, el) * InitialVal(el)
+              scaleValue(boat, el)
             EquationNode(
               InitialVal(InIsle(el, boat, isle)),
               rhs
@@ -810,9 +805,7 @@ class DerivedEquations(
         val isleIn: Set[EquationNode] =
           (initVarElems + Elem(boat, Terms)).map { el =>
             val rhs =
-              if (boat == el.element)
-                (IsleScale(boat, el) * -1) + Literal(1)
-              else IsleScale(boat, el) * InitialVal(el)
+              scaleValue(boat, el)
             EquationNode(
               InitialVal(InIsle(el, boat, isle)),
               rhs
@@ -863,9 +856,7 @@ class DerivedEquations(
         val isleIn: Set[EquationNode] =
           (initVarElems + Elem(boat, Terms)).map { el =>
             val rhs =
-              if (boat == el.element)
-                (IsleScale(boat, el) * -1) + Literal(1)
-              else IsleScale(boat, el) * InitialVal(el)
+              scaleValue(boat, el)
             EquationNode(
               InitialVal(InIsle(el, boat, isle)),
               rhs
