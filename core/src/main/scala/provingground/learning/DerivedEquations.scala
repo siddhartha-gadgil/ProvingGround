@@ -296,8 +296,8 @@ class DerivedEquations(
 
   def scaleValue(boat: Term, el : Elem[_]) : Expression = 
     if (boat == el.element)
-                (IsleScale(boat) * -1) + Literal(1)
-              else IsleScale(boat) * FinalVal(el)
+                (IsleScale("%boat" :: boat.typ) * -1) + Literal(1)
+              else IsleScale("%boat" :: boat.typ) * FinalVal(el)
 
   def formalEquations(
       t: Term,
