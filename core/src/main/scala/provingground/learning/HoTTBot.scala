@@ -1179,12 +1179,12 @@ object HoTTBot {
       cutoffScale: Double = 2
   ): MicroHoTTBoTT[TangentBaseCompleted.type, GeneratedEquationNodes, Collated[
     TangentBaseState
-  ] :: TangentLemmas :: HNil] = {
+  ] :: TangentLemmas :: Set[Term] :: HNil] = {
     val response
-        : Collated[TangentBaseState] :: TangentLemmas :: HNil => TangentBaseCompleted.type => Future[
+        : Collated[TangentBaseState] :: TangentLemmas :: Set[Term] :: HNil => TangentBaseCompleted.type => Future[
           GeneratedEquationNodes
         ] = {
-      case tbss :: tl :: HNil =>
+      case tbss :: tl :: terms :: HNil =>
         (_) => {
           val eqsFut =
             Task
@@ -1201,7 +1201,9 @@ object HoTTBot {
                       lemPfDist,
                       cutoff,
                       minTime,
-                      cutoffScale
+                      cutoffScale,
+                      terms,
+                      terms.collect{case t: Typ[u] => t: Typ[Term]} union (terms.map(_.typ))
                     )
 
                   }

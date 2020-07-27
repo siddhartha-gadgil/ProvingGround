@@ -112,8 +112,10 @@ object SimpleEquations {
       funcs: FiniteDistribution[ExstFunc],
       args: FiniteDistribution[Term],
       cutoff: Double,
-      prevCutoff: Option[Double]
-  ) =
+      prevCutoff: Option[Double],
+      accumTerms: Set[Term],
+      accumTyps: Set[Typ[Term]]
+  ): Task[(Set[EquationNode], Set[Term], Set[Typ[Term]])] =
     Task
       .gatherUnordered {
         for {
@@ -128,7 +130,7 @@ object SimpleEquations {
             Unify
               .appln(fn.func, x)
               .toSet
-              .flatMap { (z: Term) =>
+              .map { (z: Term) =>
                 val appEquations: Set[EquationNode] =
                   Set(
                     EquationNode(
@@ -156,12 +158,23 @@ object SimpleEquations {
                       Coeff(Init(Terms)) * InitialVal(Elem(x, Terms))
                     )
                   )
-                appEquations union (DE.formalEquations(z) union (DE
-                  .formalTypEquations(z.typ)))
+                val formalTermEqs: Set[EquationNode] =
+                  if (!accumTerms.contains(z)) DE.formalEquations(z) else Set()
+                val formalTypEqs: Set[EquationNode] =
+                  if (!accumTyps.contains(z.typ)) DE.formalTypEquations(z.typ)
+                  else Set()
+                (
+                  (appEquations union (formalTermEqs union formalTypEqs)),
+                  z,
+                  z.typ: Typ[Term]
+                )
               }
           }
       }
-      .map(_.flatten.toSet)
+      .map { x =>
+        x.toSet.flatten
+      }
+      .map { case y => (y.flatMap(_._1), y.map(_._2), y.map(_._3)) }
 
   def timedUnAppEquations(
       funcs: FiniteDistribution[ExstFunc],
@@ -169,12 +182,14 @@ object SimpleEquations {
       cutoff: Double,
       minTime: FiniteDuration,
       cutoffScale: Double = 2,
+      accumTerms: Set[Term] = Set(),
+      accumTyps: Set[Typ[Term]] = Set(),
       prevCutoff: Option[Double] = None,
       accum: Set[EquationNode] = Set()
   ): Task[Set[EquationNode]] =
-    taskUnAppEquations(funcs, args, cutoff, prevCutoff).timed
+    taskUnAppEquations(funcs, args, cutoff, prevCutoff, Set(), Set()).timed
       .map {
-        case (t, result) =>
+        case (t, (result, newTerms, newTyps)) =>
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
           if (t > minTime)
@@ -187,20 +202,22 @@ object SimpleEquations {
             )
           if (pmin * qmin > cutoff)
             Utils.logger.info(s"all pairs considered with cutoff $cutoff")
-          ((t < minTime) && (pmin * qmin < cutoff), result) // ensuring not all pairs already used
+          ((t < minTime) && (pmin * qmin < cutoff), (result, newTerms, newTyps)) // ensuring not all pairs already used
       }
       .flatMap {
-        case (b, result) if b =>
+        case (b, (result, newTerms, newTyps)) if b =>
           timedUnAppEquations(
             funcs,
             args,
             cutoff / cutoffScale,
             minTime,
             cutoffScale,
+            accumTerms union (newTerms),
+            accumTyps union(newTyps),
             Some(cutoff),
             accum union result
           )
-        case (b, result) =>
+        case (b, (result, _, _)) =>
           Task.now(accum union result)
       }
 
