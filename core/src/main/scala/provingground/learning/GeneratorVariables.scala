@@ -241,7 +241,7 @@ object Expression {
     case Literal(_)       => Set()
     case Quotient(x, y)   => varVals(x) union (varVals(y))
     case Coeff(_)         => Set()
-    case IsleScale(_, _)  => Set()
+    case IsleScale(_)  => Set()
   }
 
   def varValsNum(expr: Expression): Set[VarVal[_]] = expr match {
@@ -253,7 +253,7 @@ object Expression {
     case Literal(_)       => Set()
     case Quotient(x, y)   => varValsNum(x)
     case Coeff(_)         => Set()
-    case IsleScale(_, _)  => Set()
+    case IsleScale(_)  => Set()
   }
 
   def atoms(expr: Expression): Set[Expression] = expr match {
@@ -265,7 +265,7 @@ object Expression {
     case Literal(_)           => Set()
     case Quotient(x, y)       => atoms(x) union (atoms(y))
     case coeff @ Coeff(_)     => Set(coeff)
-    case sc @ IsleScale(_, _) => Set(sc)
+    case sc @ IsleScale(_) => Set(sc)
   }
 
   def offsprings(expr: Expression): Set[Expression] =
@@ -278,13 +278,13 @@ object Expression {
       case Literal(_)           => Set()
       case Quotient(x, y)       => Set(x, y)
       case coeff @ Coeff(_)     => Set()
-      case sc @ IsleScale(_, _) => Set()
+      case sc @ IsleScale(_) => Set()
     }
 
   def atomLeaves(expr: Expression): Option[Expression] = expr match {
     case value: VarVal[_]     => Some(value)
     case coeff @ Coeff(_)     => Some(coeff)
-    case sc @ IsleScale(_, _) => Some(sc)
+    case sc @ IsleScale(_) => Some(sc)
     case _                    => None
   }
 
@@ -360,7 +360,7 @@ object Expression {
     case Literal(_)       => Set()
     case Quotient(x, y)   => coefficients(x) union (coefficients(y))
     case cf @ Coeff(_)    => Set(cf)
-    case IsleScale(_, _)  => Set()
+    case IsleScale(_)  => Set()
   }
 
   def variance(v: Vector[Expression]): Expression =
@@ -556,7 +556,7 @@ object Expression {
       seq.find(expand).map(sameFamilyFromCoeffs(that, _)).getOrElse(false)
   }
 
-  case class IsleScale[Boat, Y](boat: Boat, elem: Elem[Y]) extends Expression {
+  case class IsleScale[Boat, Y](boat: Boat) extends Expression {
     def mapVars(f: VariableMap): Expression = this
   }
 

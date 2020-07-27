@@ -750,8 +750,8 @@ case class MonixFiniteDistributionEq[State](
                     initVarElems.map { el =>
                       val rhs =
                         if (boat == el.element)
-                          (IsleScale(boat, el) * -1) + Literal(1)
-                        else IsleScale(boat, el) * InitialVal(el)
+                          (IsleScale(boat) * -1) + Literal(1)
+                        else IsleScale(boat) * InitialVal(el)
                       EquationNode(
                         InitialVal(InIsle(el, boat, isle)),
                         rhs

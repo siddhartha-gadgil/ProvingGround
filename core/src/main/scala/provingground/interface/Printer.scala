@@ -89,8 +89,8 @@ object Printer extends FallbackPrinter {
     case Quotient(x, y) => s"${exprView(x)} / ${exprView(y)}"
     case cf @ Coeff(node) =>
       s"coefficient(node = ${view(node)}, variable = ${view(cf.rv)})"
-    case IsleScale(boat, elem) =>
-      s"isle_scale(boat = ${view(boat)}, element = ${view(elem)})"
+    case IsleScale(boat) =>
+      s"isle_scale(boat = ${view(boat)})"
   }
 
   implicit def jsPrinter[U <: ujson.Value]: Printer[U] = new Printer[U] {

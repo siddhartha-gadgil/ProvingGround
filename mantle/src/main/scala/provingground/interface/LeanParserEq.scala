@@ -336,8 +336,8 @@ class LeanParserEq(
           val isleIn: Set[EquationNode] =
             initVarElems.map { el =>
               val rhs =
-                if (x == el.element) (IsleScale(x, el) * -1) + Literal(1)
-                else IsleScale(x, el) * InitialVal(el)
+                if (x == el.element) (IsleScale(x) * -1) + Literal(1)
+                else IsleScale(x) * InitialVal(el)
               EquationNode(
                 InitialVal(InIsle(el, x, isle)),
                 rhs
@@ -391,7 +391,7 @@ class LeanParserEq(
             initVarElems.map { el =>
               EquationNode(
                 InitialVal(InIsle(el, x, isle)),
-                IsleScale(x, el) * InitialVal(el)
+                IsleScale(x) * InitialVal(el)
               )
             }
           val bridgeEq =

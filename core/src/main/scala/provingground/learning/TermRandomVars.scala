@@ -463,16 +463,12 @@ object TermRandomVars {
       Sum(
        xs.map(x =>  expressionMapVars(fn)(x))
       )
-    case IsleScale(boat: Term, elem) =>
+    case IsleScale(boat: Term) =>
       val newBoat = "%boat" :: boat.typ
       IsleScale(
-        newBoat,
-        Elem(
-          valueSubs(boat, newBoat)(elem.element),
-          randomVarSubs(boat, newBoat)(elem.randomVar)
-        )
+        newBoat
       )
-    case IsleScale(boat, elem) => IsleScale(boat, elem)
+    case IsleScale(boat) => IsleScale(boat)
     case Log(exp)              => Log(expressionMapVars(fn)(exp))
     case Literal(value)        => Literal(value)
     case Exp(exp)              => Exp(expressionMapVars(fn)(exp))
@@ -511,11 +507,7 @@ object TermRandomVars {
         Log(expressionSubs(x, y)(exp))
       case sc: IsleScale[u, v] =>
         IsleScale(
-          valueSubs(x, y)(sc.boat),
-          Elem(
-            valueSubs(x, y)(sc.elem.element),
-            randomVarSubs(x, y)(sc.elem.randomVar)
-          )
+          valueSubs(x, y)(sc.boat)
         )
       case cf @ Coeff(node) => cf
       case Sum(xs) =>

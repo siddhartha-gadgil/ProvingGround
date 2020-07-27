@@ -107,7 +107,7 @@ object ExpressionEval {
         else if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
         else Some(0)                              // else throw new Exception(s"no initial value for $elem")
-      case IsleScale(_, _) => Some((1.0 - tg.varWeight))
+      case IsleScale(_) => Some((1.0 - tg.varWeight))
       case _               => None
     }
 
@@ -1306,8 +1306,8 @@ trait ExpressionEval { self =>
       initVarElems.map { el =>
         val rhs =
           if (boat == el.element)
-            (IsleScale(boat, el) * -1) + Literal(1)
-          else IsleScale(boat, el) * InitialVal(el)
+            (IsleScale(boat) * -1) + Literal(1)
+          else IsleScale(boat) * InitialVal(el)
         EquationNode(
           InitialVal(InIsle(el, boat, isle)),
           rhs
@@ -1358,8 +1358,8 @@ trait ExpressionEval { self =>
       initVarElems.map { el =>
         val rhs =
           if (boat == el.element)
-            (IsleScale(boat, el) * -1) + Literal(1)
-          else IsleScale(boat, el) * InitialVal(el)
+            (IsleScale(boat) * -1) + Literal(1)
+          else IsleScale(boat) * InitialVal(el)
         EquationNode(
           InitialVal(InIsle(el, boat, isle)),
           rhs
@@ -1410,8 +1410,8 @@ trait ExpressionEval { self =>
       initVarElems.map { el =>
         val rhs =
           if (boat == el.element)
-            (IsleScale(boat, el) * -1) + Literal(1)
-          else IsleScale(boat, el) * InitialVal(el)
+            (IsleScale(boat) * -1) + Literal(1)
+          else IsleScale(boat) * InitialVal(el)
         EquationNode(
           InitialVal(InIsle(el, boat, isle)),
           rhs
