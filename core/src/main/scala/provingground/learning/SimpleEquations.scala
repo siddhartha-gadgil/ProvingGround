@@ -187,7 +187,7 @@ object SimpleEquations {
       prevCutoff: Option[Double] = None,
       accum: Set[EquationNode] = Set()
   ): Task[Set[EquationNode]] =
-    taskUnAppEquations(funcs, args, cutoff, prevCutoff, Set(), Set()).timed
+    taskUnAppEquations(funcs, args, cutoff, prevCutoff, accumTerms, accumTyps).timed
       .map {
         case (t, (result, newTerms, newTyps)) =>
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
