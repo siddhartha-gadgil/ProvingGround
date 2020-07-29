@@ -1209,7 +1209,7 @@ object HoTTBot {
                   }
               })
               .map(_.flatten)
-          eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet))
+          eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet, true))
         }.runToFuture
     }
     MicroBot(response)

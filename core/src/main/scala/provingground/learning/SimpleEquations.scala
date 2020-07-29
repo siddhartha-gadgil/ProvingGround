@@ -174,7 +174,10 @@ object SimpleEquations {
       .map { x =>
         x.toSet.flatten
       }
-      .map { case y => (y.flatMap(_._1), y.map(_._2), y.map(_._3)) }
+      .map  {y => 
+        val eqnVec = y.flatMap(_._1).toVector
+        def normalized = Utils.gatherMapSet(eqnVec.grouped(10000).toVector, Set(), TermData.isleNormalize(_))
+        (normalized, y.map(_._2), y.map(_._3)) }
 
   def timedUnAppEquations(
       funcs: FiniteDistribution[ExstFunc],
