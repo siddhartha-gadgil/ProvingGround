@@ -95,7 +95,7 @@ object PostDiscarder {
 object ErasablePostBuffer {
   var forgetDefault: Boolean = false
 
-  var eraseOld: Boolean = false
+  var eraseOld: Boolean = true
 
   def bufferPost[P: TypeTag, W, ID](
       buffer: W => ErasablePostBuffer[P, ID]
