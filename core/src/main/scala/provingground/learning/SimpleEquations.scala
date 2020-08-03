@@ -208,7 +208,7 @@ object SimpleEquations {
       accumTyps,
       System.currentTimeMillis() + maxTime.toMillis
     ).timed
-      .timeout(maxTime)
+      // .timeout(maxTime)
       // .materialize
       .map {
         case (t, (result, newTerms, newTyps)) =>
