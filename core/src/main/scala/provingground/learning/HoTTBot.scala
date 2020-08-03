@@ -1175,7 +1175,7 @@ object HoTTBot {
 
   def timedUnAppEquations(
       cutoff: Double,
-      minTime: FiniteDuration,
+      maxTime: FiniteDuration,
       cutoffScale: Double = 2
   ): MicroHoTTBoTT[TangentBaseCompleted.type, GeneratedEquationNodes, Collated[
     TangentBaseState
@@ -1200,7 +1200,7 @@ object HoTTBot {
                       funcs,
                       lemPfDist,
                       cutoff,
-                      minTime,
+                      maxTime,
                       cutoffScale,
                       terms,
                       terms.collect{case t: Typ[u] => t: Typ[Term]} union (terms.map(_.typ))

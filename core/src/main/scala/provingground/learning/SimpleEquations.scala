@@ -10,6 +10,7 @@ import monix.eval._
 import DE._
 import scala.concurrent._, duration._
 import scala.math.Ordering.Double.TotalOrdering
+import scala.util._
 
 object SimpleEquations {
   def groupTerms(
@@ -183,29 +184,36 @@ object SimpleEquations {
       funcs: FiniteDistribution[ExstFunc],
       args: FiniteDistribution[Term],
       cutoff: Double,
-      minTime: FiniteDuration,
+      maxTime: FiniteDuration,
       cutoffScale: Double = 2,
       accumTerms: Set[Term] = Set(),
       accumTyps: Set[Typ[Term]] = Set(),
       prevCutoff: Option[Double] = None,
       accum: Set[EquationNode] = Set()
   ): Task[Set[EquationNode]] =
-    taskUnAppEquations(funcs, args, cutoff, prevCutoff, accumTerms, accumTyps).timed
+    taskUnAppEquations(funcs, args, cutoff, prevCutoff, accumTerms, accumTyps).timed.timeout(maxTime).materialize
       .map {
-        case (t, (result, newTerms, newTyps)) =>
+        case Success((t, (result, newTerms, newTyps))) =>
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
-          if (t > minTime)
+          if (t > maxTime)
             Utils.logger.info(
-              s"ran for time ${t.toSeconds}, exceeding time limit $minTime, with cutoff ${cutoff}"
+              s"ran for time ${t.toSeconds}, exceeding time limit $maxTime, with cutoff ${cutoff}"
             )
           else
             Utils.logger.info(
-              s"ran for time ${t.toSeconds}, less than the time limit $minTime, with cutoff ${cutoff}; running again"
+              s"ran for time ${t.toSeconds}, less than the time limit $maxTime, with cutoff ${cutoff}; running again"
             )
           if (pmin * qmin > cutoff)
             Utils.logger.info(s"all pairs considered with cutoff $cutoff")
-          ((t < minTime) && (pmin * qmin < cutoff), (result, newTerms, newTyps)) // ensuring not all pairs already used
+          ((t < maxTime) && (pmin * qmin < cutoff), (result, newTerms, newTyps)) // ensuring not all pairs already used
+        case Failure(throwable) => 
+          throwable match {
+            case _ : TimeoutException => Utils.logger.info(s"Timed out with time limit $maxTime")
+            case _ => Utils.logger.error(s"Instead of timeout, unexpected exception ${throwable.getMessage()}")
+          }
+          (false, (Set.empty[EquationNode], Set.empty[Term], Set.empty[Typ[Term]]))
+          
       }
       .flatMap {
         case (b, (result, newTerms, newTyps)) if b =>
@@ -213,7 +221,7 @@ object SimpleEquations {
             funcs,
             args,
             cutoff / cutoffScale,
-            minTime,
+            maxTime,
             cutoffScale,
             accumTerms union (newTerms),
             accumTyps union(newTyps),
