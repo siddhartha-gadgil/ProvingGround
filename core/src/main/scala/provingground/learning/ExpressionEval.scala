@@ -554,12 +554,12 @@ case class ProdExpr(
     result
   }
 
-  val numView = indices
+  val numSupport = indices
     .map { j =>
       s"X($j)"
     }
     .mkString(" * ")
-  val denView =
+  val denSupport =
     if (negIndices.isEmpty) ""
     else
       negIndices
@@ -569,7 +569,7 @@ case class ProdExpr(
         .mkString("/(", " * ", ")")
 
   override def toString() =
-    s"($constant * $numView $denView)"
+    s"($constant * $numSupport $denSupport)"
 
   def *(that: ProdExpr) =
     ProdExpr(
@@ -671,50 +671,51 @@ class ExprCalc(ev: ExpressionEval) {
     case (j, _) => constantEquations.contains(j)
   }
 
-  lazy val (startingMap, startingView) = {
+  lazy val (startingMap, startingSupport) = {
     val v = rhsExprs.zipWithIndex.filter(_._1.hasConstant)
-    (v.map { case (exp, j) => j -> exp.initialValue }.toMap, rhsInvolves(v.map(_._2).toSet))
+    val indSupp = v.map(_._2).toSet
+    (v.map { case (exp, j) => j -> exp.initialValue }.toMap.filter(_._2 > 0), rhsInvolves(indSupp) union indSupp)
   }
 
   /**
     * The next step towards a stable map with given equations
     *
     * @param m the map so far
-    * @param view the set of indices where we should recompute
-    * @return triple of the next map, next view and whether stable
+    * @param support the set of indices where we should recompute
+    * @return triple of the next map, next support and whether stable
     */
-  def nextMapView(
+  def nextMapSupport(
       m: Map[Int, Double],
-      view: Set[Int]
+      support: Set[Int]
   ): (Map[Int, Double], Set[Int], Boolean) = {
-    val lookup = view.map { j =>
+    val lookup = support.map { j =>
       j -> rhsExprs(j).evaluate(m)
     }.filter(_._2 > 0).toMap
     val newMap     = m ++ lookup
-    val newIndices = newMap.keySet -- m.keySet
-    val newView    = (rhsInvolves(newIndices) union m.keySet) -- constantEquations
-    (newMap, newView, newIndices.isEmpty)
+    val newIndices = lookup.keySet -- m.keySet
+    val newSupport    = (rhsInvolves(newIndices) union m.keySet) -- constantEquations
+    (newMap, newSupport, newIndices.isEmpty)
   }
 
   /**
-    * the next map, assuming view is stable and is the support except for terms that stay constant
+    * the next map, assuming support is stable and is the support except for terms that stay constant
     *
     * @param m the present map
-    * @param view the indices to update
+    * @param support the indices to update
     * @param exponent exponent for geometric mean
     * @return a stable map
     */
   def nextMap(
       m: Map[Int, Double],
-      view: Set[Int],
+      support: Set[Int],
       exponent: Double
   ): Map[Int, Double] = {
-    view
+    support
       .map { j =>
         val exp = rhsExprs(j)
         val y   = exp.evaluate(m) // the new value
         val z   = m.getOrElse(j, 0.0) // the old value, if any
-        if (z > 0) {
+        val newValue =  if (z > 0) {
           val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
           if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
             Utils.logger.error(
@@ -723,7 +724,7 @@ class ExprCalc(ev: ExpressionEval) {
             )
           gm
         } else y
-        j -> z
+        j -> newValue
       }
       .filter(_._2 > 0)
       .toMap ++ constantMap
@@ -912,7 +913,7 @@ class ExprCalc(ev: ExpressionEval) {
   @tailrec
   final def stableSupportMap(
       initMap: Map[Int, Double],
-      initView: Set[Int],
+      initSupport: Set[Int],
       maxTime: Option[Long],
       steps: Long
   ): (Map[Int, Double], Set[Int]) =
@@ -920,24 +921,24 @@ class ExprCalc(ev: ExpressionEval) {
       Utils.logger.error(
         s"Timeout for stable support vector after $steps steps"
       )
-      (initMap, initView)
+      (initMap, initSupport)
     } else {
       if (steps % 100 == 2)
         Utils.logger.info(
           s"completed $steps steps without stable support, support size : ${initMap.size}"
         )
       val startTime                = System.currentTimeMillis()
-      val (newMap, newView, check) = nextMapView(initMap, initView)
+      val (newMap, newSupport, check) = nextMapSupport(initMap, initSupport)
       if (check) {
         Utils.logger.info(
           s"stable support with support size ${newMap.size}"
         )
-        (newMap, newView)
+        (newMap, newSupport)
       } else {
         val usedTime = System.currentTimeMillis() - startTime
         stableSupportMap(
           newMap,
-          newView,
+          newSupport,
           maxTime.map(t => t - usedTime),
           steps + 1
         )
@@ -947,19 +948,19 @@ class ExprCalc(ev: ExpressionEval) {
   @tailrec
   final def stableMap(
       initMap: Map[Int, Double],
-      view: Set[Int],
+      support: Set[Int],
       exponent: Double = 0.5,
       decay: Double,
       maxTime: Option[Long],
       steps: Long
   ): Map[Int, Double] =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      Utils.logger.error(s"Timeout for stable vector after $steps steps")
+      Utils.logger.error(s"Timeout for stable map after $steps steps")
       initMap
     } else {
       if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
-      val newMap    = nextMap(initMap, view, exponent)
+      val newMap    = nextMap(initMap, support, exponent)
       if (normalizedMapBounded(initMap, newMap)) {
         Utils.logger.info("Obtained stable map")
         newMap
@@ -967,7 +968,7 @@ class ExprCalc(ev: ExpressionEval) {
         val usedTime = System.currentTimeMillis() - startTime
         stableMap(
           newMap,
-          view,
+          support,
           exponent * decay,
           decay,
           maxTime.map(t => t - usedTime),
@@ -998,12 +999,12 @@ class ExprCalc(ev: ExpressionEval) {
       s"Computing final map, with maximum time $maxTime, exponent: $exponent, decay: $decay"
     )
     Utils.logger.info(s"Number of equations: ${equationVec.size}")
-    val (stableM, view) =
-      stableSupportMap(startingMap, startingView, maxTime, 0L)
+    val (stableM, support) =
+      stableSupportMap(startingMap, startingSupport, maxTime, 0L)
     Utils.logger.info("Obtained map with stable support")
     stableMap(
       stableM,
-      view,
+      support,
       exponent,
       decay,
       maxTime,
@@ -1744,7 +1745,7 @@ trait ExpressionEval { self =>
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
-    .view
+    .support
     .mapValues(Literal)
     .toMap
 
