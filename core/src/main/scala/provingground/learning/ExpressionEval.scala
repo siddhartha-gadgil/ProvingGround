@@ -1745,7 +1745,7 @@ trait ExpressionEval { self =>
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
-    .support
+    .view
     .mapValues(Literal)
     .toMap
 
