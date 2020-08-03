@@ -35,6 +35,7 @@ object Utils {
       l match {
         case head +: tail =>
           Utils.logger.info(s"processing ${l.size} batches")
+          limitOpt.foreach(limit => Utils.logger.info(s"time remaining ${(limit - System.currentTimeMillis())/1000} seconds"))
           val result = head.map(fn)
           Utils.logger.info(s"mapped batch of size ${head.size}")
           gatherMapSet(tail, result.toSet union (accum), fn)
