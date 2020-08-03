@@ -115,14 +115,15 @@ object SimpleEquations {
       cutoff: Double,
       prevCutoff: Option[Double],
       accumTerms: Set[Term],
-      accumTyps: Set[Typ[Term]]
+      accumTyps: Set[Typ[Term]],
+      limit: Long
   ): Task[(Set[EquationNode], Set[Term], Set[Typ[Term]])] =
     Task
-      .gatherUnordered {
+      .gather {
         for {
-          Weighted(fn, p) <- funcs.pmf.toSet
+          Weighted(fn, p) <- funcs.flatten.pmf.sortBy(_.weight)
           if p > cutoff
-          Weighted(x, q) <- args.pmf.toSet
+          Weighted(x, q) <- args.flatten.pmf.sortBy(_.weight)
           if (p * q > cutoff && prevCutoff
             .map(cf => cf >= p * q)
             .getOrElse(true))
@@ -173,12 +174,19 @@ object SimpleEquations {
           }
       }
       .map { x =>
-        x.toSet.flatten
+        x.flatten
       }
-      .map  {y => 
-        val eqnVec = y.flatMap(_._1).toVector
-        def normalized = Utils.gatherMapSet(eqnVec.grouped(10000).toVector, Set(), TermData.isleNormalize(_))
-        (normalized, y.map(_._2), y.map(_._3)) }
+      .map { y =>
+        val eqnVec = y.flatMap(_._1)
+        def normalized =
+          Utils.gatherMapSet(
+            eqnVec.grouped(10000).toVector,
+            Set(),
+            TermData.isleNormalize(_),
+            Some(limit)
+          )
+        (normalized, y.map(_._2).toSet, y.map(_._3).toSet)
+      }
 
   def timedUnAppEquations(
       funcs: FiniteDistribution[ExstFunc],
@@ -191,9 +199,19 @@ object SimpleEquations {
       prevCutoff: Option[Double] = None,
       accum: Set[EquationNode] = Set()
   ): Task[Set[EquationNode]] =
-    taskUnAppEquations(funcs, args, cutoff, prevCutoff, accumTerms, accumTyps).timed.timeout(maxTime).materialize
+    taskUnAppEquations(
+      funcs,
+      args,
+      cutoff,
+      prevCutoff,
+      accumTerms,
+      accumTyps,
+      System.currentTimeMillis() + maxTime.toMillis
+    ).timed
+      .timeout(maxTime)
+      // .materialize
       .map {
-        case Success((t, (result, newTerms, newTyps))) =>
+        case (t, (result, newTerms, newTyps)) =>
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
           if (t > maxTime)
@@ -207,13 +225,20 @@ object SimpleEquations {
           if (pmin * qmin > cutoff)
             Utils.logger.info(s"all pairs considered with cutoff $cutoff")
           ((t < maxTime) && (pmin * qmin < cutoff), (result, newTerms, newTyps)) // ensuring not all pairs already used
-        case Failure(throwable) => 
-          throwable match {
-            case _ : TimeoutException => Utils.logger.info(s"Timed out with time limit $maxTime")
-            case _ => Utils.logger.error(s"Instead of timeout, unexpected exception ${throwable.getMessage()}")
-          }
-          (false, (Set.empty[EquationNode], Set.empty[Term], Set.empty[Typ[Term]]))
-          
+        // case Failure(throwable) =>
+        //   throwable match {
+        //     case _: TimeoutException =>
+        //       Utils.logger.info(s"Timed out with time limit $maxTime")
+        //     case _ =>
+        //       Utils.logger.error(
+        //         s"Instead of timeout, unexpected exception ${throwable.getMessage()}"
+        //       )
+        //   }
+          (
+            false,
+            (Set.empty[EquationNode], Set.empty[Term], Set.empty[Typ[Term]])
+          )
+
       }
       .flatMap {
         case (b, (result, newTerms, newTyps)) if b =>
@@ -224,7 +249,7 @@ object SimpleEquations {
             maxTime,
             cutoffScale,
             accumTerms union (newTerms),
-            accumTyps union(newTyps),
+            accumTyps union (newTyps),
             Some(cutoff),
             accum union result
           )

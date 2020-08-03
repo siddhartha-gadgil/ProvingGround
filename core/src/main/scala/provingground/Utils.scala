@@ -11,24 +11,39 @@ object Utils {
 
   @annotation.tailrec
   def gatherSet[A](l: Vector[Vector[A]], accum: Set[A]): Set[A] = l match {
-    case head +: tail => gatherSet(tail, head.toSet union(accum))
-    case Vector() => accum
+    case head +: tail => gatherSet(tail, head.toSet union (accum))
+    case Vector()     => accum
   }
 
-  def makeSet[A](v: Vector[A], groupSize: Int = 1000) = 
+  def makeSet[A](v: Vector[A], groupSize: Int = 1000) =
     gatherSet(v.grouped(groupSize).toVector, Set())
 
-  @annotation.tailrec  
-  def gatherMapSet[A, B](l: Vector[Vector[A]], accum: Set[B], fn: A => B): Set[B] = l match {
-    case head +: tail =>
-      Utils.logger.info(s"processing ${l.size} batches")
-      val result = head.map(fn) 
-      Utils.logger.info(s"mapped batch of size ${head.size}")
-      gatherMapSet(tail, result.toSet union(accum), fn)
-    case Vector() => 
-      Utils.logger.info(s"All batches mapped and gathered, got set of size ${accum.size}")
-      accum
-  }
+  @annotation.tailrec
+  def gatherMapSet[A, B](
+      l: Vector[Vector[A]],
+      accum: Set[B],
+      fn: A => B,
+      limitOpt: Option[Long] = None
+  ): Set[B] =
+    if (limitOpt
+          .map(limit => System.currentTimeMillis() > limit)
+          .getOrElse(false)) {
+            Utils.logger.info(s"out of time with ${l.size} batches remaining, returning accumulated stuff.")
+            accum
+          }
+    else
+      l match {
+        case head +: tail =>
+          Utils.logger.info(s"processing ${l.size} batches")
+          val result = head.map(fn)
+          Utils.logger.info(s"mapped batch of size ${head.size}")
+          gatherMapSet(tail, result.toSet union (accum), fn)
+        case Vector() =>
+          Utils.logger.info(
+            s"All batches mapped and gathered, got set of size ${accum.size}"
+          )
+          accum
+      }
 
   import scribe._, writer._
   var logger = Logger()
@@ -45,15 +60,14 @@ object Utils {
 
   var reportText: String = ""
 
-  val reporters : mutable.ArrayBuffer[Any => Unit] = 
-    mutable.ArrayBuffer((s) => println(s),
-      (s) => reportText += s.toString())
+  val reporters: mutable.ArrayBuffer[Any => Unit] =
+    mutable.ArrayBuffer((s) => println(s), (s) => reportText += s.toString())
 
   def report(s: Any) = reporters.foreach(r => r(s))
 
   def delayedRun(task: => Unit, delay: Long): Unit = {
     import java.util._
-    val tt = new TimerTask{
+    val tt = new TimerTask {
       def run(): Unit = task
     }
     new Timer("delayed run").schedule(tt, delay)
@@ -91,9 +105,12 @@ object Utils {
       done: A => Boolean = (a: A) => false
   ): Task[A] =
     task.materialize.flatMap { t =>
-      t.fold((_) => Task.now(init), 
-       (a) => 
-         if (done(a)) Task.now(a) else refinedTask(a, refine(task), refine, done))
+      t.fold(
+        (_) => Task.now(init),
+        (a) =>
+          if (done(a)) Task.now(a)
+          else refinedTask(a, refine(task), refine, done)
+      )
     }
 
   def bestTask[A](
@@ -115,20 +132,35 @@ object Utils {
       )
       .getOrElse(Task.now(accum))
 
-  def largestAcceptableRec[A](fn: Double => A, bound : A => Boolean, min: Double, max: Double, maxValue: A, steps: Int) : (Double, A) =
+  def largestAcceptableRec[A](
+      fn: Double => A,
+      bound: A => Boolean,
+      min: Double,
+      max: Double,
+      maxValue: A,
+      steps: Int
+  ): (Double, A) =
     if (steps < 1) (max, maxValue)
     else {
-      val mid = (min + max)/2
+      val mid      = (min + max) / 2
       val midValue = fn(mid)
-      if (bound(midValue)) largestAcceptableRec(fn, bound, min, mid, midValue, steps - 1)
+      if (bound(midValue))
+        largestAcceptableRec(fn, bound, min, mid, midValue, steps - 1)
       else largestAcceptableRec(fn, bound, mid, max, maxValue, steps - 1)
     }
-  
-  def largestAcceptable[A](fn: Double => A, bound : A => Boolean, min: Double, max: Double, steps: Int) : Option[(Double, A)] =
-    {
-      val maxValue = fn(max)
-      if (bound(maxValue)) Option(largestAcceptableRec(fn, bound, min, max, maxValue, steps)) else None
-    }
+
+  def largestAcceptable[A](
+      fn: Double => A,
+      bound: A => Boolean,
+      min: Double,
+      max: Double,
+      steps: Int
+  ): Option[(Double, A)] = {
+    val maxValue = fn(max)
+    if (bound(maxValue))
+      Option(largestAcceptableRec(fn, bound, min, max, maxValue, steps))
+    else None
+  }
 
   def proofsEqual(x: Term, y: Term) =
     isProp(x.typ) && isProp(y.typ) && (x.typ == y.typ)
