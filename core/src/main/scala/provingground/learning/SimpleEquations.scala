@@ -117,13 +117,15 @@ object SimpleEquations {
       accumTerms: Set[Term],
       accumTyps: Set[Typ[Term]],
       limit: Long
-  ): Task[(Set[EquationNode], Set[Term], Set[Typ[Term]])] =
+  ): Task[(Set[EquationNode], Set[Term], Set[Typ[Term]])] = {
+    val funcWeigths = funcs.flatten.pmf.sortBy(x => -x.weight).takeWhile(_.weight > cutoff)
+    val argWeights  = args.flatten.pmf.sortBy(x => -x.weight)
     Task
       .gather {
         for {
-          Weighted(fn, p) <- funcs.flatten.pmf.sortBy(_.weight)
-          if p > cutoff
-          Weighted(x, q) <- args.flatten.pmf.sortBy(_.weight)
+          Weighted(fn, p) <- funcWeigths
+          // if p > cutoff
+          Weighted(x, q) <- argWeights
           if (p * q > cutoff && prevCutoff
             .map(cf => cf >= p * q)
             .getOrElse(true))
@@ -187,6 +189,7 @@ object SimpleEquations {
           )
         (normalized, y.map(_._2).toSet, y.map(_._3).toSet)
       }
+  }
 
   def timedUnAppEquations(
       funcs: FiniteDistribution[ExstFunc],
@@ -208,8 +211,8 @@ object SimpleEquations {
       accumTyps,
       System.currentTimeMillis() + maxTime.toMillis
     ).timed
-      // .timeout(maxTime)
-      // .materialize
+    // .timeout(maxTime)
+    // .materialize
       .map {
         case (t, (result, newTerms, newTyps)) =>
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
@@ -225,15 +228,15 @@ object SimpleEquations {
           if (pmin * qmin > cutoff)
             Utils.logger.info(s"all pairs considered with cutoff $cutoff")
           ((t < maxTime) && (pmin * qmin < cutoff), (result, newTerms, newTyps)) // ensuring not all pairs already used
-        // case Failure(throwable) =>
-        //   throwable match {
-        //     case _: TimeoutException =>
-        //       Utils.logger.info(s"Timed out with time limit $maxTime")
-        //     case _ =>
-        //       Utils.logger.error(
-        //         s"Instead of timeout, unexpected exception ${throwable.getMessage()}"
-        //       )
-        //   }
+          // case Failure(throwable) =>
+          //   throwable match {
+          //     case _: TimeoutException =>
+          //       Utils.logger.info(s"Timed out with time limit $maxTime")
+          //     case _ =>
+          //       Utils.logger.error(
+          //         s"Instead of timeout, unexpected exception ${throwable.getMessage()}"
+          //       )
+          //   }
           (
             false,
             (Set.empty[EquationNode], Set.empty[Term], Set.empty[Typ[Term]])
