@@ -237,10 +237,10 @@ object SimpleEquations {
           //         s"Instead of timeout, unexpected exception ${throwable.getMessage()}"
           //       )
           //   }
-          (
-            false,
-            (Set.empty[EquationNode], Set.empty[Term], Set.empty[Typ[Term]])
-          )
+          // (
+          //   false,
+          //   (Set.empty[EquationNode], Set.empty[Term], Set.empty[Typ[Term]])
+          // )
 
       }
       .flatMap {
