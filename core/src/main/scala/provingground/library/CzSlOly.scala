@@ -128,7 +128,7 @@ object CzSlOly {
   val localProver: LocalProver = LocalProver(
     termState,
     TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
-    maxTime = Some(500000L)
+    maxTime = Some(1800000L)
   ).noIsles
 
   import HoTTBot._
