@@ -652,13 +652,13 @@ object HoTTBot {
   def eqnsToExpEv(tgOpt: Option[TermGenParams] = None): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
-    Set[EquationNode] :: QueryProver :: HNil
+    Set[EquationNode] :: QueryProver :: ExpressionEval :: HNil
   ] = {
     val response
-        : Set[EquationNode] :: QueryProver :: HNil => GeneratedEquationNodes => Future[
+        : Set[EquationNode] :: QueryProver :: ExpressionEval :: HNil => GeneratedEquationNodes => Future[
           ExpressionEval
         ] = {
-      case eqns :: qlp :: HNil =>
+      case eqns :: qlp :: expEv :: HNil =>
         eqs =>
           val neqs  = eqs.normalized
           val nodes = eqns union (neqs)
@@ -680,7 +680,8 @@ object HoTTBot {
               lp.smoothing,
               lp.exponent,
               lp.decay,
-              lp.maxTime
+              lp.maxTime,
+              Some(expEv.finalDist)
             )
           )
     }

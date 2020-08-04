@@ -1204,8 +1204,8 @@ trait ExpressionEval { self =>
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    exprCalc.finalDistMap
-  // exprCalc.finalMap //.seq
+    // exprCalc.finalDistMap
+  exprCalc.finalMap //.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
