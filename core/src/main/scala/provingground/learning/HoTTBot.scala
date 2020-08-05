@@ -638,7 +638,7 @@ object HoTTBot {
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => {
-          val neqs = eqs.normalized
+          val neqs  : Set[EquationNode] = eqs.normalized
           eqs.eqn
             .collect {
               case eq @ EquationNode(
