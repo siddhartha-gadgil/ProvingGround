@@ -697,7 +697,7 @@ object HoTTBot {
               lp.exponent,
               lp.decay,
               lp.maxTime,
-              Some(expEv.finalDist.seq)
+              Some(expEv.finalDist)
             )
           )
     }
