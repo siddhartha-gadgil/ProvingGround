@@ -697,7 +697,7 @@ object HoTTBot {
               lp.exponent,
               lp.decay,
               lp.maxTime,
-              Some(expEv.finalDist)
+              Some(expEv.finalDist.seq)
             )
           )
     }
@@ -833,7 +833,7 @@ object HoTTBot {
               narrow.hW,
               narrow.klW,
               lp.cutoff,
-              ev.finalDist,
+              ev.finalDist.seq,
               lp.maxRatio
             )
             td: FiniteDistribution[Term] = ExpressionEval.dist(

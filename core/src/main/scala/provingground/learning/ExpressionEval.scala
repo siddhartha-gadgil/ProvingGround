@@ -360,12 +360,12 @@ object ExpressionEval {
     */
   trait GenerateTyps extends ExpressionEval { self =>
     lazy val finalTyps = {
-      val base = FD {
+      val base = FD (({
         finalDist.collect {
           case (FinalVal(Elem(typ: Typ[Term], Typs)), w) =>
             Weighted(typ, w)
         }
-      }
+      }).seq)
       if (base.pmf.exists(_.weight.isNaN))
         Utils.logger.error(s"NaN for some types before normalizing")
       if (base.pmf.forall(_.weight.isNaN))
@@ -442,7 +442,7 @@ object ExpressionEval {
     def adverseIterant(
         hW: Double = 1,
         klW: Double = 1,
-        p: Map[Expression, Double] = finalDist
+        p: Map[Expression, Double] = finalDist.seq
     ): Iterant[Task, Map[Expression, Double]] =
       Iterant.fromLazyStateAction[Task, Map[Expression, Double], Map[
         Expression,
@@ -1203,9 +1203,9 @@ trait ExpressionEval { self =>
   /**
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
-  lazy val finalDist: Map[Expression, Double] =
+  lazy val finalDist: ParMap[Expression, Double] =
     // exprCalc.finalDistMap
-  exprCalc.finalMap //.seq
+  exprCalc.finalMap.par //.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
@@ -1260,9 +1260,9 @@ trait ExpressionEval { self =>
     */
   lazy val finalTerms: FD[HoTT.Term] =
     FD {
-      finalDist.collect {
+      (finalDist.collect {
         case (FinalVal(Elem(t: Term, Terms)), w) if w > 0 => Weighted(t, w)
-      }
+      }).seq
     }.safeNormalized
 
   /**
@@ -1749,7 +1749,7 @@ trait ExpressionEval { self =>
 
   }
 
-  lazy val Final = FixedExpressionProbs(finalDist)
+  lazy val Final = FixedExpressionProbs(finalDist.seq)
 
   /**
     * Terms of the generating distribution
@@ -1882,7 +1882,7 @@ trait ExpressionEval { self =>
   def iterator(
       hW: Double = 1,
       klW: Double = 1,
-      p: Map[Expression, Double] = finalDist
+      p: Map[Expression, Double] = finalDist.seq
   ): Iterator[Map[Expression, Double]] =
     Iterator.iterate(p)(
       q =>
@@ -1892,7 +1892,7 @@ trait ExpressionEval { self =>
   def iterant(
       hW: Double = 1,
       klW: Double = 1,
-      p: Map[Expression, Double] = finalDist
+      p: Map[Expression, Double] = finalDist.seq
   ): Iterant[Task, Map[Expression, Double]] =
     Iterant.fromLazyStateAction[Task, Map[Expression, Double], Map[
       Expression,
@@ -1908,7 +1908,7 @@ trait ExpressionEval { self =>
       hW: Double = 1,
       klW: Double = 1,
       cutoff: Double,
-      p: Map[Expression, Double] = finalDist
+      p: Map[Expression, Double] = finalDist.seq
   ): Iterant[Task, FD[Term]] =
     Iterant.fromLazyStateAction[Task, Map[Expression, Double], FD[Term]] { q =>
       for {
@@ -1929,7 +1929,7 @@ trait ExpressionEval { self =>
       hW: Double = 1,
       klW: Double = 1,
       cutoff: Double,
-      p: Map[Expression, Double] = finalDist,
+      p: Map[Expression, Double] = finalDist.seq,
       maxRatio: Double = 1.01
   ): Map[Expression, Double] = {
     val newMap =
@@ -1942,7 +1942,7 @@ trait ExpressionEval { self =>
       hW: Double = 1,
       klW: Double = 1,
       cutoff: Double,
-      p: Map[Expression, Double] = finalDist,
+      p: Map[Expression, Double] = finalDist.seq,
       maxRatio: Double = 1.01
   ): Task[Map[Expression, Double]] =
     (for {
