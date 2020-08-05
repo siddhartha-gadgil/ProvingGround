@@ -393,7 +393,7 @@ object HoTTBot {
               logger.info(view)
               Utils.report(view)
               goalOpt.foreach { g =>
-                if (results.contains(g)) {
+                if (pfs.map(_._1).contains(g)) {
                   web.running = false
                   Utils.running = false
                 }
@@ -436,7 +436,7 @@ object HoTTBot {
               logger.info(view)
               // Utils.report(view)
               goalOpt.foreach { g =>
-                if (results.contains(g)) {
+                if (pfs.map(_._1).contains(g)) {
                   web.running = false
                   Utils.running = false
                 }
