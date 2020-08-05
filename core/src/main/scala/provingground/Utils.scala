@@ -64,6 +64,8 @@ object Utils {
   val reporters: mutable.ArrayBuffer[Any => Unit] =
     mutable.ArrayBuffer((s) => println(s), (s) => reportText += s.toString())
 
+  var running: Boolean = true
+
   def report(s: Any) = reporters.foreach(r => r(s))
 
   def delayedRun(task: => Unit, delay: Long): Unit = {

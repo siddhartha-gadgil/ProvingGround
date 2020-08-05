@@ -330,7 +330,9 @@ object HoTTBot {
         .foreach(t => logger.error(s"variable $t considered term"))
       web.addTerms(newTerms)
       val typs =
-        newTerms.collect { case t: Typ[u] => t: Typ[Term] } union allTerms.map(_.typ)
+        newTerms.collect { case t: Typ[u] => t: Typ[Term] } union allTerms.map(
+          _.typ
+        )
       val allEquations = newTerms.flatMap(DE.formalEquations(_)) union (typs
         .flatMap(
           DE.formalTypEquations(_)
@@ -350,7 +352,8 @@ object HoTTBot {
 
   def reportProofs(
       results: Vector[Typ[Term]],
-      text: String = "Results"
+      text: String = "Results",
+      goalOpt: Option[Typ[Term]] = None // we halt if we get this, should be subset of results
   ): Callback[
     FinalState,
     HoTTPostWeb,
@@ -389,6 +392,12 @@ object HoTTBot {
                 .mkString("\n")}"
               logger.info(view)
               Utils.report(view)
+              goalOpt.foreach { g =>
+                if (results.contains(g)) {
+                  web.running = false
+                  Utils.running = false
+                }
+              }
             }
       }
     }
@@ -397,7 +406,8 @@ object HoTTBot {
 
   def reportProofsSimple(
       results: Vector[Typ[Term]],
-      text: String = "Results"
+      text: String = "Results",
+      goalOpt: Option[Typ[Term]] = None // we halt if we get this, should be subset of results
   ): Callback[
     FinalState,
     HoTTPostWeb,
@@ -425,6 +435,12 @@ object HoTTBot {
                 .mkString("\n")}"
               logger.info(view)
               // Utils.report(view)
+              goalOpt.foreach { g =>
+                if (results.contains(g)) {
+                  web.running = false
+                  Utils.running = false
+                }
+              }
             }
       }
     }
@@ -1138,8 +1154,9 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  def cappedSpecialBaseState(verbose: Boolean = true)
-      : TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
+  def cappedSpecialBaseState(
+      verbose: Boolean = true
+  ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
     baseStateFromSpecialInit(verbose)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
@@ -1204,7 +1221,9 @@ object HoTTBot {
                       maxTime,
                       cutoffScale,
                       terms,
-                      terms.collect{case t: Typ[u] => t: Typ[Term]} union (terms.map(_.typ))
+                      terms
+                        .collect { case t: Typ[u] => t: Typ[Term] } union (terms
+                        .map(_.typ))
                     )
 
                   }
@@ -1223,8 +1242,9 @@ object HoTTBot {
       depthOpt: Option[Int] = None,
       verbose: Boolean = true
   ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
-    (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit(verbose))
-      .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
+    (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit(
+      verbose
+    )).reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   def proofEquationLHS(
       eqns: Set[EquationNode],
@@ -2072,6 +2092,7 @@ class HoTTWebSession(
         // scribeLog(_)
       )
     ) {
+  override def running = initialWeb.running
 
   // just an illustration, should just use rhs
   def postLocalProverFuture(
