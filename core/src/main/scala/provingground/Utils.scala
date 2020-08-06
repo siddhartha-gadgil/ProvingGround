@@ -41,7 +41,7 @@ object Utils {
           limitOpt.foreach(limit => Utils.logger.info(s"time remaining ${(limit - System.currentTimeMillis())/1000} seconds"))
           val result = head.map(fn)
           Utils.logger.info(s"mapped batch of size ${head.size}")
-          gatherMapSet(tail, result.toSet union (accum), fn)
+          gatherMapSet(tail, result.toSet union (accum), fn, limitOpt)
         case Vector() =>
           Utils.logger.info(
             s"All batches mapped and gathered, got set of size ${accum.size}"
