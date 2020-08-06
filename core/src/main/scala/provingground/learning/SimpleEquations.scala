@@ -176,6 +176,10 @@ object SimpleEquations {
                   z.typ: Typ[Term]
                 )
               }
+          }.timeout((limit / 2).millis).onErrorRecoverWith{
+            case _: TimeoutException =>
+              // Oh, we know about timeouts, recover it
+              Task.now(Set())
           }
       }
       .map { x =>
