@@ -102,8 +102,9 @@ object SimpleEquations {
                       Coeff(Init(Terms)) * InitialVal(Elem(x, Terms))
                     )
                   )
-                appEquations union (DE.formalEquations(z) union (DE
-                  .formalTypEquations(z.typ)))
+                appEquations union (DE.formalEquations(z) union
+                  (DE
+                    .formalTypEquations(z.typ)))
               }
           }
       }
@@ -118,8 +119,9 @@ object SimpleEquations {
       accumTyps: Set[Typ[Term]],
       limit: Long
   ): Task[(Set[EquationNode], Set[Term], Set[Typ[Term]])] = {
-    val funcWeigths = funcs.flatten.pmf.sortBy(x => -x.weight).takeWhile(_.weight > cutoff)
-    val argWeights  = args.flatten.pmf.sortBy(x => -x.weight)
+    val funcWeigths =
+      funcs.flatten.pmf.sortBy(x => -x.weight).takeWhile(_.weight > cutoff)
+    val argWeights = args.flatten.pmf.sortBy(x => -x.weight)
     Task
       .gather {
         for {
@@ -162,17 +164,22 @@ object SimpleEquations {
                       Coeff(Init(Terms)) * InitialVal(Elem(x, Terms))
                     )
                   )
-                val formalTermEqs: Set[EquationNode] =
-                  if (!accumTerms.contains(z)) DE.formalEquations(z) else Set()
+                // val formalTermEqs: Set[EquationNode] =
+                //   if (!accumTerms.contains(z)) DE.formalEquations(z) else Set()
                 val formalTypEqs: Set[EquationNode] =
                   if (!accumTyps.contains(z.typ)) DE.formalTypEquations(z.typ)
                   else Set()
                 (
-                  (appEquations union (formalTermEqs union formalTypEqs)),
+                  (appEquations union (// formalTermEqs union
+                  formalTypEqs)),
                   z,
                   z.typ: Typ[Term]
                 )
               }
+          }.timeout((limit / 2).millis).onErrorRecoverWith{
+            case _: TimeoutException =>
+              // Oh, we know about timeouts, recover it
+              Task.now(Set())
           }
       }
       .map { x =>
@@ -187,7 +194,11 @@ object SimpleEquations {
             TermData.isleNormalize(_),
             Some(limit)
           )
-        (normalized, y.map(_._2).toSet, y.map(_._3).toSet)
+        (
+          normalized,
+          y.map(_._2).toSet -- accumTerms,
+          y.map(_._3).toSet -- accumTyps
+        )
       }
   }
 
@@ -196,6 +207,7 @@ object SimpleEquations {
       args: FiniteDistribution[Term],
       cutoff: Double,
       maxTime: FiniteDuration,
+      minCutoff: Option[Double],
       cutoffScale: Double = 2,
       accumTerms: Set[Term] = Set(),
       accumTyps: Set[Typ[Term]] = Set(),
@@ -215,6 +227,8 @@ object SimpleEquations {
     // .materialize
       .map {
         case (t, (result, newTerms, newTyps)) =>
+          Utils.logger.info(s"new terms: ${newTerms.size}")
+          Utils.logger.info(s"new types: ${newTyps.size}")
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
           if (t > maxTime)
@@ -228,36 +242,43 @@ object SimpleEquations {
           if (pmin * qmin > cutoff)
             Utils.logger.info(s"all pairs considered with cutoff $cutoff")
           ((t < maxTime) && (pmin * qmin < cutoff), (result, newTerms, newTyps)) // ensuring not all pairs already used
-          // case Failure(throwable) =>
-          //   throwable match {
-          //     case _: TimeoutException =>
-          //       Utils.logger.info(s"Timed out with time limit $maxTime")
-          //     case _ =>
-          //       Utils.logger.error(
-          //         s"Instead of timeout, unexpected exception ${throwable.getMessage()}"
-          //       )
-          //   }
-          // (
-          //   false,
-          //   (Set.empty[EquationNode], Set.empty[Term], Set.empty[Typ[Term]])
-          // )
+        // case Failure(throwable) =>
+        //   throwable match {
+        //     case _: TimeoutException =>
+        //       Utils.logger.info(s"Timed out with time limit $maxTime")
+        //     case _ =>
+        //       Utils.logger.error(
+        //         s"Instead of timeout, unexpected exception ${throwable.getMessage()}"
+        //       )
+        //   }
+        // (
+        //   false,
+        //   (Set.empty[EquationNode], Set.empty[Term], Set.empty[Typ[Term]])
+        // )
 
       }
       .flatMap {
         case (b, (result, newTerms, newTyps)) if b =>
-          timedUnAppEquations(
+          val newCutoff = cutoff / cutoffScale
+          if (minCutoff.map(m => newCutoff > m).getOrElse(true)) timedUnAppEquations(
             funcs,
             args,
             cutoff / cutoffScale,
             maxTime,
+            minCutoff,
             cutoffScale,
             accumTerms union (newTerms),
             accumTyps union (newTyps),
             Some(cutoff),
             accum union result
           )
+        else 
+          {
+            Utils.logger.info(s"reached cutoff limit $minCutoff")
+            Task(accum union(result))
+          }
         case (b, (result, _, _)) =>
-          Task.now(accum union result)
+          Task(accum union result)
       }
 
 }

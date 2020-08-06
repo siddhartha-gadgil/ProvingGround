@@ -1005,10 +1005,11 @@ object HoTTBot {
     logger.info("Computing base state")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
-      Equation.group(
-        equationNodes union (DE
+      Utils.makeSet(Equation.groupIt(
+        equationNodes).toVector ++ Equation.groupIt(DE
           .termStateInit(initialState)
-          .map(TermData.isleNormalize(_)))
+          // .map(TermData.isleNormalize(_))
+          )
       ),
       tg,
       maxRatio,
@@ -1194,7 +1195,8 @@ object HoTTBot {
   def timedUnAppEquations(
       cutoff: Double,
       maxTime: FiniteDuration,
-      cutoffScale: Double = 2
+      cutoffScale: Double = 2,
+      minCutoff: Option[Double] = None
   ): MicroHoTTBoTT[TangentBaseCompleted.type, GeneratedEquationNodes, Collated[
     TangentBaseState
   ] :: TangentLemmas :: Set[Term] :: HNil] = {
@@ -1219,6 +1221,7 @@ object HoTTBot {
                       lemPfDist,
                       cutoff,
                       maxTime,
+                      minCutoff,
                       cutoffScale,
                       terms,
                       terms
@@ -1390,9 +1393,10 @@ object HoTTBot {
                               backIndices.foreach { i =>
                                 Utils.logger.info(
                                   s"""|Details for index $i, traced back for $typ, step ${1 + j}, for base with $initString with depth $depth
-                                                    |Equation: ${ev.equationVec(
-                                       i
-                                     )}
+                                                    |Equation: ${ev.exprCalc
+                                       .equationVec(
+                                         i
+                                       )}
                                                     |Rhs-expression: ${calc
                                        .rhsExprs(i)}
                                                     |Value: ${calc.finalVec(i)}

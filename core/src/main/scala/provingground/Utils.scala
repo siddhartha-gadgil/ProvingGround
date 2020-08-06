@@ -2,6 +2,9 @@ package provingground
 import HoTT._
 import scala.util.Try
 import scala.collection.mutable
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
+
 
 object Utils {
   implicit val ec: scala.concurrent.ExecutionContext =
@@ -36,9 +39,9 @@ object Utils {
         case head +: tail =>
           Utils.logger.info(s"processing ${l.size} batches")
           limitOpt.foreach(limit => Utils.logger.info(s"time remaining ${(limit - System.currentTimeMillis())/1000} seconds"))
-          val result = head.map(fn)
+          val result = head.par.map(fn)
           Utils.logger.info(s"mapped batch of size ${head.size}")
-          gatherMapSet(tail, result.toSet union (accum), fn, limitOpt)
+          gatherMapSet(tail, result.seq.toSet union (accum), fn, limitOpt)
         case Vector() =>
           Utils.logger.info(
             s"All batches mapped and gathered, got set of size ${accum.size}"
