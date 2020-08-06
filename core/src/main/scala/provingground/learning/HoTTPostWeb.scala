@@ -19,6 +19,8 @@ import provingground.induction.ExstInducDefn
 class HoTTPostWeb {
   import HoTTPostWeb._
 
+  var running: Boolean = true
+
   implicit val global: GlobalID[ID] = new CounterGlobalID()
 
   import global.postGlobal

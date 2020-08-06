@@ -276,7 +276,7 @@ case class LocalProver(
     } yield this.copy(initState = lInit)
 
   lazy val optimalInit0: Task[LocalProver] = expressionEval.map { ev =>
-    val p                            = ev.optimum(hW, klW, cutoff, ev.finalDist, maxRatio)
+    val p                            = ev.optimum(hW, klW, cutoff, ev.finalDist.seq, maxRatio)
     val td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
     val ts                           = initState.copy(terms = td)
     this.copy(initState = ts)
@@ -285,7 +285,7 @@ case class LocalProver(
   lazy val optimalInit: Task[LocalProver] =
     for {
       ev <- expressionEval
-      p  <- ev.optimumTask(hW, klW, cutoff, ev.finalDist, maxRatio)
+      p  <- ev.optimumTask(hW, klW, cutoff, ev.finalDist.seq, maxRatio)
       td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
       ts                           = initState.copy(terms = td)
     } yield this.copy(initState = ts)
@@ -605,7 +605,7 @@ trait LocalProverStep {
   lazy val generatorIterant: Iterant[Task, FiniteDistribution[HoTT.Term]] =
     Iterant
       .liftF(expressionEval)
-      .flatMap(ev => ev.generatorIterant(hW, klW, cutoff, ev.finalDist))
+      .flatMap(ev => ev.generatorIterant(hW, klW, cutoff, ev.finalDist.seq))
 
   lazy val tunedGenerators: Task[FiniteDistribution[HoTT.Term]] =
     generatorIterant

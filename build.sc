@@ -7,48 +7,6 @@ import define.{Sources, Task}
 import os._
 import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r`
 
-trait MetalsModule extends ScalaModule {
-  import java.io._
-
-  def metalsBuildInfo = T {
-    def targDeps: Agg[eval.PathRef] = resolveDeps(transitiveIvyDeps, false)()
-
-    Map[String, String](
-      "sources" -> allSourceFiles()
-        .map(_.path)
-        .mkString(java.io.File.pathSeparator),
-      "unmanagedSourceDirectories" -> "",
-      "managedSourceDirectories"   -> "",
-      "scalacOptions"              -> scalacOptions().mkString(" "),
-      "classDirectory"             -> compile().classes.path.toString,
-      "dependencyClasspath" ->
-        (targDeps ++
-          Task.traverse(moduleDeps)(_.sources)().flatten)
-          .map(_.path)
-          .mkString(java.io.File.pathSeparator),
-      "scalaVersion" -> scalaVersion(),
-      "sourceJars" ->
-        resolveDeps(transitiveIvyDeps, true)()
-          .map(_.path)
-          .mkString(java.io.File.pathSeparator)
-    )
-  }
-
-  def metalsConfig() = T.command {
-    def outFile =
-      os.pwd / ".metals" / "buildinfo" / RelPath(artifactName().toString) / "main.properties"
-    def info = metalsBuildInfo()
-    def output =
-      info
-        .map {
-          case (k, v) => s"$k=$v"
-        }
-        .mkString("\n")
-    os.write.over(outFile, output, createFolders = true)
-    output
-  }
-}
-
 val scalaV = "2.13.1"
 
 val ammV = "1.8.2"
@@ -70,7 +28,7 @@ val commonLibs = List(
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
-trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
+trait CommonModule extends ScalaModule with ScalafmtModule {
   def scalaVersion     = scalaV
   override def ivyDeps = Agg(commonLibs: _*)
   def version          = "0.1.1-SNAPSHOT"
@@ -366,6 +324,9 @@ object jvmRoot extends CommonModule {
   }
 }
 
+object runcore extends CommonModule with SbtModule{
+  def moduleDeps = Seq(core.jvm)
+}
 object exploring extends JvmModule {
   override def moduleDeps = Seq(core.jvm, mantle, crust)
 }

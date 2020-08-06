@@ -2,6 +2,9 @@ package provingground
 import HoTT._
 import scala.util.Try
 import scala.collection.mutable
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
+
 
 object Utils {
   implicit val ec: scala.concurrent.ExecutionContext =
@@ -20,11 +23,11 @@ object Utils {
 
   @annotation.tailrec
   def gatherMapSet[A, B](
-      l: Vector[Vector[A]],
-      accum: Set[B],
+      l: Vector[ParVector[A]],
+      accum: ParSet[B],
       fn: A => B,
       limitOpt: Option[Long] = None
-  ): Set[B] =
+  ): ParSet[B] =
     if (limitOpt
           .map(limit => System.currentTimeMillis() > limit)
           .getOrElse(false)) {
@@ -63,6 +66,8 @@ object Utils {
 
   val reporters: mutable.ArrayBuffer[Any => Unit] =
     mutable.ArrayBuffer((s) => println(s), (s) => reportText += s.toString())
+
+  var running: Boolean = true
 
   def report(s: Any) = reporters.foreach(r => r(s))
 

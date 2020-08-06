@@ -76,8 +76,10 @@ class SimpleSession[W, ID](
     val web: W,
     var responses: Vector[PostResponse[W, ID]],
     logs: Vector[PostData[_, W, ID] => Future[Unit]],
-    var running: Boolean = true
 ) {
+      def running: Boolean = true
+
+
   /**
     * recursively posting and running (as side-effects) offspring tasks, this posts the head but 
     * bots will be called with a different method that does not post the head, to avoid duplication

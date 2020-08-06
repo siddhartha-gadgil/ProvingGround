@@ -4,6 +4,9 @@ import provingground.induction.ExstInducDefn
 import provingground.learning.HoTTMessages.Proved
 import provingground.learning.HoTTMessages.Contradicted
 import shapeless._, HList._
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
+
 
 /**
   * Messages to be posted for autonomous/interactive running.
@@ -137,10 +140,10 @@ object HoTTMessages {
     * @param eqn resulting equation nodes to use
     */
   case class GeneratedEquationNodes(eqn: Set[EquationNode], preNormalized: Boolean = false){
-    lazy val normalized = 
+    lazy val normalized : Set[EquationNode] = 
       if (preNormalized) eqn else {
        val equationVec = eqn.toVector
-       Utils.gatherMapSet(equationVec.grouped(50000).toVector, Set(), TermData.isleNormalize(_))
+       Utils.gatherMapSet(equationVec.grouped(50000).toVector.map(_.par), ParSet(), TermData.isleNormalize(_)).seq.toSet
     }
   }
 

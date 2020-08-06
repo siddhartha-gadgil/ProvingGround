@@ -148,7 +148,7 @@ object CzSlOly {
     ),
     lemRefine,
     cappedSpecialBaseState(verbose = false),
-    timedUnAppEquations(math.pow(10, -3), 30.minutes, 5),
+    timedUnAppEquations(math.pow(10, -3), 20.minutes, 5),
     eqnsToExpEv(
       Some(
         TermGenParams.zero
@@ -158,7 +158,7 @@ object CzSlOly {
     eqnUpdate,
     updateTerms,
     // expnEqnUpdate,
-    reportProofsSimple(results),
+    reportProofsSimple(results, goalOpt=  Some(results(0))),
     reportProofsSimple(steps, "Steps (in final state)"),
     reportBaseTangentsCalc(results, steps, inferTriples, verbose = false)
   )
