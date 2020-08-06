@@ -1195,7 +1195,8 @@ object HoTTBot {
   def timedUnAppEquations(
       cutoff: Double,
       maxTime: FiniteDuration,
-      cutoffScale: Double = 2
+      cutoffScale: Double = 2,
+      minCutoff: Option[Double] = None
   ): MicroHoTTBoTT[TangentBaseCompleted.type, GeneratedEquationNodes, Collated[
     TangentBaseState
   ] :: TangentLemmas :: Set[Term] :: HNil] = {
@@ -1220,6 +1221,7 @@ object HoTTBot {
                       lemPfDist,
                       cutoff,
                       maxTime,
+                      minCutoff,
                       cutoffScale,
                       terms,
                       terms

@@ -203,6 +203,7 @@ object SimpleEquations {
       args: FiniteDistribution[Term],
       cutoff: Double,
       maxTime: FiniteDuration,
+      minCutoff: Option[Double],
       cutoffScale: Double = 2,
       accumTerms: Set[Term] = Set(),
       accumTyps: Set[Typ[Term]] = Set(),
@@ -254,19 +255,26 @@ object SimpleEquations {
       }
       .flatMap {
         case (b, (result, newTerms, newTyps)) if b =>
-          timedUnAppEquations(
+          val newCutoff = cutoff / cutoffScale
+          if (minCutoff.map(m => newCutoff > m).getOrElse(true)) timedUnAppEquations(
             funcs,
             args,
             cutoff / cutoffScale,
             maxTime,
+            minCutoff,
             cutoffScale,
             accumTerms union (newTerms),
             accumTyps union (newTyps),
             Some(cutoff),
             accum union result
           )
+        else 
+          {
+            Utils.logger.info(s"reached cutoff limit $minCutoff")
+            Task(accum union(result))
+          }
         case (b, (result, _, _)) =>
-          Task.now(accum union result)
+          Task(accum union result)
       }
 
 }
