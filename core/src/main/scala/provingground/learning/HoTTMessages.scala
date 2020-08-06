@@ -143,7 +143,7 @@ object HoTTMessages {
     lazy val normalized : Set[EquationNode] = 
       if (preNormalized) eqn else {
        val equationVec = eqn.toVector
-       Utils.gatherMapSet(equationVec.grouped(50000).toVector.map(_.par), ParSet(), TermData.isleNormalize(_)).seq.toSet
+       Utils.gatherMapSet(equationVec.grouped(50000).toVector, Set(), TermData.isleNormalize(_)).seq.toSet
     }
   }
 
