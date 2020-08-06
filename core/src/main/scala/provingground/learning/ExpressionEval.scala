@@ -108,7 +108,7 @@ object ExpressionEval {
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
         else Some(0)                              // else throw new Exception(s"no initial value for $elem")
       case IsleScale(_) => Some((1.0 - tg.varWeight))
-      case _               => None
+      case _            => None
     }
 
   /**
@@ -130,10 +130,6 @@ object ExpressionEval {
     Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
     val result = expMapVec.toMap
     Utils.logger.info("Computed map")
-    //   (for {
-    //   exp   <- atoms
-    //   value <- initVal(exp, tg, initialState)
-    // } yield exp -> value).toMap
     result
   }
 
@@ -300,18 +296,18 @@ object ExpressionEval {
       maxTimeS: Option[Long] = None
   ) =
     new ExpressionEval {
-      val init                      = initMap(eqAtoms(equationsS), tgS, initialState)
-      val finalTyps                 = finalState.typs
-      val equations                 = equationsS
-      val tg                        = tgS
-      val maxRatio                  = maxRatioS
-      val scale                     = scaleS
-      val coeffsAsVars: Boolean     = false
-      val smoothing: Option[Double] = smoothS
-      val exponent: Double          = exponentS
-      val decay                     = decayS
-      val maxTime: Option[Long]     = maxTimeS
-      val previousMap: Option[Map[Expression,Double]] = None
+      val init                                         = initMap(eqAtoms(equationsS), tgS, initialState)
+      val finalTyps                                    = finalState.typs
+      val equations                                    = equationsS
+      val tg                                           = tgS
+      val maxRatio                                     = maxRatioS
+      val scale                                        = scaleS
+      val coeffsAsVars: Boolean                        = false
+      val smoothing: Option[Double]                    = smoothS
+      val exponent: Double                             = exponentS
+      val decay                                        = decayS
+      val maxTime: Option[Long]                        = maxTimeS
+      val previousMap: Option[Map[Expression, Double]] = None
     }
 
   /**
@@ -342,17 +338,17 @@ object ExpressionEval {
       previousMapS: Option[Map[Expression, Double]] = None
   ): ExpressionEval =
     new ExpressionEval with GenerateTyps {
-      val init                      = initMap(eqAtoms(equationsS), tgS, initialState)
-      val equations                 = equationsS
-      val tg                        = tgS
-      val maxRatio                  = maxRatioS
-      val scale                     = scaleS
-      val coeffsAsVars: Boolean     = false
-      val smoothing: Option[Double] = smoothS
-      val exponent: Double          = exponentS
-      val decay                     = decayS
-      val maxTime: Option[Long]     = maxTimeS
-      val previousMap: Option[Map[Expression,Double]] = previousMapS
+      val init                                         = initMap(eqAtoms(equationsS), tgS, initialState)
+      val equations                                    = equationsS
+      val tg                                           = tgS
+      val maxRatio                                     = maxRatioS
+      val scale                                        = scaleS
+      val coeffsAsVars: Boolean                        = false
+      val smoothing: Option[Double]                    = smoothS
+      val exponent: Double                             = exponentS
+      val decay                                        = decayS
+      val maxTime: Option[Long]                        = maxTimeS
+      val previousMap: Option[Map[Expression, Double]] = previousMapS
     }
 
   /**
@@ -389,17 +385,17 @@ object ExpressionEval {
         decayNew: Double = self.decay,
         maxTimeNew: Option[Long] = self.maxTime
     ): ExpressionEval = new ExpressionEval with GenerateTyps {
-      val init                  = initNew
-      val equations             = equationsNew
-      val tg                    = tgNew
-      val coeffsAsVars          = coeffsAsVarsNew
-      val maxRatio              = maxRatioNew
-      val scale                 = scaleNew
-      val smoothing             = smoothNew
-      val exponent: Double      = exponentNew
-      val decay                 = decayNew
-      val maxTime: Option[Long] = maxTimeNew
-      val previousMap: Option[Map[Expression,Double]] = self.previousMap
+      val init                                         = initNew
+      val equations                                    = equationsNew
+      val tg                                           = tgNew
+      val coeffsAsVars                                 = coeffsAsVarsNew
+      val maxRatio                                     = maxRatioNew
+      val scale                                        = scaleNew
+      val smoothing                                    = smoothNew
+      val exponent: Double                             = exponentNew
+      val decay                                        = decayNew
+      val maxTime: Option[Long]                        = maxTimeNew
+      val previousMap: Option[Map[Expression, Double]] = self.previousMap
     }
 
     override lazy val thmsByStatement: Map[HoTT.Typ[HoTT.Term], Expression] =
@@ -425,7 +421,7 @@ object ExpressionEval {
         val exponent: Double                               = self.exponent
         val decay: Double                                  = self.decay
         val maxTime: Option[Long]                          = self.maxTime
-        val previousMap: Option[Map[Expression,Double]] = self.previousMap
+        val previousMap: Option[Map[Expression, Double]]   = self.previousMap
       }
 
   }
@@ -630,7 +626,14 @@ object SumExpr {}
 
 class ExprCalc(ev: ExpressionEval) {
   import SumExpr._, ev._
-  val size = equationVec.size
+  lazy val equationVec: Vector[Equation] = equations.toVector //.par
+
+  lazy val size = equationVec.size
+
+  lazy val indexMap = equationVec
+    .map(_.lhs)
+    .zipWithIndex
+    .toMap
 
   def getProd(exp: Expression): ProdExpr =
     init
@@ -697,12 +700,15 @@ class ExprCalc(ev: ExpressionEval) {
       m: Map[Int, Double],
       support: Set[Int]
   ): (Map[Int, Double], Set[Int], Boolean) = {
-    val lookup = support.map { j =>
-      j -> rhsExprs(j).evaluate(m)
-    }.filter(_._2 > 0).toMap
+    val lookup = support
+      .map { j =>
+        j -> rhsExprs(j).evaluate(m)
+      }
+      .filter(_._2 > 0)
+      .toMap
     val newMap     = m ++ lookup
     val newIndices = lookup.keySet -- m.keySet
-    val newSupport    = (rhsInvolves(newIndices) union m.keySet) -- constantEquations
+    val newSupport = (rhsInvolves(newIndices) union m.keySet) -- constantEquations
     (newMap, newSupport, newIndices.isEmpty)
   }
 
@@ -724,7 +730,7 @@ class ExprCalc(ev: ExpressionEval) {
         val exp = rhsExprs(j)
         val y   = exp.evaluate(m) // the new value
         val z   = m.getOrElse(j, 0.0) // the old value, if any
-        val newValue =  if (z > 0) {
+        val newValue = if (z > 0) {
           val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
           if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
             Utils.logger.error(
@@ -936,7 +942,7 @@ class ExprCalc(ev: ExpressionEval) {
         Utils.logger.info(
           s"completed $steps steps without stable support, support size : ${initMap.size}"
         )
-      val startTime                = System.currentTimeMillis()
+      val startTime                   = System.currentTimeMillis()
       val (newMap, newSupport, check) = nextMapSupport(initMap, initSupport)
       if (check) {
         Utils.logger.info(
@@ -986,9 +992,13 @@ class ExprCalc(ev: ExpressionEval) {
       }
     }
 
-  lazy val initVector: Vector[Double] = previousMap.map{
-    pm => equationVec.zipWithIndex.map{case (equation, j) => pm.getOrElse(equation.lhs, 0.0)}
-  }.getOrElse(Vector.fill(equationVec.size)(0.0))
+  lazy val initVector: Vector[Double] = previousMap
+    .map { pm =>
+      equationVec.zipWithIndex.map {
+        case (equation, j) => pm.getOrElse(equation.lhs, 0.0)
+      }
+    }
+    .getOrElse(Vector.fill(equationVec.size)(0.0))
 
   lazy val finalVec: Vector[Double] = {
     Utils.logger.info(
@@ -1091,7 +1101,7 @@ trait ExpressionEval { self =>
   val exponent: Double
   val decay: Double
   val maxTime: Option[Long]
-  val previousMap : Option[Map[Expression, Double]]
+  val previousMap: Option[Map[Expression, Double]]
 
   /**
     * new expression-eval with initial distribution averaged with the current one
@@ -1101,18 +1111,18 @@ trait ExpressionEval { self =>
     */
   def avgInit(that: ExpressionEval) =
     new ExpressionEval {
-      val init                      = (0.5 *: self.init) + (0.5 *: that.init)
-      lazy val finalTyps            = self.finalTyps
-      val equations                 = Equation.merge(self.equations, that.equations)
-      val tg                        = self.tg
-      val coeffsAsVars              = self.coeffsAsVars
-      val maxRatio                  = self.maxRatio
-      val scale                     = self.scale
-      val smoothing: Option[Double] = self.smoothing
-      val exponent: Double          = self.exponent
-      val decay: Double             = self.decay
-      val maxTime: Option[Long]     = self.maxTime
-      val previousMap: Option[Map[Expression,Double]] = self.previousMap
+      val init                                         = (0.5 *: self.init) + (0.5 *: that.init)
+      lazy val finalTyps                               = self.finalTyps
+      val equations                                    = Equation.merge(self.equations, that.equations)
+      val tg                                           = self.tg
+      val coeffsAsVars                                 = self.coeffsAsVars
+      val maxRatio                                     = self.maxRatio
+      val scale                                        = self.scale
+      val smoothing: Option[Double]                    = self.smoothing
+      val exponent: Double                             = self.exponent
+      val decay: Double                                = self.decay
+      val maxTime: Option[Long]                        = self.maxTime
+      val previousMap: Option[Map[Expression, Double]] = self.previousMap
     }
 
   /**
@@ -1131,18 +1141,18 @@ trait ExpressionEval { self =>
       decayNew: Double = self.decay,
       maxTimeNew: Option[Long] = self.maxTime
   ): ExpressionEval = new ExpressionEval {
-    val init: Map[Expression, Double] = initNew
-    lazy val finalTyps: FD[Typ[Term]] = finalTypsNew
-    val equations: Set[Equation]      = equationsNew
-    val tg: TermGenParams             = tgNew
-    val coeffsAsVars: Boolean         = coeffsAsVarsNew
-    val maxRatio: Double              = maxRatioNew
-    val scale: Double                 = scaleNew
-    val smoothing: Option[Double]     = smoothNew
-    val exponent: Double              = exponentNew
-    val decay                         = decayNew
-    val maxTime: Option[Long]         = maxTimeNew
-    val previousMap: Option[Map[Expression,Double]] = self.previousMap
+    val init: Map[Expression, Double]                = initNew
+    lazy val finalTyps: FD[Typ[Term]]                = finalTypsNew
+    val equations: Set[Equation]                     = equationsNew
+    val tg: TermGenParams                            = tgNew
+    val coeffsAsVars: Boolean                        = coeffsAsVarsNew
+    val maxRatio: Double                             = maxRatioNew
+    val scale: Double                                = scaleNew
+    val smoothing: Option[Double]                    = smoothNew
+    val exponent: Double                             = exponentNew
+    val decay                                        = decayNew
+    val maxTime: Option[Long]                        = maxTimeNew
+    val previousMap: Option[Map[Expression, Double]] = self.previousMap
   }
 
   /**
@@ -1151,35 +1161,35 @@ trait ExpressionEval { self =>
     * @return
     */
   def generateTyps: ExpressionEval = new ExpressionEval with GenerateTyps {
-    val init                      = self.init
-    val equations                 = self.equations
-    val tg                        = self.tg
-    val coeffsAsVars              = self.coeffsAsVars
-    val maxRatio                  = self.maxRatio
-    val scale                     = self.scale
-    val smoothing: Option[Double] = self.smoothing
-    val exponent: Double          = self.exponent
-    val decay                     = self.decay
-    val maxTime: Option[Long]     = self.maxTime
-    val previousMap: Option[Map[Expression,Double]] = self.previousMap
+    val init                                         = self.init
+    val equations                                    = self.equations
+    val tg                                           = self.tg
+    val coeffsAsVars                                 = self.coeffsAsVars
+    val maxRatio                                     = self.maxRatio
+    val scale                                        = self.scale
+    val smoothing: Option[Double]                    = self.smoothing
+    val exponent: Double                             = self.exponent
+    val decay                                        = self.decay
+    val maxTime: Option[Long]                        = self.maxTime
+    val previousMap: Option[Map[Expression, Double]] = self.previousMap
   }
 
   /**
     * undoing generation of types by freezing them
     */
   def fixTypes: ExpressionEval = new ExpressionEval {
-    val init                               = self.init
-    val finalTyps: FD[HoTT.Typ[HoTT.Term]] = self.finalTyps
-    val equations                          = self.equations
-    val tg                                 = self.tg
-    val coeffsAsVars                       = self.coeffsAsVars
-    val maxRatio                           = self.maxRatio
-    val scale                              = self.scale
-    val smoothing: Option[Double]          = self.smoothing
-    val exponent: Double                   = self.exponent
-    val decay                              = self.decay
-    val maxTime: Option[Long]              = self.maxTime
-    val previousMap: Option[Map[Expression,Double]] = self.previousMap
+    val init                                         = self.init
+    val finalTyps: FD[HoTT.Typ[HoTT.Term]]           = self.finalTyps
+    val equations                                    = self.equations
+    val tg                                           = self.tg
+    val coeffsAsVars                                 = self.coeffsAsVars
+    val maxRatio                                     = self.maxRatio
+    val scale                                        = self.scale
+    val smoothing: Option[Double]                    = self.smoothing
+    val exponent: Double                             = self.exponent
+    val decay                                        = self.decay
+    val maxTime: Option[Long]                        = self.maxTime
+    val previousMap: Option[Map[Expression, Double]] = self.previousMap
   }
 
   /**
@@ -1192,13 +1202,6 @@ trait ExpressionEval { self =>
   //   .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   // val init: Map[Expression, Double] = initMap(eqAtoms(equations), tg, initialState)
 
-  lazy val equationVec: Vector[Equation] = equations.toVector //.par
-
-  lazy val indexMap = equationVec
-    .map(_.lhs)
-    .zipWithIndex
-    .toMap
-
   lazy val exprCalc = new ExprCalc(this)
 
   /**
@@ -1206,7 +1209,7 @@ trait ExpressionEval { self =>
     */
   lazy val finalDist: Map[Expression, Double] =
     // exprCalc.finalDistMap
-  exprCalc.finalMap //.seq
+    exprCalc.finalMap //.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
@@ -1458,17 +1461,17 @@ trait ExpressionEval { self =>
       .flatten
       .toMap
     new ExpressionEval with GenerateTyps {
-      val init                      = newInit
-      val equations                 = eqs
-      val tg                        = self.tg
-      val coeffsAsVars              = self.coeffsAsVars
-      val maxRatio                  = self.maxRatio
-      val scale                     = self.scale
-      val smoothing: Option[Double] = self.smoothing
-      val exponent: Double          = self.exponent
-      val decay                     = self.decay
-      val maxTime: Option[Long]     = self.maxTime
-      val previousMap: Option[Map[Expression,Double]] = self.previousMap
+      val init                                         = newInit
+      val equations                                    = eqs
+      val tg                                           = self.tg
+      val coeffsAsVars                                 = self.coeffsAsVars
+      val maxRatio                                     = self.maxRatio
+      val scale                                        = self.scale
+      val smoothing: Option[Double]                    = self.smoothing
+      val exponent: Double                             = self.exponent
+      val decay                                        = self.decay
+      val maxTime: Option[Long]                        = self.maxTime
+      val previousMap: Option[Map[Expression, Double]] = self.previousMap
     }
   }
 

@@ -1390,9 +1390,10 @@ object HoTTBot {
                               backIndices.foreach { i =>
                                 Utils.logger.info(
                                   s"""|Details for index $i, traced back for $typ, step ${1 + j}, for base with $initString with depth $depth
-                                                    |Equation: ${ev.equationVec(
-                                       i
-                                     )}
+                                                    |Equation: ${ev.exprCalc
+                                       .equationVec(
+                                         i
+                                       )}
                                                     |Rhs-expression: ${calc
                                        .rhsExprs(i)}
                                                     |Value: ${calc.finalVec(i)}
