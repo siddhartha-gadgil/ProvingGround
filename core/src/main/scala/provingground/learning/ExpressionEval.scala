@@ -533,7 +533,7 @@ case class ProdExpr(
       Utils.logger.error(
         s"the product of $subTerms  and constant $constant is not a number"
       )
-    result
+    if (result.isNaN()) 0 else result
   }
 
   def evaluate(m: Map[Int, Double]): Double = {
