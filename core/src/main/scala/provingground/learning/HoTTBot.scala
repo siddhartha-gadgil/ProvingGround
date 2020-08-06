@@ -638,7 +638,7 @@ object HoTTBot {
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => {
-          val neqs  : Set[EquationNode] = eqs.normalized
+          val neqs = eqs.normalized
           eqs.eqn
             .collect {
               case eq @ EquationNode(
@@ -833,7 +833,7 @@ object HoTTBot {
               narrow.hW,
               narrow.klW,
               lp.cutoff,
-              ev.finalDist.seq,
+              ev.finalDist,
               lp.maxRatio
             )
             td: FiniteDistribution[Term] = ExpressionEval.dist(
