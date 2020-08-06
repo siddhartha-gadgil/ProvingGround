@@ -6,6 +6,8 @@ TermGeneratorNodes._
 import provingground.learning.Sort.All
 import provingground.learning.Sort.Filter
 import provingground.learning.Sort.Restrict
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
 
 class DerivedEquations(
     tg: TermGeneratorNodes[TermState] = TermGeneratorNodes.Base
@@ -948,13 +950,13 @@ class DerivedEquations(
       }
 
   def termStateInit(ts: TermState): Set[EquationNode] =
-    termStateElems(ts).map {
+    termStateElems(ts).par.map {
       case Elem(t, rv) =>
         EquationNode(
           finalProb(t, rv),
           Coeff(Init(rv)) * InitialVal(Elem(t, rv))
         )
-    }
+    }.seq
 
 }
 

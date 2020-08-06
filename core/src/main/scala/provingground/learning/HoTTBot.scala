@@ -1008,7 +1008,8 @@ object HoTTBot {
       Equation.group(
         equationNodes union (DE
           .termStateInit(initialState)
-          .map(TermData.isleNormalize(_)))
+          // .map(TermData.isleNormalize(_))
+          )
       ),
       tg,
       maxRatio,
