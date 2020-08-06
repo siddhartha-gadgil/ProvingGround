@@ -6,3 +6,13 @@
 2020.08.04 04:21:59 [ERROR] provingground.learning.ExprCalc.stableVec:854:25 - Timeout for stable vector after 5 steps
 2020.08.04 05:29:22 [ERROR] provingground.learning.ExprCalc.stableSupportVec:881:25 - Timeout for stable support vector after 1 steps
 2020.08.04 05:38:13 [ERROR] provingground.learning.ExprCalc.stableVec:854:25 - Timeout for stable vector after 5 steps
+2020.08.04 11:10:12 [ERROR] provingground.learning.ExprCalc.stableSupportMap:921:25 - Timeout for stable support vector after 3 steps
+2020.08.04 11:39:01 [ERROR] provingground.learning.ExprCalc.stableSupportMap:921:25 - Timeout for stable support vector after 3 steps
+2020.08.04 12:46:08 [ERROR] provingground.learning.ExprCalc.stableSupportMap:921:25 - Timeout for stable support vector after 7 steps
+2020.08.04 12:53:45 [ERROR] provingground.learning.ExprCalc.stableSupportMap:921:25 - Timeout for stable support vector after 2 steps
+2020.08.04 13:52:43 [ERROR] provingground.learning.ExprCalc.stableSupportMap:921:25 - Timeout for stable support vector after 7 steps
+2020.08.04 14:00:30 [ERROR] provingground.learning.ExprCalc.stableSupportMap:921:25 - Timeout for stable support vector after 2 steps
+2020.08.04 15:26:11 [ERROR] provingground.learning.ExprCalc.stableSupportVec:891:25 - Timeout for stable support vector after 1 steps
+2020.08.04 15:27:13 [ERROR] provingground.learning.ExprCalc.stableVec:864:25 - Timeout for stable vector after 7 steps
+2020.08.04 20:02:47 [ERROR] provingground.learning.ExprCalc.stableSupportVec:891:25 - Timeout for stable support vector after 11 steps
+2020.08.04 20:33:33 [ERROR] provingground.learning.ExprCalc.stableVec:864:25 - Timeout for stable vector after 26 steps
