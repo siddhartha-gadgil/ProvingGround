@@ -11,8 +11,6 @@ import DE._
 import scala.concurrent._, duration._
 import scala.math.Ordering.Double.TotalOrdering
 import scala.util._
-import scala.collection.parallel.CollectionConverters._
-import scala.collection.parallel.immutable._
 
 object SimpleEquations {
   def groupTerms(
@@ -184,12 +182,12 @@ object SimpleEquations {
         val eqnVec = y.flatMap(_._1)
         def normalized =
           Utils.gatherMapSet(
-            eqnVec.grouped(10000).toVector.map(_.par),
-            ParSet(),
+            eqnVec.grouped(10000).toVector,
+            Set(),
             TermData.isleNormalize(_),
             Some(limit)
           )
-        (normalized.seq.toSet, y.map(_._2).toSet, y.map(_._3).toSet)
+        (normalized, y.map(_._2).toSet, y.map(_._3).toSet)
       }
   }
 

@@ -2,9 +2,6 @@ package provingground
 import HoTT._
 import scala.util.Try
 import scala.collection.mutable
-import scala.collection.parallel.CollectionConverters._
-import scala.collection.parallel.immutable._
-
 
 object Utils {
   implicit val ec: scala.concurrent.ExecutionContext =
@@ -23,11 +20,11 @@ object Utils {
 
   @annotation.tailrec
   def gatherMapSet[A, B](
-      l: Vector[ParVector[A]],
-      accum: ParSet[B],
+      l: Vector[Vector[A]],
+      accum: Set[B],
       fn: A => B,
       limitOpt: Option[Long] = None
-  ): ParSet[B] =
+  ): Set[B] =
     if (limitOpt
           .map(limit => System.currentTimeMillis() > limit)
           .getOrElse(false)) {
