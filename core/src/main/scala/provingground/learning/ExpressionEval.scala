@@ -995,6 +995,7 @@ class ExprCalc(ev: ExpressionEval) {
       s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
     )
     Utils.logger.info(s"Number of equations: ${equationVec.size}")
+    Utils.logger.info(s"Computed initial vector with size: ${initVector.size}") // to avoid being part of time limit for stable vector
     val stableSupport =
       stableSupportVec(initVector, maxTime, 0L)
     Utils.logger.info("Obtained vector with stable support")
