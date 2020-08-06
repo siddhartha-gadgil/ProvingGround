@@ -1005,8 +1005,8 @@ object HoTTBot {
     logger.info("Computing base state")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
-      Equation.group(
-        equationNodes union (DE
+      Utils.makeSet(Equation.groupIt(
+        equationNodes).toVector ++ Equation.groupIt(DE
           .termStateInit(initialState)
           // .map(TermData.isleNormalize(_))
           )
