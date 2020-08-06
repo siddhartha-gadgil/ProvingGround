@@ -582,7 +582,7 @@ case class ProdExpr(
 
   def /(that: ProdExpr) =
     ProdExpr(
-      constant / that.constant,
+      if (that.constant> 0)  constant / that.constant else constant,
       indices ++ that.negIndices,
       negIndices ++ that.indices
     )
