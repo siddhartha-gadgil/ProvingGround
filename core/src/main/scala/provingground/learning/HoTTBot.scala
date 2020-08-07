@@ -987,11 +987,12 @@ object HoTTBot {
               for {
                 (tp, pfOpt, p) <- lem.lemmas
                 q = lem.weight(tp) * pfScale
-              } yield (tp, pfOpt, math.pow(p, power), q)
+              } yield (tp, pfOpt, math.pow(p, power), math.pow(q, power))
             val ltot = l.map(_._3).sum
             val sc   = scale / ltot
             val pfTot = l.map(_._4).sum
             val pfSc = if (pfTot == 0.0) 0.0 else pfScale /pfTot
+            Utils.logger.info(s"proof pwers scaled by $pfSc")
             val tangLemmas = l.map {
               case (tp, pfOpt, w, u) => (tp, pfOpt, (w * sc) + (u * pfSc))
             }
