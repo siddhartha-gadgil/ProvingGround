@@ -264,11 +264,16 @@ object HoTTBot {
             val proved =
               (tt union
                 qinit.init.terms.support).map(_.typ)
+            Utils.logger.info(
+              s"avoiding ${proved.size} types as tautologies and generators."
+            )
             Lemmas(
-              (fs.ts.lemmas // ++ newLemmas(prevFS.contents, fs)
-              ).filterNot {
+              (fs.ts.lemmas).filterNot {
                 case (tp, _, _) => proved.contains(tp)
-              }
+              },
+              Some(
+                fs.ts.thmsByPf.toMap
+              )
             )
           }
         }
@@ -947,13 +952,15 @@ object HoTTBot {
     allLemmas.filter(hasLargeWeight(_))
   }
 
-  def baseMixinLemmas(power: Double = 1.0): SimpleBot[Lemmas, BaseMixinLemmas] =
+  def baseMixinLemmas(power: Double = 1.0, pfWeight: Double = 0.0): SimpleBot[Lemmas, BaseMixinLemmas] =
     MicroBot.simple(
       lem => {
         val powerSum =
           lem.lemmas.map { case (_, _, p) => math.pow(p, power) }.sum
+        val proofPowerSum = 
+          lem.lemmas.map { case (tp, _, _) => math.pow( lem.weight(tp), power) }.sum
         val flattened = lem.lemmas.map {
-          case (tp, pfOpt, p) => (tp, pfOpt, math.pow(p, power) / powerSum)
+          case (tp, pfOpt, p) => (tp, pfOpt, (math.pow(p, power) * (1.0 - pfWeight) / powerSum)  + (math.pow(lem.weight(tp), power) * pfWeight / proofPowerSum) )
         }
         BaseMixinLemmas(flattened)
       }
@@ -963,7 +970,8 @@ object HoTTBot {
       scale: Double = 1.0,
       decay: Double = 0.5,
       cutoff: Double = 0.04,
-      power: Double = 1
+      power: Double = 1,
+      pfScale: Double = 0.0
   ): MicroHoTTBoTT[Lemmas, UsedLemmas :: TangentLemmas :: HNil, PreviousPosts[
     UsedLemmas
   ]] = {
@@ -978,12 +986,14 @@ object HoTTBot {
             val l =
               for {
                 (tp, pfOpt, p) <- lem.lemmas
-
-              } yield (tp, pfOpt, math.pow(p, power))
+                q = lem.weight(tp) * pfScale
+              } yield (tp, pfOpt, math.pow(p, power), q)
             val ltot = l.map(_._3).sum
             val sc   = scale / ltot
+            val pfTot = l.map(_._4).sum
+            val pfSc = if (pfTot == 0.0) 0.0 else pfScale /pfTot
             val tangLemmas = l.map {
-              case (tp, pfOpt, w) => (tp, pfOpt, w * sc)
+              case (tp, pfOpt, w, u) => (tp, pfOpt, (w * sc) + (u * pfSc))
             }
             val used = tangLemmas.map { case (tp, _, p) => tp -> p }
             UsedLemmas(used) :: TangentLemmas(tangLemmas) :: HNil
@@ -1005,11 +1015,11 @@ object HoTTBot {
     logger.info("Computing base state")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
-      Utils.makeSet(Equation.groupIt(
-        equationNodes).toVector ++ Equation.groupIt(DE
-          .termStateInit(initialState)
+      Utils.makeSet(
+        Equation.groupIt(equationNodes).toVector ++ Equation.groupIt(
+          DE.termStateInit(initialState)
           // .map(TermData.isleNormalize(_))
-          )
+        )
       ),
       tg,
       maxRatio,
