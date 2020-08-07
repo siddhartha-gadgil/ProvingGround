@@ -133,8 +133,14 @@ object CzSlOly {
 
   import HoTTBot._
 
-  val lemRefine = tangentLemmas(scale = 0.1, cutoff = 0.07, power = 0.7) :+ baseMixinLemmas(
-    0.3
+  val lemRefine = tangentLemmas(
+    scale = 0.1,
+    cutoff = 0.07,
+    power = 0.7,
+    pfScale = 0.1
+  ) :+ baseMixinLemmas(
+    0.3,
+    pfWeight = 0.5
   )
   val expFS =
     expEvToFinalState.andThen(updateTerms).andThen(reportProofs(results))
@@ -148,7 +154,12 @@ object CzSlOly {
     ),
     lemRefine,
     cappedSpecialBaseState(verbose = false),
-    timedUnAppEquations(math.pow(10, -3), 30.minutes, 5, Some(math.pow(10, -12))),
+    timedUnAppEquations(
+      math.pow(10, -3),
+      30.minutes,
+      5,
+      Some(math.pow(10, -12))
+    ),
     eqnsToExpEv(
       Some(
         TermGenParams.zero
@@ -158,7 +169,7 @@ object CzSlOly {
     eqnUpdate,
     updateTerms,
     // expnEqnUpdate,
-    reportProofsSimple(results, goalOpt=  Some(results(0))),
+    reportProofsSimple(results, goalOpt = Some(results(0))),
     reportProofsSimple(steps, "Steps (in final state)"),
     reportBaseTangentsCalc(results, steps, inferTriples, verbose = false)
   )
