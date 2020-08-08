@@ -162,9 +162,9 @@ object HoTTMessages {
     */
   case class Lemmas(
       lemmas: Vector[(Typ[Term], Option[Term], Double)],
-      byProof: Option[Map[Typ[Term], Double]] = None
+      byStatement: Option[Map[Typ[Term], Double]] = None
   ){
-    def weight(tp: Typ[Term]): Double = byProof.map(m => m(tp)).getOrElse(0.0)
+    def weight(tp: Typ[Term]): Double = byStatement.map(m => m(tp)).getOrElse(0.0)
   }
 
   case class UsedLemmas(

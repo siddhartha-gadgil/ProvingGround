@@ -128,6 +128,7 @@ object CzSlOly {
   val localProver: LocalProver = LocalProver(
     termState,
     TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
+    cutoff = math.pow(10, -5),
     maxTime = Some(1800000L)
   ).noIsles
 
@@ -156,9 +157,9 @@ object CzSlOly {
     cappedSpecialBaseState(verbose = false),
     timedUnAppEquations(
       math.pow(10, -3),
-      30.minutes,
-      5,
-      Some(math.pow(10, -12))
+      120.minutes,
+      3,
+      Some(math.pow(10, -11))
     ),
     eqnsToExpEv(
       Some(
