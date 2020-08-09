@@ -24,7 +24,7 @@ trait BiPostable[P, W, ID] extends Postable[P, W, ID] {
 
 object Postable {
   implicit val ec: scala.concurrent.ExecutionContext =
-    scala.concurrent.ExecutionContext.global
+    provingground.Utils.ec
 
   /**
     * Making a postable

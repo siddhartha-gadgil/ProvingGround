@@ -4,11 +4,14 @@ import scala.util.Try
 import scala.collection.mutable
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
-
+import java.util.concurrent.Executors
+import scala.concurrent._
 
 object Utils {
+  val threadNum = 4 // based on sparrow
+
   implicit val ec: scala.concurrent.ExecutionContext =
-    scala.concurrent.ExecutionContext.global
+    ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(threadNum))
 
   type MapDist[A] = Map[A, Double]
 

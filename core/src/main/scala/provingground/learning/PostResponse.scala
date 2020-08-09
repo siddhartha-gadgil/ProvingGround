@@ -28,7 +28,7 @@ sealed trait PostResponse[W, ID]{
 
 object PostResponse {
   implicit val ec: scala.concurrent.ExecutionContext =
-    scala.concurrent.ExecutionContext.global
+    Utils.ec
 
   /**
    * Casting to a typed post response if the Postables match
@@ -481,7 +481,7 @@ import Postable.ec, TypedPostResponse.MicroBot
 
 case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vector()){
   implicit val ec: scala.concurrent.ExecutionContext =
-    scala.concurrent.ExecutionContext.global
+    Utils.ec
 
   def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID], dg: DataGetter[P, W, ID]) : Future[WebState[W, ID]] = 
     pw.post(content, web ,predecessors).map{id => WebState(web, PostData.get(content, id) +: apexPosts )} 
