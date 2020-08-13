@@ -1675,7 +1675,7 @@ trait ExpressionEval { self =>
         klW: Double = 1
     ): Task[Vector[Double]] =
       for {
-        der <- jetTask(flatEntropy(pow, hW, klW))
+        der <- jetTask(flattenedEntropy(pow, hW, klW))
         gradient = der.infinitesimal.toVector
         eqg <- onEqnGradientsTask
         res <- MonixGramSchmidt.makePerpFromON(eqg, gradient)
@@ -1765,10 +1765,13 @@ trait ExpressionEval { self =>
   lazy val thmSet: Set[Typ[Term]] =
     finalTyps.support.intersect(finalTermSet.map(_.typ)).filter(!isUniv(_))
 
-  lazy val thmsByStatement: Map[Typ[Term], Expression] = finalTyps
+  lazy val thmProbsByStatement: Map[Typ[Term], Double] = finalTyps
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
+
+  lazy val thmsByStatement: Map[Typ[Term], Expression] = 
+    thmProbsByStatement
     .view
     .mapValues(Literal)
     .toMap
@@ -1793,6 +1796,9 @@ trait ExpressionEval { self =>
   lazy val unknownsExp: Option[Expression] =
     Expression.unknownsCost(thmsByStatement, smoothing)
 
+  lazy val unknownsValue: Option[Double] =
+    Expression.simpleUnknownsCost(thmProbsByStatement, smoothing)
+
   /**
     * Expression for Kullback-Liebler divergence of proofs from statements of theorems.
     */
@@ -1801,9 +1807,9 @@ trait ExpressionEval { self =>
     unknownsExp.map(exp => base + exp).getOrElse(base)
   }
 
-  def flatKLExp(pow: Double) = {
-    val base = Expression.klPower(thmsByStatement, thmsByProof, pow, smoothing)
-    unknownsExp.map(exp => base + exp).getOrElse(base)
+  def flattenedKLExp(pow: Double) = {
+    val base = Expression.klPower(thmProbsByStatement, thmsByProof, pow, smoothing)
+    unknownsValue.map(exp => base + Literal(exp)).getOrElse(base)
   }
 
   lazy val finalTermMap: Map[Term, Expression] = finalTermSet.map { t =>
@@ -1889,8 +1895,8 @@ trait ExpressionEval { self =>
   def entropy(hW: Double = 1, klW: Double = 1): Expression =
     (hExp * hW) + (klExp * klW)
 
-  def flatEntropy(pow: Double, hW: Double = 1, klW: Double = 1): Expression =
-    (hExp * hW) + (flatKLExp(pow) * klW)
+  def flattenedEntropy(pow: Double, hW: Double = 1, klW: Double = 1): Expression =
+    (hExp * hW) + (flattenedKLExp(pow) * klW)
 
   def iterator(
       hW: Double = 1,

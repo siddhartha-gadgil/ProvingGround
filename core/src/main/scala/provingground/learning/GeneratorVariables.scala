@@ -241,7 +241,7 @@ object Expression {
     case Literal(_)       => Set()
     case Quotient(x, y)   => varVals(x) union (varVals(y))
     case Coeff(_)         => Set()
-    case IsleScale(_)  => Set()
+    case IsleScale(_)     => Set()
   }
 
   def varValsNum(expr: Expression): Set[VarVal[_]] = expr match {
@@ -253,39 +253,39 @@ object Expression {
     case Literal(_)       => Set()
     case Quotient(x, y)   => varValsNum(x)
     case Coeff(_)         => Set()
-    case IsleScale(_)  => Set()
+    case IsleScale(_)     => Set()
   }
 
   def atoms(expr: Expression): Set[Expression] = expr match {
-    case value: VarVal[_]     => Set(value)
-    case Log(exp)             => atoms(exp)
-    case Exp(x)               => atoms(x)
-    case Sum(xs)              => xs.flatMap(atoms(_)).toSet
-    case Product(x, y)        => atoms(x) union (atoms(y))
-    case Literal(_)           => Set()
-    case Quotient(x, y)       => atoms(x) union (atoms(y))
-    case coeff @ Coeff(_)     => Set(coeff)
+    case value: VarVal[_]  => Set(value)
+    case Log(exp)          => atoms(exp)
+    case Exp(x)            => atoms(x)
+    case Sum(xs)           => xs.flatMap(atoms(_)).toSet
+    case Product(x, y)     => atoms(x) union (atoms(y))
+    case Literal(_)        => Set()
+    case Quotient(x, y)    => atoms(x) union (atoms(y))
+    case coeff @ Coeff(_)  => Set(coeff)
     case sc @ IsleScale(_) => Set(sc)
   }
 
   def offsprings(expr: Expression): Set[Expression] =
     expr match {
-      case value: VarVal[_]     => Set()
-      case Log(exp)             => Set(exp)
-      case Exp(x)               => Set(x)
-      case Sum(xs)              => xs.flatMap(offsprings(_)).toSet
-      case Product(x, y)        => Set(x, y)
-      case Literal(_)           => Set()
-      case Quotient(x, y)       => Set(x, y)
-      case coeff @ Coeff(_)     => Set()
+      case value: VarVal[_]  => Set()
+      case Log(exp)          => Set(exp)
+      case Exp(x)            => Set(x)
+      case Sum(xs)           => xs.flatMap(offsprings(_)).toSet
+      case Product(x, y)     => Set(x, y)
+      case Literal(_)        => Set()
+      case Quotient(x, y)    => Set(x, y)
+      case coeff @ Coeff(_)  => Set()
       case sc @ IsleScale(_) => Set()
     }
 
   def atomLeaves(expr: Expression): Option[Expression] = expr match {
-    case value: VarVal[_]     => Some(value)
-    case coeff @ Coeff(_)     => Some(coeff)
+    case value: VarVal[_]  => Some(value)
+    case coeff @ Coeff(_)  => Some(coeff)
     case sc @ IsleScale(_) => Some(sc)
-    case _                    => None
+    case _                 => None
   }
 
   @annotation.tailrec
@@ -360,7 +360,7 @@ object Expression {
     case Literal(_)       => Set()
     case Quotient(x, y)   => coefficients(x) union (coefficients(y))
     case cf @ Coeff(_)    => Set(cf)
-    case IsleScale(_)  => Set()
+    case IsleScale(_)     => Set()
   }
 
   def variance(v: Vector[Expression]): Expression =
@@ -378,40 +378,46 @@ object Expression {
       qDist: Map[A, Expression],
       smoothing: Option[Double] = None
   ): Expression =
-    Sum(pDist
-      .map {
-        case (a, p) =>
-          val q = smoothing.map(c => qDist(a) + Literal(c)).getOrElse(qDist(a))
-          p * Log(p / q)
-      }.toVector)
-      
+    Sum(pDist.map {
+      case (a, p) =>
+        val q = smoothing.map(c => qDist(a) + Literal(c)).getOrElse(qDist(a))
+        p * Log(p / q)
+    }.toVector)
 
   def klPower[A](
-      pDist: Map[A, Expression],
+      pDist: Map[A, Double],
       qDist: Map[A, Expression],
-      pow: Double = 1.0,
+      power: Double = 1.0,
       smoothing: Option[Double] = None
-  ): Expression =
-    {val powSum = Sum(pDist.values.map(exp => power(exp, Literal(pow))).toVector)
-      Sum(pDist
-      .map {
-        case (a, p) =>
-          val q = smoothing.map(c => qDist(a) + Literal(c)).getOrElse(qDist(a))
-          (power(p, Literal(pow))/ powSum) * Log(p / q)
-      }.toVector)
-    }
+  ): Expression = {
+    val powSum = pDist.values.map(exp => math.pow(exp, power)).sum
+    Sum(pDist.map {
+      case (a, p) =>
+        val q = smoothing.map(c => qDist(a) + Literal(c)).getOrElse(qDist(a))
+        (-Log(q) + Literal(math.log(p))) * (math.pow(p, power) / powSum)
+    }.toVector)
+  }
 
   def unknownsCost[A](
       pDist: Map[A, Expression],
       smoothing: Option[Double]
   ): Option[Expression] =
     smoothing.map { q =>
-      Sum(pDist
-        .map {
-          case (a, p) =>
-            p * Log(p / q)
-        }.toVector)
-        // .reduce[Expression](_ + _)
+      Sum(pDist.map {
+        case (a, p) =>
+          p * Log(p / q)
+      }.toVector)
+    }
+
+  def simpleUnknownsCost[A](
+      pDist: Map[A, Double],
+      smoothing: Option[Double]
+  ): Option[Double] =
+    smoothing.map { q =>
+      pDist.map {
+        case (a, p) =>
+          (math.log(p / q)) * p
+      }.sum
     }
 
   sealed trait VarVal[+Y] extends Expression {
@@ -731,9 +737,9 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
 
 object Equation {
   def group(ts: Set[EquationNode]): Set[Equation] = groupIt(ts).toSet
-    // ts.groupMapReduce(_.lhs)(_.rhs)(_ + _)
-    //   .map { case (lhs, rhs) => Equation(lhs, rhs) }
-    //   .toSet
+  // ts.groupMapReduce(_.lhs)(_.rhs)(_ + _)
+  //   .map { case (lhs, rhs) => Equation(lhs, rhs) }
+  //   .toSet
   // ts.groupBy(_.lhs)
   //   .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
   //   .toSet
