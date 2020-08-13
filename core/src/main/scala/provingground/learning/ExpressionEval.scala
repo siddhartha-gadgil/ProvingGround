@@ -18,6 +18,7 @@ import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
 import scala.math.Ordering.Double.TotalOrdering
 import scala.collection.immutable.Stream.cons
+import scala.collection.immutable.Nil
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -631,7 +632,7 @@ class ExprCalc(ev: ExpressionEval) {
 
   lazy val size = equationVec.size
 
-  lazy val indexMap = equationVec
+  lazy val indexMap: Map[Expression, Int] = equationVec
     .map(_.lhs)
     .zipWithIndex
     .toMap
@@ -772,6 +773,74 @@ class ExprCalc(ev: ExpressionEval) {
   def traceIndices(j: Int, depth: Int): Vector[Int] =
     if (depth < 1) Vector(j)
     else j +: rhsExprs(j).indices.flatMap(traceIndices(_, depth - 1))
+
+  def nextTraceVector(current: Vector[Vector[Int]]): Vector[Vector[Int]] =
+    current.flatMap { branch =>
+      (0 until (branch.length)).flatMap { j =>
+        val before    = branch.take(j)
+        val after     = branch.drop(j + 1)
+        val offspring = rhsExprs(j).terms
+        offspring.map(pt => before ++ pt.indices ++ after)
+      }
+    }
+
+  def nextTraceSet(
+      current: Set[Set[Int]],
+      relativeTo: Set[Int]
+  ): Set[Set[Int]] =
+    current.flatMap { branchSet =>
+      val branch = branchSet.toVector
+      (0 until (branch.length)).flatMap { j =>
+        val rest      = branch.take(j).toSet union branch.drop(j + 1).toSet
+        val offspring = rhsExprs(j).terms
+        offspring.map(pt => (rest union pt.indices.toSet) -- relativeTo)
+      }
+    }
+
+  @annotation.tailrec
+  final def recTraceSet(
+      current: Set[Set[Int]],
+      depth: Int,
+      relativeTo: Set[Int],
+      accum: Set[Set[Int]]
+  ): Set[Set[Int]] =
+    if (depth < 1 || current.isEmpty) accum
+    else {
+      val next = nextTraceSet(current, relativeTo)
+      recTraceSet(next, depth - 1, relativeTo, accum union (next))
+    }
+
+  def traceSet(
+      elem: Expression,
+      depth: Int,
+      relativeTo: Set[Int]
+  ): Set[Set[Int]] =
+    indexMap
+      .get(elem)
+      .map(index => recTraceSet(Set(Set(index)), depth, relativeTo, Set()))
+      .getOrElse(Set())
+
+  def getGenerators(
+      exps: List[Expression]
+  ): Option[(Set[Term], Set[Typ[Term]])] = exps match {
+    case FinalVal(Elem(x, v)) :: next =>
+      getGenerators(next).flatMap {
+        case (tailTerms, tailTyps) =>
+          (x, v) match {
+            case (typ: Typ[u], Typs) => Some((tailTerms, tailTyps + typ))
+            case (t: Term, _)        => Some((tailTerms + t, tailTyps))
+            case (fn: ExstFunc, _)   => Some((tailTerms + fn.func, tailTyps))
+            case _                   => None
+          }
+      }
+    case Nil => Some((Set(), Set()))
+    case _   => None
+  }
+
+  def generatorSets(
+      traces: Set[Set[Expression]]
+  ): Set[(Set[HoTT.Term], Set[HoTT.Typ[HoTT.Term]])] =
+    traces.flatMap(s => getGenerators(s.toList))
 
   def restrict(
       v: Vector[Double],
@@ -1675,7 +1744,7 @@ trait ExpressionEval { self =>
         klW: Double = 1
     ): Task[Vector[Double]] =
       for {
-        der <- jetTask(flatEntropy(pow, hW, klW))
+        der <- jetTask(flattenedEntropy(pow, hW, klW))
         gradient = der.infinitesimal.toVector
         eqg <- onEqnGradientsTask
         res <- MonixGramSchmidt.makePerpFromON(eqg, gradient)
@@ -1765,13 +1834,15 @@ trait ExpressionEval { self =>
   lazy val thmSet: Set[Typ[Term]] =
     finalTyps.support.intersect(finalTermSet.map(_.typ)).filter(!isUniv(_))
 
-  lazy val thmsByStatement: Map[Typ[Term], Expression] = finalTyps
+  lazy val thmProbsByStatement: Map[Typ[Term], Double] = finalTyps
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
-    .view
-    .mapValues(Literal)
-    .toMap
+
+  lazy val thmsByStatement: Map[Typ[Term], Expression] =
+    thmProbsByStatement.view
+      .mapValues(Literal)
+      .toMap
 
   def proofExpression(typ: Typ[Term]): Expression =
     Sum(
@@ -1793,6 +1864,9 @@ trait ExpressionEval { self =>
   lazy val unknownsExp: Option[Expression] =
     Expression.unknownsCost(thmsByStatement, smoothing)
 
+  lazy val unknownsValue: Option[Double] =
+    Expression.simpleUnknownsCost(thmProbsByStatement, smoothing)
+
   /**
     * Expression for Kullback-Liebler divergence of proofs from statements of theorems.
     */
@@ -1801,9 +1875,10 @@ trait ExpressionEval { self =>
     unknownsExp.map(exp => base + exp).getOrElse(base)
   }
 
-  def flatKLExp(pow: Double) = {
-    val base = Expression.klPower(thmsByStatement, thmsByProof, pow, smoothing)
-    unknownsExp.map(exp => base + exp).getOrElse(base)
+  def flattenedKLExp(pow: Double) = {
+    val base =
+      Expression.klPower(thmProbsByStatement, thmsByProof, pow, smoothing)
+    unknownsValue.map(exp => base + Literal(exp)).getOrElse(base)
   }
 
   lazy val finalTermMap: Map[Term, Expression] = finalTermSet.map { t =>
@@ -1889,8 +1964,12 @@ trait ExpressionEval { self =>
   def entropy(hW: Double = 1, klW: Double = 1): Expression =
     (hExp * hW) + (klExp * klW)
 
-  def flatEntropy(pow: Double, hW: Double = 1, klW: Double = 1): Expression =
-    (hExp * hW) + (flatKLExp(pow) * klW)
+  def flattenedEntropy(
+      pow: Double,
+      hW: Double = 1,
+      klW: Double = 1
+  ): Expression =
+    (hExp * hW) + (flattenedKLExp(pow) * klW)
 
   def iterator(
       hW: Double = 1,
