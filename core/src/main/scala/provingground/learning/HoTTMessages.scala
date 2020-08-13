@@ -79,14 +79,14 @@ object HoTTMessages {
       tgOpt: Option[TermGenParams] = None,
       depthOpt: Option[Int] = None,
       evOpt: Option[ExpressionEval] = None,
-      initOpt: Option[SpecialInitState] = None,
+      initOpt: Option[SpecialInitState] = None
   )
 
   case object TangentBaseCompleted
 
   case class SpecialInitState(
       ts: TermState,
-      baseCutoff : Double = math.pow(10, -4),
+      baseCutoff: Double = math.pow(10, -4),
       lemmaMix: Double = 0.5,
       cutoffScale: Double = 1.0, // lower the cutoff by this
       tgOpt: Option[TermGenParams] = None,
@@ -136,12 +136,20 @@ object HoTTMessages {
     *
     * @param eqn resulting equation nodes to use
     */
-  case class GeneratedEquationNodes(eqn: Set[EquationNode], preNormalized: Boolean = false){
-    lazy val normalized = 
-      if (preNormalized) eqn else {
-       val equationVec = eqn.toVector
-       Utils.gatherMapSet(equationVec.grouped(50000).toVector, Set(), TermData.isleNormalize(_))
-    }
+  case class GeneratedEquationNodes(
+      eqn: Set[EquationNode],
+      preNormalized: Boolean = false
+  ) {
+    lazy val normalized =
+      if (preNormalized) eqn
+      else {
+        val equationVec = eqn.toVector
+        Utils.gatherMapSet(
+          equationVec.grouped(50000).toVector,
+          Set(),
+          TermData.isleNormalize(_)
+        )
+      }
   }
 
   case object EquationsCompleted
@@ -163,8 +171,9 @@ object HoTTMessages {
   case class Lemmas(
       lemmas: Vector[(Typ[Term], Option[Term], Double)],
       byStatement: Option[Map[Typ[Term], Double]] = None
-  ){
-    def weight(tp: Typ[Term]): Double = byStatement.map(m => m(tp)).getOrElse(0.0)
+  ) {
+    def weight(tp: Typ[Term]): Double =
+      byStatement.map(m => m(tp)).getOrElse(0.0)
   }
 
   case class UsedLemmas(
@@ -380,6 +389,7 @@ object HoTTMessages {
   case class OptimizeGenerators(decay: Double)
 
   case class NarrowOptimizeGenerators(
+      pow: Double,
       hW: Double,
       klW: Double,
       smoothing: Double,

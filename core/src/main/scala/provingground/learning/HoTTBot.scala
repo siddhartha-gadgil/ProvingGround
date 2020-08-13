@@ -834,7 +834,8 @@ object HoTTBot {
               smoothNew = Some(narrow.smoothing),
               decayNew = narrow.decay
             )
-            p <- ev.optimumTask(
+            p <- ev.flattenedOptimumTask(
+              narrow.pow,
               narrow.hW,
               narrow.klW,
               lp.cutoff,

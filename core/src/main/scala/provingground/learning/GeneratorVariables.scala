@@ -386,6 +386,21 @@ object Expression {
       }.toVector)
       
 
+  def klPower[A](
+      pDist: Map[A, Expression],
+      qDist: Map[A, Expression],
+      pow: Double = 1.0,
+      smoothing: Option[Double] = None
+  ): Expression =
+    {val powSum = Sum(pDist.values.map(exp => power(exp, Literal(pow))).toVector)
+      Sum(pDist
+      .map {
+        case (a, p) =>
+          val q = smoothing.map(c => qDist(a) + Literal(c)).getOrElse(qDist(a))
+          (power(p, Literal(pow))/ powSum) * Log(p / q)
+      }.toVector)
+    }
+
   def unknownsCost[A](
       pDist: Map[A, Expression],
       smoothing: Option[Double]
@@ -432,6 +447,8 @@ object Expression {
   def sigmoid(x: Expression) = Exp(x) / (Exp(x) + Literal(1))
 
   def inverseSigmoid(y: Expression) = Log(y / (Literal(1) - y))
+
+  def power(x: Expression, t: Expression) = Exp(Log(x) * t)
 
   case class Sum(xs: Vector[Expression]) extends Expression {
     def mapVars(f: VariableMap): Sum =

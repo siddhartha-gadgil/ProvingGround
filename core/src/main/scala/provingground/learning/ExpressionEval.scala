@@ -123,10 +123,10 @@ object ExpressionEval {
     Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
     val valueVec = atomVec.map(exp => initVal(exp, tg, initialState))
     Utils.logger.info("Computed initial values")
-    val fn : PartialFunction[(Option[Double], Int), (Expression, Double)] =  {
+    val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
       case (Some(x), n) if x > 0 => (atomVec(n), x)
     }
-    val expMapVec = valueVec.zipWithIndex.collect (fn)
+    val expMapVec = valueVec.zipWithIndex.collect(fn)
     Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
     Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
     val result = expMapVec.toMap
@@ -582,7 +582,7 @@ case class ProdExpr(
 
   def /(that: ProdExpr) =
     ProdExpr(
-      if (that.constant> 0)  constant / that.constant else constant,
+      if (that.constant > 0) constant / that.constant else constant,
       indices ++ that.negIndices,
       negIndices ++ that.indices
     )
@@ -1042,7 +1042,6 @@ class ExprCalc(ev: ExpressionEval) {
   lazy val finalDistMap: Map[Expression, Double] = finalStableMap.map {
     case (j, p) => equationVec(j).lhs -> p
   }
-
 
   lazy val finalMap: Map[Expression, Double] = {
     val fn: ((Double, Int)) => (Expression, Double) = {
@@ -1670,6 +1669,18 @@ trait ExpressionEval { self =>
         res <- MonixGramSchmidt.makePerpFromON(eqg, gradient)
       } yield res
 
+    def flatEntropyProjectionTask(
+        pow: Double,
+        hW: Double = 1,
+        klW: Double = 1
+    ): Task[Vector[Double]] =
+      for {
+        der <- jetTask(flatEntropy(pow, hW, klW))
+        gradient = der.infinitesimal.toVector
+        eqg <- onEqnGradientsTask
+        res <- MonixGramSchmidt.makePerpFromON(eqg, gradient)
+      } yield res
+
     def expressionProjectionTask(
         exp: Expression
     ): Task[Vector[Double]] =
@@ -1790,6 +1801,11 @@ trait ExpressionEval { self =>
     unknownsExp.map(exp => base + exp).getOrElse(base)
   }
 
+  def flatKLExp(pow: Double) = {
+    val base = Expression.klPower(thmsByStatement, thmsByProof, pow, smoothing)
+    unknownsExp.map(exp => base + exp).getOrElse(base)
+  }
+
   lazy val finalTermMap: Map[Term, Expression] = finalTermSet.map { t =>
     t -> FinalVal(Elem(t, Terms))
   }.toMap
@@ -1873,6 +1889,9 @@ trait ExpressionEval { self =>
   def entropy(hW: Double = 1, klW: Double = 1): Expression =
     (hExp * hW) + (klExp * klW)
 
+  def flatEntropy(pow: Double, hW: Double = 1, klW: Double = 1): Expression =
+    (hExp * hW) + (flatKLExp(pow) * klW)
+
   def iterator(
       hW: Double = 1,
       klW: Double = 1,
@@ -1946,6 +1965,23 @@ trait ExpressionEval { self =>
     } yield stable -> newMap).flatMap {
       case (true, m)  => Task.now(m)
       case (false, m) => optimumTask(hW, klW, cutoff, m)
+    }
+
+  def flattenedOptimumTask(
+      pow: Double,
+      hW: Double = 1,
+      klW: Double = 1,
+      cutoff: Double,
+      p: Map[Expression, Double] = finalDist,
+      maxRatio: Double = 1.01
+  ): Task[Map[Expression, Double]] =
+    (for {
+      epg <- FixedExpressionProbs(p).flatEntropyProjectionTask(pow, hW, klW)
+      newMap = stableGradShift(p, epg).filter(t => t._2 > cutoff)
+      stable = ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))
+    } yield stable -> newMap).flatMap {
+      case (true, m)  => Task.now(m)
+      case (false, m) => flattenedOptimumTask(pow, hW, klW, cutoff, m)
     }
 
   // Backward step to see what terms were used in a given term.
