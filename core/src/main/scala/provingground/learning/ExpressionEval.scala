@@ -19,6 +19,7 @@ import scala.collection.parallel.immutable._
 import scala.math.Ordering.Double.TotalOrdering
 import scala.collection.immutable.Stream.cons
 import scala.collection.immutable.Nil
+import shapeless.ops.product
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -841,6 +842,37 @@ class ExprCalc(ev: ExpressionEval) {
       traces: Set[Set[Expression]]
   ): Set[(Set[HoTT.Term], Set[HoTT.Typ[HoTT.Term]])] =
     traces.flatMap(s => getGenerators(s.toList))
+
+  def vecSum(vecs: Vector[Vector[(Int, Double)]]) =
+    vecs.reduce(_ ++ _).groupMapReduce(_._1)(_._2)(_ + _).toVector
+
+    // A simplification where we do not propagate through the denominator, i.e., events. This makes things more stable.
+  def gradient(
+      index: Int,
+      decay: Double = 1.0,
+      depth: Int
+  ): Vector[(Int, Double)] =
+    if (depth < 1) Vector()
+    else {
+      val rhs = rhsExprs(index)
+      val branches: Vector[Vector[(Int, Double)]] = rhs.terms.map { prod =>
+        {
+          val lieb = (0 until (prod.indices.size)).map { j =>
+            val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
+            val denominator = prod.negIndices.map(finalVec(_)).product
+            val coeff =
+              if (denominator > 0) rest.map(finalVec(_)).product / (denominator)
+              else rest.map(finalVec(_)).product
+            val ind = prod.indices(j)
+            gradient(j, decay - 1, depth - 1).map {
+              case (j, w) => j -> (w * coeff * decay)
+            } 
+          }.toVector
+          vecSum(lieb)
+        }
+      }
+      vecSum(branches :+ Vector(index -> 1.0))
+    }
 
   def restrict(
       v: Vector[Double],
