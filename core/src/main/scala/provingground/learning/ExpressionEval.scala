@@ -846,18 +846,34 @@ class ExprCalc(ev: ExpressionEval) {
   def vecSum(vecs: Vector[Vector[(Int, Double)]]) =
     vecs.reduce(_ ++ _).groupMapReduce(_._1)(_._2)(_ + _).toVector
 
-    // A simplification where we do not propagate through the denominator, i.e., events. This makes things more stable.
+  def gradientStep(index: Int): Vector[(Int, Double)] = {
+    val rhs = rhsExprs(index)
+    val branches: Vector[Vector[(Int, Double)]] = rhs.terms.map { prod =>
+        (0 until (prod.indices.size)).toVector.map { j =>
+          val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
+          val denominator = prod.negIndices.map(finalVec(_)).product
+          val coeff =
+            if (denominator > 0) rest.map(finalVec(_)).product / (denominator)
+            else rest.map(finalVec(_)).product
+          val ind = prod.indices(j)
+          (j -> coeff)
+        }      
+    }
+    vecSum(branches)
+  }
+
+  // A simplification where we do not propagate through the denominator, i.e., events. This makes things more stable.
   def gradient(
       index: Int,
       decay: Double = 1.0,
       depth: Int
   ): Vector[(Int, Double)] =
-    if (depth < 1) Vector()
+    if (depth < 1) Vector(index -> 1.0)
     else {
       val rhs = rhsExprs(index)
       val branches: Vector[Vector[(Int, Double)]] = rhs.terms.map { prod =>
         {
-          val lieb = (0 until (prod.indices.size)).map { j =>
+          val liebnitz = (0 until (prod.indices.size)).map { j =>
             val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
             val denominator = prod.negIndices.map(finalVec(_)).product
             val coeff =
@@ -866,9 +882,9 @@ class ExprCalc(ev: ExpressionEval) {
             val ind = prod.indices(j)
             gradient(j, decay - 1, depth - 1).map {
               case (j, w) => j -> (w * coeff * decay)
-            } 
+            }
           }.toVector
-          vecSum(lieb)
+          vecSum(liebnitz)
         }
       }
       vecSum(branches :+ Vector(index -> 1.0))
