@@ -9,6 +9,8 @@ import scala.jdk.CollectionConverters._
 object WordNet{
   val url = getClass().getClassLoader().getResource("dict")
 
+  pprint.log(url)
+
   val dict = new Dictionary(url)
 
   dict.open()
