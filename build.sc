@@ -102,7 +102,7 @@ trait CommonJSModule extends CommonModule with ScalaJSModule {
 
 val jvmLibs = List(
   ivy"com.lihaoyi:::ammonite:$ammV",
-  ivy"com.lihaoyi::cask:0.5.2",
+  ivy"com.lihaoyi::cask:0.7.3",
   ivy"org.scalameta::scalameta:4.2.3",
   ivy"com.github.nscala-time::nscala-time:2.22.0",
   ivy"org.reactivemongo::reactivemongo:0.20.2",
@@ -191,7 +191,7 @@ object trepplein extends SbtModule with PublishModule {
 }
 
 val mantleLibs = List(
-  ivy"com.lihaoyi::cask:0.5.2",
+  ivy"com.lihaoyi::cask:0.7.3",
   ivy"org.scalameta::scalameta:4.3.0",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.13.0",

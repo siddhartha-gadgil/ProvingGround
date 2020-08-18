@@ -337,8 +337,7 @@ object Site {
       t: String = "ProvingGround",
       haltButton: Boolean = false
   ): String =
-    s"""
-       |<!DOCTYPE html>
+    s"""<!DOCTYPE html>
        |<html lang="en">
        |${head(relDocsPath, t)}
        |<body>

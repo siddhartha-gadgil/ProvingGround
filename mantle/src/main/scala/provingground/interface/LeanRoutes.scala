@@ -29,7 +29,8 @@ import upickle.default.{write => uwrite, read => _, _}
 
 import scala.util.Try
 
-object LeanRoutes extends cask.Routes {
+case class  LeanRoutes()(implicit cc: castor.Context,
+                           log: cask.Logger) extends cask.Routes {
   import LeanResources._
 
   def log: cask.util.Logger = new cask.util.Logger.Console

@@ -14,10 +14,11 @@ import scala.util.Try
 import cask.main.Routes
 import cask.util.Logger
 
-object MantleRoutes extends cask.Routes {
+case class MantleRoutes()(implicit cc: castor.Context,
+                           log: cask.Logger) extends cask.Routes {
   // implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
-  def log: Logger = new Logger.Console
+  // def log: Logger = new Logger.Console
   
   val indexHTML =
   """
@@ -155,7 +156,9 @@ val proverHTML =
 
   @cask.get("/")
   def root() =
-    Site.page(indexHTML, "resources/", "ProvingGround HoTT Server", false)
+    cask.Response(
+    Site.page(indexHTML, "resources/", "ProvingGround HoTT Server", false),
+    headers = Seq("Content-Type" -> "text/html"))
 
   @cask.get("/index.html")
   def index() =
@@ -243,9 +246,9 @@ val proverHTML =
 }
 
 object MantleCask extends cask.Main {
-  override def allRoutes: Seq[Routes] = Seq(MantleRoutes, LeanRoutes)
-  override def port = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
-  override def host = Try(sys.env("IP")).getOrElse("localhost")
+  override val allRoutes: Seq[Routes] = Seq(MantleRoutes(), LeanRoutes())
+  override val port = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
+  override val host = Try(sys.env("IP")).getOrElse("localhost")
 }
 
 object ReplCask{
