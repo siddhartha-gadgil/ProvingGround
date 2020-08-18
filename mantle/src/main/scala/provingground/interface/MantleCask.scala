@@ -6,7 +6,12 @@ import provingground._
 import scala.concurrent._
 // import MantleService._
 import io.undertow.websockets.WebSocketConnectionCallback
-import io.undertow.websockets.core.{AbstractReceiveListener, BufferedTextMessage, WebSocketChannel, WebSockets}
+import io.undertow.websockets.core.{
+  AbstractReceiveListener,
+  BufferedTextMessage,
+  WebSocketChannel,
+  WebSockets
+}
 import io.undertow.websockets.spi.WebSocketHttpExchange
 import monix.execution.CancelableFuture
 
@@ -14,14 +19,14 @@ import scala.util.Try
 import cask.main.Routes
 import cask.util.Logger
 
-case class MantleRoutes()(implicit cc: castor.Context,
-                           log: cask.Logger) extends cask.Routes {
+case class MantleRoutes()(implicit cc: castor.Context, log: cask.Logger)
+    extends cask.Routes {
   // implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
   // def log: Logger = new Logger.Console
-  
+
   val indexHTML =
-  """
+    """
     |
     | <p> This is a server to experiment with a few aspects of the ProvingGround project, as well as help with development. The natural
     | language processing is on a separate server as it has a large additional dependency.</p>
@@ -39,7 +44,7 @@ case class MantleRoutes()(implicit cc: castor.Context,
   """.stripMargin
 
   val fiddleHTML =
-  """
+    """
   |<!DOCTYPE html>
   |
   |<html>
@@ -89,8 +94,8 @@ case class MantleRoutes()(implicit cc: castor.Context,
   |
 """.stripMargin
 
-val proverHTML =
-  """
+  val proverHTML =
+    """
     |
     |  <div id="prover-div"></div>
     |  <script type="text/javascript" src="../resources/out.js"></script>
@@ -114,7 +119,7 @@ val proverHTML =
     """.stripMargin
 
   val interactiveProverHTML =
-  """
+    """
     |<div id="interactive-prover-div"></div>
     |<script type="text/javascript" src="../resources/out.js"></script>
     |  <script>
@@ -123,58 +128,88 @@ val proverHTML =
     |  </script>
   """.stripMargin
 
-
   def trySite() =
-  Try(Site.mkHome())
-    .map { (_) =>
-      Future(
-        Try(Site.mkSite())
-          .getOrElse(pprint.log(
-            "Cannot build site, perhaps this is not run from the root of the repo"))
+    Try(Site.mkHome())
+      .map { (_) =>
+        Future(
+          Try(Site.mkSite())
+            .getOrElse(
+              pprint.log(
+                "Cannot build site, perhaps this is not run from the root of the repo"
+              )
+            )
+        )
+        "Building site"
+      }
+      .getOrElse(
+        "Cannot build site, perhaps this is not run from the root of the repo"
       )
-      "Building site"
-    }
-    .getOrElse(
-      "Cannot build site, perhaps this is not run from the root of the repo")
-
-
-
   @cask.staticFiles("/docs")
   def docsRoute() = "docs"
 
   def getResource(segs: Seq[String]) = {
     val path = segs.foldLeft[os.ResourcePath](os.resource)(_ / _)
-    val txt = os.read(path)
+    val txt  = os.read(path)
     txt
   }
 
   @cask.get("/resources", subpath = true)
   def public(request: cask.Request) = {
     val segs = request.remainingPathSegments
-    getResource(segs)
+    pprint.log(segs)
+    val data = getResource(segs)
+    segs.head match {
+      case "js" =>
+        cask.Response(data, headers = Seq("Content-Type" -> "text/javascript"))
+      case "css" =>
+        cask.Response(data, headers = Seq("Content-Type" -> "text/css"))
+      case _ =>
+        segs.last.takeRight(4) match {
+          case ".png" => cask.Response(data, headers = Seq("Content-Type" -> "image/png"))
+          case ".jpg" => cask.Response(data, headers = Seq("Content-Type" -> "image/jpg"))
+          case _ => cask.Response(data)
+        }       
+    }
+
   }
 
   @cask.get("/")
   def root() =
     cask.Response(
-    Site.page(indexHTML, "resources/", "ProvingGround HoTT Server", false),
-    headers = Seq("Content-Type" -> "text/html"))
+      Site.page(indexHTML, "resources/", "ProvingGround HoTT Server", false),
+      headers = Seq("Content-Type" -> "text/html")
+    )
 
   @cask.get("/index.html")
   def index() =
-    Site.page(indexHTML, "resources/", "ProvingGround HoTT Server", false)
-
-  @cask.get("/prover.html")
+    cask.Response(
+      Site.page(indexHTML, "resources/", "ProvingGround HoTT Server", false),
+      headers = Seq("Content-Type" -> "text/html")
+    )
   def prover() =
-    Site.page(proverHTML, "resources/", "ProvingGround HoTT Server", false)
-
+    cask.Response(
+      Site.page(proverHTML, "resources/", "ProvingGround HoTT Server", false),
+      headers = Seq("Content-Type" -> "text/html")
+    )
   @cask.get("/leanlib.html")
   def leanlib() =
-    Site.page(leanlibHTML, "resources/", "ProvingGround Lean Export", false)
+    cask.Response(
+      Site.page(leanlibHTML, "resources/", "ProvingGround HoTT Server", false),
+      headers = Seq("Content-Type" -> "text/html")
+    )
 
   @cask.get("/interactive-prover.html")
-  def interactiveProver() : String =
-    Site.page(interactiveProverHTML, "resources/", "ProvingGround: Interactive prover", false)
+  def interactiveProver() =
+  cask.Response(
+      Site.page(
+      interactiveProverHTML,
+      "resources/",
+      "ProvingGround: Interactive prover",
+      false
+    ),
+      headers = Seq("Content-Type" -> "text/html")
+    )
+    
 
   @cask.post("/monoid-proof")
   def seek() = {
@@ -189,7 +224,10 @@ val proverHTML =
     trySite()
 
   @cask.get("/scripts/index.html")
-  def fiddle() = fiddleHTML
+  def fiddle() =  
+    cask.Response(fiddleHTML,
+     headers = Seq("Content-Type" -> "text/html")
+    )
 
   @cask.post("/scripts/kernel")
   def repl(request: cask.Request) = {
@@ -213,13 +251,16 @@ val proverHTML =
   @cask.websocket("/monoid-websock")
   def showUserProfile(): cask.WebsocketResult = {
     new WebSocketConnectionCallback() {
-      override def onConnect(exchange: WebSocketHttpExchange,
-                             channel: WebSocketChannel): Unit = {
+      override def onConnect(
+          exchange: WebSocketHttpExchange,
+          channel: WebSocketChannel
+      ): Unit = {
         channel.getReceiveSetter.set(
           new AbstractReceiveListener() {
             override def onFullTextMessage(
                 channel: WebSocketChannel,
-                message: BufferedTextMessage): Unit = {
+                message: BufferedTextMessage
+            ): Unit = {
               message.getData match {
                 case "" => channel.close()
                 case data =>
@@ -247,21 +288,20 @@ val proverHTML =
 
 object MantleCask extends cask.Main {
   override val allRoutes: Seq[Routes] = Seq(MantleRoutes(), LeanRoutes())
-  override val port = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
-  override val host = Try(sys.env("IP")).getOrElse("localhost")
+  override val port                   = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
+  override val host                   = Try(sys.env("IP")).getOrElse("localhost")
 }
 
-object ReplCask{
+object ReplCask {
   import MantleCask._
   import io.undertow.Undertow
   lazy val server = Undertow.builder
-      .addHttpListener(port, host)
-      .setHandler(defaultHandler)
-      .build
+    .addHttpListener(port, host)
+    .setHandler(defaultHandler)
+    .build
 }
 
 import monix.eval._
-
 
 class TaskSocket(task: String => Task[String])
     extends WebSocketConnectionCallback() {
@@ -271,14 +311,18 @@ class TaskSocket(task: String => Task[String])
   def respond(t: Task[String], channel: WebSocketChannel): Unit =
     t.foreach((output) => WebSockets.sendTextBlocking(output, channel))
 
-  override def onConnect(exchange: WebSocketHttpExchange,
-                         channel: WebSocketChannel): Unit = {
+  override def onConnect(
+      exchange: WebSocketHttpExchange,
+      channel: WebSocketChannel
+  ): Unit = {
     channel.getReceiveSetter.set(
       new AbstractReceiveListener() {
-        override def onFullTextMessage(channel: WebSocketChannel,
-                                       message: BufferedTextMessage): Unit = {
+        override def onFullTextMessage(
+            channel: WebSocketChannel,
+            message: BufferedTextMessage
+        ): Unit = {
           message.getData match {
-            case ""   => channel.close()
+            case "" => channel.close()
             case data =>
               respond(task(data), channel)
           }

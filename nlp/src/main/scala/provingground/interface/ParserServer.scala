@@ -57,16 +57,19 @@ object NLPParser{
 
 import NLPParser._
 
-object ParserRoutes extends cask.Routes {
+case class ParserRoutes()(implicit cc: castor.Context,
+                           log: cask.Logger) extends cask.Routes {
   def log: Logger = new Logger.Console()
 
   @cask.get("/nlp.html")
-  def nlp(): String = {
+  def nlp() = {
     Future(parseResult("Hello World")) // waking up the stanford pipeline
-    Site.page(mainHTML,
+    cask.Response(Site.page(mainHTML,
               "resources/",
               "ProvingGround: Natural language translation",
-              false)
+              false),
+              headers = Seq("Content-Type" -> "text/html")
+    )
   }
 
   @cask.post("/parse")
@@ -94,7 +97,7 @@ object ParserRoutes extends cask.Routes {
 }
 
 object ParserCask extends cask.Main {
-  def allRoutes: Seq[Routes] = Seq(ParserRoutes, MantleRoutes, LeanRoutes)
+  def allRoutes: Seq[Routes] = Seq(ParserRoutes(), MantleRoutes(), LeanRoutes())
   override def port: Int = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
   override def host: String = Try(sys.env("IP")).getOrElse("localhost")
 }
