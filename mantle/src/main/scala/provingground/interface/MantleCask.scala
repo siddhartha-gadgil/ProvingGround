@@ -51,7 +51,7 @@ case class MantleRoutes()(implicit cc: castor.Context, log: cask.Logger)
   |  <head>
   |    <title>ProvingGround Fiddle</title>
   |    <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
-  |    <link rel="icon" href="/resources/IIScLogo.jpg">
+  |    <link rel="icon" href="/images/IIScLogo.jpg">
   |    <script src="../resources/js/ace.js" type="text/javascript" charset="utf-8"></script>
   |    <link rel="stylesheet" href="../resources/css/katex.min.css">
   |    <script src="../resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
@@ -153,11 +153,29 @@ case class MantleRoutes()(implicit cc: castor.Context, log: cask.Logger)
     txt
   }
 
+  def getResourceBin(segs: Seq[String]) = {
+    val path = segs.foldLeft[os.ResourcePath](os.resource)(_ / _)
+    val bin = os.read.bytes(path)
+    bin
+  }
+
+  @cask.get("/images", subpath = true)
+  def image(request: cask.Request) = {
+    val segs = request.remainingPathSegments
+    // pprint.log(segs)
+    def data = getResource(segs)
+    def binData = getResourceBin(segs)
+    val mimeType = "image/"+ segs.last.takeRight(3)
+    cask.Response(binData, headers = Seq("Content-Type" -> mimeType))
+  }
+
+
   @cask.get("/resources", subpath = true)
   def public(request: cask.Request) = {
     val segs = request.remainingPathSegments
-    pprint.log(segs)
-    val data = getResource(segs)
+    // pprint.log(segs)
+    def data = getResource(segs)
+    def binData = getResourceBin(segs)
     segs.head match {
       case "js" =>
         cask.Response(data, headers = Seq("Content-Type" -> "text/javascript"))

@@ -84,7 +84,7 @@ lazy val jvmSettings = Seq(
     // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
     "org.scalactic" %% "scalactic" % "3.2.0",
     "org.scalatest" %% "scalatest" % "3.2.0" % "test",
-    "com.lihaoyi" %% "cask" % "0.5.2",
+    "com.lihaoyi" %% "cask" % "0.7.3",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
     "org.apache.logging.log4j" % "log4j-core" % "2.13.0",

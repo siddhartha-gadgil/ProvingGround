@@ -48,7 +48,7 @@ object Site {
        |    <meta name="viewport" content="width=device-width, initial-scale=1">
        |    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
        |    <title>$t</title>
-       |    <link rel="icon" href="${relDocsPath}IIScLogo.jpg">
+       |    <link rel="icon" href="${relDocsPath}../images/IIScLogo.jpg">
        |
        |    <!-- Bootstrap -->
        |    <link href="${relDocsPath}css/bootstrap.min.css" rel="stylesheet">
@@ -111,7 +111,7 @@ object Site {
           <ul class="nav navbar-nav navbar-right">
             <li> <a href={s"${relDocsPath}scaladoc/provingground/index.html"} target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-              <img src={s"${relDocsPath}GitHub-Mark-Light-32px.png"} alt="Github"></img> </a> </li>
+              <img src={s"${relDocsPath}../images/GitHub-Mark-Light-32px.png"} alt="Github"></img> </a> </li>
           <li>
             <a href="https://gitter.im/siddhartha-gadgil/ProvingGround" target="_blank">
               <img src="https://badges.gitter.im/siddhartha-gadgil/ProvingGround.svg" alt="gitter"></img>
