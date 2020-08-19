@@ -6,12 +6,23 @@ import edu.mit.jwi._, item._
 
 import scala.jdk.CollectionConverters._
 
+import java.io.File
+
+import scala.util._
+
 object WordNet{
   val url = getClass().getClassLoader().getResource("dict")
 
+  val urlDirect = new File("nlp/data/dict").toURI().toURL()
+
+  os.makeDir.all(os.pwd / "tmp" / "dict")
+
+  // os.copy.over((os.resource / "dict", os.pwd / "tmp" / "dict", createFolders = true)
+
   pprint.log(url)
 
-  val dict = new Dictionary(url)
+  val dict = if (url.toString().startsWith("file:")) new Dictionary(url)
+    else new Dictionary(urlDirect)
 
   dict.open()
 
