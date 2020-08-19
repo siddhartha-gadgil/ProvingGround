@@ -20,6 +20,7 @@ import scala.math.Ordering.Double.TotalOrdering
 import scala.collection.immutable.Stream.cons
 import scala.collection.immutable.Nil
 import shapeless.ops.product
+import scala.collection.mutable
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -849,17 +850,54 @@ class ExprCalc(ev: ExpressionEval) {
   def gradientStep(index: Int): Vector[(Int, Double)] = {
     val rhs = rhsExprs(index)
     val branches: Vector[Vector[(Int, Double)]] = rhs.terms.map { prod =>
-        (0 until (prod.indices.size)).toVector.map { j =>
-          val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
-          val denominator = prod.negIndices.map(finalVec(_)).product
-          val coeff =
-            if (denominator > 0) rest.map(finalVec(_)).product / (denominator)
-            else rest.map(finalVec(_)).product
-          val ind = prod.indices(j)
-          (j -> coeff)
-        }      
+      (0 until (prod.indices.size)).toVector.map { j =>
+        val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
+        val denominator = prod.negIndices.map(finalVec(_)).product
+        val coeff =
+          if (denominator > 0) rest.map(finalVec(_)).product / (denominator)
+          else rest.map(finalVec(_)).product
+        val ind = prod.indices(j)
+        (j -> coeff)
+      }
     }
     vecSum(branches)
+  }
+
+  def gradientNextStep(
+      predecessor: Vector[(Int, Double)]
+  ): Vector[(Int, Double)] = {
+    val branches: Vector[Vector[(Int, Double)]] = predecessor.map {
+      case (j, w) =>
+        gradientStep(j).map { case (i, u) => (i, u * w) }
+    }
+    vecSum(branches)
+  }
+
+  // currently computed gradients up to a given depth
+  val gradientTerms: Vector[mutable.ArrayBuffer[Vector[(Int, Double)]]] =
+    (0 until size).toVector.map(j => mutable.ArrayBuffer(Vector(j -> 1.0)))
+
+  def gradientUptoMemo(j: Int, depth: Int): Vector[Vector[(Int, Double)]] = {
+    val memo = gradientTerms(j)
+    if (depth <= memo.size) memo.take(depth).toVector
+    else if (depth == memo.size + 1) {
+      val predecessor = memo.last
+      val result = 
+        vecSum(
+          gradientStep(j).map{
+            case (i, w) => gradientUptoMemo(i, depth - 1).last.map{
+              case (k, u) => (k, u * w)
+            }
+          }
+        )
+      gradientTerms(j).append(result)
+      memo.toVector :+ result
+    } else {
+      val predecessor = gradientUptoMemo(j, depth - 1).last // also saves
+      val result = gradientNextStep(predecessor)
+      gradientTerms(j).append(result)
+      memo.toVector :+ result
+    }
   }
 
   // A simplification where we do not propagate through the denominator, i.e., events. This makes things more stable.
