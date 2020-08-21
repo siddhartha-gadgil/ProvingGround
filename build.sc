@@ -324,7 +324,7 @@ object jvmRoot extends CommonModule {
   }
 }
 
-object runcore extends CommonModule with SbtModule{
+object jvmcore extends CommonModule with SbtModule{
   def moduleDeps = Seq(core.jvm)
 }
 object exploring extends JvmModule {
