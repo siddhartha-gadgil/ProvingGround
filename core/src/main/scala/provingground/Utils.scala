@@ -16,13 +16,13 @@ object Utils {
   type MapDist[A] = Map[A, Double]
 
   @annotation.tailrec
-  def gatherSet[A](l: Vector[ParVector[A]], accum: ParSet[A]): ParSet[A] = l match {
+  def gatherSet[A](l: Vector[Vector[A]], accum: Set[A]): Set[A] = l match {
     case head +: tail => gatherSet(tail, head.toSet union (accum))
     case Vector()     => accum
   }
 
   def makeSet[A](v: Vector[A], groupSize: Int = 1000) =
-    gatherSet(v.grouped(groupSize).toVector.map(_.par), ParSet()).seq
+    gatherSet(v.grouped(groupSize).toVector, Set())
 
   @annotation.tailrec
   def gatherMapSet[A, B](

@@ -1015,14 +1015,17 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.info("Computing base state")
+    val groupedVec = Equation.groupIt(equationNodes).toVector ++ Equation.groupIt(
+          DE.termStateInit(initialState))
+    Utils.logger.info("Created vector of equations")
+    val groupedSet = Utils.makeSet(
+        groupedVec
+          // .map(TermData.isleNormalize(_))        
+      )
+    Utils.logger.info("Created set of equations")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
-      Utils.makeSet(
-        Equation.groupIt(equationNodes).toVector ++ Equation.groupIt(
-          DE.termStateInit(initialState)
-          // .map(TermData.isleNormalize(_))
-        )
-      ),
+      groupedSet,
       tg,
       maxRatio,
       scale,
