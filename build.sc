@@ -7,9 +7,9 @@ import define.{Sources, Task}
 import os._
 import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r`
 
-val scalaV = "2.13.1"
+val scalaV = "2.13.3"
 
-val ammV = "1.8.2"
+val ammV = "2.2.0"
 
 val commonLibs = List(
   ivy"org.scala-lang.modules::scala-parser-combinators::1.1.2",
@@ -97,7 +97,7 @@ repl.pprinter() = {
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule {
-  def scalaJSVersion = "0.6.31"
+  def scalaJSVersion = "0.6.33"
 }
 
 val jvmLibs = List(
@@ -161,7 +161,7 @@ object core extends Module {
   }
 
   object js extends CommonJSModule with SbtModule {
-    override def scalaJSVersion = "0.6.31"
+    override def scalaJSVersion = "0.6.33"
     override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }

@@ -146,7 +146,7 @@ object WebServer {
                                       typs: Set[Typ[Term]],
                                       names: Vector[(Term, String)]) = {
     showDist(fds.last, names)
-    timeSeries.clear
+    timeSeries.clear()
     val typFDs = fds map ((fd) => fd map (_.typ))
     for (x <- terms)
       showTimeSeries(x, fds map ((fd) => -math.log(fd(x))), names)
@@ -259,6 +259,6 @@ object WebServer {
   def stop = {
     bindingFuture
       .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ ⇒ system.terminate()) // and shutdown when done
+      .onComplete(_ => system.terminate()) // and shutdown when done
   }
 }

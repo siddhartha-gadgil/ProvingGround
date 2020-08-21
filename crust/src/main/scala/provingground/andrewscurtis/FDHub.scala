@@ -53,15 +53,15 @@ class FDHub extends Actor {
       }
 
     case Done(_, _, _) => // message that loop is finished
-      val state = loopers(sender)
+      val state = loopers(sender())
       import state._
-      if (running) sender ! Continue(steps, strictness, epsilon)
+      if (running) sender() ! Continue(steps, strictness, epsilon)
     case Pause(runner) =>
-      val state = loopers(sender)
+      val state = loopers(sender())
       import state._
       loopers + (runner -> State(false, steps, strictness, epsilon))
     case Resume(runner) =>
-      val state = loopers(sender)
+      val state = loopers(sender())
       import state._
       loopers + (runner -> State(true, steps, strictness, epsilon))
       runner ! Continue(steps, strictness, epsilon)
@@ -86,10 +86,10 @@ class FDHub extends Actor {
       loopers + (runner -> State(running, steps, strictness, newEpsilon))
 
     case Loopers =>
-      sender ! names
+      sender() ! names
 
     case States =>
-      sender ! states
+      sender() ! states
   }
 }
 
@@ -133,7 +133,7 @@ object FDHub {
 
   case class Resume(runner: ActorRef)
 
-  def props: Props = Props[FDHub]
+  def props: Props = Props[FDHub]()
 
   import Hub.system
 

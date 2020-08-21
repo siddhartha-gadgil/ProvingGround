@@ -6,7 +6,7 @@ import ammonite.ops._
   * Batch start for Andrews-Curtis runs
   */
 object ACBatch {
-  val wd = pwd / 'data
+  val wd = pwd / "data"
 
   /**
     * start data before json parsing
