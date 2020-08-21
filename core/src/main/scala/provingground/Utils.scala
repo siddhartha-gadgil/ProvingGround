@@ -8,7 +8,7 @@ import java.util.concurrent.Executors
 import scala.concurrent._
 
 object Utils {
-  val threadNum = 4 // based on sparrow
+  val threadNum = scala.util.Properties.envOrNone("THREADS").map(_.toInt).getOrElse(8) 
 
   implicit val ec: scala.concurrent.ExecutionContext =
     ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(threadNum))
