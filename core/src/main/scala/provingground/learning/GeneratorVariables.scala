@@ -8,6 +8,8 @@ import scala.util._
 import spire.util.Opt
 import provingground.learning.Expression.Exp
 import scala.collection.immutable.Nil
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
 
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
@@ -745,9 +747,9 @@ object Equation {
   //   .toSet
 
   def groupIt(ts: Set[EquationNode]): Iterable[Equation] =
-    ts.groupMap(_.lhs)(_.rhs).map {
+    ts.par.groupBy(_.lhs).mapValues(s => s.map(_.rhs)).map {
       case (lhs, rhsV) => Equation(lhs, Sum(rhsV.toVector))
-    }
+    }.seq
 
   def split(eq: Equation): Set[EquationNode] = eq match {
     case Equation(lhs, Sum(ys)) =>
