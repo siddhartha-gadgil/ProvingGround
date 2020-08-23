@@ -206,7 +206,7 @@ object HoTTBot {
       tgS = tg,
       maxRatioS = maxRatio,
       maxTimeS = maxTime
-    )
+    )(Utils.ec)
     expEv.finalTerms.support
   }
 
@@ -681,10 +681,12 @@ object HoTTBot {
         ] = {
       case eqns :: qlp :: expEv :: HNil =>
         eqs =>
+          implicit val ec: ExecutionContext = Utils.ec
+
           val neqs  = eqs.normalized
           val nodes = eqns union (neqs)
           Utils.logger.info("Obtained normalized equations")
-          val groupedItEqns = Equation.groupIt(nodes)
+          val groupedItEqns = Equation.groupItPar(nodes)
           Utils.logger.info("Obtained grouped equations as iterator")
           val groupedVecEqns = groupedItEqns.toVector
           Utils.logger.info("Obtained grouped equations as vector")
@@ -953,15 +955,24 @@ object HoTTBot {
     allLemmas.filter(hasLargeWeight(_))
   }
 
-  def baseMixinLemmas(power: Double = 1.0, pfWeight: Double = 0.0): SimpleBot[Lemmas, BaseMixinLemmas] =
+  def baseMixinLemmas(
+      power: Double = 1.0,
+      pfWeight: Double = 0.0
+  ): SimpleBot[Lemmas, BaseMixinLemmas] =
     MicroBot.simple(
       lem => {
         val powerSum =
           lem.lemmas.map { case (_, _, p) => math.pow(p, power) }.sum
-        val proofPowerSum = 
-          lem.lemmas.map { case (tp, _, _) => math.pow( lem.weight(tp), power) }.sum
+        val proofPowerSum =
+          lem.lemmas.map { case (tp, _, _) => math.pow(lem.weight(tp), power) }.sum
         val flattened = lem.lemmas.map {
-          case (tp, pfOpt, p) => (tp, pfOpt, (math.pow(p, power) * (1.0 - pfWeight) / powerSum)  + (math.pow(lem.weight(tp), power) * pfWeight / proofPowerSum) )
+          case (tp, pfOpt, p) =>
+            (
+              tp,
+              pfOpt,
+              (math.pow(p, power) * (1.0 - pfWeight) / powerSum) + (math
+                .pow(lem.weight(tp), power) * pfWeight / proofPowerSum)
+            )
         }
         BaseMixinLemmas(flattened)
       }
@@ -989,10 +1000,10 @@ object HoTTBot {
                 (tp, pfOpt, p) <- lem.lemmas
                 q = lem.weight(tp) * pfScale
               } yield (tp, pfOpt, math.pow(p, power), math.pow(q, power))
-            val ltot = l.map(_._3).sum
-            val sc   = scale / ltot
+            val ltot  = l.map(_._3).sum
+            val sc    = scale / ltot
             val pfTot = l.map(_._4).sum
-            val pfSc = if (pfTot == 0.0) 0.0 else pfScale /pfTot
+            val pfSc  = if (pfTot == 0.0) 0.0 else pfScale / pfTot
             Utils.logger.info(s"proof pwers scaled by $pfSc")
             val tangLemmas = l.map {
               case (tp, pfOpt, w, u) => (tp, pfOpt, (w * sc) + (u * pfSc))
@@ -1015,13 +1026,14 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.info("Computing base state")
-    val groupedVec = Equation.groupIt(equationNodes).toVector ++ Equation.groupIt(
-          DE.termStateInit(initialState))
+    implicit val ec: ExecutionContext = Utils.ec
+    val groupedVec = Equation.groupItPar(equationNodes).toVector ++ Equation
+      .groupItPar(DE.termStateInit(initialState))
     Utils.logger.info("Created vector of equations")
     val groupedSet = Utils.makeSet(
-        groupedVec
-          // .map(TermData.isleNormalize(_))        
-      )
+      groupedVec
+      // .map(TermData.isleNormalize(_))
+    )
     Utils.logger.info("Created set of equations")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
@@ -1674,7 +1686,7 @@ object HoTTBot {
                 lp.smoothing,
                 lp.exponent,
                 lp.decay
-              )
+              )(Utils.ec)
               expEv.finalTermState()
             }
           val usedLemmas = UsedLemmas(useLemmas.map {
