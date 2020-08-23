@@ -401,7 +401,7 @@ trait LocalProverStep {
         exponent,
         decay,
         maxTime
-      )(Utils.ec)
+      )
     }
 
   import Utils._, scribe._

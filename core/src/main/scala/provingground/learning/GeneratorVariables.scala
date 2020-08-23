@@ -742,21 +742,19 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
 object Equation {
   def group(ts: Set[EquationNode]): Set[Equation] = groupIt(ts).toSet
 
-  def groupIt(ts: Set[EquationNode]): Iterable[Equation] =
+  def groupDirect(ts: Set[EquationNode]): Set[Equation] =
     ts.groupMapReduce(_.lhs)(_.rhs)(_ + _)
       .map { case (lhs, rhs) => Equation(lhs, rhs) }
+      .toSet
 
-
-  def groupItPar(ts: Set[EquationNode])(implicit ec: ExecutionContext): Iterable[Equation] =
-    {val ps = ts.par
-      import scala.collection.parallel.ExecutionContextTaskSupport
-      ps.tasksupport = new ExecutionContextTaskSupport(ec)
-      ps.groupBy(_.lhs)
+  def groupIt(ts: Set[EquationNode]): Iterable[Equation] =
+    ts.par
+      .groupBy(_.lhs)
       .mapValues(s => s.map(_.rhs))
       .map {
         case (lhs, rhsV) => Equation(lhs, Sum(rhsV.toVector))
       }
-      .seq}
+      .seq
 
   def groupFuture(
       ts: Set[EquationNode]

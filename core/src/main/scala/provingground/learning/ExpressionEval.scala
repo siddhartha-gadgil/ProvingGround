@@ -22,8 +22,6 @@ import scala.collection.immutable.Nil
 import shapeless.ops.product
 import scala.collection.mutable
 import scala.concurrent._
-import scala.collection.parallel
-import scala.collection.parallel.ExecutionContextTaskSupport
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -124,9 +122,8 @@ object ExpressionEval {
       atoms: Set[Expression],
       tg: TermGenParams,
       initialState: TermState
-  )(implicit ec: ExecutionContext): Map[Expression, Double] = {
+  ): Map[Expression, Double] = {
     val atomVec = atoms.toVector.par
-    atomVec.tasksupport = new ExecutionContextTaskSupport(ec)
     Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
     val valueVec = atomVec.map(exp => initVal(exp, tg, initialState))
     Utils.logger.info("Computed initial values")
@@ -328,7 +325,7 @@ object ExpressionEval {
       exponentS: Double = 0.5,
       decayS: Double = 1,
       maxTimeS: Option[Long] = None
-  )(implicit ec: ExecutionContext) =
+  ) =
     new ExpressionEval {
       val init                                         = initMap(eqAtoms(equationsS), tgS, initialState)
       val finalTyps                                    = finalState.typs
@@ -370,7 +367,7 @@ object ExpressionEval {
       decayS: Double = 1,
       maxTimeS: Option[Long] = None,
       previousMapS: Option[Map[Expression, Double]] = None
-  )(implicit ec: ExecutionContext): ExpressionEval =
+  ): ExpressionEval =
     new ExpressionEval with GenerateTyps {
       val init                                         = initMap(eqAtoms(equationsS), tgS, initialState)
       val equations                                    = equationsS
