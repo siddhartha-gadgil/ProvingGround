@@ -1060,26 +1060,24 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.info("Computing base state")
-    val groupedVec = Equation.groupIt(equationNodes union DE.termStateInit(initialState)).toVector
-    Utils.logger.info("Created vector of equations")
-    val groupedSet = Utils.makeSet(
-      groupedVec
-      // .map(TermData.isleNormalize(_))
-    )
-    Utils.logger.info("Created set of equations")
-    val expEv = ExpressionEval.fromInitEqs(
-      initialState,
-      groupedSet,
-      tg,
-      maxRatio,
-      scale,
-      smooth,
-      exponent,
-      decay,
-      maxTime
-    )
-    logger.info("Computed expression evaluator")
-    (expEv.finalTermState(), expEv)
+    for {
+      groupedSet <- Equation.groupFuture(
+        equationNodes union DE.termStateInit(initialState)
+      )
+      _ = Utils.logger.info("Created set of equations")
+      expEv <- ExpressionEval.fromInitEqsFut(
+        initialState,
+        groupedSet,
+        tg,
+        maxRatio,
+        scale,
+        smooth,
+        exponent,
+        decay,
+        maxTime
+      )
+      _ = logger.info("Computed expression evaluator")
+    } yield (expEv.finalTermState(), expEv)
   }
 
   def baseStateFromLp(
@@ -1152,19 +1150,19 @@ object HoTTBot {
           // val neqs = eqns.nodes
           logger.info(s"Using ${neqs.size} equation nodes for base states")
           psps.contents.map(
-            ps =>
-              Future {
-                import qp.lp
-                val lemPfDist = FiniteDistribution(
-                  lems.lemmas.map {
-                    case (typ, pfOpt, p) =>
-                      Weighted(pfOpt.getOrElse("pf" :: typ), p)
-                  }
-                )
-                val baseDist = ps.ts.terms
-                val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
-                val bs       = ps.ts.copy(terms = tdist)
-                val (fs, expEv) = baseState(
+            ps => {
+              import qp.lp
+              val lemPfDist = FiniteDistribution(
+                lems.lemmas.map {
+                  case (typ, pfOpt, p) =>
+                    Weighted(pfOpt.getOrElse("pf" :: typ), p)
+                }
+              )
+              val baseDist = ps.ts.terms
+              val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
+              val bs       = ps.ts.copy(terms = tdist)
+              for {
+                pair <- baseStateFuture(
                   bs,
                   neqs,
                   ps.tgOpt.getOrElse(lp.tg),
@@ -1175,17 +1173,17 @@ object HoTTBot {
                   lp.decay,
                   lp.maxTime
                 )
+                (fs, expEv) = pair
+              } yield
                 TangentBaseState(
-                  fs
-                  // .purge(ps.baseCutoff)
-                  ,
+                  fs,
                   ps.cutoffScale,
                   ps.tgOpt,
                   ps.depthOpt,
                   if (verbose) Some(expEv) else None,
                   Some(ps)
                 )
-              }
+            }
           )
         }
     }
