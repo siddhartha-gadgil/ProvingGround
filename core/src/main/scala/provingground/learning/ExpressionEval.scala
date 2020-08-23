@@ -21,6 +21,7 @@ import scala.collection.immutable.Stream.cons
 import scala.collection.immutable.Nil
 import shapeless.ops.product
 import scala.collection.mutable
+import scala.concurrent._
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -135,6 +136,32 @@ object ExpressionEval {
     val result = expMapVec.toMap
     Utils.logger.info("Computed map")
     result.seq
+  }
+
+  def initMapFuture(
+      atoms: Set[Expression],
+      tg: TermGenParams,
+      initialState: TermState
+  )(implicit ec: ExecutionContext): Future[Map[Expression, Double]] = {
+    val atomVec = atoms.toVector
+    Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
+    val valueVecFuture =
+      Future.sequence(
+        atomVec.map(exp => Future(initVal(exp, tg, initialState)))
+      )
+    valueVecFuture.map { valueVec =>
+      atomVec.map(exp => initVal(exp, tg, initialState))
+      Utils.logger.info("Computed initial values")
+      val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
+        case (Some(x), n) if x > 0 => (atomVec(n), x)
+      }
+      val expMapVec = valueVec.zipWithIndex.collect(fn)
+      Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
+      Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+      val result = expMapVec.toMap
+      Utils.logger.info("Computed map")
+      result
+    }
   }
 
   /**
@@ -354,6 +381,50 @@ object ExpressionEval {
       val maxTime: Option[Long]                        = maxTimeS
       val previousMap: Option[Map[Expression, Double]] = previousMapS
     }
+
+  /**
+    * builds an [[ExpressionEval]] given initial states, equations and parameters,
+    * with the final state deduced using the equations
+    *
+    * @param initialState initial state
+    * @param equationsS equations
+    * @param tgS term-generator parameters
+    * @param maxRatioS maximum ratio for stabilization
+    * @param scaleS scale for gradient flow
+    * @param smoothS smoothing for gradient flow
+    * @param exponentS exponent for iteration
+    * @param decayS decay during iteration
+    * @param maxTimeS max-time during iteration
+    * @return [[ExpressionEval]] built
+    */
+  def fromInitEqsFut(
+      initialState: TermState,
+      equationsS: Set[Equation],
+      tgS: TermGenParams,
+      maxRatioS: Double = 1.01,
+      scaleS: Double = 1.0,
+      smoothS: Option[Double] = None,
+      exponentS: Double = 0.5,
+      decayS: Double = 1,
+      maxTimeS: Option[Long] = None,
+      previousMapS: Option[Map[Expression, Double]] = None
+  )(implicit ec: ExecutionContext): Future[ExpressionEval] =
+    initMapFuture(eqAtoms(equationsS), tgS, initialState).map(
+      initM =>
+        new ExpressionEval with GenerateTyps {
+          val init                                         = initM
+          val equations                                    = equationsS
+          val tg                                           = tgS
+          val maxRatio                                     = maxRatioS
+          val scale                                        = scaleS
+          val coeffsAsVars: Boolean                        = false
+          val smoothing: Option[Double]                    = smoothS
+          val exponent: Double                             = exponentS
+          val decay                                        = decayS
+          val maxTime: Option[Long]                        = maxTimeS
+          val previousMap: Option[Map[Expression, Double]] = previousMapS
+        }
+    )
 
   /**
     * [[ExpressionEval]] where the type distribution is generated from the equations
@@ -882,19 +953,20 @@ class ExprCalc(ev: ExpressionEval) {
     if (depth <= memo.size) memo.take(depth).toVector
     else if (depth == memo.size + 1) {
       val predecessor = memo.last
-      val result = 
+      val result =
         vecSum(
-          gradientStep(j).map{
-            case (i, w) => gradientUptoMemo(i, depth - 1).last.map{
-              case (k, u) => (k, u * w)
-            }
+          gradientStep(j).map {
+            case (i, w) =>
+              gradientUptoMemo(i, depth - 1).last.map {
+                case (k, u) => (k, u * w)
+              }
           }
         )
       gradientTerms(j).append(result)
       memo.toVector :+ result
     } else {
       val predecessor = gradientUptoMemo(j, depth - 1).last // also saves
-      val result = gradientNextStep(predecessor)
+      val result      = gradientNextStep(predecessor)
       gradientTerms(j).append(result)
       memo.toVector :+ result
     }
