@@ -408,7 +408,7 @@ object ExpressionEval {
       decayS: Double = 1,
       maxTimeS: Option[Long] = None,
       previousMapS: Option[Map[Expression, Double]] = None
-  )(implicit ec: ExecutionContext): Task[ExpressionEval] =
+  ): Task[ExpressionEval] =
     initMapTask(eqAtoms(equationsS), tgS, initialState).map(
       initM =>
         new ExpressionEval with GenerateTyps {
