@@ -125,7 +125,7 @@ object Truncate {
                 task(d, epsilon / p, maxtime).map(_ * p)
             }
             Task
-              .gatherUnordered(fds)
+              .parSequenceUnordered(fds)
               .map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
           case Mapped(base, f) =>
             task(base, epsilon, maxtime).map(_.map(f))
@@ -137,7 +137,7 @@ object Truncate {
                     case Weighted(a, p) =>
                       task(f(a), epsilon / p, maxtime).map((fd) => fd * p)
                   }
-                val fibTask = Task.gatherUnordered(fibs)
+                val fibTask = Task.parSequenceUnordered(fibs)
                 fibTask.map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)
               }
             }
@@ -160,7 +160,7 @@ object Truncate {
                 yield
                   task(fibprod.fibers(q), epsilon / p, maxtime)
                     .map(_.map((y) => (x, y)) * p)
-              fds <- Task.gatherUnordered(fdtasks)
+              fds <- Task.parSequenceUnordered(fdtasks)
             } yield fds.foldLeft(FD.empty[A])(_ ++ _).flatten
           case Conditioned(base, p) =>
             for {

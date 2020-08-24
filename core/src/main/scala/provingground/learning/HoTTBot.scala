@@ -935,7 +935,7 @@ object HoTTBot {
                 )
             )
           val allEqs = Task
-            .gather(eqGps)
+            .parSequence(eqGps)
             .map(_.fold(Set.empty[EquationNode])(_ union _))
             .map(GeneratedEquationNodes(_))
           allEqs.runToFuture
@@ -1024,9 +1024,8 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.info("Computing base state")
-    val groupedVec = Equation
-      .groupIt(equationNodes union (DE.termStateInit(initialState)))
-      .toVector
+    val groupedVec = Equation.groupIt(equationNodes).toVector ++ Equation
+      .groupIt(DE.termStateInit(initialState))
     Utils.logger.info("Created vector of equations")
     val groupedSet = Utils.makeSet(
       groupedVec
@@ -1050,7 +1049,7 @@ object HoTTBot {
 
   def baseStateTask(
       initialState: TermState,
-      equationNodes: Set[EquationNode],
+      equationVec: Vector[Equation],
       tg: TermGenParams,
       maxRatio: Double = 1.01,
       scale: Double = 1.0,
@@ -1061,9 +1060,9 @@ object HoTTBot {
   ) = {
     logger.info("Computing base state")
     val groupSetTask = Task {
-      val groupedVec = Equation
-        .groupIt(equationNodes union (DE.termStateInit(initialState))) // eventually replace with direct implementation
-        .toVector
+      val groupedVec = equationVec ++ Equation.groupIt(
+        DE.termStateInit(initialState)
+      )
       Utils.logger.info("Created vector of equations")
       Utils.makeSet(
         groupedVec
@@ -1218,6 +1217,8 @@ object HoTTBot {
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
           logger.info(s"Using ${neqs.size} equation nodes for base states")
+          val eqVec = Equation.groupIt(neqs).toVector
+          Utils.logger.info("Grouped into equations from lookup")
           psps.contents.map(
             ps => {
               import qp.lp
@@ -1229,10 +1230,11 @@ object HoTTBot {
               )
               val baseDist = ps.ts.terms
               val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
-              val bs       = ps.ts.copy(terms = tdist)
+
+              val bs = ps.ts.copy(terms = tdist)
               baseStateTask(
                 bs,
-                neqs,
+                eqVec,
                 ps.tgOpt.getOrElse(lp.tg),
                 lp.maxRatio,
                 lp.scale,
@@ -1335,7 +1337,7 @@ object HoTTBot {
         (_) => {
           val eqsFut =
             Task
-              .gatherUnordered(tbss.contents.toSet.map {
+              .parSequenceUnordered(tbss.contents.toSet.map {
                 (tb: TangentBaseState) =>
                   {
                     val lemPfDist = FiniteDistribution(tl.lemmas.map {
@@ -1649,7 +1651,7 @@ object HoTTBot {
                 }
             }
           val allTask = Task
-            .gatherUnordered(equationsTasks)
+            .parSequenceUnordered(equationsTasks)
             .map(_.fold(Set.empty)(_ union _))
             .map(GeneratedEquationNodes(_))
           allTask.runToFuture
@@ -1821,7 +1823,7 @@ object HoTTBot {
                 )
             )
           val allEqs = Task
-            .gather(eqGps)
+            .parSequence(eqGps)
             .map(_.fold(Set.empty[EquationNode])(_ union _))
             .map(GeneratedEquationNodes(_))
           allEqs.runToFuture.map(aEq => usedLemmas :: aEq :: HNil)

@@ -20,7 +20,7 @@ val commonLibs = List(
   ivy"com.lihaoyi::fastparse::2.2.3",
   ivy"com.chuusai::shapeless::2.4.0-M1",
   ivy"org.typelevel::cats-core::2.1.0",
-  ivy"io.monix::monix::3.1.0",
+  ivy"io.monix::monix::3.2.2",
   ivy"com.lihaoyi::pprint::0.5.8",
   ivy"com.outr::scribe::2.7.8",
   ivy"org.scala-lang.modules::scala-parallel-collections:0.2.0",

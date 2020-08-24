@@ -464,7 +464,7 @@ object TypedPostResponse {
           auxTask.flatMap{
             {auxs =>              
               Utils.logger.info(s"launching ${auxs.size} branches")
-              Task.gather(auxs.flatMap{
+              Task.parSequence(auxs.flatMap{
                 aux => 
                   val newPostsTask = responses(aux)(content)
                    var remaining = newPostsTask.size

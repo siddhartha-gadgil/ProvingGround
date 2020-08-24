@@ -144,7 +144,7 @@ abstract class GenMonixFiniteDistribution[State](
               Weighted(arg, p) <- bd.pmf
               dt = nodeDist(initState)(f.nodes(arg), epsilon / p) // actually a task
             } yield dt.map(d => arg -> d)
-          Task.gather(kvs).map(_.toMap)
+          Task.parSequence(kvs).map(_.toMap)
         }
       case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
         baseDist.flatMap { (bd) =>
@@ -154,7 +154,7 @@ abstract class GenMonixFiniteDistribution[State](
               node             <- f.nodesOpt(arg)
               dt = nodeDist(initState)(node, epsilon / p) // actually a task
             } yield dt.map(d => arg -> d)
-          Task.gather(kvs).map(_.toMap)
+          Task.parSequence(kvs).map(_.toMap)
         }
     }
 
@@ -258,7 +258,7 @@ case class MonixFiniteDistribution[State](
                         }
                     tv
                 }
-            Task.gather(pmfT).map((vv) => FD(vv.flatten))
+            Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
           }
         case FlatMap(baseInput, fiberNode, _) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map(_.flatten)
@@ -278,7 +278,7 @@ case class MonixFiniteDistribution[State](
                         }
                       }
                 }
-            Task.gather(pmfT).map((vv) => FD(vv.flatten))
+            Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
           }
         case FlatMapOpt(baseInput, fiberNodeOpt, _) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map(_.flatten)
@@ -300,7 +300,7 @@ case class MonixFiniteDistribution[State](
                         }
                       }
                 }
-            Task.gather(pmfT).map((vv) => FD(vv.flatten))
+            Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
           }
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1T = varDist(initState)(baseInput, epsilon).map(_.flatten)
@@ -321,7 +321,7 @@ case class MonixFiniteDistribution[State](
                     d.pmf // terms in pmf over z, should be flatMapped over `z`
                   }
               }
-            Task.gather(pmfT).map((vv) => FD(vv.flatten))
+            Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
           }
         case tc: ThenCondition[o, Y] =>
           import tc._

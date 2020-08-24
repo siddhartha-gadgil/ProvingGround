@@ -577,7 +577,7 @@ object LeanToTermMonix {
     }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
-    Task.gather {
+    Task.parSequence {
       vec.map(parse(_, vars))
     }
 
@@ -585,7 +585,7 @@ object LeanToTermMonix {
       vec: Vector[Expr],
       vars: Vector[Term]
   ): Task[Vector[Typ[Term]]] =
-    Task.gather {
+    Task.parSequence {
       vec.map(parseTyp(_, vars))
     }
 
@@ -593,7 +593,7 @@ object LeanToTermMonix {
       vec: Vector[(Name, Expr)],
       vars: Vector[Term]
   ): Task[Vector[(Name, Term)]] =
-    Task.gather {
+    Task.parSequence {
       for {
         (name, expr) <- vec
       } yield
@@ -623,7 +623,7 @@ object LeanToTermMonix {
     val taskVec = axs.map {
       case (name, ty) => parseSym(name, ty, Vector()).map((t) => (name, t))
     }
-    val mvec = Task.gather(taskVec)
+    val mvec = Task.parSequence(taskVec)
     mvec.map((vec) => self.copy(defnMap = self.defnMap ++ vec))
   }
 
