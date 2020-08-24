@@ -1060,11 +1060,16 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.info("Computing base state")
+    val groupedVec = Equation
+      .groupIt(equationNodes union (DE.termStateInit(initialState)))
+      .toVector
+    Utils.logger.info("Created vector of equations")
+    val groupedSet = Utils.makeSet(
+      groupedVec
+      // .map(TermData.isleNormalize(_))
+    )
+    Utils.logger.info("Created set of equations")
     for {
-      groupedSet <- Equation.groupFuture(
-        equationNodes union DE.termStateInit(initialState)
-      )
-      _ = Utils.logger.info("Created set of equations")
       expEv <- ExpressionEval.fromInitEqsFut(
         initialState,
         groupedSet,
