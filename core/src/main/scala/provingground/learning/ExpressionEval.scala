@@ -147,8 +147,8 @@ object ExpressionEval {
     val atomVec = atoms.toVector
     Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
     Utils.logger.info(
-      s"Computed sizes of memoized map (sizes): ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" + 
-      s", ${initialState.typOrFamilyDistMap.size}, ${initialState.termsWithTypsMap.size}, ${initialState.funcsWithDomsMap.size}"
+      s"Computed (sizes of) memoized maps: ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" + 
+      s", ${initialState.typFamilyDistMap}, ${initialState.termsWithTypsMap.size}, ${initialState.funcsWithDomsMap.size}"
     )
     val valueVecTask =
       Task.parSequence(

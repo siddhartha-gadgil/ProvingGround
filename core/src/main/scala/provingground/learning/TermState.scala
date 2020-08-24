@@ -76,11 +76,31 @@ case class TermState(
 
   lazy val funcDist = terms.condMap(FuncOpt)
 
-  lazy val funcDistMap = funcDist.toMap
+  lazy val funcDistMap: scala.collection.immutable.Map[ExstFunc, Double] = {
+    val base = termDistMap.flatMap {
+      case (x, w) =>
+        ExstFunc.opt(x).map { fn =>
+          fn -> w
+        }
+    }
+    val total = base.values.sum
+    if (total > 0) base.view.mapValues(_ * (1 / total)).toMap
+    else scala.collection.immutable.Map.empty
+  }
 
-  lazy val typFamilyDist = terms.condMap(TypFamilyOpt)
+  lazy val typFamilyDist: scala.collection.immutable.Map[ExstFunc, Double] = {
+    val base = termDistMap.flatMap {
+      case (x, w) =>
+        TypFamilyOpt(x).map { fn =>
+          fn -> w
+        }
+    }
+    val total = base.values.sum
+    if (total > 0) base.view.mapValues(_ * (1 / total)).toMap
+    else scala.collection.immutable.Map.empty
+  }
 
-  lazy val typFamilyDistMap = typFamilyDist.toMap
+  lazy val typFamilyDistMap = { typFamilyDist.toMap }
 
   lazy val typOrFamilyDist = terms.conditioned(isTypFamily)
 
@@ -110,17 +130,17 @@ case class TermState(
   lazy val domTotals = funcDistMap.groupMapReduce(_._1.dom)(_._2)(_ + _)
 
   lazy val funcsWithDoms =
-  termTyps
-    .map(
-      typ =>
-        (typ: Typ[Term]) -> (terms
-          .condMap(FuncOpt)
-          .conditioned(_.dom == typ): FD[ExstFunc])
-    )
-    .toMap
+    termTyps
+      .map(
+        typ =>
+          (typ: Typ[Term]) -> (terms
+            .condMap(FuncOpt)
+            .conditioned(_.dom == typ): FD[ExstFunc])
+      )
+      .toMap
 
-  lazy val funcsWithDomsMap = 
-  funcDistMap.groupBy(_._1.dom: Typ[Term]).map {
+  lazy val funcsWithDomsMap =
+    funcDistMap.groupBy(_._1.dom: Typ[Term]).map {
       case (typ, m) =>
         val total = m.values.sum
         typ -> m.map { case (x, p) => (x, p / total) }
