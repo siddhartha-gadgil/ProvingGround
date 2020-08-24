@@ -22,6 +22,7 @@ import scala.collection.immutable.Nil
 import shapeless.ops.product
 import scala.collection.mutable
 import scala.concurrent._
+import monix.eval._
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -138,19 +139,18 @@ object ExpressionEval {
     result.seq
   }
 
-  def initMapFuture(
+  def initMapTask(
       atoms: Set[Expression],
       tg: TermGenParams,
       initialState: TermState
-  )(implicit ec: ExecutionContext): Future[Map[Expression, Double]] = {
+  ): Task[Map[Expression, Double]] = {
     val atomVec = atoms.toVector
     Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
-    val valueVecFuture =
-      Future.sequence(
-        atomVec.map(exp => Future(initVal(exp, tg, initialState)))
+    val valueVecTask =
+      Task.gather(
+        atomVec.map(exp => Task(initVal(exp, tg, initialState)))
       )
-    valueVecFuture.map { valueVec =>
-      atomVec.map(exp => initVal(exp, tg, initialState))
+    valueVecTask.map { valueVec =>
       Utils.logger.info("Computed initial values")
       val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
         case (Some(x), n) if x > 0 => (atomVec(n), x)
@@ -397,7 +397,7 @@ object ExpressionEval {
     * @param maxTimeS max-time during iteration
     * @return [[ExpressionEval]] built
     */
-  def fromInitEqsFut(
+  def fromInitEqsTask(
       initialState: TermState,
       equationsS: Set[Equation],
       tgS: TermGenParams,
@@ -408,8 +408,8 @@ object ExpressionEval {
       decayS: Double = 1,
       maxTimeS: Option[Long] = None,
       previousMapS: Option[Map[Expression, Double]] = None
-  )(implicit ec: ExecutionContext): Future[ExpressionEval] =
-    initMapFuture(eqAtoms(equationsS), tgS, initialState).map(
+  ): Task[ExpressionEval] =
+    initMapTask(eqAtoms(equationsS), tgS, initialState).map(
       initM =>
         new ExpressionEval with GenerateTyps {
           val init                                         = initM
