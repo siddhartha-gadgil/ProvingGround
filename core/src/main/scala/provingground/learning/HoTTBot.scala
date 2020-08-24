@@ -1048,7 +1048,7 @@ object HoTTBot {
     (expEv.finalTermState(), expEv)
   }
 
-  def baseStateFuture(
+  def baseStateTask(
       initialState: TermState,
       equationNodes: Set[EquationNode],
       tg: TermGenParams,
@@ -1060,17 +1060,20 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.info("Computing base state")
-    val groupedVec = Equation
-      .groupIt(equationNodes union (DE.termStateInit(initialState)))
-      .toVector
-    Utils.logger.info("Created vector of equations")
-    val groupedSet = Utils.makeSet(
-      groupedVec
-      // .map(TermData.isleNormalize(_))
-    )
-    Utils.logger.info("Created set of equations")
+    val groupSetTask = Task {
+      val groupedVec = Equation
+        .groupIt(equationNodes union (DE.termStateInit(initialState))) // eventually replace with direct implementation
+        .toVector
+      Utils.logger.info("Created vector of equations")
+      Utils.makeSet(
+        groupedVec
+        // .map(TermData.isleNormalize(_))
+      )
+    }
     for {
-      expEv <- ExpressionEval.fromInitEqsFut(
+      groupedSet <- groupSetTask
+      _ = Utils.logger.info("Created set of equations")
+      expEv <- ExpressionEval.fromInitEqsTask(
         initialState,
         groupedSet,
         tg,
@@ -1195,6 +1198,68 @@ object HoTTBot {
     DualMiniBot(response)
   }
 
+  def baseStateFromSpecialInitTask(verbose: Boolean = true): DualMiniBotTask[
+    BaseMixinLemmas,
+    TangentBaseState,
+    HoTTPostWeb,
+    PreviousPosts[SpecialInitState] :: QueryProver :: Set[EquationNode] :: HNil,
+    ID
+  ] = {
+    val response: PreviousPosts[SpecialInitState] :: QueryProver :: Set[
+      EquationNode
+    ] :: HNil => BaseMixinLemmas => Vector[
+      Task[
+        TangentBaseState
+      ]
+    ] = {
+      case psps :: qp :: neqs :: HNil =>
+        lems => {
+          logger.info(s"previous special init states are ${psps.contents.size}")
+          logger.debug(psps.contents.mkString("\n"))
+          // val neqs = eqns.nodes
+          logger.info(s"Using ${neqs.size} equation nodes for base states")
+          psps.contents.map(
+            ps => {
+              import qp.lp
+              val lemPfDist = FiniteDistribution(
+                lems.lemmas.map {
+                  case (typ, pfOpt, p) =>
+                    Weighted(pfOpt.getOrElse("pf" :: typ), p)
+                }
+              )
+              val baseDist = ps.ts.terms
+              val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
+              val bs       = ps.ts.copy(terms = tdist)
+              baseStateTask(
+                bs,
+                neqs,
+                ps.tgOpt.getOrElse(lp.tg),
+                lp.maxRatio,
+                lp.scale,
+                lp.smoothing,
+                lp.exponent,
+                lp.decay,
+                lp.maxTime
+              ).map {
+                case (fs, expEv) =>
+                  TangentBaseState(
+                    fs
+                    // .purge(ps.baseCutoff)
+                    ,
+                    ps.cutoffScale,
+                    ps.tgOpt,
+                    ps.depthOpt,
+                    if (verbose) Some(expEv) else None,
+                    Some(ps)
+                  )
+              }
+            }
+          )
+        }
+    }
+    DualMiniBotTask(response)
+  }
+
   // temporary, for testing
   def appEquations(
       cutoff: Double
@@ -1220,7 +1285,7 @@ object HoTTBot {
   def cappedSpecialBaseState(
       verbose: Boolean = true
   ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
-    baseStateFromSpecialInit(verbose)
+    baseStateFromSpecialInitTask(verbose)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   def unAppEquations(

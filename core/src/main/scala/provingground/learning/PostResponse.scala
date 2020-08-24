@@ -13,6 +13,7 @@ import Utils.logger
 import Utils.ec
 
 
+
 /**
  * Response to a post, generating one or more posts or just a callback;
  * this exists mainly for nicer type collections.
@@ -431,6 +432,78 @@ object TypedPostResponse {
       )
       }
   }
+
+    /**
+    * Bot responding to a post returning a vector of posts for  
+    * each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made 
+    * but posts are in the future : this works if branches are known in advance but each branch calculation is expensive.
+    *
+    * @param responses the responses of the bot
+    * @param predicate the condition the post must satisfy to trigger the bot
+    * @param pw postability of the post type
+    * @param qw postability of the response post type
+    * @param lv queryability of the other arguments
+    */
+  case class DualMiniBotTask[P, Q, W, V, ID](responses: V => P => Vector[Task[Q]], predicate: V => Boolean = (_: V) => true)(
+        implicit pw: Postable[P, W, ID],
+        qw: Postable[Q, W, ID],
+        lv: LocalQueryable[V, W, ID],
+        dg: DataGetter[Q, W, ID]
+    ) extends TypedPostResponse[P, W, ID] {
+
+      import monix.execution.Scheduler.Implicits.global
+      def post(
+          web: W,
+          content: P,
+          id: ID
+      ): Future[Vector[PostData[_, W, ID]]] = {
+        logger.info(s"triggered (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+        val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
+        val auxTask = Task.fromFuture(auxFuture)
+        val taskNest =
+          auxTask.flatMap{
+            {auxs =>              
+              Utils.logger.info(s"launching ${auxs.size} branches")
+              Task.gather(auxs.flatMap{
+                aux => 
+                  val newPostsTask = responses(aux)(content)
+                   var remaining = newPostsTask.size
+                  Utils.logger.info(s"launching ${remaining} responses  of type ${qw.tag} in branch")
+                  val newPostsData = newPostsTask.map(cF => cF.flatMap{c => 
+                      val idNewT = Task.fromFuture(qw.post(c, web, Set(id)))
+                      idNewT.map(idNew => PostData.get(c, idNew)).materialize.map{
+                        case Success(result) => remaining = remaining - 1
+                          Utils.logger.info(s"remaining $remaining responses of type ${qw.tag}") 
+                          result
+                        case Failure(exception) => 
+                          Utils.logger.error(s"response failed with error")
+                          Utils.logger.error(exception)
+                         throw exception
+                      }
+                    }
+                  )
+                  newPostsData})
+                  }
+          }
+          .map{result => 
+          logger.info(s"completed (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+          result
+          }
+        taskNest.runToFuture
+      }
+
+    def triggerWith[R](implicit rw: Postable[R, W, ID], pq: LocalQueryable[P, W, ID]) = 
+      {implicit val lpv : LocalQueryable[P:: V :: HNil, W, ID] = LocalQueryable.hconsQueryable(implicitly, implicitly)
+        DualMiniBotTask[R, Q, W, P :: V :: HNil, ID](
+        {
+          case p :: v :: HNil =>
+            _ : R =>
+              responses(v)(p)
+        }
+      )
+      }
+  }
+
 
   case class ComposedResponse[P, Q, W, ID](first: TypedPostResponse[P, W, ID], 
     second: TypedPostResponse[Q, W, ID])(implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID]) extends TypedPostResponse[P, W, ID]{
