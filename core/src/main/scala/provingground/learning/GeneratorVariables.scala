@@ -760,6 +760,28 @@ object Equation {
       }
   }.seq
 
+  def groupMap(
+      ts: Set[EquationNode],
+      previous: ParMap[Expression, EquationNode]
+  ) = {
+    val ps = ts.par
+    import scala.collection.parallel._
+    ps.tasksupport = new ForkJoinTaskSupport(
+      new java.util.concurrent.ForkJoinPool(Utils.threadNum)
+    )
+    val liftMap = previous.map(eqq => eqq._1 -> Equation(eqq._1, eqq._2.rhs))
+    val buildMap = {
+      ps.groupBy(_.lhs)
+        .mapValues(s => s.map(_.rhs))
+        .map {
+          case (lhs, rhsV) =>
+            val w = previous.get(lhs).map(n => rhsV + n.rhs).getOrElse(rhsV)
+            lhs -> Equation(lhs, Sum(w.toVector))
+        }
+    }.toMap
+    liftMap ++ buildMap
+  }
+
   def groupFuture(
       ts: Set[EquationNode]
   )(implicit ec: ExecutionContext): Future[Set[Equation]] =
