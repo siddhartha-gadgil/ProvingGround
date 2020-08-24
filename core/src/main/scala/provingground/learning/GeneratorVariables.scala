@@ -751,7 +751,7 @@ object Equation {
     val ps = ts.par
     import scala.collection.parallel._
     ps.tasksupport = new ForkJoinTaskSupport(
-      new java.util.concurrent.ForkJoinPool(2)
+      new java.util.concurrent.ForkJoinPool(Utils.threadNum)
     )
     ps.groupBy(_.lhs)
       .mapValues(s => s.map(_.rhs))
