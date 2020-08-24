@@ -747,14 +747,18 @@ object Equation {
       .map { case (lhs, rhs) => Equation(lhs, rhs) }
       .toSet
 
-  def groupIt(ts: Set[EquationNode]): Iterable[Equation] =
-    ts.par
-      .groupBy(_.lhs)
+  def groupIt(ts: Set[EquationNode]): Iterable[Equation] = {
+    val ps = ts.par
+    import scala.collection.parallel._
+    ps.tasksupport = new ForkJoinTaskSupport(
+      new java.util.concurrent.ForkJoinPool(2)
+    )
+    ps.groupBy(_.lhs)
       .mapValues(s => s.map(_.rhs))
       .map {
         case (lhs, rhsV) => Equation(lhs, Sum(rhsV.toVector))
       }
-      .seq
+  }.seq
 
   def groupFuture(
       ts: Set[EquationNode]

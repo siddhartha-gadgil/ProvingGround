@@ -1155,19 +1155,19 @@ object HoTTBot {
           // val neqs = eqns.nodes
           logger.info(s"Using ${neqs.size} equation nodes for base states")
           psps.contents.map(
-            ps => {
-              import qp.lp
-              val lemPfDist = FiniteDistribution(
-                lems.lemmas.map {
-                  case (typ, pfOpt, p) =>
-                    Weighted(pfOpt.getOrElse("pf" :: typ), p)
-                }
-              )
-              val baseDist = ps.ts.terms
-              val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
-              val bs       = ps.ts.copy(terms = tdist)
-              for {
-                pair <- baseStateFuture(
+            ps =>
+              Future {
+                import qp.lp
+                val lemPfDist = FiniteDistribution(
+                  lems.lemmas.map {
+                    case (typ, pfOpt, p) =>
+                      Weighted(pfOpt.getOrElse("pf" :: typ), p)
+                  }
+                )
+                val baseDist = ps.ts.terms
+                val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
+                val bs       = ps.ts.copy(terms = tdist)
+                val (fs, expEv) = baseState(
                   bs,
                   neqs,
                   ps.tgOpt.getOrElse(lp.tg),
@@ -1178,17 +1178,17 @@ object HoTTBot {
                   lp.decay,
                   lp.maxTime
                 )
-                (fs, expEv) = pair
-              } yield
                 TangentBaseState(
-                  fs,
+                  fs
+                  // .purge(ps.baseCutoff)
+                  ,
                   ps.cutoffScale,
                   ps.tgOpt,
                   ps.depthOpt,
                   if (verbose) Some(expEv) else None,
                   Some(ps)
                 )
-            }
+              }
           )
         }
     }
