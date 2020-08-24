@@ -88,7 +88,9 @@ case class TermState(
     else scala.collection.immutable.Map.empty
   }
 
-  lazy val typFamilyDist: scala.collection.immutable.Map[ExstFunc, Double] = {
+  lazy val typFamilyDist = terms.condMap(TypFamilyOpt)
+
+  lazy val typFamilyDistMap: scala.collection.immutable.Map[ExstFunc, Double] = {
     val base = termDistMap.flatMap {
       case (x, w) =>
         TypFamilyOpt(x).map { fn =>
@@ -99,9 +101,7 @@ case class TermState(
     if (total > 0) base.view.mapValues(_ * (1 / total)).toMap
     else scala.collection.immutable.Map.empty
   }
-
-  lazy val typFamilyDistMap = { typFamilyDist.toMap }
-
+  
   lazy val typOrFamilyDist = terms.conditioned(isTypFamily)
 
   lazy val typOrFamilyDistMap = typOrFamilyDist.toMap
