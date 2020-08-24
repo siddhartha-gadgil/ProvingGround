@@ -497,13 +497,13 @@ case class GeneratorTF[State](
             } yield nodeEquationTermsTask(fiberNode(x)).memoize -> p
           val eqTermTask: Task[Set[EquationNode]] =
             Task
-              .gather(weightedTasks.map {
+              .parSequence(weightedTasks.map {
                 case (tsk, p) => tsk.map { case (eqTS, _) => eqTS.map(_ * p) }
               })
               .map(_.flatten)
           val dataTask =
             Task
-              .gather(weightedTasks.map { case (tsk, _) => tsk.map(_._2) })
+              .parSequence(weightedTasks.map { case (tsk, _) => tsk.map(_._2) })
               .map(s => s.foldLeft(baseData)(_ ++ _))
           for {
             eqTerms <- eqTermTask
@@ -518,13 +518,13 @@ case class GeneratorTF[State](
             } yield nodeEquationTermsTask(node).memoize -> p
           val eqTermTask: Task[Set[EquationNode]] =
             Task
-              .gather(weightedTasks.map {
+              .parSequence(weightedTasks.map {
                 case (tsk, p) => tsk.map { case (eqTS, _) => eqTS.map(_ * p) }
               })
               .map(_.flatten)
           val dataTask =
             Task
-              .gather(weightedTasks.map { case (tsk, _) => tsk.map(_._2) })
+              .parSequence(weightedTasks.map { case (tsk, _) => tsk.map(_._2) })
               .map(s => s.foldLeft(baseData)(_ ++ _))
           for {
             eqTerms <- eqTermTask
@@ -678,11 +678,11 @@ case class GeneratorTF[State](
             nodeCoeffsEquationTermsTask(nodeCoeffs, x).memoize
           }
         val eqnTask: Task[Set[Equation]] = Task
-          .gather(tskSet.map(s => s.map(_._1)))
+          .parSequence(tskSet.map(s => s.map(_._1)))
           .map(_.flatten)
           .map(Equation.group)
         val dataTask: Task[TFData] = Task
-          .gather(tskSet.map(s => s.map(_._2)))
+          .parSequence(tskSet.map(s => s.map(_._2)))
           .map(_.foldLeft(baseData)(_ ++ _))
         for {
           eqs  <- eqnTask

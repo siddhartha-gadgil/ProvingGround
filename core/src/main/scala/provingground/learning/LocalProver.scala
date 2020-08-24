@@ -577,7 +577,7 @@ trait LocalProverStep {
   lazy val functionsForGoals: Task[FiniteDistribution[Term]] =
     (nextState
       .flatMap { fs: TermState =>
-        Task.gather(fs.remainingGoals.pmf.map {
+        Task.parSequence(fs.remainingGoals.pmf.map {
           case Weighted(goal, p) =>
             val codomainTarget: Task[FiniteDistribution[Term]] = tg.monixFD
               .nodeDist(initState)(

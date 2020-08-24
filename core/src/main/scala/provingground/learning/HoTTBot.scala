@@ -935,7 +935,7 @@ object HoTTBot {
                 )
             )
           val allEqs = Task
-            .gather(eqGps)
+            .parSequence(eqGps)
             .map(_.fold(Set.empty[EquationNode])(_ union _))
             .map(GeneratedEquationNodes(_))
           allEqs.runToFuture
@@ -953,15 +953,24 @@ object HoTTBot {
     allLemmas.filter(hasLargeWeight(_))
   }
 
-  def baseMixinLemmas(power: Double = 1.0, pfWeight: Double = 0.0): SimpleBot[Lemmas, BaseMixinLemmas] =
+  def baseMixinLemmas(
+      power: Double = 1.0,
+      pfWeight: Double = 0.0
+  ): SimpleBot[Lemmas, BaseMixinLemmas] =
     MicroBot.simple(
       lem => {
         val powerSum =
           lem.lemmas.map { case (_, _, p) => math.pow(p, power) }.sum
-        val proofPowerSum = 
-          lem.lemmas.map { case (tp, _, _) => math.pow( lem.weight(tp), power) }.sum
+        val proofPowerSum =
+          lem.lemmas.map { case (tp, _, _) => math.pow(lem.weight(tp), power) }.sum
         val flattened = lem.lemmas.map {
-          case (tp, pfOpt, p) => (tp, pfOpt, (math.pow(p, power) * (1.0 - pfWeight) / powerSum)  + (math.pow(lem.weight(tp), power) * pfWeight / proofPowerSum) )
+          case (tp, pfOpt, p) =>
+            (
+              tp,
+              pfOpt,
+              (math.pow(p, power) * (1.0 - pfWeight) / powerSum) + (math
+                .pow(lem.weight(tp), power) * pfWeight / proofPowerSum)
+            )
         }
         BaseMixinLemmas(flattened)
       }
@@ -989,10 +998,10 @@ object HoTTBot {
                 (tp, pfOpt, p) <- lem.lemmas
                 q = lem.weight(tp) * pfScale
               } yield (tp, pfOpt, math.pow(p, power), math.pow(q, power))
-            val ltot = l.map(_._3).sum
-            val sc   = scale / ltot
+            val ltot  = l.map(_._3).sum
+            val sc    = scale / ltot
             val pfTot = l.map(_._4).sum
-            val pfSc = if (pfTot == 0.0) 0.0 else pfScale /pfTot
+            val pfSc  = if (pfTot == 0.0) 0.0 else pfScale / pfTot
             Utils.logger.info(s"proof pwers scaled by $pfSc")
             val tangLemmas = l.map {
               case (tp, pfOpt, w, u) => (tp, pfOpt, (w * sc) + (u * pfSc))
@@ -1015,13 +1024,13 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.info("Computing base state")
-    val groupedVec = Equation.groupIt(equationNodes).toVector ++ Equation.groupIt(
-          DE.termStateInit(initialState))
+    val groupedVec = Equation.groupIt(equationNodes).toVector ++ Equation
+      .groupIt(DE.termStateInit(initialState))
     Utils.logger.info("Created vector of equations")
     val groupedSet = Utils.makeSet(
-        groupedVec
-          // .map(TermData.isleNormalize(_))        
-      )
+      groupedVec
+      // .map(TermData.isleNormalize(_))
+    )
     Utils.logger.info("Created set of equations")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
@@ -1040,7 +1049,7 @@ object HoTTBot {
 
   def baseStateTask(
       initialState: TermState,
-      equationNodes: Set[EquationNode],
+      equationVec: Vector[Equation],
       tg: TermGenParams,
       maxRatio: Double = 1.01,
       scale: Double = 1.0,
@@ -1051,9 +1060,9 @@ object HoTTBot {
   ) = {
     logger.info("Computing base state")
     val groupSetTask = Task {
-      val groupedVec = Equation
-        .groupIt(equationNodes union (DE.termStateInit(initialState))) // eventually replace with direct implementation
-        .toVector
+      val groupedVec = equationVec ++ Equation.groupIt(
+        DE.termStateInit(initialState)
+      )
       Utils.logger.info("Created vector of equations")
       Utils.makeSet(
         groupedVec
@@ -1208,6 +1217,8 @@ object HoTTBot {
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
           logger.info(s"Using ${neqs.size} equation nodes for base states")
+          val eqVec = Equation.groupIt(neqs).toVector
+          Utils.logger.info("Grouped into equations from lookup")
           psps.contents.map(
             ps => {
               import qp.lp
@@ -1219,10 +1230,11 @@ object HoTTBot {
               )
               val baseDist = ps.ts.terms
               val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
-              val bs       = ps.ts.copy(terms = tdist)
+
+              val bs = ps.ts.copy(terms = tdist)
               baseStateTask(
                 bs,
-                neqs,
+                eqVec,
                 ps.tgOpt.getOrElse(lp.tg),
                 lp.maxRatio,
                 lp.scale,
@@ -1325,7 +1337,7 @@ object HoTTBot {
         (_) => {
           val eqsFut =
             Task
-              .gatherUnordered(tbss.contents.toSet.map {
+              .parSequenceUnordered(tbss.contents.toSet.map {
                 (tb: TangentBaseState) =>
                   {
                     val lemPfDist = FiniteDistribution(tl.lemmas.map {
@@ -1639,7 +1651,7 @@ object HoTTBot {
                 }
             }
           val allTask = Task
-            .gatherUnordered(equationsTasks)
+            .parSequenceUnordered(equationsTasks)
             .map(_.fold(Set.empty)(_ union _))
             .map(GeneratedEquationNodes(_))
           allTask.runToFuture
@@ -1811,7 +1823,7 @@ object HoTTBot {
                 )
             )
           val allEqs = Task
-            .gather(eqGps)
+            .parSequence(eqGps)
             .map(_.fold(Set.empty[EquationNode])(_ union _))
             .map(GeneratedEquationNodes(_))
           allEqs.runToFuture.map(aEq => usedLemmas :: aEq :: HNil)

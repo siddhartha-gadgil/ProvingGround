@@ -121,7 +121,7 @@ case class MonixTangentFiniteDistribution[State](
                           }
                       tv
                   }
-              Task.gather(pmfT).map((vv) => FD(vv.flatten))
+              Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
             },
             baseDistTb.flatMap { (baseDist) =>
               val pmfT =
@@ -140,7 +140,7 @@ case class MonixTangentFiniteDistribution[State](
                           }
                       tv
                   }
-              Task.gather(pmfT).map((vv) => FD(vv.flatten))
+              Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
             }
           )
         case FlatMap(baseInput, fiberNode, _) =>
@@ -163,7 +163,7 @@ case class MonixTangentFiniteDistribution[State](
                           }
                         }
                   }
-              Task.gather(pmfT).map((vv) => FD(vv.flatten))
+              Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
             },
             baseDistTb.flatMap { (baseDist) =>
               val pmfT =
@@ -181,7 +181,7 @@ case class MonixTangentFiniteDistribution[State](
                           }
                         }
                   }
-              Task.gather(pmfT).map((vv) => FD(vv.flatten))
+              Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
             }
           )
         case FlatMapOpt(baseInput, fiberNodeOpt, _) =>
@@ -206,7 +206,7 @@ case class MonixTangentFiniteDistribution[State](
                           }
                         }
                   }
-              Task.gather(pmfT).map((vv) => FD(vv.flatten))
+              Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
             },
             baseDistTb.flatMap { (baseDist) =>
               val pmfT =
@@ -226,7 +226,7 @@ case class MonixTangentFiniteDistribution[State](
                           }
                         }
                   }
-              Task.gather(pmfT).map((vv) => FD(vv.flatten))
+              Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
             }
           )
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
@@ -249,7 +249,7 @@ case class MonixTangentFiniteDistribution[State](
                       d.pmf // terms in pmf over z, should be flatMapped over `z`
                     }
                 }
-              Task.gather(pmfT).map((vv) => FD(vv.flatten))
+              Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
             },
             d1Tb.flatMap { d1 =>
               val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
@@ -269,7 +269,7 @@ case class MonixTangentFiniteDistribution[State](
                       d.pmf // terms in pmf over z, should be flatMapped over `z`
                     }
                 }
-              Task.gather(pmfT).map((vv) => FD(vv.flatten))
+              Task.parSequence(pmfT).map((vv) => FD(vv.flatten))
             }
           )
         case tc: ThenCondition[o, Y] =>

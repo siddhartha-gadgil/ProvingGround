@@ -147,7 +147,7 @@ object ExpressionEval {
     val atomVec = atoms.toVector
     Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
     val valueVecTask =
-      Task.gather(
+      Task.parSequence(
         atomVec.map(exp => Task(initVal(exp, tg, initialState)))
       )
     valueVecTask.map { valueVec =>
@@ -1829,7 +1829,7 @@ trait ExpressionEval { self =>
             case Log(exp) => jetTask(exp).map(j => log(j))
             case Exp(x)   => jetTask(x).map(j => exp(j))
             case Sum(xs) =>
-              Task.gather(xs.map(jetTask(_))).map(_.reduce(_ + _))
+              Task.parSequence(xs.map(jetTask(_))).map(_.reduce(_ + _))
             // for {
             //   a <- jetTask(x)
             //   b <- jetTask(y)
@@ -1867,7 +1867,7 @@ trait ExpressionEval { self =>
       }
 
     lazy val eqnGradientsTask: Task[Vector[Vector[Double]]] =
-      Task.gather(eqnExpressions.map { exp =>
+      Task.parSequence(eqnExpressions.map { exp =>
         jetTask(exp).map(_.infinitesimal.toVector)
       })
 

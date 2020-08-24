@@ -123,7 +123,7 @@ object SimpleEquations {
       funcs.flatten.pmf.sortBy(x => -x.weight).takeWhile(_.weight > cutoff)
     val argWeights = args.flatten.pmf.sortBy(x => -x.weight)
     Task
-      .gather {
+      .parSequence {
         for {
           Weighted(fn, p) <- funcWeigths
           // if p > cutoff

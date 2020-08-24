@@ -139,7 +139,7 @@ object ProverTasks {
             val tskVecs: Vector[Task[Vector[Task[X]]]] = vec.map(
               (t) => t.flatMap(spawn(depth))
             )
-            val w: Task[Vector[Task[X]]] = Task.gather(tskVecs).map(_.flatten)
+            val w: Task[Vector[Task[X]]] = Task.parSequence(tskVecs).map(_.flatten)
             breadthFirstTask(w, p, spawn, depth + 1)
         }
     }
@@ -230,7 +230,7 @@ object ProverTasks {
       implicit ls: VectorSpace[A, Double]
   ): Task[A] = {
     val shiftsTask =
-      Task.gather {
+      Task.parSequence {
         for { x <- neighbours } yield {
           derTask(base, x).map { (der) =>
             -der *: (base + x)
