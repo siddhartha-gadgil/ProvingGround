@@ -40,11 +40,11 @@ object DedGrad {
   val idA = lmbda(a)(a)
 
   object LongRun {
-    val file = pwd / 'data / "ABrun.dist"
+    val file = pwd / "data" / "ABrun.dist"
 
     write.over(file, "# 10 hour run with A, B\n")
 
-    val hfile = pwd / 'data / "ABrunHour.dist"
+    val hfile = pwd / "data" / "ABrunHour.dist"
 
     write.over(hfile, "# 1 hour run with A, B\n")
 

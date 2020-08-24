@@ -76,10 +76,10 @@ class FDLooper[X: LinearStructure, P](
         state = newState
         loops += 1
         srcRef ! snapShot(newState)
-        sender ! Done(steps, strictness, epsilon)
+        sender() ! Done(steps, strictness, epsilon)
       }
     case RunnerStop => //stop self after sending acknowledgement
-      sender ! Stopping(self)
+      sender() ! Stopping(self)
       println(s"actor ${self.path.name} stopping")
       context.stop(self)
   }

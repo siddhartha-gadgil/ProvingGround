@@ -198,7 +198,7 @@ class CompositeProver[D: Monoid] {
 
     val result: Task[Result] =
       if (parallel)
-        Task.gather(provers.map(_.result)).map(mergeResults(_)).memoize
+        Task.parSequence(provers.map(_.result)).map(mergeResults(_)).memoize
       else sequenceResult(provers, empty, Set()).memoize
 
     def setParallel(pl: Boolean): Prover =
@@ -206,7 +206,7 @@ class CompositeProver[D: Monoid] {
 
     val successTerms: Task[Set[HoTT.Term]] =
       Task
-        .gather(provers.toSet.map((p: Prover) => p.successTerms))
+        .parSequence(provers.toSet.map((p: Prover) => p.successTerms))
         .map(_.flatten)
         .memoize
   }
@@ -230,14 +230,14 @@ class CompositeProver[D: Monoid] {
       SomeOf(provers.map(_.lpModify(fn)))
 
     val result: Task[Result] =
-      Task.gather(provers.map(_.result)).map(mergeResults(_)).memoize
+      Task.parSequence(provers.map(_.result)).map(mergeResults(_)).memoize
 
     def setParallel(pl: Boolean): Prover =
       SomeOf(provers.map(_.setParallel(pl)))
 
     val successTerms: Task[Set[HoTT.Term]] =
       Task
-        .gather(provers.toSet.map((p: Prover) => p.successTerms))
+        .parSequence(provers.toSet.map((p: Prover) => p.successTerms))
         .map(_.flatten)
         .memoize
   }
@@ -500,7 +500,7 @@ object TermProver extends CompositeProver[TermResult] {
         } yield OneOf(MapProof(p1, viaZero), p2)
       case st: SigmaTyp[u, v] =>
         val proversT = instances(st.fibers.dom).flatMap { wxs =>
-          Task.gather(wxs.map {
+          Task.parSequence(wxs.map {
             case Weighted(x, p) =>
               val target = st.fibers(x.asInstanceOf[u])
               def map(t: Term): Option[Term] =
@@ -563,7 +563,7 @@ object TermProver extends CompositeProver[TermResult] {
         typProver(lp, pd.domain, instances, varWeight, parallel).map(Option(_))
       else {
         val proversT = instances(pd.domain).flatMap { wxs =>
-          Task.gather(wxs.map {
+          Task.parSequence(wxs.map {
             case Weighted(x, p) =>
               val target = pd.value.replace(pd.variable, x)
               backwardProver(target, lp, typ, instances, varWeight, parallel)

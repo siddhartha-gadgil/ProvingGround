@@ -36,7 +36,7 @@ import scala.io.Source
 
 object SimpleAcRun {
   def getId(thread: Int = 0) =
-    s"""SimpleAcEvolution#$thread@${DateTime.now}"""
+    s"""SimpleAcEvolution#$thread@${DateTime.now()}"""
 
   // object Casbah {
   //   import Hub.Casbah._

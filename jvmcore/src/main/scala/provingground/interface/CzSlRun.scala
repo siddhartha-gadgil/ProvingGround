@@ -1,5 +1,7 @@
 package provingground.interface
 import provingground._, library._
+import scala.util._, Properties.envOrNone
+import Utils._
 
 object CzSlRun extends App {
   Utils.logger = {
@@ -16,6 +18,12 @@ object CzSlRun extends App {
       )
       .replace()
   }
+
+  logger.info(s"Number of threads: $threadNum")
+
+  envOrNone("JAVA_OPTS").foreach(w => logger.info(s"JAVA_OPTS: $w") )
+
+  envOrNone("JAVA_HOME").foreach(w => logger.info(s"JAVA_HOME: $w") )
 
   CzSlOly.sessF
   

@@ -56,7 +56,7 @@ trait MonixSamples extends Samples[Task] {
     MonixSamples.monad
 
   override def sequence[A](v: Vector[Task[A]]) =
-    Task.gatherUnordered(v) map (_.toVector)
+    Task.parSequenceUnordered(v) map (_.toVector)
 }
 
 object MonixSamples {

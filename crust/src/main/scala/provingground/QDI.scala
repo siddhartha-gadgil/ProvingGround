@@ -101,15 +101,15 @@ object QDI {
   def gc = runTime.gc
 
   def timed[A](result: => A) = {
-    val start       = DateTime.now
+    val start       = DateTime.now()
     val computation = result
-    println((start to (DateTime.now)).millis)
+    println((start to (DateTime.now())).millis)
     computation
   }
 
   lazy val desktop = Desktop.getDesktop
 
-  def datafile = DateTime.now.toString.replace(":", "_") + ".dat"
+  def datafile = DateTime.now().toString.replace(":", "_") + ".dat"
 
   def writeFile(text: String, fileName: String, append: Boolean = false) = {
     val writer = new FileWriter(fileName, append)
