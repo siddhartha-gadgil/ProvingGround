@@ -766,9 +766,9 @@ object Equation {
   ) = {
     val ps = ts.par
     import scala.collection.parallel._
-    ps.tasksupport = new ForkJoinTaskSupport(
-      new java.util.concurrent.ForkJoinPool(Utils.threadNum)
-    )
+    // ps.tasksupport = new ForkJoinTaskSupport(
+    //   new java.util.concurrent.ForkJoinPool(Utils.threadNum)
+    // )
     val liftMap = previous.map(eqq => eqq._1 -> Equation(eqq._1, eqq._2.rhs))
     val buildMap = {
       ps.groupBy(_.lhs)
