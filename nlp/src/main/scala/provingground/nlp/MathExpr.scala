@@ -308,8 +308,9 @@ object MathExpr {
       case "some"                 => Some
       case "every"                => Every
       case "all"                  => Every
-      case "no"                   => No
       case "any"                  => Every
+      case "each"                 => Every
+      case "no"                   => No
       case "this"                 => This
       case "that"                 => That
       case s if s.startsWith("#") => Card(s.drop(1))

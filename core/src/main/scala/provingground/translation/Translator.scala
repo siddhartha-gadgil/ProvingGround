@@ -178,7 +178,7 @@ object Translator {
 
   /**
     * A mixed junction given by splitting optionally to a given shape,
-    * and building from the same shape using both the input and its traslation.
+    * and building from the same shape using both the input and its translation.
     *
     * The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
     * These allow applying the recursive translator on the components.
