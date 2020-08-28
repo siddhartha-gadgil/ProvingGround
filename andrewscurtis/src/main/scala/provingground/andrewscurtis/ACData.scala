@@ -147,7 +147,7 @@ object ACFlowSaver {
   import Snap._
 
   def snapFile(batch: Int) =
-    snapd / (LocalDate.now.toString()) / batch.toString
+    snapd / (LocalDate.now().toString()) / batch.toString
 
   def snapSave =
     (snap: Snap) => write.append(snapFile(snap.loops / 100), uwrite(snap))

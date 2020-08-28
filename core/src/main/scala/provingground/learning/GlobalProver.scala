@@ -117,7 +117,7 @@ object GlobalProver {
       extends GlobalProver[R] {
     def lpModify(fn: LocalProverStep => LocalProverStep): GlobalProver[R] =
       AllOf(provers.map(_.lpModify(fn)), combine)
-    lazy val result = Task.gather(provers.map(_.result)).map(combine)
+    lazy val result = Task.parSequence(provers.map(_.result)).map(combine)
   }
 
   case class AnyOf[R](provers: Vector[Xor[R]])
@@ -145,7 +145,7 @@ object GlobalProver {
 
     // Note: this is just the default implementation
     lazy val result : Task[Vector[R]] =  
-      Task.gather(
+      Task.parSequence(
         provers.map(p => p.result.materialize.map(_.toOption))
         ).map(v => v.flatten.filter(isSuccess))
   }

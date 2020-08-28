@@ -8,7 +8,7 @@ import java.util.concurrent.Executors
 import scala.concurrent._
 
 object Utils {
-  val threadNum = 4 // based on sparrow
+  val threadNum = scala.util.Properties.envOrNone("THREADS").map(_.toInt).getOrElse(8) 
 
   implicit val ec: scala.concurrent.ExecutionContext =
     ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(threadNum))
@@ -40,13 +40,13 @@ object Utils {
     else
       l match {
         case head +: tail =>
-          Utils.logger.info(s"processing ${l.size} batches")
-          limitOpt.foreach(limit => Utils.logger.info(s"time remaining ${(limit - System.currentTimeMillis())/1000} seconds"))
+          Utils.logger.debug(s"processing ${l.size} batches")
+          limitOpt.foreach(limit => Utils.logger.debug(s"time remaining ${(limit - System.currentTimeMillis())/1000} seconds"))
           val result = head.par.map(fn)
-          Utils.logger.info(s"mapped batch of size ${head.size}")
+          Utils.logger.debug(s"mapped batch of size ${head.size}")
           gatherMapSet(tail, result.seq.toSet union (accum), fn, limitOpt)
         case Vector() =>
-          Utils.logger.info(
+          Utils.logger.debug(
             s"All batches mapped and gathered, got set of size ${accum.size}"
           )
           accum

@@ -123,7 +123,7 @@ object SimpleEquations {
       funcs.flatten.pmf.sortBy(x => -x.weight).takeWhile(_.weight > cutoff)
     val argWeights = args.flatten.pmf.sortBy(x => -x.weight)
     Task
-      .gather {
+      .parSequence {
         for {
           Weighted(fn, p) <- funcWeigths
           // if p > cutoff
@@ -227,25 +227,25 @@ object SimpleEquations {
     // .materialize
       .map {
         case (t, (result, newTerms, newTyps)) =>
-          Utils.logger.info(s"new terms: ${newTerms.size}")
-          Utils.logger.info(s"new types: ${newTyps.size}")
+          Utils.logger.debug(s"new terms: ${newTerms.size}")
+          Utils.logger.debug(s"new types: ${newTyps.size}")
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
           if (t > maxTime)
-            Utils.logger.info(
+            Utils.logger.debug(
               s"ran for time ${t.toSeconds}, exceeding time limit $maxTime, with cutoff ${cutoff}"
             )
           else
-            Utils.logger.info(
+            Utils.logger.debug(
               s"ran for time ${t.toSeconds}, less than the time limit $maxTime, with cutoff ${cutoff}; running again"
             )
           if (pmin * qmin > cutoff)
-            Utils.logger.info(s"all pairs considered with cutoff $cutoff")
+            Utils.logger.debug(s"all pairs considered with cutoff $cutoff")
           ((t < maxTime) && (pmin * qmin < cutoff), (result, newTerms, newTyps)) // ensuring not all pairs already used
         // case Failure(throwable) =>
         //   throwable match {
         //     case _: TimeoutException =>
-        //       Utils.logger.info(s"Timed out with time limit $maxTime")
+        //       Utils.logger.debug(s"Timed out with time limit $maxTime")
         //     case _ =>
         //       Utils.logger.error(
         //         s"Instead of timeout, unexpected exception ${throwable.getMessage()}"

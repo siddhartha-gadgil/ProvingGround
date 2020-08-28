@@ -7,9 +7,9 @@ import define.{Sources, Task}
 import os._
 import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r`
 
-val scalaV = "2.13.1"
+val scalaV = "2.13.3"
 
-val ammV = "1.8.2"
+val ammV = "2.2.0"
 
 val commonLibs = List(
   ivy"org.scala-lang.modules::scala-parser-combinators::1.1.2",
@@ -20,7 +20,7 @@ val commonLibs = List(
   ivy"com.lihaoyi::fastparse::2.2.3",
   ivy"com.chuusai::shapeless::2.4.0-M1",
   ivy"org.typelevel::cats-core::2.1.0",
-  ivy"io.monix::monix::3.1.0",
+  ivy"io.monix::monix::3.2.2",
   ivy"com.lihaoyi::pprint::0.5.8",
   ivy"com.outr::scribe::2.7.8",
   ivy"org.scala-lang.modules::scala-parallel-collections:0.2.0",
@@ -97,7 +97,7 @@ repl.pprinter() = {
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule {
-  def scalaJSVersion = "0.6.31"
+  def scalaJSVersion = "0.6.33"
 }
 
 val jvmLibs = List(
@@ -161,7 +161,7 @@ object core extends Module {
   }
 
   object js extends CommonJSModule with SbtModule {
-    override def scalaJSVersion = "0.6.31"
+    override def scalaJSVersion = "0.6.33"
     override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }
@@ -324,7 +324,7 @@ object jvmRoot extends CommonModule {
   }
 }
 
-object runcore extends CommonModule with SbtModule{
+object jvmcore extends CommonModule with SbtModule{
   def moduleDeps = Seq(core.jvm)
 }
 object exploring extends JvmModule {

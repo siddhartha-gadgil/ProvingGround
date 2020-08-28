@@ -484,7 +484,7 @@ case class MonixFiniteDistributionEq[State](
                             }
                         tve
                     }
-                Task.gather(pmfEqT).map {
+                Task.parSequence(pmfEqT).map {
                   case (vveq) =>
                     (
                       FD(vveq.flatMap(_._1)),
@@ -532,7 +532,7 @@ case class MonixFiniteDistributionEq[State](
                               (fibPMF, fibEqs union fiberEqs, mf)
                           }
                     }
-                Task.gather(pmfEqT).map {
+                Task.parSequence(pmfEqT).map {
                   case (vveq) =>
                     (
                       FD(vveq.flatMap(_._1)),
@@ -584,7 +584,7 @@ case class MonixFiniteDistributionEq[State](
                           }
 
                     }
-                Task.gather(pmfEqT).map {
+                Task.parSequence(pmfEqT).map {
                   case (vveq) =>
                     (
                       FD(vveq.flatMap(_._1)),
@@ -629,7 +629,7 @@ case class MonixFiniteDistributionEq[State](
                           (d.pmf, eqs union d2E, mf)
                       }
                   }
-                Task.gather(pmfEqT).map {
+                Task.parSequence(pmfEqT).map {
                   case (vveq) =>
                     (
                       FD(vveq.flatMap(_._1)),

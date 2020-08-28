@@ -20,6 +20,9 @@ import scala.math.Ordering.Double.TotalOrdering
 import scala.collection.immutable.Stream.cons
 import scala.collection.immutable.Nil
 import shapeless.ops.product
+import scala.collection.mutable
+import scala.concurrent._
+import monix.eval._
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -134,6 +137,31 @@ object ExpressionEval {
     val result = expMapVec.toMap
     Utils.logger.info("Computed map")
     result.seq
+  }
+
+  def initMapTask(
+      atoms: Set[Expression],
+      tg: TermGenParams,
+      initialState: TermState
+  ): Task[Map[Expression, Double]] = {
+    val atomVec = atoms.toVector
+    Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
+    val valueVecTask =
+      Task.parSequence(
+        atomVec.map(exp => Task(initVal(exp, tg, initialState)))
+      )
+    valueVecTask.map { valueVec =>
+      Utils.logger.info("Computed initial values")
+      val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
+        case (Some(x), n) if x > 0 => (atomVec(n), x)
+      }
+      val expMapVec = valueVec.zipWithIndex.collect(fn)
+      Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
+      Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+      val result = expMapVec.toMap
+      Utils.logger.info("Computed map")
+      result
+    }
   }
 
   /**
@@ -353,6 +381,50 @@ object ExpressionEval {
       val maxTime: Option[Long]                        = maxTimeS
       val previousMap: Option[Map[Expression, Double]] = previousMapS
     }
+
+  /**
+    * builds an [[ExpressionEval]] given initial states, equations and parameters,
+    * with the final state deduced using the equations
+    *
+    * @param initialState initial state
+    * @param equationsS equations
+    * @param tgS term-generator parameters
+    * @param maxRatioS maximum ratio for stabilization
+    * @param scaleS scale for gradient flow
+    * @param smoothS smoothing for gradient flow
+    * @param exponentS exponent for iteration
+    * @param decayS decay during iteration
+    * @param maxTimeS max-time during iteration
+    * @return [[ExpressionEval]] built
+    */
+  def fromInitEqsTask(
+      initialState: TermState,
+      equationsS: Set[Equation],
+      tgS: TermGenParams,
+      maxRatioS: Double = 1.01,
+      scaleS: Double = 1.0,
+      smoothS: Option[Double] = None,
+      exponentS: Double = 0.5,
+      decayS: Double = 1,
+      maxTimeS: Option[Long] = None,
+      previousMapS: Option[Map[Expression, Double]] = None
+  ): Task[ExpressionEval] =
+    initMapTask(eqAtoms(equationsS), tgS, initialState).map(
+      initM =>
+        new ExpressionEval with GenerateTyps {
+          val init                                         = initM
+          val equations                                    = equationsS
+          val tg                                           = tgS
+          val maxRatio                                     = maxRatioS
+          val scale                                        = scaleS
+          val coeffsAsVars: Boolean                        = false
+          val smoothing: Option[Double]                    = smoothS
+          val exponent: Double                             = exponentS
+          val decay                                        = decayS
+          val maxTime: Option[Long]                        = maxTimeS
+          val previousMap: Option[Map[Expression, Double]] = previousMapS
+        }
+    )
 
   /**
     * [[ExpressionEval]] where the type distribution is generated from the equations
@@ -849,17 +921,55 @@ class ExprCalc(ev: ExpressionEval) {
   def gradientStep(index: Int): Vector[(Int, Double)] = {
     val rhs = rhsExprs(index)
     val branches: Vector[Vector[(Int, Double)]] = rhs.terms.map { prod =>
-        (0 until (prod.indices.size)).toVector.map { j =>
-          val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
-          val denominator = prod.negIndices.map(finalVec(_)).product
-          val coeff =
-            if (denominator > 0) rest.map(finalVec(_)).product / (denominator)
-            else rest.map(finalVec(_)).product
-          val ind = prod.indices(j)
-          (j -> coeff)
-        }      
+      (0 until (prod.indices.size)).toVector.map { j =>
+        val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
+        val denominator = prod.negIndices.map(finalVec(_)).product
+        val coeff =
+          if (denominator > 0) rest.map(finalVec(_)).product / (denominator)
+          else rest.map(finalVec(_)).product
+        val ind = prod.indices(j)
+        (j -> coeff)
+      }
     }
     vecSum(branches)
+  }
+
+  def gradientNextStep(
+      predecessor: Vector[(Int, Double)]
+  ): Vector[(Int, Double)] = {
+    val branches: Vector[Vector[(Int, Double)]] = predecessor.map {
+      case (j, w) =>
+        gradientStep(j).map { case (i, u) => (i, u * w) }
+    }
+    vecSum(branches)
+  }
+
+  // currently computed gradients up to a given depth
+  val gradientTerms: Vector[mutable.ArrayBuffer[Vector[(Int, Double)]]] =
+    (0 until size).toVector.map(j => mutable.ArrayBuffer(Vector(j -> 1.0)))
+
+  def gradientUptoMemo(j: Int, depth: Int): Vector[Vector[(Int, Double)]] = {
+    val memo = gradientTerms(j)
+    if (depth <= memo.size) memo.take(depth).toVector
+    else if (depth == memo.size + 1) {
+      val predecessor = memo.last
+      val result =
+        vecSum(
+          gradientStep(j).map {
+            case (i, w) =>
+              gradientUptoMemo(i, depth - 1).last.map {
+                case (k, u) => (k, u * w)
+              }
+          }
+        )
+      gradientTerms(j).append(result)
+      memo.toVector :+ result
+    } else {
+      val predecessor = gradientUptoMemo(j, depth - 1).last // also saves
+      val result      = gradientNextStep(predecessor)
+      gradientTerms(j).append(result)
+      memo.toVector :+ result
+    }
   }
 
   // A simplification where we do not propagate through the denominator, i.e., events. This makes things more stable.
@@ -1127,7 +1237,7 @@ class ExprCalc(ev: ExpressionEval) {
     Utils.logger.info(s"Number of equations: ${equationVec.size}")
     Utils.logger.info(s"Computed initial vector with size: ${initVector.size}") // to avoid being part of time limit for stable vector
     val stableSupport =
-      stableSupportVec(initVector.par, maxTime, 0L)
+      stableSupportVec(initVector, maxTime, 0L)
     Utils.logger.info("Obtained vector with stable support")
     stableVec(
       stableSupport,
@@ -1719,7 +1829,7 @@ trait ExpressionEval { self =>
             case Log(exp) => jetTask(exp).map(j => log(j))
             case Exp(x)   => jetTask(x).map(j => exp(j))
             case Sum(xs) =>
-              Task.gather(xs.map(jetTask(_))).map(_.reduce(_ + _))
+              Task.parSequence(xs.map(jetTask(_))).map(_.reduce(_ + _))
             // for {
             //   a <- jetTask(x)
             //   b <- jetTask(y)
@@ -1757,7 +1867,7 @@ trait ExpressionEval { self =>
       }
 
     lazy val eqnGradientsTask: Task[Vector[Vector[Double]]] =
-      Task.gather(eqnExpressions.map { exp =>
+      Task.parSequence(eqnExpressions.map { exp =>
         jetTask(exp).map(_.infinitesimal.toVector)
       })
 

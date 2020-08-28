@@ -44,7 +44,7 @@ object AndrewsCurtisInterface {
 
   class FlowWorker extends Actor{
     def receive = {
-      case ACFlowData(p, d) => sender ! p.flow(d)
+      case ACFlowData(p, d) => sender() ! p.flow(d)
       case _ =>
     }
   }

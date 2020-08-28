@@ -1,4 +1,5 @@
 package provingground.learning
+import provingground._
 import provingground.{FiniteDistribution => FD}
 import shapeless._
 import HList._
@@ -8,6 +9,9 @@ import scala.util._
 import spire.util.Opt
 import provingground.learning.Expression.Exp
 import scala.collection.immutable.Nil
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
+import scala.concurrent._
 
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
@@ -737,17 +741,36 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
 
 object Equation {
   def group(ts: Set[EquationNode]): Set[Equation] = groupIt(ts).toSet
-  // ts.groupMapReduce(_.lhs)(_.rhs)(_ + _)
-  //   .map { case (lhs, rhs) => Equation(lhs, rhs) }
-  //   .toSet
-  // ts.groupBy(_.lhs)
-  //   .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
-  //   .toSet
 
-  def groupIt(ts: Set[EquationNode]): Iterable[Equation] =
-    ts.groupMap(_.lhs)(_.rhs).map {
-      case (lhs, rhsV) => Equation(lhs, Sum(rhsV.toVector))
-    }
+  def groupDirect(ts: Set[EquationNode]): Set[Equation] =
+    ts.groupMapReduce(_.lhs)(_.rhs)(_ + _)
+      .map { case (lhs, rhs) => Equation(lhs, rhs) }
+      .toSet
+
+  def groupIt(ts: Set[EquationNode]): Iterable[Equation] = {
+    val ps = ts.par
+    import scala.collection.parallel._
+    // ps.tasksupport = new ForkJoinTaskSupport(
+    //   new java.util.concurrent.ForkJoinPool(Utils.threadNum)
+    // )
+    ps.groupBy(_.lhs)
+      .mapValues(s => s.map(_.rhs))
+      .map {
+        case (lhs, rhsV) => Equation(lhs, Sum(rhsV.toVector))
+      }
+  }.seq
+
+  def groupFuture(
+      ts: Set[EquationNode]
+  )(implicit ec: ExecutionContext): Future[Set[Equation]] =
+    Future
+      .sequence(
+        ts.groupBy(_.lhs.hashCode())
+          .values
+          .map(s => Future(groupIt(s).toVector))
+          .toVector
+      )
+      .map(provingground.Utils.gatherSet(_, Set()))
 
   def split(eq: Equation): Set[EquationNode] = eq match {
     case Equation(lhs, Sum(ys)) =>
