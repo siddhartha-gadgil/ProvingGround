@@ -1049,7 +1049,7 @@ object HoTTBot {
 
   def baseStateTask(
       initialState: TermState,
-      equationVec: Vector[Equation],
+      equationNodes: Set[EquationNode],
       tg: TermGenParams,
       maxRatio: Double = 1.01,
       scale: Double = 1.0,
@@ -1060,9 +1060,10 @@ object HoTTBot {
   ) = {
     logger.info("Computing base state")
     val groupSetTask = Task {
-      val groupedVec = equationVec ++ Equation.groupIt(
-        DE.termStateInit(initialState)
-      )
+      val groupedVec = 
+       Equation.groupMap(equationNodes, 
+        DE.termStateInitMap(initialState)
+      ).values.toVector
       Utils.logger.info("Created vector of equations")
       Utils.makeSet(
         groupedVec
@@ -1217,8 +1218,8 @@ object HoTTBot {
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
           logger.info(s"Using ${neqs.size} equation nodes for base states")
-          val eqVec = Equation.groupIt(neqs).toVector
-          Utils.logger.info("Grouped into equations from lookup")
+          // val eqVec = Equation.groupIt(neqs).toVector
+          // Utils.logger.info("Grouped into equations from lookup")
           psps.contents.map(
             ps => {
               import qp.lp
@@ -1234,7 +1235,7 @@ object HoTTBot {
               val bs = ps.ts.copy(terms = tdist)
               baseStateTask(
                 bs,
-                eqVec,
+                neqs,
                 ps.tgOpt.getOrElse(lp.tg),
                 lp.maxRatio,
                 lp.scale,

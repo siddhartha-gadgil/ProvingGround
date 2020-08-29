@@ -958,6 +958,61 @@ class DerivedEquations(
         )
     }.seq
 
+
+  def termStateElemVec(ts: TermState): Vector[Elem[_]] =
+    ts.terms.supp.distinct.map { x =>
+      Elem(x, Terms): Elem[_]
+    } ++
+      ts.typs.supp.distinct.map { x =>
+        Elem(x, Typs): Elem[_]
+      } ++
+      ts.typs.supp.distinct.map { x =>
+        Elem(x, TargetTyps): Elem[_]
+      } ++
+      ts.terms.supp.distinct.flatMap(ExstFunc.opt).map { x =>
+        Elem(x, Funcs): Elem[_]
+      } ++
+      ts.terms.condMap(TypFamilyOpt).supp.distinct.map { x =>
+        Elem(x, TypFamilies): Elem[_]
+      } ++
+      ts.terms.supp.distinct.map { x =>
+        Elem(x, termsWithTyp(x.typ)): Elem[_]
+      } ++
+      ts.terms.supp.distinct.flatMap(ExstFunc.opt).map { x =>
+        Elem(x, funcsWithDomain(x.dom)): Elem[_]
+      }
+
+  def termStateElemPar(ts: TermState) : scala.collection.parallel.ParIterable[GeneratorVariables.Elem[_]] =
+    ts.termDistMap.keys.map { x =>
+      Elem(x, Terms): Elem[_]
+    } ++
+      ts.typDistMap.keys.map { x =>
+        Elem(x, Typs): Elem[_]
+      } ++
+      ts.typDistMap.keys.map { x =>
+        Elem(x, TargetTyps): Elem[_]
+      } ++
+      ts.funcDistMap.keys.map { x =>
+        Elem(x, Funcs): Elem[_]
+      } ++
+      ts.typFamilyDistMap.keys.map { x =>
+        Elem(x, TypFamilies): Elem[_]
+      } ++
+      ts.termDistMap.keys.map { x =>
+        Elem(x, termsWithTyp(x.typ)): Elem[_]
+      } ++
+      ts.termDistMap.keys.flatMap(ExstFunc.opt).map { x =>
+        Elem(x, funcsWithDomain(x.dom)): Elem[_]
+      }
+
+  def termStateInitMap(ts: TermState) : ParMap[Expression,EquationNode] =
+    termStateElemPar(ts).map {
+      case Elem(t, rv) =>
+        finalProb(t, rv) -> EquationNode(
+          finalProb(t, rv),
+          Coeff(Init(rv)) * InitialVal(Elem(t, rv))
+        )
+    }.toMap
 }
 
 object DE extends DerivedEquations()

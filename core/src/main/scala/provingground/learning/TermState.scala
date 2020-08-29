@@ -8,6 +8,7 @@ import provingground.learning.GeneratorNode.{Map, MapOpt}
 import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
+import scala.collection.parallel._
 
 import TermGeneratorNodes._
 import scala.math.Ordering.Double.TotalOrdering
@@ -70,17 +71,37 @@ case class TermState(
 
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
-  lazy val termDistMap = terms.toMap
+  lazy val termDistMap = terms.toParMap
 
-  lazy val typDistMap = typs.toMap
+  lazy val typDistMap = typs.toParMap
 
   lazy val funcDist = terms.condMap(FuncOpt)
 
-  lazy val funcDistMap = funcDist.toMap
+  lazy val funcDistMap: ParMap[ExstFunc, Double] = {
+    val base = termDistMap.flatMap {
+      case (x, w) =>
+        ExstFunc.opt(x).map { fn =>
+          fn -> w
+        }
+    }
+    val total = base.values.sum
+    if (total > 0) base.mapValues(_ * (1 / total))
+    else ParMap.empty
+  }
 
   lazy val typFamilyDist = terms.condMap(TypFamilyOpt)
 
-  lazy val typFamilyDistMap = typFamilyDist.toMap
+  lazy val typFamilyDistMap:ParMap[ExstFunc, Double] = {
+    val base = termDistMap.flatMap {
+      case (x, w) =>
+        TypFamilyOpt(x).map { fn =>
+          fn -> w
+        }
+    }
+    val total = base.values.sum
+    if (total > 0) base.mapValues(_ * (1 / total))
+    else ParMap.empty
+  }
 
   lazy val typOrFamilyDist = terms.conditioned(isTypFamily)
 
@@ -107,20 +128,20 @@ case class TermState(
   //   )
   //   .toMap
 
-  lazy val domTotals = funcDistMap.groupMapReduce(_._1.dom)(_._2)(_ + _)
+  lazy val domTotals = funcDistMap.groupBy(_._1).mapValues(_.values.sum)
 
   lazy val funcsWithDoms =
-  termTyps
-    .map(
-      typ =>
-        (typ: Typ[Term]) -> (terms
-          .condMap(FuncOpt)
-          .conditioned(_.dom == typ): FD[ExstFunc])
-    )
-    .toMap
+    termTyps
+      .map(
+        typ =>
+          (typ: Typ[Term]) -> (terms
+            .condMap(FuncOpt)
+            .conditioned(_.dom == typ): FD[ExstFunc])
+      )
+      .toMap
 
-  lazy val funcsWithDomsMap = 
-  funcDistMap.groupBy(_._1.dom: Typ[Term]).map {
+  lazy val funcsWithDomsMap =
+    funcDistMap.groupBy(_._1.dom: Typ[Term]).map {
       case (typ, m) =>
         val total = m.values.sum
         typ -> m.map { case (x, p) => (x, p / total) }
