@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,24 +8,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>ProvingGround: Automated Theorem proving by learning</title>
-    <link href="../images/IIScLogo.jpg" rel="icon">
+    <link href="IIScLogo.jpg" rel="icon">
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-   <link href="css/katex.min.css" rel="stylesheet">
-   <link href="css/main.css" rel="stylesheet">
+    <link href="css/katex.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
 
 
     <link rel="stylesheet" href="css/zenburn.css">
     <script src="js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 
-   <script src="js/ace.js"></script>
-   <script src="js/katex.min.js"></script>
+    <script src="js/ace.js"></script>
+    <script src="js/katex.min.js"></script>
 
-    
-<!-- mathjax config similar to math.stackexchange -->
-<script type="text/x-mathjax-config">
+
+    <!-- mathjax config similar to math.stackexchange -->
+    <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 jax: ["input/TeX", "output/HTML-CSS"],
 tex2jax: {
@@ -36,291 +37,300 @@ tex2jax: {
 messageStyle: "none",
 "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
 });
-</script>
-<script type="text/javascript" async
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-       </script>
-    
-  </head>
 
-   
+
+    </script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"
+            type="text/javascript">
+    </script>
+
+</head>
+
+
 <body>
 <nav class="navbar navbar-default">
-      <div class="container-fluid">
+    <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <span class="navbar-brand">ProvingGround</span>
+            <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#bs-example-navbar-collapse-1"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand">ProvingGround</span>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav" id="left-nav">
-            <li><a href="index.html">Docs Home</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                Tutorials (notes)<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                Posts<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="posts/computer-assistance-in-homogenous-length-functions.html">
-                            2018-1-14-Computer assistance in Homogenous length functions
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/tuning-with-tensorflow.html">
-                            2017-12-12-Tuning with Tensorflow
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/stalling-in-the-lean-import---the-problem-case..html">
-                            2017-12-7-Stalling in the lean import - the problem case.
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/lean-import-and-propositions.html">
-                            2017-12-6-Lean Import and Propositions
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/levels-of-parsimony,-as-seen-from-logic-runs.html">
-                            2017-11-2-Levels of parsimony, as seen from Logic runs
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/improvements-to-searching-and--exploration.html">
-                            2017-10-31-Improvements to searching and exploration
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/logic-and-modus-ponens.html">
-                            2017-10-25-Logic and Modus Ponens
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/prover-components-and-identities-in-a-monoid.html">
-                            2017-10-20-Prover Components and Identities in a Monoid
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/on-import-from-lean-export-format.html">
-                            2017-10-17-On import from Lean Export format
-                        </a>
-                    </li>
-                    <li>
-                        <a href="posts/&quot;quasi-literate-programming&quot;.html">
-                            2014-12-31-&quot;Quasi-literate programming&quot;
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                Notebooks<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="notes/2019-08-01-derived-equations.ipynb.html" target="_blank">2019-08-01-derived-equations.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-09-13-cpflow.ipynb.html" target="_blank">2019-09-13-cpflow.ipynb</a></li>
-                    <li><a href="notes/2019-09-13-workflow.ipynb.html" target="_blank">2019-09-13-workflow.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-09-14-topgoals.ipynb.html" target="_blank">2019-09-14-topgoals.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-09-16-simple-optimize.ipynb.html" target="_blank">2019-09-16-simple-optimize.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-09-17-refine-task.ipynb.html"
-                           target="_blank">2019-09-17-refine-task.ipynb</a></li>
-                    <li><a href="notes/2019-09-17-simple-optimization-constant-probs.ipynb.html" target="_blank">2019-09-17-simple-optimization-constant-probs.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-09-18-monoid-unifiedapp.ipynb.html" target="_blank">2019-09-18-monoid-unifiedapp.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-09-18-monoid.ipynb.html" target="_blank">2019-09-18-monoid.ipynb</a></li>
-                    <li><a href="notes/2019-09-18-refine-till-success.ipynb.html" target="_blank">2019-09-18-refine-till-success.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-09-23-variable-modus-ponens.ipynb.html" target="_blank">2019-09-23-variable-modus-ponens.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-16-variables-export.ipynb.html" target="_blank">2019-10-16-variables-export.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-17-modus-ponens.ipynb.html"
-                           target="_blank">2019-10-17-modus-ponens.ipynb</a></li>
-                    <li><a href="notes/2019-10-18-chained-equations-monoid.ipynb.html" target="_blank">2019-10-18-chained-equations-monoid.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-18-proof-propagation.ipynb.html" target="_blank">2019-10-18-proof-propagation.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-21-goal-chomping.ipynb.html" target="_blank">2019-10-21-goal-chomping.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-21-liberal-goal-chomping.ipynb.html" target="_blank">2019-10-21-liberal-goal-chomping.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-22-memo-liberal-chomper.ipynb.html" target="_blank">2019-10-22-memo-liberal-chomper.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-22-newmemo-liberal-chomper.ipynb.html" target="_blank">2019-10-22-newmemo-liberal-chomper.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-23-chomper-memo-newlookup.ipynb.html" target="_blank">2019-10-23-chomper-memo-newlookup.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-10-25-entropies.ipynb.html" target="_blank">2019-10-25-entropies.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-12-Achal-CzechSlovakOlympiad.ipynb.html" target="_blank">2019-11-12-Achal-CzechSlovakOlympiad.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-13-CzechSlovakOlympAppOnly.ipynb.html" target="_blank">2019-11-13-CzechSlovakOlympAppOnly.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-13-CzechSlovakOlympCod.ipynb.html" target="_blank">2019-11-13-CzechSlovakOlympCod.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-13-CzechSlovakOlympExplore.ipynb.html" target="_blank">2019-11-13-CzechSlovakOlympExplore.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-13-codomain-target.ipynb.html" target="_blank">2019-11-13-codomain-target.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-14-CzechSlovakOlympTillSuccess.ipynb.html" target="_blank">2019-11-14-CzechSlovakOlympTillSuccess.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-14-CzechSlovakOlympWithMN.ipynb.html" target="_blank">2019-11-14-CzechSlovakOlympWithMN.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-14-equation-generation.ipynb.html" target="_blank">2019-11-14-equation-generation.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-15-CzechSlovakOlySteps.ipynb.html" target="_blank">2019-11-15-CzechSlovakOlySteps.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-18-depth-bound.ipynb.html"
-                           target="_blank">2019-11-18-depth-bound.ipynb</a></li>
-                    <li><a href="notes/2019-11-21-skolemize-test.ipynb.html" target="_blank">2019-11-21-skolemize-test.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-25-export-normalize-isles.ipynb.html" target="_blank">2019-11-25-export-normalize-isles.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-27-afterfix-export-normalize-isles-refine.ipynb.html" target="_blank">2019-11-27-afterfix-export-normalize-isles-refine.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-27-export-normalize-isles-refine.ipynb.html" target="_blank">2019-11-27-export-normalize-isles-refine.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-27-simplified-export-normalize-isles-refine.ipynb.html" target="_blank">2019-11-27-simplified-export-normalize-isles-refine.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-27tworfixes-export-normalize-isles-refine.ipynb.html" target="_blank">2019-11-27tworfixes-export-normalize-isles-refine.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-28-export-normalize-isles-refine.ipynb.html" target="_blank">2019-11-28-export-normalize-isles-refine.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-11-28-with-independent-export-normalize-isles-refine.ipynb.html"
-                           target="_blank">2019-11-28-with-independent-export-normalize-isles-refine.ipynb</a></li>
-                    <li>
-                        <a href="notes/2019-12-02-recisles-with-independent-export-normalize-isles-refine-rhsmodify.ipynb.html"
-                           target="_blank">2019-12-02-recisles-with-independent-export-normalize-isles-refine-rhsmodify.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-12-02-recisles-with-independent-export-normalize-isles-refine.ipynb.html"
-                           target="_blank">2019-12-02-recisles-with-independent-export-normalize-isles-refine.ipynb</a>
-                    </li>
-                    <li><a href="notes/2019-12-02-with-independent-export-normalize-isles-refine.ipynb.html"
-                           target="_blank">2019-12-02-with-independent-export-normalize-isles-refine.ipynb</a></li>
-                    <li><a href="notes/2020-05-07-bot-instantiation.ipynb.html" target="_blank">2020-05-07-bot-instantiation.ipynb</a>
-                    </li>
-                    <li><a href="notes/2020-05-25-BotMonoid.ipynb.html" target="_blank">2020-05-25-BotMonoid.ipynb</a>
-                    </li>
-                    <li><a href="notes/2020-05-26-bot-modus-ponens-launch.ipynb.html" target="_blank">2020-05-26-bot-modus-ponens-launch.ipynb</a>
-                    </li>
-                    <li><a href="notes/2020-05-26-bot-modus-ponens.ipynb.html" target="_blank">2020-05-26-bot-modus-ponens.ipynb</a>
-                    </li>
-                    <li><a href="notes/Bird-Cooccurences.ipynb.html" target="_blank">Bird-Cooccurences.ipynb</a></li>
-                    <li><a href="notes/CzechSlovakLemmas.ipynb.html" target="_blank">CzechSlovakLemmas.ipynb</a></li>
-                    <li><a href="notes/EquationsMonoid.ipynb.html" target="_blank">EquationsMonoid.ipynb</a></li>
-                    <li><a href="notes/Evilplot.ipynb.html" target="_blank">Evilplot.ipynb</a></li>
-                    <li><a href="notes/Futures.ipynb.html" target="_blank">Futures.ipynb</a></li>
-                    <li><a href="notes/GenerateInductive.ipynb.html" target="_blank">GenerateInductive.ipynb</a></li>
-                    <li><a href="notes/HoTT.html" target="_blank">HoTT</a></li>
-                    <li><a href="notes/HoTT.ipynb.html" target="_blank">HoTT.ipynb</a></li>
-                    <li><a href="notes/HoTTCoreExperiments.ipynb.html" target="_blank">HoTTCoreExperiments.ipynb</a>
-                    </li>
-                    <li><a href="notes/Inductive-Types-semi-explicit.ipynb.html" target="_blank">Inductive-Types-semi-explicit.ipynb</a>
-                    </li>
-                    <li><a href="notes/ModPon.ipynb.html" target="_blank">ModPon.ipynb</a></li>
-                    <li><a href="notes/ModusPonens.ipynb.html" target="_blank">ModusPonens.ipynb</a></li>
-                    <li><a href="notes/MonoidBack.ipynb.html" target="_blank">MonoidBack.ipynb</a></li>
-                    <li><a href="notes/MonoidProof.html" target="_blank">MonoidProof</a></li>
-                    <li><a href="notes/MonoidProof.ipynb.html" target="_blank">MonoidProof.ipynb</a></li>
-                    <li><a href="notes/NatId.ipynb.html" target="_blank">NatId.ipynb</a></li>
-                    <li><a href="notes/NaturalLanguageParsing-simple-examples.ipynb.html" target="_blank">NaturalLanguageParsing-simple-examples.ipynb</a>
-                    </li>
-                    <li><a href="notes/NaturalNumbers-SymbolicAlgebra.ipynb.html" target="_blank">NaturalNumbers-SymbolicAlgebra.ipynb</a>
-                    </li>
-                    <li><a href="notes/PutnamOlympaid.ipynb.html" target="_blank">PutnamOlympaid.ipynb</a></li>
-                    <li><a href="notes/Putnum.ipynb.html" target="_blank">Putnum.ipynb</a></li>
-                    <li><a href="notes/ScalaRep.ipynb.html" target="_blank">ScalaRep.ipynb</a></li>
-                    <li><a href="notes/VectorTypeFamily.ipynb.html" target="_blank">VectorTypeFamily.ipynb</a></li>
-                    <li><a href="notes/index.html" target="_blank">index</a></li>
-                    <li><a href="notes/svg-experiments.ipynb.html" target="_blank">svg-experiments.ipynb</a></li>
-                </ul>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li> <a href="scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
-              <li><a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-                  <img alt="Github" src="../images/GitHub-Mark-Light-32px.png"></img> </a></li>
-          <li>
-            <a href="https://gitter.im/siddhartha-gadgil/ProvingGround" target="_blank">
-              <img src="https://badges.gitter.im/siddhartha-gadgil/ProvingGround.svg" alt="gitter"></img>
-            </a>
-          </li>
+            <ul class="nav navbar-nav" id="left-nav">
+                <li><a href="index.html">Docs Home</a></li>
+                <li class="dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown"
+                       href="#" role="button">
+                        Tutorials (notes)<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="tuts/hott.html">HoTT</a></li>
+                        <li><a href="tuts/left-and-right-identities.html">Left and Right Identities</a></li>
+                        <li><a href="tuts/internal-repetition-for-length-functions.html">Internal repetition for length
+                            functions</a></li>
+                        <li><a href="tuts/inductive-types.html">Inductive Types</a></li>
+                        <li><a href="tuts/scalarep.html">ScalaRep</a></li>
+                        <li><a href="tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown"
+                       href="#" role="button">
+                        Posts<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer
+                            assistance in Homogenous length functions</a></li>
+                        <li><a href="posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li>
+                        <li><a href="posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in
+                            the lean import - the problem case.</a></li>
+                        <li><a href="posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a>
+                        </li>
+                        <li><a href="posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of
+                            parsimony, as seen from Logic runs</a></li>
+                        <li><a href="posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to
+                            searching and exploration</a></li>
+                        <li><a href="posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li>
+                        <li><a href="posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover
+                            Components and Identities in a Monoid</a></li>
+                        <li><a href="posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export
+                            format</a></li>
+                        <li><a href="posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate
+                            programming&quot;</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown"
+                       href="#" role="button">
+                        Notebooks<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="notes/2019-08-01-derived-equations.ipynb.html" target="_blank">2019-08-01-derived-equations.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-13-cpflow.ipynb.html" target="_blank">2019-09-13-cpflow.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-13-workflow.ipynb.html" target="_blank">2019-09-13-workflow.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-14-topgoals.ipynb.html" target="_blank">2019-09-14-topgoals.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-16-simple-optimize.ipynb.html" target="_blank">2019-09-16-simple-optimize.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-17-refine-task.ipynb.html" target="_blank">2019-09-17-refine-task.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-17-simple-optimization-constant-probs.ipynb.html" target="_blank">2019-09-17-simple-optimization-constant-probs.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-18-monoid-unifiedapp.ipynb.html" target="_blank">2019-09-18-monoid-unifiedapp.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-18-monoid.ipynb.html" target="_blank">2019-09-18-monoid.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-18-refine-till-success.ipynb.html" target="_blank">2019-09-18-refine-till-success.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-09-23-variable-modus-ponens.ipynb.html" target="_blank">2019-09-23-variable-modus-ponens.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-16-variables-export.ipynb.html" target="_blank">2019-10-16-variables-export.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-17-modus-ponens.ipynb.html" target="_blank">2019-10-17-modus-ponens.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-18-chained-equations-monoid.ipynb.html" target="_blank">2019-10-18-chained-equations-monoid.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-18-proof-propagation.ipynb.html" target="_blank">2019-10-18-proof-propagation.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-21-goal-chomping.ipynb.html" target="_blank">2019-10-21-goal-chomping.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-21-liberal-goal-chomping.ipynb.html" target="_blank">2019-10-21-liberal-goal-chomping.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-22-memo-liberal-chomper.ipynb.html" target="_blank">2019-10-22-memo-liberal-chomper.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-22-newmemo-liberal-chomper.ipynb.html" target="_blank">2019-10-22-newmemo-liberal-chomper.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-23-chomper-memo-newlookup.ipynb.html" target="_blank">2019-10-23-chomper-memo-newlookup.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-10-25-entropies.ipynb.html"
+                               target="_blank">2019-10-25-entropies.ipynb</a></li>
+                        <li><a href="notes/2019-11-12-Achal-CzechSlovakOlympiad.ipynb.html" target="_blank">2019-11-12-Achal-CzechSlovakOlympiad.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-13-CzechSlovakOlympAppOnly.ipynb.html" target="_blank">2019-11-13-CzechSlovakOlympAppOnly.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-13-CzechSlovakOlympCod.ipynb.html" target="_blank">2019-11-13-CzechSlovakOlympCod.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-13-CzechSlovakOlympExplore.ipynb.html" target="_blank">2019-11-13-CzechSlovakOlympExplore.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-13-codomain-target.ipynb.html" target="_blank">2019-11-13-codomain-target.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-14-CzechSlovakOlympTillSuccess.ipynb.html" target="_blank">2019-11-14-CzechSlovakOlympTillSuccess.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-14-CzechSlovakOlympWithMN.ipynb.html" target="_blank">2019-11-14-CzechSlovakOlympWithMN.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-14-equation-generation.ipynb.html" target="_blank">2019-11-14-equation-generation.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-15-CzechSlovakOlySteps.ipynb.html" target="_blank">2019-11-15-CzechSlovakOlySteps.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-18-depth-bound.ipynb.html" target="_blank">2019-11-18-depth-bound.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-21-skolemize-test.ipynb.html" target="_blank">2019-11-21-skolemize-test.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-25-export-normalize-isles.ipynb.html" target="_blank">2019-11-25-export-normalize-isles.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-27-afterfix-export-normalize-isles-refine.ipynb.html"
+                               target="_blank">2019-11-27-afterfix-export-normalize-isles-refine.ipynb</a></li>
+                        <li><a href="notes/2019-11-27-export-normalize-isles-refine.ipynb.html" target="_blank">2019-11-27-export-normalize-isles-refine.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-27-simplified-export-normalize-isles-refine.ipynb.html"
+                               target="_blank">2019-11-27-simplified-export-normalize-isles-refine.ipynb</a></li>
+                        <li><a href="notes/2019-11-27tworfixes-export-normalize-isles-refine.ipynb.html"
+                               target="_blank">2019-11-27tworfixes-export-normalize-isles-refine.ipynb</a></li>
+                        <li><a href="notes/2019-11-28-export-normalize-isles-refine.ipynb.html" target="_blank">2019-11-28-export-normalize-isles-refine.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-11-28-with-independent-export-normalize-isles-refine.ipynb.html"
+                               target="_blank">2019-11-28-with-independent-export-normalize-isles-refine.ipynb</a></li>
+                        <li>
+                            <a href="notes/2019-12-02-recisles-with-independent-export-normalize-isles-refine-rhsmodify.ipynb.html"
+                               target="_blank">2019-12-02-recisles-with-independent-export-normalize-isles-refine-rhsmodify.ipynb</a>
+                        </li>
+                        <li>
+                            <a href="notes/2019-12-02-recisles-with-independent-export-normalize-isles-refine.ipynb.html"
+                               target="_blank">2019-12-02-recisles-with-independent-export-normalize-isles-refine.ipynb</a>
+                        </li>
+                        <li><a href="notes/2019-12-02-with-independent-export-normalize-isles-refine.ipynb.html"
+                               target="_blank">2019-12-02-with-independent-export-normalize-isles-refine.ipynb</a></li>
+                        <li><a href="notes/2020-05-25-BotMonoid.ipynb.html"
+                               target="_blank">2020-05-25-BotMonoid.ipynb</a></li>
+                        <li><a href="notes/2020-05-26-bot-modus-ponens.ipynb.html" target="_blank">2020-05-26-bot-modus-ponens.ipynb</a>
+                        </li>
+                        <li><a href="notes/Bird-Cooccurences.ipynb.html" target="_blank">Bird-Cooccurences.ipynb</a>
+                        </li>
+                        <li><a href="notes/CzechSlovakLemmas.ipynb.html" target="_blank">CzechSlovakLemmas.ipynb</a>
+                        </li>
+                        <li><a href="notes/EquationsMonoid.ipynb.html" target="_blank">EquationsMonoid.ipynb</a></li>
+                        <li><a href="notes/Evilplot.ipynb.html" target="_blank">Evilplot.ipynb</a></li>
+                        <li><a href="notes/Futures.ipynb.html" target="_blank">Futures.ipynb</a></li>
+                        <li><a href="notes/GenerateInductive.ipynb.html" target="_blank">GenerateInductive.ipynb</a>
+                        </li>
+                        <li><a href="notes/HoTT.html" target="_blank">HoTT</a></li>
+                        <li><a href="notes/HoTT.ipynb.html" target="_blank">HoTT.ipynb</a></li>
+                        <li><a href="notes/HoTTCoreExperiments.ipynb.html" target="_blank">HoTTCoreExperiments.ipynb</a>
+                        </li>
+                        <li><a href="notes/Inductive-Types-semi-explicit.ipynb.html" target="_blank">Inductive-Types-semi-explicit.ipynb</a>
+                        </li>
+                        <li><a href="notes/ModPon.ipynb.html" target="_blank">ModPon.ipynb</a></li>
+                        <li><a href="notes/ModusPonens.ipynb.html" target="_blank">ModusPonens.ipynb</a></li>
+                        <li><a href="notes/MonoidBack.ipynb.html" target="_blank">MonoidBack.ipynb</a></li>
+                        <li><a href="notes/MonoidProof.html" target="_blank">MonoidProof</a></li>
+                        <li><a href="notes/MonoidProof.ipynb.html" target="_blank">MonoidProof.ipynb</a></li>
+                        <li><a href="notes/NatId.ipynb.html" target="_blank">NatId.ipynb</a></li>
+                        <li><a href="notes/NaturalLanguageParsing-simple-examples.ipynb.html" target="_blank">NaturalLanguageParsing-simple-examples.ipynb</a>
+                        </li>
+                        <li><a href="notes/NaturalNumbers-SymbolicAlgebra.ipynb.html" target="_blank">NaturalNumbers-SymbolicAlgebra.ipynb</a>
+                        </li>
+                        <li><a href="notes/PutnamOlympaid.ipynb.html" target="_blank">PutnamOlympaid.ipynb</a></li>
+                        <li><a href="notes/Putnum.ipynb.html" target="_blank">Putnum.ipynb</a></li>
+                        <li><a href="notes/ScalaRep.ipynb.html" target="_blank">ScalaRep.ipynb</a></li>
+                        <li><a href="notes/VectorTypeFamily.ipynb.html" target="_blank">VectorTypeFamily.ipynb</a></li>
+                        <li><a href="notes/index.html" target="_blank">index</a></li>
+                        <li><a href="notes/svg-experiments.ipynb.html" target="_blank">svg-experiments.ipynb</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
+                <li><a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
+                    <img alt="Github" src="GitHub-Mark-Light-32px.png"></img> </a></li>
+                <li>
+                    <a href="https://gitter.im/siddhartha-gadgil/ProvingGround" target="_blank">
+                        <img alt="gitter" src="https://badges.gitter.im/siddhartha-gadgil/ProvingGround.svg"></img>
+                    </a>
+                </li>
 
 
-          </ul>
+            </ul>
         </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
+    </div><!-- /.container-fluid -->
+</nav>
 <div class="container">
 
-<h1 class="text-center">ProvingGround: Automated Theorem proving by learning</h1>
+    <h1 class="text-center">ProvingGround: Automated Theorem proving by learning</h1>
 
-<div class="text-justify">
-<p>This is a system under development for automated theorem proving. More concretely, we take as the goal of automated theorem proving <em>to equip computers with all the major capabilities used in discovering and proving mathematical results</em>.  Our goal is to complement the many software systems that are useful in doing mathematics, with a focus on missing capabilities.</p>
-<p>The one success of this project so far has been its role in the <a href="http://math.iisc.ac.in/~gadgil/presentations/HomogeneousLengths.html">Polymath 14 project</a>.</p>
-<h2>Try it with zero installation</h2>
-<p>You can try the project with zero installation on <em>scastie</em>, for example the <a href="https://scastie.scala-lang.org/siddhartha-gadgil/0DqN82WeQk2W0nqSYQpolA">HoTT worksheet</a>.
-If you want to try your own worksheet add the library <code>provvingground-core-jvm</code> (which can be found with scastie's search). More worksheets and info will be posted soon.</p>
-<h2>Foundations</h2>
-<p>The foundations we use are <strong>Homotopy Type Theory</strong> combined with symbolic algebra. This is crucial to our approach as the result is proofs that are not much more complex than real world mathematics - as illustrated, for example, in the <a href="tuts/internal-repetition-for-length-functions.html">PolyMath lemma</a>. Note that much of that note is the fully expanded proofs as reported by the system - the code describing the proofs is not long.</p>
-<p>The conciseness of HoTT proofs is not only of practical value, but is conceptually important as we base learning on the complexity of mathematical proofs.</p>
-<p>Much of the work done so far has been on the implementation of homotopy type theory in scala, with an attempt to capture in scala types significant amount of information about the HoTT types.</p>
-<h2>Learning and reflection</h2>
-<p>The system learns based on a generative model that not only matches the generated distribution with a desired one, but takes into account the complexity of the generative model. This allows one to judge whether newly discovered results are worthwhile.</p>
-<h2>Lean theorem prover interaction</h2>
-<p>Our goal is to interact with external systems. In particular, we have implemented interaction with the <em>lean theorem prover</em>, whereby the export format of <em>lean</em> is used (via trepplein) to generate code in our implementation of HoTT. This allows us to start with a library for learning as well as a target for natural lannguage processing.</p>
-<h2>Running</h2>
-<h4>Servers</h4>
-<p>Two rudimentary servers are available as binaries, which you can download and run. You need Java 8 installed. In Unix systems you may need to run <code>chmod +x ...</code> to make the files executable.</p>
-<ul>
-<li><a href="http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-mantle-SNAPSHOT">ProvingGround HoTT Server</a></li>
-<li><a href="http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-nlp-SNAPSHOT">ProvingGround NLP Server</a></li>
-</ul>
-<p>Start one of these servers and visit <code>localhost:8080</code> on a browser to run. You can also specify the port by starting with a <code>-p</code> option.
-Note that the second server also includes most of the first server.</p>
-<p>These will be frequently updated with new features.</p>
-<h4>From Source</h4>
-<p>At present the best way to interact with most of the code is to use a console in either <a href="https://www.lihaoyi.com/mill/">mill</a> or <code>sbt</code> (the primary build tool is now <a href="https://www.lihaoyi.com/mill/">mill</a>). To pop up a console with most of the code in scope, install <a href="https://www.lihaoyi.com/mill/">mill</a> and run:</p>
-<pre><code>mill -i mantle.repl
+    <div class="text-justify">
+        <p>This is a system under development for automated theorem proving. More concretely, we take as the goal of
+            automated theorem proving <em>to equip computers with all the major capabilities used in discovering and
+                proving mathematical results</em>. Our goal is to complement the many software systems that are useful
+            in doing mathematics, with a focus on missing capabilities.</p>
+        <p>The one success of this project so far has been its role in the <a
+                href="http://math.iisc.ac.in/~gadgil/presentations/HomogeneousLengths.html">Polymath 14 project</a>.</p>
+        <h2>Try it with zero installation</h2>
+        <p>You can try the project with zero installation on <em>scastie</em>, for example the <a
+                href="https://scastie.scala-lang.org/siddhartha-gadgil/0DqN82WeQk2W0nqSYQpolA">HoTT worksheet</a>.
+            If you want to try your own worksheet add the library <code>provvingground-core-jvm</code> (which can be
+            found with scastie's search). More worksheets and info will be posted soon.</p>
+        <h2>Foundations</h2>
+        <p>The foundations we use are <strong>Homotopy Type Theory</strong> combined with symbolic algebra. This is
+            crucial to our approach as the result is proofs that are not much more complex than real world mathematics -
+            as illustrated, for example, in the <a href="tuts/internal-repetition-for-length-functions.html">PolyMath
+                lemma</a>. Note that much of that note is the fully expanded proofs as reported by the system - the code
+            describing the proofs is not long.</p>
+        <p>The conciseness of HoTT proofs is not only of practical value, but is conceptually important as we base
+            learning on the complexity of mathematical proofs.</p>
+        <p>Much of the work done so far has been on the implementation of homotopy type theory in scala, with an attempt
+            to capture in scala types significant amount of information about the HoTT types.</p>
+        <h2>Learning and reflection</h2>
+        <p>The system learns based on a generative model that not only matches the generated distribution with a desired
+            one, but takes into account the complexity of the generative model. This allows one to judge whether newly
+            discovered results are worthwhile.</p>
+        <h2>Lean theorem prover interaction</h2>
+        <p>Our goal is to interact with external systems. In particular, we have implemented interaction with the <em>lean
+            theorem prover</em>, whereby the export format of <em>lean</em> is used (via trepplein) to generate code in
+            our implementation of HoTT. This allows us to start with a library for learning as well as a target for
+            natural lannguage processing.</p>
+        <h2>Running</h2>
+        <h4>Servers</h4>
+        <p>Two rudimentary servers are available as binaries, which you can download and run. You need Java 8 installed.
+            In Unix systems you may need to run <code>chmod +x ...</code> to make the files executable.</p>
+        <ul>
+            <li><a href="http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-mantle-SNAPSHOT">ProvingGround
+                HoTT Server</a></li>
+            <li><a href="http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-nlp-SNAPSHOT">ProvingGround NLP
+                Server</a></li>
+        </ul>
+        <p>Start one of these servers and visit <code>localhost:8080</code> on a browser to run. You can also specify
+            the port by starting with a <code>-p</code> option.
+            Note that the second server also includes most of the first server.</p>
+        <p>These will be frequently updated with new features.</p>
+        <h4>From Source</h4>
+        <p>At present the best way to interact with most of the code is to use a console in either <a
+                href="https://www.lihaoyi.com/mill/">mill</a> or <code>sbt</code> (the primary build tool is now <a
+                href="https://www.lihaoyi.com/mill/">mill</a>). To pop up a console with most of the code in scope,
+            install <a href="https://www.lihaoyi.com/mill/">mill</a> and run:</p>
+        <pre><code>mill -i mantle.repl
 </code></pre>
-<p>for the HoTT implementation etc, or</p>
-<pre><code>mill -i nlp.repl
+        <p>for the HoTT implementation etc, or</p>
+        <pre><code>mill -i nlp.repl
 </code></pre>
-<p>for the natural language processing part.</p>
-<p>To experiment with <em>natural language processing</em>, a basic server can be started by running</p>
-<pre><code>mill nlp.run
+        <p>for the natural language processing part.</p>
+        <p>To experiment with <em>natural language processing</em>, a basic server can be started by running</p>
+        <pre><code>mill nlp.run
 </code></pre>
-<p>and going to <code>localhost:8080</code> on the browser. To experiment with the code, you can use the <code>--watch</code> flag so the system restarts after shutting down from the browser.</p>
-<p>Similarly, one can experiment with a small part of the HoTT implementation by running</p>
-<pre><code>mill mantle.run
+        <p>and going to <code>localhost:8080</code> on the browser. To experiment with the code, you can use the <code>--watch</code>
+            flag so the system restarts after shutting down from the browser.</p>
+        <p>Similarly, one can experiment with a small part of the HoTT implementation by running</p>
+        <pre><code>mill mantle.run
 </code></pre>
-<p>Some experiments with the HoTT interface can be done in the scratchpad below.</p>
-<h2>HoTT scratchpad</h2>
-<p>The scratchpad below is a limited interpreter for our implementation of Homotopy Type Theory. At present it interprets</p>
-<ul>
-<li>HoTT expressions</li>
-<li><code>val</code> definitions</li>
-<li>inline comments</li>
-</ul>
-<p>As an example (which you may wish to copy paste), the definition of the term corresponding to <em>modus ponens</em> is below.</p>
-<pre><code class="language-scala">// View 'A' and 'B' as propositions
+        <p>Some experiments with the HoTT interface can be done in the scratchpad below.</p>
+        <h2>HoTT scratchpad</h2>
+        <p>The scratchpad below is a limited interpreter for our implementation of Homotopy Type Theory. At present it
+            interprets</p>
+        <ul>
+            <li>HoTT expressions</li>
+            <li><code>val</code> definitions</li>
+            <li>inline comments</li>
+        </ul>
+        <p>As an example (which you may wish to copy paste), the definition of the term corresponding to <em>modus
+            ponens</em> is below.</p>
+        <pre><code class="language-scala">// View 'A' and 'B' as propositions
 val A = &quot;A&quot; :: Type
 val B = &quot;B&quot; :: Type
 
@@ -330,41 +340,41 @@ val f = &quot;f&quot; :: (A -&gt;: B) // the type A -&gt;: B corresponds to A =&
 // 'mp' proves A =&gt; ((A =&gt; B) =&gt; B)
 val mp = a :-&gt; (f :-&gt; f(a))
 </code></pre>
-<div id="hott-scratch"></div>
-<h2>Contributors</h2>
-<p>This project has <em>greatly</em> benefited by contributions from</p>
-<ul>
-<li>Dymtro Mitin</li>
-<li>Tomoaki Hashizaki</li>
-<li>Olivier Roland</li>
-<li>Sayantan Khan</li>
-</ul>
-<p>The principal developer is <a href="http://math.iisc.ac.in/~gadgil">Siddhartha Gadgil</a> (Department of Mathematics, Indian Institute of Science, Bangalore).</p>
+        <div id="hott-scratch"></div>
+        <h2>Contributors</h2>
+        <p>This project has <em>greatly</em> benefited by contributions from</p>
+        <ul>
+            <li>Dymtro Mitin</li>
+            <li>Tomoaki Hashizaki</li>
+            <li>Olivier Roland</li>
+            <li>Sayantan Khan</li>
+        </ul>
+        <p>The principal developer is <a href="http://math.iisc.ac.in/~gadgil">Siddhartha Gadgil</a> (Department of
+            Mathematics, Indian Institute of Science, Bangalore).</p>
 
 
-</div>
+    </div>
 </div>
 
 <div class="container-fluid">
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <div class="footer navbar-fixed-bottom bg-primary">
-    <h4>
-    &nbsp;Developed by:
-    &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <div class="footer navbar-fixed-bottom bg-primary">
+        <h4>
+            &nbsp;Developed by:
+            &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
 
-  </h4>
+        </h4>
 
-  </div>
+    </div>
 </div>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/provingground.js"></script>
 <script>
-  provingground.main()
+    provingground.main()
 </script>
-   
+
 </body>
 </html>
-   
