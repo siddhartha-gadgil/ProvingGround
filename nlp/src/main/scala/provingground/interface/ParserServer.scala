@@ -3,8 +3,8 @@ package provingground.interface
 import provingground._
 import translation._
 
-import scala.util.Try
-import ujson.{Js, Obj}
+//import scala.util.Try
+import ujson.Obj
 import StanfordParser._
 import TreeToMath._
 import edu.stanford.nlp.trees.Tree
@@ -18,9 +18,9 @@ import cask.util.Logger
 object NLPParser{
   def parseResult(txt: String): Obj = {
     val texParsed: TeXParsed          = TeXParsed(txt)
-    val tree: Tree                    = texParsed.parsed
-    val baseExpr: MathExpr                = mathExprTree(tree).get
-    val strictParsed                  = mathExpr(tree).nonEmpty
+    val tree: Tree = texParsed.parsed
+    val baseExpr: MathExpr = mathExprTree(tree).get
+    val strictParsed = mathExpr(tree).nonEmpty
     def polyExprOpt : Option[MathExpr] =
     // None
       texParsed.polyParsed.flatMap(mathExpr(_)).headOption

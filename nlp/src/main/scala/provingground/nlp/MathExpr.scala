@@ -1,13 +1,6 @@
 package provingground.translation
-import provingground._
-
 import edu.stanford.nlp.trees.Tree
-
-import translation._
-
-import upickle.default.{ReadWriter => RW, macroRW, _}
-
-import ujson._
+import upickle.default.{macroRW, ReadWriter => RW, _}
 
 /**
   * Expression in a language to represent terms in HoTT and
@@ -141,7 +134,8 @@ object MathExpr {
   }
 
   case class Formula(text: String) extends NounPhrase {
-    def dp                = DP(Determiner.Zero, Vector(), Some(this))
+    def dp: DP = DP(Determiner.Zero, Vector(), Some(this))
+
     override def toString = s"Formula($tq$text$tq)"
   }
 
@@ -274,47 +268,19 @@ object MathExpr {
 
   type Preposition = MathExpr
 
-  object Determiner {
-    implicit def rw: RW[Determiner] = macroRW
+  /**
+    * Determiner phrase: this is the main composite tree.
+    */
+  case class DP(det: Determiner,
+                adjectives: Vector[AdjectivalPhrase] = Vector(),
+                optNoun: Option[NounPhrase] = None,
+                quantTerms: Option[NounPhrase] = None,
+                post: Vector[PostModifier] = Vector())
+    extends MathExpr {
+    def st(wh: MathExpr): DP = this.copy(post = post :+ SuchThat(wh))
 
-    case object A extends Determiner
-
-    case object The extends Determiner
-
-    case object That extends Determiner
-
-    case object Some extends Determiner
-
-    case object Every extends Determiner
-
-    case object Zero extends Determiner
-
-    case object No extends Determiner
-
-    case object This extends Determiner
-
-    case class Card(s: String) extends Determiner {
-      override def toString = s"Card($tq$s$tq)"
-    }
-
-    object Card {
-      implicit def rw: RW[Card] = macroRW
-    }
-
-    def apply(s: String) = s.toLowerCase match {
-      case "a"                    => A
-      case "an"                   => A
-      case "the"                  => The
-      case "some"                 => Some
-      case "every"                => Every
-      case "all"                  => Every
-      case "any"                  => Every
-      case "each"                 => Every
-      case "no"                   => No
-      case "this"                 => This
-      case "that"                 => That
-      case s if s.startsWith("#") => Card(s.drop(1))
-    }
+    def add(pp: PostModifier): DP =
+      this.copy(post = this.post :+ pp)
   }
 
   /**
@@ -397,23 +363,57 @@ object MathExpr {
 
   case class Which(condition: MathExpr) extends PostModifier
 
-  object Which{
+  object Which {
     implicit def rw: RW[Which] = macroRW
   }
 
-  /**
-    * Determiner phrase: this is the main composite tree.
-    */
-  case class DP(det: Determiner,
-                adjectives: Vector[AdjectivalPhrase] = Vector(),
-                optNoun: Option[NounPhrase] = None,
-                quantTerms: Option[NounPhrase] = None,
-                post: Vector[PostModifier] = Vector())
-      extends MathExpr {
-    def st(wh: MathExpr) = this.copy(post = post :+ SuchThat(wh))
+  object Determiner {
+    implicit def rw: RW[Determiner] = macroRW
 
-    def add(pp: PostModifier) =
-      this.copy(post = this.post :+ pp)
+    case object A extends Determiner
+
+    case object The extends Determiner
+
+    case object That extends Determiner
+
+    case object Some extends Determiner
+
+    case object Every extends Determiner
+
+    case object Zero extends Determiner
+
+    case object No extends Determiner
+
+    case object This extends Determiner
+
+    def apply(s: String): Determiner = s.toLowerCase match {
+      case "a" => A
+      case "an" => A
+      case "the" => The
+      case "some" => Some
+      case "every" => Every
+      case "all" => Every
+      case "any" => Every
+      case "each" => Every
+      case "no" => No
+      case "this" => This
+      case "these" => That
+      case "that" => That
+      case "those" => That
+      case "both" => Both
+      case s if s.startsWith("#") => Card(s.drop(1))
+    }
+
+    case class Card(s: String) extends Determiner {
+      override def toString = s"Card($tq$s$tq)"
+    }
+
+    object Card {
+      implicit def rw: RW[Card] = macroRW
+    }
+
+    case object Both extends Determiner
+
   }
 
   object DP {
@@ -600,9 +600,8 @@ object FormalExpr {
     implicit def rw: RW[Node] = macroRW
   }
 
-  import Translator.Pattern
-
   import Functors._
+  import Translator.Pattern
 
   // import cats._
 
@@ -619,7 +618,7 @@ object FormalExpr {
   }
 
   val translator =
-    Translator.Empty[Tree, MathExpr] || Pattern.partial[Tree, S] {
+    Translator.Empty[Tree, MathExpr]() || Pattern.partial[Tree, S] {
       case PennTrees.Leaf(s) =>
         s
     } >>> {
