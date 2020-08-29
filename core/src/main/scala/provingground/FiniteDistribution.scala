@@ -12,6 +12,8 @@ import upickle.default._
 import provingground.scalahott.IntTypes.Fin
 import cats.effect.syntax.`package`.all
 import scala.math.Ordering.Double.TotalOrdering
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
 
 //import LinearStructure._
 
@@ -48,8 +50,8 @@ object FiniteDistribution {
 
   def reSample[A](fd: FiniteDistribution[A], size: Double, allowEmpty: Boolean = false) : FiniteDistribution[A] = 
   {
-    val support = fd.support.filter(x => fd(x) < random.nextDouble * size)
-    val newFD = FiniteDistribution(support.map(x => Weighted(x, fd(x) * random.nextDouble))).safeNormalized
+    val support = fd.support.filter(x => fd(x) < random.nextDouble() * size)
+    val newFD = FiniteDistribution(support.map(x => Weighted(x, fd(x) * random.nextDouble()))).safeNormalized
     if (allowEmpty || support.nonEmpty)  newFD else 
       {
         require(fd.support.nonEmpty, "cannot get non-empty sample from an empty distribution")
@@ -116,9 +118,13 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def flatten: FiniteDistribution[T] =
     FiniteDistribution(toMap.map{case (x, w) => Weighted(x, w)}.toVector)
 
+  def parPMF = pmf.par
+
   def toMap: Map[T, Double] = 
       pmf.groupMapReduce(_.elem)(_.weight)(_ + _)      
     // Weighted.flatten(pmf).map { case Weighted(x, p) => x -> p }.toMap
+
+  def toParMap = parPMF.groupBy(_.elem).mapValues(_.map(_.weight).sum)
 
   def restrict(s: Set[T]) : FiniteDistribution[T] = 
       FiniteDistribution(pmf.filter{case Weighted(x, _) => s.contains(x)})
@@ -248,7 +254,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   /**
     * next instance of a random variable with the given distribution
     */
-  def next: T = Weighted.pick(posmf(), random.nextDouble * postotal())
+  def next: T = Weighted.pick(posmf(), random.nextDouble() * postotal())
 
   override def toString: String = {
     val sortedpmf = pmf.sortBy(1 - _.weight)
