@@ -81,33 +81,33 @@ import cats._
   * }}}
   */
 trait Translator[I, O] extends (I => Option[O]) { self =>
-  def apply(inp: I) = recTranslate(self)(inp)
+  def apply(inp: I): Option[O] = recTranslate(self)(inp)
 
   def recTranslate(leafMap: => (I => Option[O])): I => Option[O]
 
   /**
     * OrElse combinator, tries other translator if the first fails.
     */
-  def orElse(that: Translator[I, O]) = Translator.OrElse(this, that)
+  def orElse(that: Translator[I, O]): Translator.OrElse[I, O] = Translator.OrElse(this, that)
 
   /**
     * OrElse combinator, tries other translator first, then this one.
     * Other translator must be preprended
     */
-  def elseOr(that: Translator[I, O]) = Translator.OrElse(that, this)
+  def elseOr(that: Translator[I, O]): Translator.OrElse[I, O] = Translator.OrElse(that, this)
 
   /**
     * OrElse combinator, tries other translator if the first fails.
     */
-  def ||(that: Translator[I, O]) = Translator.OrElse(self, that)
+  def ||(that: Translator[I, O]): Translator.OrElse[I, O] = Translator.OrElse(self, that)
 
   /**
     * OrElse combinator, tries other translator first, then this one.
     * Other translator must be preprended
     */
-  def ||:(that: Translator[I, O]) = Translator.OrElse(that, self)
+  def ||:(that: Translator[I, O]): Translator.OrElse[I, O] = Translator.OrElse(that, self)
 
-  def map[X](fn: O => X, ufn: X => O) = Translator.Mapped(self, fn, ufn)
+  def map[X](fn: O => X, ufn: X => O): Translator.Mapped[I, O, X] = Translator.Mapped(self, fn, ufn)
 }
 
 /**

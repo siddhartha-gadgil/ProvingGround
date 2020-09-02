@@ -15,9 +15,10 @@ import scala.concurrent._
 import cask.main.Routes
 import cask.util.Logger
 
+//noinspection DuplicatedCode
 object NLPParser{
   def parseResult(txt: String): Obj = {
-    val texParsed: TeXParsed          = TeXParsed(txt)
+    val texParsed: TeXParsed = TeXParsed(txt)
     val tree: Tree = texParsed.parsed
     val baseExpr: MathExpr = mathExprTree(tree).get
     val strictParsed = mathExpr(tree).nonEmpty

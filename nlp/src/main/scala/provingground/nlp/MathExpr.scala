@@ -102,7 +102,7 @@ object MathExpr {
   }
 
   /**
-    * Pronoun 'they' with (psoosibly empty) coreferences
+    * Pronoun 'they' with (possibly empty) coreferences
     */
   case class They(corefs: Vector[MathExpr]) extends MathExpr
 
@@ -144,7 +144,7 @@ object MathExpr {
   }
 
   /**
-    * A noun phrase that is a conjuction (and) of noun phrases.
+    * A noun phrase that is a conjunction (and) of noun phrases.
     */
   case class ConjunctNP(nps: Vector[NounPhrase]) extends NounPhrase
 
@@ -159,6 +159,24 @@ object MathExpr {
 
   object DisjunctNP {
     implicit def rw: RW[DisjunctNP] = macroRW
+  }
+
+  /**
+    * An adjectival phrase  that is a conjunction (and) of adjectival phrases.
+    */
+  case class ConjunctJJPP(nps: Vector[AdjectivalPhrase]) extends AdjectivalPhrase
+
+  object ConjunctJJPP {
+    implicit def rw: RW[ConjunctJJPP] = macroRW
+  }
+
+  /**
+    * An adjectival phrase  that is a disjunction (or) of adjectival phrases.
+    */
+  case class DisjunctJJPP(nps: Vector[AdjectivalPhrase]) extends AdjectivalPhrase
+
+  object DisjunctJJPP {
+    implicit def rw: RW[ConjunctJJPP] = macroRW
   }
 
   /**
@@ -271,12 +289,13 @@ object MathExpr {
   /**
     * Determiner phrase: this is the main composite tree.
     */
-  case class DP(det: Determiner,
-                adjectives: Vector[AdjectivalPhrase] = Vector(),
-                optNoun: Option[NounPhrase] = None,
-                quantTerms: Option[NounPhrase] = None,
-                post: Vector[PostModifier] = Vector())
-    extends MathExpr {
+  case class DP(
+      det: Determiner,
+      adjectives: Vector[AdjectivalPhrase] = Vector(),
+      optNoun: Option[NounPhrase] = None,
+      quantTerms: Option[NounPhrase] = None,
+      post: Vector[PostModifier] = Vector()
+  ) extends MathExpr {
     def st(wh: MathExpr): DP = this.copy(post = post :+ SuchThat(wh))
 
     def add(pp: PostModifier): DP =
@@ -297,7 +316,7 @@ object MathExpr {
   type AdjectivalPhrase = MathExpr
 
   /**
-    * Adjectival phrase as a singl tree - usually just an adjective
+    * Adjectival phrase as a single tree - usually just an adjective
     */
   case class AP(ap: T) extends AdjectivalPhrase
 
@@ -311,6 +330,14 @@ object MathExpr {
 
   object JJ {
     implicit def rw: RW[JJ] = macroRW
+  }
+
+  case class ADV(word: String) extends Adverb {
+    override def toString = s"ADV($tq$word$tq)"
+  }
+
+  object ADV {
+    implicit def rw: RW[ADV] = macroRW
   }
 
   case class JJPP(adj: MathExpr, pps: Vector[MathExpr]) extends AdjectivalPhrase
@@ -387,20 +414,20 @@ object MathExpr {
     case object This extends Determiner
 
     def apply(s: String): Determiner = s.toLowerCase match {
-      case "a" => A
-      case "an" => A
-      case "the" => The
-      case "some" => Some
-      case "every" => Every
-      case "all" => Every
-      case "any" => Every
-      case "each" => Every
-      case "no" => No
-      case "this" => This
-      case "these" => That
-      case "that" => That
-      case "those" => That
-      case "both" => Both
+      case "a"                    => A
+      case "an"                   => A
+      case "the"                  => The
+      case "some"                 => Some
+      case "every"                => Every
+      case "all"                  => Every
+      case "any"                  => Every
+      case "each"                 => Every
+      case "no"                   => No
+      case "this"                 => This
+      case "these"                => That
+      case "that"                 => That
+      case "those"                => That
+      case "both"                 => Both
       case s if s.startsWith("#") => Card(s.drop(1))
     }
 
@@ -424,9 +451,10 @@ object MathExpr {
     * The core of a determiner phrase, which is a noun, a list of quant-terms
     * or a noun followed by a list of quant-terms
     */
-  case class Core(optNoun: Option[NounPhrase],
-                  quantterms: Vector[QuantTerm] = Vector())
-      extends MathExpr
+  case class Core(
+      optNoun: Option[NounPhrase],
+      quantterms: Vector[QuantTerm] = Vector()
+  ) extends MathExpr
 
   object Core {
     implicit def rw: RW[Core] = macroRW
@@ -441,6 +469,21 @@ object MathExpr {
 
   object VerbAdj {
     implicit def rw: RW[VerbAdj] = macroRW
+  }
+
+  type Adverb = MathExpr
+
+  /**
+    * A transitive verb, adverb and adjective.
+    */
+  case class VerbAdvAdj(
+      vp: VerbPhrase,
+      adverb: Adverb,
+      adjectivalPhrase: AdjectivalPhrase
+  ) extends VerbPhrase
+
+  object VerbAdvAdj {
+    implicit def rw: RW[VerbAdvAdj] = macroRW
   }
 
   /**
@@ -531,10 +574,11 @@ object MathExpr {
   /**
     * Existential-style quantified sentence, but also allowing at most one and precisely one.
     */
-  case class ExistentialSP(sentence: SententialPhrase,
-                           exists: Boolean = true,
-                           unique: Boolean = false)
-      extends SententialPhrase
+  case class ExistentialSP(
+      sentence: SententialPhrase,
+      exists: Boolean = true,
+      unique: Boolean = false
+  ) extends SententialPhrase
 
   object ExistentialSP {
     implicit def rw: RW[ExistentialSP] = macroRW
@@ -591,8 +635,7 @@ object FormalExpr {
     implicit def rw: RW[Leaf] = macroRW
   }
 
-  case class Node(s: String, children: Vector[MathExpr])
-      extends MathExpr {
+  case class Node(s: String, children: Vector[MathExpr]) extends MathExpr {
     override def toString = s"Node($tq$s$tq, $children)"
   }
 
@@ -630,7 +673,7 @@ object FormalExpr {
         case ("NP", Vector(dp: MathExpr.DP)) =>
           pprint.log(dp)
           dp
-        case (s, l)                          => Node(s, l)
+        case (s, l) => Node(s, l)
       }
 }
 
@@ -648,8 +691,9 @@ case class Raw(model: TreeModel) extends MathText with MathExpr
 // with QuantTerm
 
 object Raw {
-  val translator = Translator.Simple[Tree, MathExpr]((t: Tree) =>
-    Some(Raw(PennTrees.model(t))))
+  val translator = Translator.Simple[Tree, MathExpr](
+    (t: Tree) => Some(Raw(PennTrees.model(t)))
+  )
 
   implicit def rw: RW[Raw] = macroRW
 }
@@ -671,10 +715,11 @@ object MathText {
     implicit def rw: RW[BiImplicationDefiniendumSP] = macroRW
   }
 
-  case class BiImplicationDefiniendum(name: String,
-                                      variables: Vector[T],
-                                      formula: SententialPhrase)
-      extends MathExpr {
+  case class BiImplicationDefiniendum(
+      name: String,
+      variables: Vector[T],
+      formula: SententialPhrase
+  ) extends MathExpr {
     override def toString =
       s"BiImplicationDefiniendum($tq$name$tq, $variables, $formula)"
   }
@@ -689,10 +734,11 @@ object MathText {
     implicit def rw: RW[CopulaDefiniendumNP] = macroRW
   }
 
-  case class CopulaDefiniendum(name: String,
-                               variables: Vector[T],
-                               lhs: NounPhrase)
-      extends MathExpr {
+  case class CopulaDefiniendum(
+      name: String,
+      variables: Vector[T],
+      lhs: NounPhrase
+  ) extends MathExpr {
     override def toString = s"CopulaDefiniendum($tq$name$tq, $variables, $lhs)"
   }
 
@@ -700,33 +746,37 @@ object MathText {
     implicit def rw: RW[CopulaDefiniendum] = macroRW
   }
 
-  case class BiEquationalDefinitionSP(definiendum: BiEquationalDefinitionSP,
-                                      definiens: SententialPhrase)
-      extends SententialPhrase
+  case class BiEquationalDefinitionSP(
+      definiendum: BiEquationalDefinitionSP,
+      definiens: SententialPhrase
+  ) extends SententialPhrase
 
   object BiEquationalDefinitionSP {
     implicit def rw: RW[BiEquationalDefinitionSP] = macroRW
   }
 
-  case class CopulaDefinitionSP(definiendum: CopulaDefiniendumNP,
-                                definiens: NounPhrase)
-      extends SententialPhrase
+  case class CopulaDefinitionSP(
+      definiendum: CopulaDefiniendumNP,
+      definiens: NounPhrase
+  ) extends SententialPhrase
 
   object CopulaDefinitionSP {
     implicit def rw: RW[CopulaDefinitionSP] = macroRW
   }
 
-  case class BiEquationalDefinition(definiendum: BiEquationalDefinition,
-                                    definiens: SententialPhrase)
-      extends SententialPhrase
+  case class BiEquationalDefinition(
+      definiendum: BiEquationalDefinition,
+      definiens: SententialPhrase
+  ) extends SententialPhrase
 
   object BiEquationalDefinition {
     implicit def rw: RW[BiEquationalDefinition] = macroRW
   }
 
-  case class CopulaDefinition(definiendum: CopulaDefiniendum,
-                              definiens: NounPhrase)
-      extends SententialPhrase
+  case class CopulaDefinition(
+      definiendum: CopulaDefiniendum,
+      definiens: NounPhrase
+  ) extends SententialPhrase
 
   object CopulaDefinition {
     implicit def rw: RW[CopulaDefinition] = macroRW
