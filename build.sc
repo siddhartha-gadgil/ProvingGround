@@ -131,7 +131,7 @@ trait JvmModule extends CommonModule {
 }
 
 trait PGPublish extends PublishModule {
-  def publishVersion = "0.1.1-SNAPSHOT"
+  def publishVersion = "0.1.1"
 
   def pomSettings = PomSettings(
     description = "Automated theorem proving through learning in HoTT",
