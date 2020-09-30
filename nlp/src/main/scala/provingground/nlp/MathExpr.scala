@@ -618,7 +618,7 @@ object FormalExpr {
   }
 
   val translator =
-    Translator.Empty[Tree, MathExpr] || Pattern.partial[Tree, S] {
+    Translator.Empty[Tree, MathExpr]() || Pattern.partial[Tree, S] {
       case PennTrees.Leaf(s) =>
         s
     } >>> {

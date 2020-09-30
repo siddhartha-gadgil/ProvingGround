@@ -194,7 +194,7 @@ case class  LeanRoutes()(implicit cc: castor.Context,
     val name    = new String(request.readAllBytes())
     val toPurge = parseCanc.filter(_._1 == name)
     pprint.log(s"cancel request for $name, cancelling ${toPurge.size}")
-    toPurge.foreach(_._2.cancel)
+    toPurge.foreach(_._2.cancel())
     parseCanc --= toPurge
     s"cancelling parsing of $name"
   }

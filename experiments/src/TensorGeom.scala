@@ -1,6 +1,6 @@
 package provingground.experiments
 
-/*
+
 import org.platanios.tensorflow.api._
 
 import org.platanios.tensorflow.api.implicits.helpers._
@@ -31,4 +31,3 @@ class TensorGeom(p: Float = 0.5.toFloat, N: Int = 10) {
     session.run(fetches = probOut.toSeq, targets = trainOp)
   }
 }
-*/

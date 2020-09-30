@@ -63,6 +63,7 @@ case class NextSample(p: FD[Term],
         val DdPd = ded.DevolveTyp(nextFD, tang)
         val Dsamp = sample(DdPd, n).map {
           case (tp: Typ[u], n) => (tp: Typ[Term], n)
+          case (x, _) => throw new Exception(s"Expected type but got $x")
         }
         (x, (toFD(samp), toFD(Dsamp)))
     }

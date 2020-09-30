@@ -132,7 +132,7 @@ object HistoryGetter {
   implicit def nilGetter[W, ID]: HistoryGetter[W, HNil, ID] =
     new HistoryGetter[W, HNil, ID] {
       def getHistory(buffer: W => HNil): PostHistory[W, ID] =
-        PostHistory.Empty[W, ID]
+        PostHistory.Empty[W, ID]()
     }
 
   implicit def consGetter[W, B1, B2 <: HList, ID](

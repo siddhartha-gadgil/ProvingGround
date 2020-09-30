@@ -38,7 +38,7 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
     def prefixTerm(t: Term, s: meta.Term): meta.Term =
       prefixTermOpt(t).getOrElse(s)
 
-    Translator.Empty[Term, meta.Term] ||
+    Translator.Empty[Term, meta.Term]() ||
     symbolic >> {
       case (s, _) =>
         defns.lift(s)
@@ -604,7 +604,7 @@ object CodeGen {
   import TermPatterns._
 
   val base =
-    Translator.Empty[Term, meta.Term] ||
+    Translator.Empty[Term, meta.Term]() ||
       formalAppln >>> {
         case (func, arg) =>
           meta.Term.Apply(func, List(arg)) //q"$func($arg)"

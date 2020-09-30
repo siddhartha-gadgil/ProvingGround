@@ -715,7 +715,7 @@ case class MonixTangentFiniteDistributionEq[State](
       }
       resultT.map {
         case (fd, eq, rm) =>
-          (fd, eq, memo ++ rm + (initState, generatorNode, epsilon, fd, eq))
+          (fd, eq, memo ++ rm .+ (initState, generatorNode, epsilon, fd, eq))
       }
     }
 }

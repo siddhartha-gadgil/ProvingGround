@@ -26,7 +26,7 @@ class TranslatorSpec extends flatspec.AnyFlatSpec {
     case Big(v, x, y, w) => (v, (x, (y, w)))
   }
 
-  val trans = Translator.Empty[A, A] ||
+  val trans = Translator.Empty[A, A]() ||
     Bpat >>> { case (x, y)             => C(x, y) } ||
     Dpat >>> { case _                  => E } ||
     bigPat >>> { case (v, (x, (y, w))) => Big(v, x, y, w) }

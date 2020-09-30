@@ -97,7 +97,7 @@ object SimpleAcRun {
 
     def load(filename: String) = {
       val list =
-        Source.fromFile(filename).getLines.toList map
+        Source.fromFile(filename).getLines().toList map
           ((x) => read[(String, String)](x))
 
       dict = list.toMap

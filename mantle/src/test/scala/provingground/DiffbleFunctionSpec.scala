@@ -35,9 +35,9 @@ class AdjDiffbleFunctionSpec extends AnyFlatSpec {
   }
 
   it should "have expected derivatives and values for inclusion" in {
-    val fn1 = Incl1[Double, Double]
+    val fn1 = Incl1[Double, Double]()
 
-    val fn2 = Incl2[Double, Double]
+    val fn2 = Incl2[Double, Double]()
 
     assert(fn1.func(1.5) == (1.5, 0))
     assert(fn1.adjDer(1.5)(2.5, 3.5) == 2.5)
@@ -47,9 +47,9 @@ class AdjDiffbleFunctionSpec extends AnyFlatSpec {
   }
 
   it should "have expected derivatives and values for projection" in {
-    val fn1 = Proj1[Double, Double]
+    val fn1 = Proj1[Double, Double]()
 
-    val fn2 = Proj2[Double, Double]
+    val fn2 = Proj2[Double, Double]()
 
     assert(fn1.func((1.5, 2.5)) == 1.5)
     assert(fn1.adjDer(1.5, 2.5)(3) == (3, 0))

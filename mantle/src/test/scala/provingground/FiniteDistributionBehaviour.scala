@@ -79,7 +79,7 @@ trait FiniteDistributionBehaviours { this: AnyFlatSpec =>
     }
 
     it should "correctly add elements even if in support" in {
-      val fd = x + (3, 0.25)
+      val fd = x .+ (3, 0.25)
 
       assert(fd(1) == 0.2)
 

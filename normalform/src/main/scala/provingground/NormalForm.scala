@@ -88,7 +88,7 @@ object NormalForm {
                  rep: CommRep[Term]): CommRep[Term] = {
     val onlyNumbers = rep filter numTermMatch
     val theRest     = rep filter (numTermMatch(_) == false)
-    if (onlyNumbers.isEmpty) {
+    if (onlyNumbers.isEmpty()) {
       theRest
     } else {
       val finalNumber = onlyNumbers reduce op
@@ -118,16 +118,16 @@ object NormalForm {
       case Sigma(rep) =>
         rep match {
           case x: CommRep[Term] =>
-            Sigma(commReduce(addOp, x map semiReduce)).fullReduce
+            Sigma(commReduce(addOp, x map semiReduce)).fullReduce()
           case x: AssocRep[Term] =>
-            Sigma(assocReduce(addOp, x map semiReduce)).fullReduce
+            Sigma(assocReduce(addOp, x map semiReduce)).fullReduce()
         }
       case Pi(rep) =>
         rep match {
           case x: CommRep[Term] =>
-            Pi(commReduce(mulOp, x map semiReduce)).fullReduce
+            Pi(commReduce(mulOp, x map semiReduce)).fullReduce()
           case x: AssocRep[Term] =>
-            Pi(assocReduce(mulOp, x map semiReduce)).fullReduce
+            Pi(assocReduce(mulOp, x map semiReduce)).fullReduce()
         }
       case _ => term
     }
@@ -298,8 +298,8 @@ case class Sigma(representation: Representation[Term]) extends BigOp {
   }
 
   def fullReduce(): Term = {
-    if (representation.length == 1) {
-      representation.head
+    if (representation.length() == 1) {
+      representation.head()
     } else {
       this
     }
@@ -332,8 +332,8 @@ case class Pi(representation: Representation[Term]) extends BigOp {
   }
 
   def fullReduce(): Term = {
-    if (representation.length == 1) {
-      representation.head
+    if (representation.length() == 1) {
+      representation.head()
     } else {
       this
     }

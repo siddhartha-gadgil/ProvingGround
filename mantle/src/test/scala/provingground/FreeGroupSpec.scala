@@ -29,7 +29,7 @@ class FreeGroupSpec extends flatspec.AnyFlatSpec {
 
   "Free group operations" should "operate on literals" in {
     assert { (word("ab") |+| word("b!a")) == word("aa") }
-    assert { (word("ab!a").inverse) == word("a!ba!") }
+    assert { (word("ab!a").inverse()) == word("a!ba!") }
   }
 
   they should "be associative" in {
@@ -51,15 +51,15 @@ class FreeGroupSpec extends flatspec.AnyFlatSpec {
   }
 
   they should "cancel recursively" in {
-    assert((g.inverse |+| l.inverse |+| h |+| h.inverse |+| l |+| g) == e)
+    assert((g.inverse() |+| l.inverse() |+| h |+| h.inverse() |+| l |+| g) == e)
   }
 
   they should "have corect inverse" in {
-    assert((g |+| h).inverse == (h.inverse |+| g.inverse))
+    assert((g |+| h).inverse() == (h.inverse() |+| g.inverse()))
 
-    assert((g |+| l).inverse == (l.inverse |+| g.inverse))
+    assert((g |+| l).inverse() == (l.inverse() |+| g.inverse()))
 
-    assert((l |+| h).inverse == (h.inverse |+| l.inverse))
+    assert((l |+| h).inverse() == (h.inverse() |+| l.inverse()))
   }
 
   "Power operation" should "simplify" in {

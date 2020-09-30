@@ -448,7 +448,7 @@ class LeanParserEq(
   }
 
   def getEqTask(name: String) =
-    parseEq(Const(Name(name.split("\\."): _*), Vector()))
+    parseEq(Const(Name(name.split("\\.").toIndexedSeq: _*), Vector()))
 
   def getEqFut(name: String) =
     getEqTask(name).runToFuture
