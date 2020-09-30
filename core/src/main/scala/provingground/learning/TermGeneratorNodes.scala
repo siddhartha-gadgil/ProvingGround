@@ -425,13 +425,13 @@ class TermGeneratorNodes[InitState](
     * function application with unification starting with type families, with output conditioned to be a type.
     */
   val typUnifApplnNode: GeneratorNode[Typ[Term]] =
-    typUnifApplnBase | (typSort, Typs)
+    typUnifApplnBase .| (typSort, Typs)
 
   /**
     * function application with unification starting with type families, with output conditioned to be a type family.
     */
   val typFamilyUnifApplnNode: GeneratorNode[ExstFunc] =
-    typUnifApplnBase | (typFamilySort, TypFamilies)
+    typUnifApplnBase .| (typFamilySort, TypFamilies)
 
   /**
     * function application to get terms by choosing a function and then a term in its domain
@@ -460,13 +460,13 @@ class TermGeneratorNodes[InitState](
   /**
     * function application to get types by choosing a type family and then a term in its domain, but without conditioning
     */
-  val typApplnNode: GeneratorNode[Typ[Term]] = typApplnBase | (typSort, Typs)
+  val typApplnNode: GeneratorNode[Typ[Term]] = typApplnBase .| (typSort, Typs)
 
   /**
     * function application to get type families by choosing a type family and then a term in its domain, but without conditioning
     */
   val typFamilyApplnNode: GeneratorNode[ExstFunc] =
-    typApplnBase | (typFamilySort, TypFamilies)
+    typApplnBase .| (typFamilySort, TypFamilies)
 
   /**
     * function application to get terms by choosing an argument and then a function with domain containing this.

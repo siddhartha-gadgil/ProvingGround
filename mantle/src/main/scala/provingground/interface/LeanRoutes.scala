@@ -150,7 +150,7 @@ case class  LeanRoutes()(implicit cc: castor.Context,
     )
     val name = new String(request.readAllBytes())
     defnMap
-      .get(trepplein.Name(name.split("\\."): _*))
+      .get(trepplein.Name(name.split("\\.").toIndexedSeq : _*))
       .map { (t) =>
         result(name, t)
         s"previously parsed $name"
@@ -168,10 +168,10 @@ case class  LeanRoutes()(implicit cc: castor.Context,
             { (err) =>
               val message =
                 s"while parsing $name, got $err\n Modifier: \n ${p.findDefMod(
-                  trepplein.Name(name.split("\\."): _*)).map(_.value)}"
+                  trepplein.Name(name.split("\\.").toIndexedSeq: _*)).map(_.value)}"
               pprint.log(message)
               pprint.log(p.findDefMod(
-                trepplein.Name(name.split("\\."): _*)).map(_.value), height = 1000)
+                trepplein.Name(name.split("\\.").toIndexedSeq: _*)).map(_.value), height = 1000)
               sendErr(message)
             }, { (t) =>
               result(name, t)

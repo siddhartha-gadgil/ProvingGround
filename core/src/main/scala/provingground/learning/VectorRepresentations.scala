@@ -20,8 +20,8 @@ case class WeightVect[T](elem: T, vect: Vector[Double]) {
 }
 
 object WeightVect {
-  def add(first: Vector[Double], second: Vector[Double]) =
-    (first, second).zipped.map(_ + _)
+  def add(first: Vector[Double], second: Vector[Double]) : Vector[Double] =
+    first.lazyZip(second).map(_ + _)
 
   @tailrec def sum(vs: Seq[Vector[Double]],
                    accum: Vector[Double] = Vector(0)): Vector[Double] =
@@ -32,7 +32,7 @@ object WeightVect {
   def randomVec(length: Int, damp: Double = 0.0) = {
     val rnd = new Random
     val raw =
-      ((0 until length) map (_ => damp + (1 - damp) * rnd.nextDouble)).toVector
+      ((0 until length) map (_ => damp + (1 - damp) * rnd.nextDouble())).toVector
     val total = raw.sum
     raw map (_ * (1 / total))
   }
@@ -47,7 +47,7 @@ case class Representation[T](rep: Vector[WeightVect[T]]) extends AnyVal {
 
   def norm = (pmf map (_.weight.abs)).sum
 
-  def next = Weighted.pick(pmf.toSeq, WeightVect.rand.nextDouble)
+  def next = Weighted.pick(pmf.toSeq, WeightVect.rand.nextDouble())
 
   def get(label: T) = rep find (_.elem == label) map (_.vect)
 

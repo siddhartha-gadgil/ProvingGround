@@ -52,7 +52,7 @@ trait LeanParse { self =>
   val inPropFamily: Term => Boolean = {
     case FormalAppln(f, _) => inPropFamily(f)
     case s: Symbolic =>
-      val name = trepplein.Name(s.name.toString.split('.'): _*)
+      val name = trepplein.Name(s.name.toString.split('.').toIndexedSeq : _*)
       termIndModMap.get(name).exists(_.isPropn)
     case _ => false
   }

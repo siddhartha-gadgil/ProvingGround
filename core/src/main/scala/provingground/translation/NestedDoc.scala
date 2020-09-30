@@ -7,7 +7,7 @@ trait NestedDoc[T] {
 
   def sameLabel[X](label: X): Boolean
 
-  def beginSimple = NestedDoc.AppendOpenBlock(this, NestedDoc.SimpleEmpty[T])
+  def beginSimple = NestedDoc.AppendOpenBlock(this, NestedDoc.SimpleEmpty[T]())
 
   def begin[L](label: L) =
     NestedDoc.AppendOpenBlock(this, NestedDoc.LabelledEmpty(label))

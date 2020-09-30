@@ -449,7 +449,7 @@ class LeanParser(
 
 
   def getTask(name: String): Task[Term] =
-    parse(Const(Name(name.split("\\."): _*), Vector()))
+    parse(Const(Name(name.split("\\.").toIndexedSeq: _*), Vector()))
 
   def getFut(name: String): CancelableFuture[Term] =
     getTask(name).runToFuture
@@ -469,7 +469,7 @@ class LeanParser(
     )
 
   def getIndTask(s: String): Task[TermIndMod] = {
-    val name = Name(s.split("\\."): _*)
+    val name = Name(s.split("\\.").toIndexedSeq: _*)
     val exp  = Const(name, Vector())
     getMemTermIndMod(name, exp)
   }
@@ -477,12 +477,12 @@ class LeanParser(
   def getInd(s: String) = getIndTask(s).runSyncUnsafe()
 
   def findDef(s: String): Option[DefMod] = {
-    val name = trepplein.Name(s.split("\\."): _*)
+    val name = trepplein.Name(s.split("\\.").toIndexedSeq: _*)
     mods.find(_.name == name).collect { case df: DefMod => df }
   }
 
   def findInd(s: String): Option[IndMod] = {
-    val name = trepplein.Name(s.split("\\."): _*)
+    val name = trepplein.Name(s.split("\\.").toIndexedSeq: _*)
     mods.find(_.name == name).collect { case df: IndMod => df }
   }
 

@@ -58,7 +58,7 @@ object VecTyp {
 
   implicit def vecRep[U <: Term with Subs[U], X](
       implicit baserep: ScalaPolyRep[U, X])
-    : ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] = VecPolyRep[U, X]
+    : ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] = VecPolyRep[U, X]()
 
   val n = "n" :: NatTypLong
 

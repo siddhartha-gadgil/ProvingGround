@@ -59,7 +59,7 @@ case class EqDistMemo[State](
       eqs: Set[EquationNode]
   ): EqDistMemo[State] =
     EqDistMemo(
-      varDists + ((state, rv) -> getVarDist(state, rv, cutoff)
+      varDists .+ ((state, rv) -> getVarDist(state, rv, cutoff)
         .map { case (fd, eq) => (cutoff, fd, eq) }
         .getOrElse((cutoff, fd, eqs))),
       nodeDists
@@ -74,7 +74,7 @@ case class EqDistMemo[State](
   ): EqDistMemo[State] =
     EqDistMemo(
       varDists,
-      nodeDists + ((state, node) -> getNodeDist(state, node, cutoff)
+      nodeDists .+ ((state, node) -> getNodeDist(state, node, cutoff)
         .map { case (fd, eq) => (cutoff, fd, eq) }
         .getOrElse((cutoff, fd, eqs)))
     )
@@ -87,7 +87,7 @@ case class EqDistMemo[State](
     v match {
       case Vector() => accum
       case ((s, r: RandomVar[u]), (c, fd, eq)) +: ys =>
-        addVars(ys, accum + [u] (s, r, c, fd.asInstanceOf[FD[u]], eq))
+        addVars(ys, accum .+ [u] (s, r, c, fd.asInstanceOf[FD[u]], eq))
     }
 
   @annotation.tailrec
@@ -100,7 +100,7 @@ case class EqDistMemo[State](
     v match {
       case Vector() => accum
       case ((s, r: GeneratorNode[u]), (c, fd, eq)) +: ys =>
-        addNodes(ys, accum + [u] (s, r, c, fd.asInstanceOf[FD[u]], eq))
+        addNodes(ys, accum .+ [u] (s, r, c, fd.asInstanceOf[FD[u]], eq))
     }
 
   def ++(that: EqDistMemo[State]): EqDistMemo[State] =
@@ -165,7 +165,7 @@ abstract class GenMonixFiniteDistributionEq[State](
       }
       resultT.map {
         case (fd, eq, memo) =>
-          (fd, eq, memo + (initState, randomVar, epsilon, fd, eq))
+          (fd, eq, memo .+ (initState, randomVar, epsilon, fd, eq))
       }
     }
 
@@ -768,7 +768,7 @@ case class MonixFiniteDistributionEq[State](
       }
       resultT.map {
         case (fd, eq, rm) =>
-          (fd, eq, memo ++ rm + (initState, generatorNode, epsilon, fd, eq))
+          (fd, eq, memo ++ rm .+ (initState, generatorNode, epsilon, fd, eq))
       }
 
     }

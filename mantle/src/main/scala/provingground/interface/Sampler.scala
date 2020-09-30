@@ -100,7 +100,7 @@ object Sampler {
   }
 
   def binomial(n: Int, p: Double): Int =
-    (1 to n).map((_) => rand.nextDouble).filter(_ > p).size
+    (1 to n).map((_) => rand.nextDouble()).filter(_ > p).size
 
   def sample[A](pd: ProbabilityDistribution[A], n: Int): Map[A, Int] =
     if (n < 1) Map()

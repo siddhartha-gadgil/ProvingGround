@@ -34,7 +34,7 @@ object TermEvolver {
       * as the mixed in distribution is called by name, it may depend on the present one.
       */
     def <+>(mixin: => T[PD[A]], weight: Double) =
-      T(pd.point <+> (mixin.point, weight), pd.vec <+> (mixin.vec, weight))
+      T(pd.point.<+>(mixin.point, weight), pd.vec.<+>(mixin.vec, weight))
 
     /**
       * generates from the mixed in optional valued distribution with probability `weight`,
@@ -42,13 +42,15 @@ object TermEvolver {
       * the mixed in distribution is call by name, so may depend on this distribution.
       */
     def <+?>(mixin: => T[PD[Option[A]]], weight: Double) =
-      T(pd.point <+?> (mixin.point, weight), pd.vec <+?> (mixin.vec, weight))
+      T(pd.point.<+?>(mixin.point, weight), pd.vec.<+?>(mixin.vec, weight))
 
     def map[B](f: A => B): T[PD[B]] = lin((p: PD[A]) => p.map(f))(pd)
 
     def flatMap[B](f: A => T[PD[B]]): T[PD[B]] =
-      TangVec(pd.point.flatMap((a) => f(a).point),
-              pd.vec.flatMap((a) => f(a).vec))
+      TangVec(
+        pd.point.flatMap((a) => f(a).point),
+        pd.vec.flatMap((a) => f(a).vec)
+      )
 
     def condMap[B](f: A => Option[B]): T[PD[B]] =
       lin((p: PD[A]) => p.condMap(f))(pd)
@@ -96,12 +98,13 @@ trait TermEvolution {
     evolveTyps(T(base, vec)).vec
 }
 
-class TermEvolver(unApp: Double = 0.1,
-                  appl: Double = 0.1,
-                  lambdaWeight: Double = 0.1,
-                  piWeight: Double = 0.1,
-                  varWeight: Double = 0.3)
-    extends TermEvolution {
+class TermEvolver(
+    unApp: Double = 0.1,
+    appl: Double = 0.1,
+    lambdaWeight: Double = 0.1,
+    piWeight: Double = 0.1,
+    varWeight: Double = 0.3
+) extends TermEvolution {
   import TermEvolver._
 
   val evolve: T[FD[Term]] => T[PD[Term]] =
@@ -114,30 +117,31 @@ class TermEvolver(unApp: Double = 0.1,
 
   val evolveFuncs: T[FD[Term]] => T[PD[ExstFunc]] =
     (init: T[FD[Term]]) => {
-      init <+?> (TunifAppln(evolveFuncs(init) && evolve(init)),
-      unApp) <+?> (Tappln(evolveFuncs(init) && evolveWithTyp(init)),
-      appl)
+      init
+        .<+?>(TunifAppln(evolveFuncs(init) && evolve(init)), unApp)
+        .<+?>(Tappln(evolveFuncs(init) && evolveWithTyp(init)), appl)
     }.condMap(ExstFunc.opt)
 
   val evolveTypFamilies: T[FD[Term]] => T[PD[ExstFunc]] =
     (init: T[FD[Term]]) => {
-      init <+?> (TunifAppln(evolveTypFamilies(init) && evolve(init)),
-      unApp) <+?> (Tappln(evolveTypFamilies(init) && evolveWithTyp(init)),
-      appl)
+      init
+        .<+?>(TunifAppln(evolveTypFamilies(init) && evolve(init)), unApp)
+        .<+?>(Tappln(evolveTypFamilies(init) && evolveWithTyp(init)), appl)
     }.conditioned(isTypFamily).condMap(ExstFunc.opt)
 
   val evolveWithTyp: T[FD[Term]] => T[Typ[Term] => PD[Term]] =
     (tfd: T[FD[Term]]) =>
-      TangVec((tp: Typ[Term]) => evolveAtTyp(tp)(tfd).point,
-              (tp: Typ[Term]) => evolveAtTyp(tp)(tfd).vec)
+      TangVec(
+        (tp: Typ[Term]) => evolveAtTyp(tp)(tfd).point,
+        (tp: Typ[Term]) => evolveAtTyp(tp)(tfd).vec
+      )
 
   val evolveTyps: T[FD[Term]] => T[PD[Typ[Term]]] =
     (init: T[FD[Term]]) => {
-      evolve(init) <+?> (TunifAppln(evolveTypFamilies(init) && evolve(init)),
-      unApp) <+?> (Tappln(evolveTypFamilies(init) && evolveWithTyp(init)),
-      appl)
-    }.condMap(typOpt) <+>
-      (piMix(init), piWeight)
+      evolve(init)
+        .<+?>(TunifAppln(evolveTypFamilies(init) && evolve(init)), unApp)
+        .<+?>(Tappln(evolveTypFamilies(init) && evolveWithTyp(init)), appl)
+    }.condMap(typOpt).<+>(piMix(init), piWeight)
 
   def evolveAtTyp(typ: Typ[Term]): T[FD[Term]] => T[PD[Term]] =
     (tfd: T[FD[Term]]) => {
@@ -150,11 +154,14 @@ class TermEvolver(unApp: Double = 0.1,
     }
 
   val TunifAppln: T[(PD[ExstFunc], PD[Term])] => T[PD[Option[Term]]] = bil(
-    unifAppln)
+    unifAppln
+  )
 
-  def simpleAppln(funcs: PD[ExstFunc],
-                  args: Typ[Term] => PD[Term]): PD[Option[Term]] =
-    (funcs fibProduct (_.func.dom, args)).map {
+  def simpleAppln(
+      funcs: PD[ExstFunc],
+      args: Typ[Term] => PD[Term]
+  ): PD[Option[Term]] =
+    (funcs.fibProduct(_.func.dom, args)).map {
       case (fn, arg) => fn(arg)
     }
 
@@ -164,33 +171,39 @@ class TermEvolver(unApp: Double = 0.1,
   def lambdaMixVar(
       x: Term,
       wt: Double,
-      base: => (T[FD[Term]] => T[PD[Term]])): T[FD[Term]] => T[PD[Term]] =
+      base: => (T[FD[Term]] => T[PD[Term]])
+  ): T[FD[Term]] => T[PD[Term]] =
     (tfd: T[FD[Term]]) => {
       val dist =
-        lin((fd: FD[Term]) => fd * (1 - wt) + (x, wt))(tfd)
+        lin((fd: FD[Term]) => fd .* (1 - wt) .+ (x, wt))(tfd)
       base(dist).map((y) => x :~> y: Term)
     }
 
-  def piMixVar(x: Term, wt: Double, base: => (T[FD[Term]] => T[PD[Typ[Term]]]))
-    : T[FD[Term]] => T[PD[Typ[Term]]] =
+  def piMixVar(
+      x: Term,
+      wt: Double,
+      base: => (T[FD[Term]] => T[PD[Typ[Term]]])
+  ): T[FD[Term]] => T[PD[Typ[Term]]] =
     (tfd: T[FD[Term]]) => {
       val dist =
-        lin((fd: FD[Term]) => fd * (1 - wt) + (x, wt))(tfd)
+        lin((fd: FD[Term]) => fd .* (1 - wt) .+ (x, wt))(tfd)
       base(dist).map((y) => x ~>: y: Typ[Term])
     }
 
   def lambdaMixTyp(
       typ: Typ[Term],
       wt: Double,
-      base: => (T[FD[Term]] => T[PD[Term]])): T[FD[Term]] => T[PD[Term]] = {
+      base: => (T[FD[Term]] => T[PD[Term]])
+  ): T[FD[Term]] => T[PD[Term]] = {
     val x = typ.Var
     lambdaMixVar(x, wt, base)
   }
 
-  def piMixTyp(typ: Typ[Term],
-               wt: Double,
-               base: => (T[FD[Term]] => T[PD[Typ[Term]]]))
-    : T[FD[Term]] => T[PD[Typ[Term]]] = {
+  def piMixTyp(
+      typ: Typ[Term],
+      wt: Double,
+      base: => (T[FD[Term]] => T[PD[Typ[Term]]])
+  ): T[FD[Term]] => T[PD[Typ[Term]]] = {
     val x = typ.Var
     piMixVar(x, wt, base)
   }
@@ -214,37 +227,41 @@ class TermEvolver(unApp: Double = 0.1,
 }
 
 object TermEvolutionStep {
-  case class Param(vars: Vector[Term] = Vector(),
-                   size: Int = 1000,
-                   derTotalSize: Int = 1000,
-                   epsilon: Double = 0.2,
-                   inertia: Double = 0.3,
-                   scale: Double = 1.0,
-                   thmScale: Double = 0.3,
-                   thmTarget: Double = 0.2)
+  case class Param(
+      vars: Vector[Term] = Vector(),
+      size: Int = 1000,
+      derTotalSize: Int = 1000,
+      epsilon: Double = 0.2,
+      inertia: Double = 0.3,
+      scale: Double = 1.0,
+      thmScale: Double = 0.3,
+      thmTarget: Double = 0.2
+  )
 
   // implicit val taskMonad = implicitly[Monad[Task]]
 
   def obserEv(p: FD[Term], param: Param = Param())(
-      implicit ms: MonixSamples): Observable[TermEvolutionStep[Task]] =
+      implicit ms: MonixSamples
+  ): Observable[TermEvolutionStep[Task]] =
     Observable
       .fromAsyncStateAction[TermEvolutionStep[Task], TermEvolutionStep[Task]](
-        (st: TermEvolutionStep[Task]) => st.succ.map((x) => (x, x)))(
-        new TermEvolutionStep(p, new TermEvolver(), param)(ms))
+        (st: TermEvolutionStep[Task]) => st.succ.map((x) => (x, x))
+      )(new TermEvolutionStep(p, new TermEvolver(), param)(ms))
 
   def observable(p: FD[Term], param: Param = Param())(
-      implicit ms: MonixSamples): Observable[FD[Term]] =
+      implicit ms: MonixSamples
+  ): Observable[FD[Term]] =
     Observable.fromAsyncStateAction[TermEvolutionStep[Task], FD[Term]](
-      (st: TermEvolutionStep[Task]) => st.succ.map((x) => (x.p, x)))(
-      new TermEvolutionStep(p, new TermEvolver(), param)(ms))
+      (st: TermEvolutionStep[Task]) => st.succ.map((x) => (x.p, x))
+    )(new TermEvolutionStep(p, new TermEvolver(), param)(ms))
 
 }
 
-class TermEvolutionStep[X[_]](val p: FD[Term],
-                              ev: TermEvolution = new TermEvolver(),
-                              val param: TermEvolutionStep.Param =
-                                TermEvolutionStep.Param())(
-    implicit val samp: TangSamples[X]) {
+class TermEvolutionStep[X[_]](
+    val p: FD[Term],
+    ev: TermEvolution = new TermEvolver(),
+    val param: TermEvolutionStep.Param = TermEvolutionStep.Param()
+)(implicit val samp: TangSamples[X]) {
   import samp._, TermEvolver._, param._
   lazy val init: PD[Term] = ev.baseEvolve(p)
 
@@ -271,8 +288,9 @@ class TermEvolutionStep[X[_]](val p: FD[Term],
   lazy val tangSamples: X[Vector[(FD[Term], Int)]] =
     for (nfd <- nextFD; ts <- tangSizes(derTotalSize)(nfd)) yield ts
 
-  def derFDX(vec: Vector[(FD[Term], Int)])
-    : X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
+  def derFDX(
+      vec: Vector[(FD[Term], Int)]
+  ): X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
     sequence {
       for {
         (fd, n) <- vec

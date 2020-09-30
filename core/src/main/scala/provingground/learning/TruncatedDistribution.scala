@@ -82,11 +82,11 @@ sealed trait TruncatedDistribution[A] {
 
   def <*>(scale: Double): TruncatedDistribution[A] =
     if (scale != 0.0) new TruncatedDistribution.Scaled(this, scale)
-    else TruncatedDistribution.Empty[A]
+    else TruncatedDistribution.Empty[A]()
 
   def <*>:(scale: Double): TruncatedDistribution[A] =
     if (scale != 0.0) new TruncatedDistribution.Scaled(this, scale)
-    else TruncatedDistribution.Empty[A]
+    else TruncatedDistribution.Empty[A]()
 
   def <+>(that: => TruncatedDistribution[A]) =
     TruncatedDistribution.sum(this, that)
@@ -128,17 +128,17 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
     override def getOpt = None
 
     override def map[B](f: A => B): TruncatedDistribution[B] =
-      TruncatedDistribution.Empty[B]
+      TruncatedDistribution.Empty[B]()
 
     override def flatMap[B](
         f: => (A => TruncatedDistribution[B])): TruncatedDistribution[B] =
-      TruncatedDistribution.Empty[B]
+      TruncatedDistribution.Empty[B]()
 
     override def mapFD[B](f: FiniteDistribution[A] => FiniteDistribution[B]) =
-      TruncatedDistribution.Empty[B]
+      TruncatedDistribution.Empty[B]()
 
     override def mapOpt[B](f: A => Option[B]): TruncatedDistribution[B] =
-      TruncatedDistribution.Empty[B]
+      TruncatedDistribution.Empty[B]()
 
     override def <*>(scale: Double) = this
   }
@@ -225,7 +225,7 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
           val dists = fd.supp map (f)
 
           val empty: TruncatedDistribution[B] =
-            TruncatedDistribution.Empty[B]
+            TruncatedDistribution.Empty[B]()
 
           val trunc = dists.foldRight(empty)(sum[B](_, _))
           trunc.getFD(cutoff)

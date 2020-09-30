@@ -19,7 +19,7 @@ object FansiTranslate {
   // import fansi.Color.LightRed
 
   val fansiTrans: Translator.OrElse[Term, Str] =
-    Translator.Empty[Term, Str] || formalAppln >>> {
+    Translator.Empty[Term, Str]() || formalAppln >>> {
       case (func, arg) => func ++ "(" ++ arg ++ ")"
     } || funcTyp >>> {
       case (dom, codom) =>
@@ -108,7 +108,7 @@ object TeXTranslate {
   // import fansi.Color.LightRed
 
   def texTrans(underscoreEscape: Boolean): Translator.OrElse[Term, String] =
-    Translator.Empty[Term, String] || formalAppln >>> {
+    Translator.Empty[Term, String]() || formalAppln >>> {
       case (func, arg) => func ++ "(" ++ arg ++ ")"
     } || funcTyp >>> {
       case (dom, codom) =>

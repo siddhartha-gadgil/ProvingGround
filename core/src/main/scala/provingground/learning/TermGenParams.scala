@@ -168,7 +168,7 @@ case class TermGenParams(
         (unifApplnNode                     -> unAppW) ::
         (applnByArgNode                    -> argAppW) ::
         (lambdaNode                        -> lmW) ::
-        ((piNode | (typAsTermSort, Terms)) -> piTermW) ::
+        ((piNode .| (typAsTermSort, Terms)) -> piTermW) ::
         (termsByTyps                       -> termsByTypW) ::
         (recFuncFoldedNode                 -> recDefW) ::
         (inducFuncFoldedNode               -> inducDefW) ::
@@ -183,8 +183,8 @@ case class TermGenParams(
         (piNode                                  -> piW) ::
         (sigmaNode                               -> sigmaW) ::
         (typFoldNode                             -> typFromFamilyW) ::
-        ((recFuncFoldedNode | (typSort, Typs))   -> recDefW) ::
-        ((inducFuncFoldedNode | (typSort, Typs)) -> inducDefW) ::
+        ((recFuncFoldedNode .| (typSort, Typs))   -> recDefW) ::
+        ((inducFuncFoldedNode .| (typSort, Typs)) -> inducDefW) ::
         Typs.target[TermState, Double, Typ[Term]]
     )
 
@@ -215,13 +215,13 @@ case class TermGenParams(
   val funcNodes: NodeCoeffs[TermState, Double, HNil, ExstFunc] =
     purge(
       (Init(Funcs)                                 -> termInit) ::
-        ((applnNode | (funcSort, Funcs))           -> appW) ::
-        ((unifApplnNode | (funcSort, Funcs))       -> unAppW) ::
-        ((applnByArgNode | (funcSort, Funcs))      -> argAppW) ::
-        ((lambdaNode | (funcSort, Funcs))          -> lmW) ::
-        ((termsByTyps | (funcSort, Funcs))         -> termsByTypW) ::
-        ((recFuncFoldedNode | (funcSort, Funcs))   -> recDefW) ::
-        ((inducFuncFoldedNode | (funcSort, Funcs)) -> inducDefW) ::
+        ((applnNode .| (funcSort, Funcs))           -> appW) ::
+        ((unifApplnNode .| (funcSort, Funcs))       -> unAppW) ::
+        ((applnByArgNode .| (funcSort, Funcs))      -> argAppW) ::
+        ((lambdaNode .| (funcSort, Funcs))          -> lmW) ::
+        ((termsByTyps .| (funcSort, Funcs))         -> termsByTypW) ::
+        ((recFuncFoldedNode .| (funcSort, Funcs))   -> recDefW) ::
+        ((inducFuncFoldedNode .| (funcSort, Funcs)) -> inducDefW) ::
         Funcs.target[TermState, Double, ExstFunc]
     )
 
@@ -230,11 +230,11 @@ case class TermGenParams(
       (Init(TypFamilies)                                      -> termInit) ::
         (typFamilyApplnNode                                   -> appW) ::
         (typFamilyUnifApplnNode                               -> unAppW) ::
-        ((applnByArgNode | (typFamilySort, TypFamilies))      -> argAppW) ::
+        ((applnByArgNode .| (typFamilySort, TypFamilies))      -> argAppW) ::
         (lambdaTypFamilyNode                                  -> lmW) ::
-        ((termsByTyps | (typFamilySort, TypFamilies))         -> termsByTypW) ::
-        ((recFuncFoldedNode | (typFamilySort, TypFamilies))   -> recDefW) ::
-        ((inducFuncFoldedNode | (typFamilySort, TypFamilies)) -> inducDefW) ::
+        ((termsByTyps .| (typFamilySort, TypFamilies))         -> termsByTypW) ::
+        ((recFuncFoldedNode .| (typFamilySort, TypFamilies))   -> recDefW) ::
+        ((inducFuncFoldedNode .| (typFamilySort, TypFamilies)) -> inducDefW) ::
         TypFamilies.target[TermState, Double, ExstFunc]
     )
 

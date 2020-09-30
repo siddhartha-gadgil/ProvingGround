@@ -42,9 +42,9 @@ object AndrewsCurtis {
     def ++(that: DynDst[V, E]): DynDst[V, E] =
       DynDst(vrtdst ++ that.vrtdst, edgdst ++ that.edgdst, cntn + that.cntn)
 
-    def addV(v: V, p: Double): DynDst[V, E] = DynDst(vrtdst + (v, p), edgdst, cntn)
+    def addV(v: V, p: Double): DynDst[V, E] = DynDst(vrtdst .+ (v, p), edgdst, cntn)
 
-    def addE(e: E, p: Double): DynDst[V, E] = DynDst(vrtdst, edgdst + (e, p), cntn)
+    def addE(e: E, p: Double): DynDst[V, E] = DynDst(vrtdst, edgdst .+ (e, p), cntn)
 
     def updtV(vd: FiniteDistribution[V]): DynDst[V, E] = DynDst(vd, edgdst, cntn)
 
