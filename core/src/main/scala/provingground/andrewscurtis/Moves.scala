@@ -165,7 +165,7 @@ case object Id extends AtomicMove {
 
   override def movesDF
     : AdjDiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] =
-    AdjDiffbleFunction.Id[FiniteDistribution[Moves]]
+    AdjDiffbleFunction.Id[FiniteDistribution[Moves]]()
 
   implicit def rw: RW[Inv] = macroRW
 }

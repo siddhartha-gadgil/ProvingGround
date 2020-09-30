@@ -86,7 +86,7 @@ object Deducer {
       ({
         case tp: Typ[u] =>
           val x    = tp.Var
-          val newp = p <+> (FD.unif(x), varweight)
+          val newp = p .<+> (FD.unif(x), varweight)
           (rec(newp)) map
             ((y: Term) => if (!isUniv(y)) TL.lambda(x, y) else None)
         case _ => FD.unif(None)
@@ -102,7 +102,7 @@ object Deducer {
       ({
         case tp: Typ[u] =>
           val x    = tp.Var
-          val newp = p <+> (FD.unif(x), varweight)
+          val newp = p .<+> (FD.unif(x), varweight)
           (rec(newp)) map ((y: Term) => TL.pi(x, y))
         case _ => FD.unif(None)
       })
@@ -113,7 +113,7 @@ object Deducer {
     */
   def lambdaValue[U <: Term with Subs[U]](variable: U): Term => Option[Term] = {
     case l: LambdaLike[u, v] if l.variable.typ == variable.typ =>
-      Some(l.value replace (l.variable, variable))
+      Some(l.value .replace (l.variable, variable))
     case _ => None
   }
 
@@ -785,7 +785,7 @@ case class Deducer(applnWeight: Double = 0.2,
       val scale = lambdaWeight * fd(x.typ) * (lambdaFD(fd)(x)(l.value)) / fd(l)
       val atom  = TD.atom(l.variable.typ: Term) <*> scale
       backProp(fd)(atom)
-    case _ => TD.Empty[Term]
+    case _ => TD.Empty[Term]()
   }
 
   def lambdaPropVar(backProp: => (Prob => TD[Term] => TD[Term]))(fd: Prob)(
@@ -801,7 +801,7 @@ case class Deducer(applnWeight: Double = 0.2,
       val scale = lambdaWeight * fd(x.typ) * lfd(y) / fd(l)
       val atom  = TD.atom(y: Term) <*> scale
       (backProp(lfd)(atom)) filter ((z) => !(z.dependsOn(x)))
-    case _ => TD.Empty[Term]
+    case _ => TD.Empty[Term]()
   }
 
   def lambdaPropValues(backProp: => (Prob => TD[Term] => TD[Term]))(fd: Prob)(
@@ -821,7 +821,7 @@ case class Deducer(applnWeight: Double = 0.2,
       val scale = piWeight * fd(pt.domain) * piFD(fd)(x)(codom) / fd(pt)
       val atom  = TD.atom(pt.domain: Term) <*> scale
       backProp(fd)(atom)
-    case _ => TD.Empty[Term]
+    case _ => TD.Empty[Term]()
   }
 
   def piPropVar(backProp: => (Prob => TD[Term] => TD[Term]))(fd: Prob)(
@@ -844,7 +844,7 @@ case class Deducer(applnWeight: Double = 0.2,
       val scale = piWeight * fd(pt.domain) * pfd(codom) / fd(pt)
       val atom  = TD.atom(codom: Term) <*> scale
       backProp(pfd)(atom) filter ((z) => !(z.dependsOn(x)))
-    case _ => TD.Empty[Term]
+    case _ => TD.Empty[Term]()
   }
 
   def piPropValues(backProp: => (Prob => TD[Term] => TD[Term]))(fd: Prob)(

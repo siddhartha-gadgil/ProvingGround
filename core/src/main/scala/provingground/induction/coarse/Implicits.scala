@@ -17,7 +17,7 @@ object Implicits {
   val Types = FmlyPtn.IdFmlyPtn[Term, Term]()
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
-    def pair              = ConstructorTyp(IdW[H], typ)
+    def pair              = ConstructorTyp(IdW[H](), typ)
     def :::(name: AnySym) = name ::: pair
 
     def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->>: pair
@@ -52,7 +52,7 @@ object Implicits {
 
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
     import IterFuncPattern._
-    def pair = IterFuncTyp(IdIterPtn[O, Term], typ)
+    def pair = IterFuncTyp(IdIterPtn[O, Term](), typ)
 
     def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
       IterFuncTyp(tail ->: pair, typ)

@@ -174,7 +174,7 @@ F <: Term with Subs[F]](val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
     }
 
     def ~>>:[T <: Term with Subs[T]](thatVar: T) =
-      iConstructorTyp(pattern piOf (thatVar, fmly), fmly)
+      iConstructorTyp(pattern .piOf (thatVar, fmly), fmly)
   }
 
   object iConstructorTyp {

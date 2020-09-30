@@ -1896,7 +1896,7 @@ object HoTTBot {
     )
   }
 
-  lazy val instanceFromLp
+  lazy val instancesFromLp
       : MiniBot[SeekInstances, WithWeight[Instance], HoTTPostWeb, QueryProver, ID] = {
     val response: QueryProver => SeekInstances => Future[
       Vector[WithWeight[Instance]]
@@ -2111,7 +2111,7 @@ object HoTTBot {
             val ts = qp.lp.initState
             qp.lp.copy(
               initState =
-                ts.copy(terms = (ts.terms + (lem.proof, weight)).safeNormalized)
+                ts.copy(terms = (ts.terms .+ (lem.proof, weight)).safeNormalized)
             )
           }
     //  qp.lp.sharpen(tangentScale).tangentProver(lem.proof).runToFuture

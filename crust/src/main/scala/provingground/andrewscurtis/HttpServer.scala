@@ -21,7 +21,7 @@ object HttpServer /*extends App*/ {
 
   println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
   StdIn.readLine() // for the future transformation
-  server.stop
+  server.stop()
 }
 
 class ServerStart(port: Int = 8080) {

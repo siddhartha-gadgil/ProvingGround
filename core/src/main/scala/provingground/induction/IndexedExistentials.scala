@@ -226,7 +226,7 @@ object TypFamilyExst {
     }
 
   def getFamily[Fb <: Term with Subs[Fb]](w: Fb): TypFamilyExst = w match {
-    case tp: Typ[u] => TypFamilyExst[Typ[Term], HNil](IdTypFamily[Term], tp)
+    case tp: Typ[u] => TypFamilyExst[Typ[Term], HNil](IdTypFamily[Term](), tp)
     case fn: Func[u, v] =>
       val x = fn.dom.Var
       getFamily(fn(x)).mapsTo(x, fn.dom)

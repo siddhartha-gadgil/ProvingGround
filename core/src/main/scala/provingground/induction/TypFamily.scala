@@ -99,7 +99,7 @@ object TypFamilyPtn {
   import TypFamilyMapper._
 
   object IdTypFamily {
-    def byTyp[H <: Term with Subs[H]](typ: Typ[H]) = IdTypFamily[H]
+    def byTyp[H <: Term with Subs[H]](typ: Typ[H]) = IdTypFamily[H]()
   }
 
   case class IdTypFamily[H <: Term with Subs[H]]()
@@ -337,7 +337,7 @@ object TypFamilyPtn {
   }
 
   def getExst[F <: Term with Subs[F]](w: F): Exst = w match {
-    case _: Typ[u]      => Exst(IdTypFamily[Term])
+    case _: Typ[u]      => Exst(IdTypFamily[Term]())
     case fn: Func[u, v] => fn.dom ->: getExst(fn(fn.dom.Var))
     case g: FuncLike[u, v] =>
       val x = g.dom.Var
@@ -421,7 +421,7 @@ object TypFamilyMap {
                            FuncLike[H, C],
                            Func[H, Typ[C]]] {
 
-    val pattern = IdTypFamily[H]
+    val pattern = IdTypFamily[H]()
 
     def iterFuncTyp(w: Typ[H], x: Typ[C]) = w ->: x
 
@@ -451,7 +451,7 @@ object TypFamilyMap {
                            FuncLike[H, C],
                            Func[H, TC]] {
 
-    val pattern = IdTypFamily[H]
+    val pattern = IdTypFamily[H]()
 
     def iterFuncTyp(w: Typ[H], x: Typ[C]) = w ->: x
 
@@ -683,7 +683,7 @@ trait WeakImplicit {
                         FuncLike[H, C],
                         Func[H, TC]] {
       val mapper = (x: TypFamilyPtn[H, Typ[H], HNil]) =>
-        TypFamilyMap.IdSubTypFamilyMap[H, TC, C]
+        TypFamilyMap.IdSubTypFamilyMap[H, TC, C]()
     }
 }
 
@@ -707,7 +707,7 @@ object TypFamilyMapper extends WeakImplicit {
                         Func[H, C],
                         FuncLike[H, C],
                         Func[H, Typ[C]]] {
-      val mapper = (x: TypFamilyPtn[H, Typ[H], HNil]) => IdTypFamilyMap[H, C]
+      val mapper = (x: TypFamilyPtn[H, Typ[H], HNil]) => IdTypFamilyMap[H, C]()
     }
 
   implicit def funcTypFamilyMapper[U <: Term with Subs[U],
@@ -802,7 +802,7 @@ object TypFamilyPtnGetter {
     new TypFamilyPtnGetter[Typ[H], H, HNil] {
       //      type Index = HNil
 
-      def get(w: Typ[H]) = TypFamilyPtn.IdTypFamily[H]
+      def get(w: Typ[H]) = TypFamilyPtn.IdTypFamily[H]()
 
       val subst = TermList.HNilTermList
     }

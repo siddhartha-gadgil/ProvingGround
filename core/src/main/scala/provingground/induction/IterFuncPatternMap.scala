@@ -304,7 +304,7 @@ object IterFuncMapper {
     : IterFuncMapper[O, C, O, C, C] =
     new IterFuncMapper[O, C, O, C, C] {
       def mapper =
-        (shape: IterFuncShape[O, O]) => IdIterPtnMap[O, C]
+        (shape: IterFuncShape[O, O]) => IdIterPtnMap[O, C]()
     }
 
   import translation.Translator.unmatched
@@ -400,7 +400,7 @@ object IterFuncShape {
   case class IdIterShape[O <: Term with Subs[O]]() extends IterFuncShape[O, O] {
     def apply(tp: Typ[O]) = tp
 
-    def subs(x: Term, y: Term) = IdIterShape[O]
+    def subs(x: Term, y: Term) = IdIterShape[O]()
 
     def mapper[C <: Term with Subs[C]] =
       implicitly[IterFuncMapper[O, C, O, C, C]]
@@ -408,7 +408,7 @@ object IterFuncShape {
   }
 
   object IdIterShape {
-    def byTyp[O <: Term with Subs[O]](typ: Typ[O]) = IdIterShape[O]
+    def byTyp[O <: Term with Subs[O]](typ: Typ[O]) = IdIterShape[O]()
   }
 
   case class FuncShape[TT <: Term with Subs[TT],
@@ -477,7 +477,7 @@ object IterFuncShape {
     case pd: PiDefn[u, v] =>
       val targWrap = getExst(w, pd.value)
       targWrap.piWrap(pd.variable, pd.domain)
-    case `w` => Exst(IdIterShape[Term])
+    case `w` => Exst(IdIterShape[Term]())
   }
 
   def fromTyp[F <: Term with Subs[F]](w: Typ[Term],
@@ -489,6 +489,6 @@ object IterFuncShape {
       case ft: GenFuncTyp[u, v] =>
         DepFuncShape(ft.domain, (t: u) => fromTyp(w, ft.fib(t)))
           .asInstanceOf[IterFuncShape[Term, F]]
-      case `w` => IdIterShape[Term].asInstanceOf[IterFuncShape[Term, F]]
+      case `w` => IdIterShape[Term]().asInstanceOf[IterFuncShape[Term, F]]
     }
 }

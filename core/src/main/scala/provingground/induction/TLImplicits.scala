@@ -22,7 +22,7 @@ trait InductionImplicits {
     Name(name)
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {
-    def pair              = ConstructorTypTL(IdShape[H], typ)
+    def pair              = ConstructorTypTL(IdShape[H](), typ)
     def :::(name: AnySym) = name ::: pair
 
     def ->>:[T <: Term with Subs[T]](that: Typ[T]) = that ->>: pair
@@ -45,7 +45,7 @@ trait InductionImplicits {
   implicit class IterFuncTypHead[O <: Term with Subs[O]](typ: Typ[O]) {
 
     def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
-      FuncShape(tail, IdIterShape[O])
+      FuncShape(tail, IdIterShape[O]())
   }
 
   implicit class IndexedFamily[F <: Term with Subs[F],

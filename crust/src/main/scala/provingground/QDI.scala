@@ -244,7 +244,7 @@ object QDI {
     def get = if (closed) Some(readFile(filename)) else None
   }
 
-  def readFile(filename: String) = scala.io.Source.fromFile(filename).getLines
+  def readFile(filename: String) = scala.io.Source.fromFile(filename).getLines()
 
   implicit def tableWrite[A]: WriteString[List[List[A]]] =
     new WriteString[List[List[A]]] {

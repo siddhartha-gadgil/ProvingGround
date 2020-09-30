@@ -68,7 +68,7 @@ object FineDeducer {
   def simpleApplnEv(
       funcEvolve: => (FD[Term] => PD[SomeFunc]),
       argEvolve: => (Typ[Term] => FD[Term] => PD[Term]))(p: FD[Term]) =
-    (funcEvolve(p) fibProduct (_.dom, (tp: Typ[Term]) =>
+    (funcEvolve(p) .fibProduct (_.dom, (tp: Typ[Term]) =>
       argEvolve(tp)(p))) map {
       case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
       case (x, y)                      => unmatched(x, y)
@@ -319,7 +319,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
     * partial derivative of function application (without unification) with respect to functions
     */
   def DsimpleApplnFunc(fd: FD[Term], tang: FD[Term]): PD[Term] =
-    (DevolvFuncs(fd, tang) fibProduct
+    (DevolvFuncs(fd, tang) .fibProduct
       (_.dom, (tp: Typ[Term]) => evolveWithTyp(tp)(fd))) map {
       case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
       case (x, y)                      => unmatched(x, y)
@@ -330,7 +330,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
     * with respect to arguments.
     */
   def DsimpleApplnArg(fd: FD[Term], tang: FD[Term]): PD[Term] =
-    (evolvFuncs(fd) fibProduct
+    (evolvFuncs(fd) .fibProduct
       (_.dom, (tp: Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {
       case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
       case (x, y)                      => unmatched(x, y)
@@ -356,7 +356,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
     * partial derivative of function application without unification for type families with respect to type families
     */
   def DsimpleApplnTypFamilies(fd: FD[Term], tang: FD[Term]): PD[Term] =
-    (DevolvTypFamilies(fd, tang) fibProduct
+    (DevolvTypFamilies(fd, tang) .fibProduct
       (_.dom, (tp: Typ[Term]) => evolveWithTyp(tp)(fd))) map {
       case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
       case (x, y)                      => unmatched(x, y)
@@ -367,7 +367,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
     * for type families with respect to arguments.
     */
   def DsimpleApplnTypArg(fd: FD[Term], tang: FD[Term]): PD[Term] =
-    (evolvTypFamilies(fd) fibProduct
+    (evolvTypFamilies(fd) .fibProduct
       (_.dom, (tp: Typ[Term]) => DevolveWithType(tp)(fd, tang))) map {
       case (func: FuncLike[u, v], arg) => func(arg.asInstanceOf[u])
       case (x, y)                      => unmatched(x, y)
@@ -402,7 +402,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
         case tp: Typ[u] =>
           val x    = tp.Var
           val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
-          (varScaled.evolveTyp(newp) <+> (varScaled
+          (varScaled.evolveTyp(newp) .<+> (varScaled
             .evolvTypFamilies(newp)
             .map((f) => f: Term), 0.5)).map((y: Term) =>
             if (!isUniv(y)) TL.lambda(x, y)
@@ -432,7 +432,7 @@ case class FineDeducer(applnWeight: Double = 0.1,
         case tp: Typ[u] =>
           val x    = tp.Var
           val newp = (fd * (1 - varWeight)) ++ (FD.unif[Term](x) * varWeight)
-          (varScaled.DevolveTyp(newp, tang * (1 - varWeight)) <+> (varScaled
+          (varScaled.DevolveTyp(newp, tang .* (1 - varWeight)) .<+> (varScaled
             .DevolvTypFamilies(newp, tang * (1 - varWeight))
             .map((f) => f: Term), 0.5)).map((y: Term) =>
             if (!isUniv(y)) TL.lambda(x, y)

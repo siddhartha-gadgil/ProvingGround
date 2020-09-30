@@ -368,7 +368,7 @@ sealed trait PostMaps[P] {
   def ||[Q: TypeTag](f: Q => P) = PostMaps.Cons(f, this)
 }
 object PostMaps {
-  def empty[P] = Empty[P]
+  def empty[P] = Empty[P]()
   case class Empty[P]() extends PostMaps[P] {
     def getOpt[W, ID](pd: PostData[_, W, ID]): Option[P] = None
   }

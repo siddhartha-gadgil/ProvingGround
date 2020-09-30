@@ -99,7 +99,7 @@ object Frankl {
 
     def getRandom(n: Int, p: Double): SetSystem =
       if (n == 0) {
-        if (rnd.nextDouble < p) trivial else empty
+        if (rnd.nextDouble() < p) trivial else empty
       } else {
         getRandom(n - 1, p).buildWith(getRandom(n - 1, p), n)
       }

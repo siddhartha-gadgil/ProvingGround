@@ -101,7 +101,7 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod],
     FuncPtn(that, this)
 
   def -->:(that: IdW[_]) = {
-    FuncPtn(IdIterPtn[H, Cod], this)
+    FuncPtn(IdIterPtn[H, Cod](), this)
   }
 
   def ->:[T <: Term with Subs[T]](tail: Typ[T]) = CnstFncPtn(tail, this)
@@ -142,14 +142,14 @@ sealed trait ConstructorPattern[Cod <: Term with Subs[Cod],
 }
 
 object ConstructorPattern {
-  val Head = IdW[Term]
+  val Head = IdW[Term]()
 
   def get[H <: Term with Subs[H], Cnstr <: Term with Subs[Cnstr]](
       constype: Cnstr,
       w: Typ[H]): ConstructorPattern[Term, Cnstr, H] =
     constype match {
       case `w` =>
-        IdW[H].asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
+        IdW[H]().asInstanceOf[ConstructorPattern[Term, Cnstr, H]]
       case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
         val head = get(codom, w)
         if (dom.dependsOn(w)) {
@@ -211,7 +211,7 @@ object ConstructorPattern {
 
     //    type Cod = Term
 
-    def withCod[CC <: Term with Subs[CC]](w: Typ[H]) = IdTarg[CC, H]
+    def withCod[CC <: Term with Subs[CC]](w: Typ[H]) = IdTarg[CC, H]()
 
     def subs(x: Term, y: Term) = this
 
@@ -248,7 +248,7 @@ object ConstructorPattern {
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
         cons: ConstructorType): Typ[InducDataType] = xs(cons)
 
-    def withCod[CC <: Term with Subs[CC]](w: Typ[H]) = IdTarg[CC, H]
+    def withCod[CC <: Term with Subs[CC]](w: Typ[H]) = IdTarg[CC, H]()
 
     def subs(x: Term, y: Term) = this
 
@@ -682,7 +682,7 @@ case class ConstructorTyp[C <: Term with Subs[C],
     assert(
       that == typ,
       s"the method -->: is for extenidng by the same type but $that is not $typ")
-    val tail = IdIterPtn[H, C]
+    val tail = IdIterPtn[H, C]()
     val ptn  = FuncPtn(tail, pattern)
     ConstructorTyp(ptn, typ)
   }
@@ -776,7 +776,7 @@ object Constructor {
       val name = consType.asInstanceOf[Symbolic].name
       consType match {
         case `w` =>
-          IdW[Term].constructor(typ, name)
+          IdW[Term]().constructor(typ, name)
         case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
           val head = fromFormal(codom, w)(typ)
           if (dom.dependsOn(w)) {

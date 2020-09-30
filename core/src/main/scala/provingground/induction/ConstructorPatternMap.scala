@@ -482,7 +482,7 @@ sealed trait ConstructorShape[S <: HList,
     * returns shape `that -> this' where `that` must be the shape for inductive type `W`
     */
   def -->:(that: IdShape.type) = {
-    FuncConsShape(IdIterShape[H], this)
+    FuncConsShape(IdIterShape[H](), this)
   }
 
   /**
@@ -522,7 +522,7 @@ object ConstructorShape {
   }
 
   object IdShape {
-    def byTyp[H <: Term with Subs[H]](typ: Typ[H]) = IdShape[H]
+    def byTyp[H <: Term with Subs[H]](typ: Typ[H]) = IdShape[H]()
   }
 
   /**
@@ -617,7 +617,7 @@ object ConstructorPatternMapper {
   implicit def idTargMapper[C <: Term with Subs[C], H <: Term with Subs[H]]
     : ConstructorPatternMapper[HNil, C, H, H, C, C] =
     new ConstructorPatternMapper[HNil, C, H, H, C, C] {
-      def mapper = (_) => IdTargMap[C, H]
+      def mapper = (_) => IdTargMap[C, H]()
     }
 
   implicit def funcPtnMapper[HShape <: HList,
@@ -751,7 +751,7 @@ case class ConstructorTypTL[S <: HList,
     assert(
       that == typ,
       s"the method -->: is for extending by the same type but $that is not $typ")
-    val tail = IdIterShape[H]
+    val tail = IdIterShape[H]()
     val ptn  = FuncConsShape(tail, shape)
     ConstructorTypTL(ptn, typ)
   }
@@ -843,7 +843,7 @@ object ConstructorTypTL {
     * the type `cnstTyp` of the introduction rule.
     */
   def getExst(w: Typ[Term], cnstTyp: Typ[Term]): Exst = cnstTyp match {
-    case `w` => Exst(ConstructorTypTL(IdShape[Term], w))
+    case `w` => Exst(ConstructorTypTL(IdShape[Term](), w))
     case ft: FuncTyp[u, v] if (ft.dom.indepOf(w)) =>
       ft.dom ->>: getExst(w, ft.codom)
     case pd: PiDefn[u, v] if (pd.domain.indepOf(w)) =>

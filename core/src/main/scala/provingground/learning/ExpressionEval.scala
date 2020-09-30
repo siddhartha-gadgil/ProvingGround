@@ -1626,7 +1626,7 @@ trait ExpressionEval { self =>
       )
     import isle._
     val boat  = variable
-    val coeff = Coeff(Base.piNode | (typAsTermSort, Terms))
+    val coeff = Coeff(Base.piNode .| (typAsTermSort, Terms))
     val isleEqs: Set[Equation] =
       equations.map(_.mapVars {
         InIsle.variableMap(boat, isle)

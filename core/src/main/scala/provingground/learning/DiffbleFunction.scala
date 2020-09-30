@@ -170,7 +170,7 @@ object AdjDiffbleFunction {
     val adjDer = (a: A) => (b: A) => b
   }
 
-  def id[A]: AdjDiffbleFunction[A, A] = Id[A]
+  def id[A]: AdjDiffbleFunction[A, A] = Id[A]()
 
   case class Incl1[A, B: LinearStructure]()
       extends AdjDiffbleFunction[A, (A, B)] {
@@ -213,11 +213,11 @@ object AdjDiffbleFunction {
                                 g: AdjDiffbleFunction[B, D]) = {
     val add = vsum[AdjDiffbleFunction[(A, B), (C, D)]]
 
-    val p1 = Proj1[A, B]
-    val p2 = Proj2[A, B]
+    val p1 = Proj1[A, B]()
+    val p2 = Proj2[A, B]()
 
-    val i1 = Incl1[C, D]
-    val i2 = Incl2[C, D]
+    val i1 = Incl1[C, D]()
+    val i2 = Incl2[C, D]()
 
     add(p1 andthen f andthen i1, p2 andthen g andthen i2)
   }
@@ -273,7 +273,7 @@ object AdjDiffbleFunction {
   }
 
   def consIterateDiffble[X](fn: AdjDiffbleFunction[X, X], n: Int) = n match {
-    case 0          => Id[X]
+    case 0          => Id[X]()
     case 1          => fn
     case k if k > 1 => IteratedDiffble(fn, k)
   }
@@ -378,7 +378,7 @@ object AdjDiffbleFunction {
     val sum = (f: AdjDiffbleFunction[A, B], g: AdjDiffbleFunction[A, B]) =>
       Sum[A, B](f, g)
 
-    val zero = Zero[A, B]
+    val zero = Zero[A, B]()
 
     val mult = (c: Double, f: AdjDiffbleFunction[A, B]) => DotProd(c, f)
 

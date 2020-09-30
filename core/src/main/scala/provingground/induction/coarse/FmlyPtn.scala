@@ -177,7 +177,7 @@ object FmlyPtn {
       typ: Typ[O],
       fmlyTyp: Typ[F]): FmlyPtn[O, Term, F] =
     fmlyTyp match {
-      case `typ` => IdFmlyPtn[O, Term].asInstanceOf[FmlyPtn[O, Term, F]]
+      case `typ` => IdFmlyPtn[O, Term]().asInstanceOf[FmlyPtn[O, Term, F]]
       case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
         val head = get[O, v](typ, codom)
         val tail = dom
@@ -289,7 +289,7 @@ object FmlyPtn {
 
     def depTarget(xs: Func[O, Typ[Cod]]) = xs
 
-    def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = IdFmlyPtn[O, CC]
+    def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = IdFmlyPtn[O, CC]()
 
     //    type Cod = C
 
@@ -683,7 +683,7 @@ object FmlyPtn {
             type ArgType     = SS;
             type Total       = HTot
           }])
-      DepFuncFmlyPtn[TT, FVV, I, IT, DI, SS, O, C, HTot](tail replace (x, y),
+      DepFuncFmlyPtn[TT, FVV, I, IT, DI, SS, O, C, HTot](tail .replace (x, y),
                                                          newHeadFibre)
     }
 

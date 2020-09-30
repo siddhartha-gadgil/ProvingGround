@@ -64,7 +64,7 @@ object FiniteDistributionLearner {
   case class Sample[X](N: Double)
       extends FormalExtension[FiniteDistribution[X]] {
     val func = (d: FiniteDistribution[X]) =>
-      d.flatten.filter ((x: X) => random.nextDouble < d(x) * N).normalized ()
+      d.flatten.filter ((x: X) => random.nextDouble() < d(x) * N).normalized ()
   }
 
   def sample[X](N: Double)
@@ -137,7 +137,7 @@ object FiniteDistributionLearner {
       extends AdjDiffbleFunction[(Double, FiniteDistribution[V]),
                                  FiniteDistribution[V]] {
     val func = (wp: (Double, FiniteDistribution[V])) =>
-      wp._2 * (1 - wp._1) + (v, wp._1)
+      wp._2 .* (1 - wp._1) .+ (v, wp._1)
 
     val adjDer = (wp: (Double, FiniteDistribution[V])) =>
       (q: FiniteDistribution[V]) => {
@@ -156,14 +156,14 @@ object FiniteDistributionLearner {
       (FiniteDistribution[M], X),
       X] =
     (m, fn) => {
-      val pm  = Proj1[FiniteDistribution[M], X]
+      val pm  = Proj1[FiniteDistribution[M], X]()
       val scm = Evaluate(m)
-      val atM = pm andthen scm andthen Incl1[Double, X]
-      val pv  = Proj2[FiniteDistribution[M], X]
-      val fv  = pv andthen fn andthen Incl2[Double, X]
+      val atM = pm andthen scm andthen Incl1[Double, X]()
+      val pv  = Proj2[FiniteDistribution[M], X]()
+      val fv  = pv andthen fn andthen Incl2[Double, X]()
       val fnsum =
         vsum[AdjDiffbleFunction[(FiniteDistribution[M], X), (Double, X)]]
-      fnsum(atM, fv) andthen ScProd[X]
+      fnsum(atM, fv) andthen ScProd[X]()
     }
 
   case class ExtendM[M, X](
@@ -199,7 +199,7 @@ object FiniteDistributionLearner {
   }
 
   def projectV[M, X]: AdjDiffbleFunction[(FiniteDistribution[M], X), X] =
-    ProjectV[M, X]
+    ProjectV[M, X]()
 
   def sampleV[M, V](N: Double)
     : AdjDiffbleFunction[(FiniteDistribution[M], FiniteDistribution[V]),

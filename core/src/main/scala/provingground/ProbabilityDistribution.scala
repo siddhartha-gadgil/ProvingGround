@@ -25,7 +25,8 @@ trait ProbabilityDistribution[A] extends Any { pd =>
     ProbabilityDistribution.Mapped(this, f)
 
   def flatMap[B](
-      f: A => ProbabilityDistribution[B]): ProbabilityDistribution[B] =
+      f: A => ProbabilityDistribution[B]
+  ): ProbabilityDistribution[B] =
     ProbabilityDistribution.FlatMapped(this, f)
 
   def product[B](that: ProbabilityDistribution[B]) =
@@ -37,7 +38,7 @@ trait ProbabilityDistribution[A] extends Any { pd =>
   def randomVariable: Iterator[A] = new Iterator[A] {
     def hasNext = true
 
-    def next = pd.next
+    def next() = pd.next
   }
 
   /**
@@ -104,9 +105,10 @@ object ProbabilityDistribution {
     else if (value < pmf.head.weight) Some(pmf.head.elem)
     else chooseOpt(pmf.head.weight - value, pmf.tail)
 
-  class Mixture[A](base: ProbabilityDistribution[A],
-                   components: => Vector[Weighted[ProbabilityDistribution[A]]])
-      extends ProbabilityDistribution[A] {
+  class Mixture[A](
+      base: ProbabilityDistribution[A],
+      components: => Vector[Weighted[ProbabilityDistribution[A]]]
+  ) extends ProbabilityDistribution[A] {
 
     lazy val first = base
 
@@ -131,13 +133,14 @@ object ProbabilityDistribution {
       })
 
     def next =
-      chooseOpt(rand.nextDouble, components) map (_.next) getOrElse (base.next)
+      chooseOpt((rand.nextDouble()), components) map (_.next) getOrElse (base.next)
   }
 
-  class Mixin[A](base: ProbabilityDistribution[A],
-                 mixin: => ProbabilityDistribution[A],
-                 weight: Double)
-      extends ProbabilityDistribution[A] {
+  class Mixin[A](
+      base: ProbabilityDistribution[A],
+      mixin: => ProbabilityDistribution[A],
+      weight: Double
+  ) extends ProbabilityDistribution[A] {
     lazy val first = base
 
     lazy val second = mixin
@@ -147,19 +150,20 @@ object ProbabilityDistribution {
     lazy val p = 1 - q
 
     override def conditioned(p: A => Boolean) =
-      base.conditioned(p) <+> (mixin.conditioned(p), weight)
+      base.conditioned(p).<+>(mixin.conditioned(p), weight)
 
     override def condMap[B](p: A => Option[B]) =
-      base.condMap(p) <+> (mixin.condMap(p), weight)
+      base.condMap(p).<+>(mixin.condMap(p), weight)
 
     def next =
-      if (rand.nextDouble < weight) mixin.next else base.next
+      if (rand.nextDouble() < weight) mixin.next else base.next
   }
 
-  class MixinOpt[A](base: ProbabilityDistribution[A],
-                    mixin: => ProbabilityDistribution[Option[A]],
-                    weight: Double)
-      extends ProbabilityDistribution[A] {
+  class MixinOpt[A](
+      base: ProbabilityDistribution[A],
+      mixin: => ProbabilityDistribution[Option[A]],
+      weight: Double
+  ) extends ProbabilityDistribution[A] {
 
     lazy val first = base
 
@@ -170,15 +174,15 @@ object ProbabilityDistribution {
     val p = 1 - q
 
     override def conditioned(p: A => Boolean) =
-      base.conditioned(p) <+?>
-        (mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
+      base
+        .conditioned(p)
+        .<+?>(mixin.conditioned((oa) => oa.map(p).getOrElse(false)), weight)
 
     override def condMap[B](f: A => Option[B]) =
-      base.condMap(f) <+?>
-        (mixin.condMap((oa) => oa.map(f)), weight)
+      base.condMap(f).<+?>(mixin.condMap((oa) => oa.map(f)), weight)
 
     def next =
-      if (rand.nextDouble < weight) mixin.next.getOrElse(base.next)
+      if (rand.nextDouble() < weight) mixin.next.getOrElse(base.next)
       else base.next
   }
 
@@ -187,25 +191,28 @@ object ProbabilityDistribution {
     def next = f(base.next)
   }
 
-  case class FlatMapped[A, B](base: ProbabilityDistribution[A],
-                              f: A => ProbabilityDistribution[B])
-      extends ProbabilityDistribution[B] {
+  case class FlatMapped[A, B](
+      base: ProbabilityDistribution[A],
+      f: A => ProbabilityDistribution[B]
+  ) extends ProbabilityDistribution[B] {
     def next = f(base.next).next
   }
 
-  case class FiberProduct[A, Q, B](base: ProbabilityDistribution[A],
-                                   quotient: A => Q,
-                                   fibers: Q => ProbabilityDistribution[B])
-      extends ProbabilityDistribution[(A, B)] {
+  case class FiberProduct[A, Q, B](
+      base: ProbabilityDistribution[A],
+      quotient: A => Q,
+      fibers: Q => ProbabilityDistribution[B]
+  ) extends ProbabilityDistribution[(A, B)] {
     def next = {
       val a = base.next
       (a, fibers(quotient(a)).next)
     }
   }
 
-  case class Product[A, B](first: ProbabilityDistribution[A],
-                           second: ProbabilityDistribution[B])
-      extends ProbabilityDistribution[(A, B)] {
+  case class Product[A, B](
+      first: ProbabilityDistribution[A],
+      second: ProbabilityDistribution[B]
+  ) extends ProbabilityDistribution[(A, B)] {
     def next = (first.next, second.next)
   }
 
@@ -219,9 +226,10 @@ object ProbabilityDistribution {
 
   // The distributions below have total measure different from 1
 
-  case class CondMapped[A, B](base: ProbabilityDistribution[A],
-                              f: A => Option[B])
-      extends ProbabilityDistribution[B] {
+  case class CondMapped[A, B](
+      base: ProbabilityDistribution[A],
+      f: A => Option[B]
+  ) extends ProbabilityDistribution[B] {
     def next: B = {
       f(base.next)
         .getOrElse(next) // Warning: unsafe, if there are no elements satisfying the condition this hangs.
@@ -233,10 +241,11 @@ object ProbabilityDistribution {
     def next = base.next
   }
 
-  case class Sum[A](first: ProbabilityDistribution[A],
-                    second: ProbabilityDistribution[A])
-      extends ProbabilityDistribution[A] {
-    def next = if (rand.nextDouble < 0.5) first.next else second.next
+  case class Sum[A](
+      first: ProbabilityDistribution[A],
+      second: ProbabilityDistribution[A]
+  ) extends ProbabilityDistribution[A] {
+    def next = if (rand.nextDouble() < 0.5) first.next else second.next
   }
 
   case class Flattened[A](base: ProbabilityDistribution[Option[A]])

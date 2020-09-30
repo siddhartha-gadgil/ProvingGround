@@ -20,7 +20,7 @@ import upickle.default._, scala.concurrent.duration._
 object LocalProver {
   implicit def finDurRW: ReadWriter[FiniteDuration] =
     readwriter[ujson.Value].bimap(
-      dur => ujson.Num(dur.toMillis),
+      dur => ujson.Num(dur.toMillis.toDouble),
       js => FiniteDuration(ujson.read(js).num.toLong, MILLISECONDS)
     )
 
@@ -69,7 +69,7 @@ case class LocalProver(
   def withInit(ts: TermState): LocalProver = this.copy(initState = ts)
 
   override def addVar(term: Term, weight: Double): LocalProver = {
-    val td      = initState.terms * (1 - weight) + (term, weight)
+    val td      = initState.terms .* (1 - weight) .+ (term, weight)
     val allVars = term +: initState.vars
     val ctx     = initState.context.addVariable(term)
     val ts =
@@ -184,7 +184,7 @@ case class LocalProver(
     this.copy(tg = tg.copy(negTargetW = w))
 
   def natInduction(w: Double = 1.0): LocalProver = {
-    val mixin = initState.inds + (NatRing.exstInducDefn, w)
+    val mixin = initState.inds .+ (NatRing.exstInducDefn, w)
     this.copy(initState.copy(inds = mixin.safeNormalized))
   }
 
@@ -201,7 +201,7 @@ case class LocalProver(
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(initState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+      .varDist(initState, genMaxDepth, halted(), EqDistMemo.empty[TermState])(
         Terms,
         cutoff
       )
@@ -212,7 +212,7 @@ case class LocalProver(
     (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(initState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+      .varDist(initState, genMaxDepth, halted(), EqDistMemo.empty[TermState])(
         Typs,
         cutoff
       )
@@ -339,7 +339,7 @@ trait LocalProverStep {
   def withInit(ts: TermState): LocalProverStep
 
   def addVar(term: Term, weight: Double): LocalProverStep = {
-    val td      = initState.terms * (1 - weight) + (term, weight)
+    val td      = initState.terms .* (1 - weight) .+ (term, weight)
     val allVars = term +: initState.vars
     val ctx     = initState.context.addVariable(term)
     val ts =
@@ -348,7 +348,7 @@ trait LocalProverStep {
   }
 
   def addGoal(goal: Typ[Term], weight: Double) = {
-    val typd = initState.goals * (1 - weight) + (goal, weight)
+    val typd = initState.goals .* (1 - weight) .+ (goal, weight)
     val ts   = initState.copy(goals = typd.safeNormalized)
     withInit(ts)
   }
@@ -688,7 +688,7 @@ trait LocalProverStep {
         limit
       )
       teqnds <- mfdt
-        .varDist(tangState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+        .varDist(tangState, genMaxDepth, halted(), EqDistMemo.empty[TermState])(
           Terms,
           cutoff * weight
         )
@@ -826,7 +826,7 @@ case class LocalTangentProver(
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(tangentState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+      .varDist(tangentState, genMaxDepth, halted(), EqDistMemo.empty[TermState])(
         Terms,
         cutoff
       )
@@ -837,7 +837,7 @@ case class LocalTangentProver(
     (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(tangentState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+      .varDist(tangentState, genMaxDepth, halted(), EqDistMemo.empty[TermState])(
         Typs,
         cutoff
       )

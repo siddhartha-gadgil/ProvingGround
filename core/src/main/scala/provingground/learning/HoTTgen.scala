@@ -112,7 +112,7 @@ object HoTTgen {
       (Move.paircons, MoveFn(paircons)),
       (Move.icons, MoveFn(icons)),
       (Move.jcons, MoveFn(icons)),
-      (Move.id, Id[FiniteDistribution[Term]])
+      (Move.id, Id[FiniteDistribution[Term]]())
     )
 
   object Move {
@@ -146,7 +146,7 @@ object HoTTgen {
   val wtdMoveList = for (mv <- moves) yield extendM(wtdDyn(mv._1, mv._2))
 
   val wtdMoveSum =
-    vBigSum(wtdMoveList) andthen block(NormalizeFD[Move], NormalizeFD[Term])
+    vBigSum(wtdMoveList) andthen block(NormalizeFD[Move](), NormalizeFD[Term]())
 
   def lambdaFn[M](
       l: M,
@@ -160,7 +160,7 @@ object HoTTgen {
     val export = MoveFn(
       (t: Term) => if (t != Type) Some(lambda(x)(t): Term) else None)
     val head = incl andthen init
-    extendM(head) andthen f andthen block(Id[FiniteDistribution[M]], export)
+    extendM(head) andthen f andthen block(Id[FiniteDistribution[M]](), export)
   }
 
   def lambdaSum[M](l: M)(
@@ -191,7 +191,7 @@ object HoTTgen {
     .mixinIsle[(FiniteDistribution[Move], FiniteDistribution[Term])](
       wtdMoveSum,
       lambdaSum(Move.lambda),
-      block(NormalizeFD[Move], NormalizeFD[Term]))
+      block(NormalizeFD[Move](), NormalizeFD[Term]()))
 
   val mapTyp = MoveFn[Term, Typ[Term]]((t: Term) =>
     if (t.typ.typ == Type) Some(t.typ) else None)

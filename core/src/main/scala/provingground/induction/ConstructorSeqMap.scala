@@ -352,7 +352,7 @@ object ConstructorSeqDom {
   }
 
   object Empty {
-    def byTyp[H <: Term with Subs[H]](typ: Typ[H]) = Empty[H]
+    def byTyp[H <: Term with Subs[H]](typ: Typ[H]) = Empty[H]()
   }
 
   /**
@@ -504,7 +504,7 @@ object ConstructorSeqTL {
     }
 
   def Empty[H <: Term with Subs[H]](W: Typ[H]) =
-    ConstructorSeqTL(ConstructorSeqDom.Empty[H], W)
+    ConstructorSeqTL(ConstructorSeqDom.Empty[H](), W)
 
   /**
     * Wrapped existential version of [[ConstructorSeqTL]]

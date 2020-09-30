@@ -263,7 +263,7 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
       conditionFamily: Dom => Sort[S, T],
       outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
     GeneratorNodeFamily.BasePi(
-      (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
+      (x: Dom) => this .| (conditionFamily(x), outputFamily.at(x)),
       outputFamily)
 
   def pi[D, S >: O, T](conditionFamily: D => Sort[S, T],

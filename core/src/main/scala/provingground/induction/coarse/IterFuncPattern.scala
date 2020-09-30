@@ -86,7 +86,7 @@ object IterFuncPattern {
             F <: Term with Subs[F]](typ: Typ[O])(
         fmlyTyp: Typ[F]): IterFuncPtn[O, C, F] =
       fmlyTyp match {
-        case `typ` => IdIterPtn[O, C].asInstanceOf[IterFuncPtn[O, C, F]]
+        case `typ` => IdIterPtn[O, C]().asInstanceOf[IterFuncPtn[O, C, F]]
         case FuncTyp(dom: Typ[u], codom: Typ[v]) =>
           val head = get[O, C, v](typ)(codom)
           val tail = dom
@@ -168,7 +168,7 @@ object IterFuncPattern {
 
     def depTarget(xs: Func[O, Typ[Cod]]) = xs
 
-    def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = IdIterPtn[O, CC]
+    def withCod[CC <: Term with Subs[CC]](w: Typ[O]) = IdIterPtn[O, CC]()
 
     def subs(x: Term, y: Term) = this
 
