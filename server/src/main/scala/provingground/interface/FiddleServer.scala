@@ -6,7 +6,7 @@ import translation._
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import com.typesafe.config.ConfigFactory
 import scala.io.StdIn
 
@@ -18,7 +18,7 @@ import akka.http.scaladsl.server.Directives._
 
 object ScriptServer extends App {
   implicit val system       = ActorSystem("server-system")
-  implicit val materializer = ActorMaterializer()
+  implicit val materializer = akka.stream.SystemMaterializer(system).materializer
 
   implicit val executionContext = system.dispatcher
 

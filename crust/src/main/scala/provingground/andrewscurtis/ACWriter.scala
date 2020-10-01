@@ -4,7 +4,7 @@ import provingground._
 
 import akka.stream._
 
-import AcFlow._
+import AcFlows._
 
 import ACElem._
 

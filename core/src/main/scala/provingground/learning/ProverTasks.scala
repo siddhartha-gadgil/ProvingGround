@@ -256,12 +256,12 @@ object ProverTasks {
 
   def selfNeighbours[A](fd: FD[A], epsilon: Double) =
     fd.flatten.supp.map { (x) =>
-      (fd + (x, fd(x) * epsilon)).safeNormalized
+      (fd .+ (x, fd(x) * epsilon)).safeNormalized
     }
 
   def newNeighbours[A](fd: FD[A], pert: Vector[A], epsilon: Double) =
     pert.map { (x) =>
-      (fd + (x, fd(x) * epsilon)).safeNormalized
+      (fd .+ (x, fd(x) * epsilon)).safeNormalized
     }
 
   def stabHalt(x: FD[Term], y: FD[Term], level: Double): Boolean =

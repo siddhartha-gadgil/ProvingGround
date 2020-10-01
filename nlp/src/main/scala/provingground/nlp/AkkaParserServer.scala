@@ -6,7 +6,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 
 import scala.util.Try
 import ujson.Js
@@ -20,7 +20,7 @@ import scala.concurrent._
 import scala.io.StdIn
 
 class AkkaParserService(serverMode: Boolean)(implicit ec: ExecutionContext,
-                                         mat: ActorMaterializer) {
+                                         mat: Materializer) {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed
@@ -98,86 +98,3 @@ class AkkaParserService(serverMode: Boolean)(implicit ec: ExecutionContext,
 
 }
 
-// object AkkaParserServer extends App {
-//
-//   implicit val system: ActorSystem = ActorSystem("provingground")
-//   implicit val materializer        = ActorMaterializer()
-//
-//   // needed for the future flatMap/onComplete in the end
-//   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
-//     system.dispatcher
-//
-//   import ammonite.ops._
-//
-//   def path(s: String): Path =
-//     scala.util.Try(Path(s)).getOrElse(pwd / RelPath(s))
-//
-//   implicit val pathRead: scopt.Read[Path] =
-//     scopt.Read.reads(path)
-//
-//   case class Config(
-//       scriptsDir: Path = pwd / "repl-scripts",
-//       objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
-//       host: String = "localhost",
-//       port: Int = 8080,
-//       serverMode: Boolean = false)
-//
-//   // val config = Config()
-//
-//   val parser = new scopt.OptionParser[Config]("provingground-server") {
-//     head("ProvingGround Server", "0.1")
-//
-//     opt[String]('i', "interface")
-//       .action((x, c) => c.copy(host = x))
-//       .text("server ip")
-//     opt[Int]('p', "port")
-//       .action((x, c) => c.copy(port = x))
-//       .text("server port")
-//     opt[Path]('s', "scripts")
-//       .action((x, c) => c.copy(scriptsDir = x))
-//       .text("scripts directory")
-//     opt[Path]('o', "objects")
-//       .action((x, c) => c.copy(objectsDir = x))
-//       .text("created objects directory")
-//     opt[Unit]("server")
-//       .action((x, c) => c.copy(serverMode = true))
-//       .text("running in server mode")
-//   }
-//
-//   parser.parse(args, Config()) match {
-//     case Some(config) =>
-//       val parserService = new AkkaParserService(config.serverMode)
-//       import parserService._, mantleService.keepAlive
-//
-//       val bindingFuture =
-//         Http().bindAndHandle(
-//           route ~
-//             pathPrefix("hott") {
-//               mantleService.route ~ pathPrefix("scripts")(ammRoute)
-//             },
-//           config.host,
-//           config.port)
-//
-//       val exitMessage =
-//         if (config.serverMode) "Kill process to exit"
-//         else
-//           "Exit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)"
-//
-//       println(
-//         s"Server online at http://${config.host}:${config.port}/\n$exitMessage")
-//
-//       while (keepAlive) {
-//         Thread.sleep(10)
-//       }
-//
-//       println("starting shutdown")
-//
-//       bindingFuture
-//         .flatMap(_.unbind()) // trigger unbinding from the port
-//         .onComplete(_ => system.terminate()) // and shutdown when done
-//
-//     case None =>
-//       println("invalid options")
-//   }
-//
-// }

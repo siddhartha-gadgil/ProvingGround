@@ -13,8 +13,6 @@ import ACElem._
 object ACFlow {
   implicit val system = Hub.system
 
-  // implicit val mat = ActorMaterializer()
-
   //  type Snap = SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
 
   val fl = Flow[Snap]

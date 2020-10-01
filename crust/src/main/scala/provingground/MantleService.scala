@@ -6,7 +6,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl._
 import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.http.scaladsl.marshalling.sse.EventStreamMarshalling._
@@ -87,7 +87,7 @@ object MantleService{
 
 
 class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext,
-                                         mat: ActorMaterializer) {
+                                         mat: Materializer) {
 
   import MantleService._
 
@@ -175,8 +175,8 @@ class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext,
 
 
 object MantleServer extends App {
-  implicit val system: ActorSystem = ActorSystem("provingground")
-  implicit val materializer        = ActorMaterializer()
+  implicit val system: ActorSystem = learning.Hub.system//ActorSystem("provingground")
+  implicit val materializer : Materializer       = learning.Hub.materializer
 
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =

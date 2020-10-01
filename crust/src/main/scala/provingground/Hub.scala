@@ -6,7 +6,7 @@ import reactivemongo.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 
 import com.typesafe.config._
 // import com.mongodb.casbah.Imports
@@ -63,8 +63,7 @@ object Hub {
   implicit val system: _root_.akka.actor.ActorSystem = ActorSystem(
     "provingground")
 
-  // implicit val materializer: _root_.akka.stream.ActorMaterializer =
-  //   ActorMaterializer()
+  implicit val materializer  : Materializer      = akka.stream.SystemMaterializer(system).materializer
 
   implicit val executionContext
     : _root_.scala.concurrent.ExecutionContextExecutor = system.dispatcher
