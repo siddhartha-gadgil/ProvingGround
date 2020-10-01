@@ -19,16 +19,18 @@ import shapeless._, HList._
 object HoTTMessages {
 
   /**
-    * goals to seek, through whatever means
+    * goals to seek, through whatever means,
     *
     * @param goals the goals
+    * @param context: context for goals
     */
-  case class SeekGoals(goals: FiniteDistribution[Typ[Term]])
+  case class SeekGoals(goals: FiniteDistribution[Typ[Term]], context: Context)
 
   /**
     * A goal to seek, often derived from others; if the others are solved or negated, we stop seeking
     *
     * @param goal the goal
+    * @param context: context for goal
     * @param forConsequences the consequences for which we seek this, if any; if empty these have no effect
     */
   case class SeekGoal(
@@ -36,7 +38,13 @@ object HoTTMessages {
       context: Context,
       forConsequences: Set[Typ[Term]] = Set()
   ) {
-    def relevantGiven(terms: Set[Term]) =
+    /**
+      * check if a goal is still relevant, i.e., it has not been proved or disproved nor have its consequences
+      *
+      * @param terms
+      * @return whether the goal is still worth proving
+      */
+    def relevantGiven(terms: Set[Term]): Boolean =
       terms
         .map(_.typ)
         .intersect(
@@ -45,15 +53,26 @@ object HoTTMessages {
         )
         .isEmpty
 
+    /**
+      * simplify by putting in context
+      *
+      * @return optionally a new goal, provided there is some simplification
+      */
     def inContext: Option[SeekGoal] =
       Some(SeekGoal.inContext(this)).filter(nxt => nxt != this)
 
   }
 
   object SeekGoal {
+    /**
+      * view goal as a simpler goal in a context if possible
+      *
+      * @param sk what we seek
+      * @return possibly simplified stuff to seek
+      */
     def inContext(sk: SeekGoal): SeekGoal = sk.goal match {
       case PiDefn(variable: Term, value: Typ[u]) =>
-        inContext(SeekGoal(value, sk.context.addVariable(variable)))
+        inContext(SeekGoal(value, sk.context.addVariable(variable), sk.forConsequences))
       case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
         val x = dom.Var
         inContext(
@@ -291,6 +310,16 @@ object HoTTMessages {
     proofOpt.foreach(proof => assert(proof.typ == statement))
   }
 
+  case class Contradicted(
+      statement: Typ[Term],
+      contraOpt: Option[ExstFunc],
+      context: Context
+  ) extends Decided {
+    for {
+      contra <- contraOpt
+    } assert(contra("assume" :: statement).map(_.typ) == Some(Zero))
+  }
+
   trait PropagateProof {
     def propagate(proofs: Set[Term]): Set[Decided]
 
@@ -351,16 +380,6 @@ object HoTTMessages {
     )
   }
 
-  case class Contradicted(
-      statement: Typ[Term],
-      contraOpt: Option[ExstFunc],
-      context: Context
-  ) extends Decided {
-    for {
-      contra <- contraOpt
-    } assert(contra("assume" :: statement).map(_.typ) == Some(Zero))
-  }
-
   case class RepresentationMap(
       rep: Map[GeneratorVariables.Variable[_], Vector[Double]]
   )
@@ -408,6 +427,10 @@ object HoTTMessages {
 
   case object GenerateTerms
 
+  /**
+    * Instances to be found for a goal which is a sigma-type
+    * corresponding to an instance we get a new goal, and that the original is a consequnce of the new goal
+    */
   trait SeekInstances {
     type U <: Term with Subs[U]
     type V <: Term with Subs[V]
@@ -445,6 +468,13 @@ object HoTTMessages {
       }
   }
 
+  /**
+    * instances, which are just terms of a specific type in a context
+    *
+    * @param term the instance term
+    * @param typ the goal type
+    * @param context the context
+    */
   case class Instance(term: Term, typ: Typ[Term], context: Context) {
     assert(term.typ == typ)
   }

@@ -545,6 +545,12 @@ object HoTTBot {
       }
     )
 
+    /**
+      * given an instance, which is just a term of specified types, looks for instances sought and
+      * in case of match returns the corresponding new goal and how the old is a consequence of the new.
+      *
+      * @return
+      */
   lazy val instanceToGoal: MicroBot[Instance, Option[
     Consequence :: SeekGoal :: HNil
   ], HoTTPostWeb, SeekInstances, ID] = {
@@ -563,19 +569,14 @@ object HoTTBot {
               //   .goalCast(y)
               val deduction =
                 y :~> fold(seek.sigma.paircons)(instance.term, y: Term)
-              //  mkPair(instance.term.asInstanceOf[Term], y: Term)
-              // translation.FansiShow.fansiPrint.log(newGoal)
-              // translation.FansiShow.fansiPrint.log(seek.sigma)
-              // translation.FansiShow.fansiPrint.log(deduction)
-              // translation.FansiShow.fansiPrint.log(deduction.typ)
-              val cons = Consequence(
+              val consequence = Consequence(
                 newGoal,
                 seek.sigma,
                 Option(ExstFunc(deduction)),
                 seek.context
               )
               Some(
-                cons ::
+                consequence ::
                   SeekGoal(
                     newGoal,
                     seek.context,
@@ -1896,6 +1897,14 @@ object HoTTBot {
     )
   }
 
+  /**
+    * generate instances with weights from a local prover
+    * alternatively we can just use a final state and given goal, 
+    * with the final state generated from the local prover if desired,
+    * but this way we target the type
+    *
+    * @return
+    */
   lazy val instancesFromLp
       : MiniBot[SeekInstances, WithWeight[Instance], HoTTPostWeb, QueryProver, ID] = {
     val response: QueryProver => SeekInstances => Future[
@@ -2150,12 +2159,20 @@ object HoTTBot {
   val fullGoalInContext: SimpleBot[SeekGoal, Option[SeekGoal]] =
     MicroBot.simple(_.inContext)
 
+/**
+  * prover with variables for the context of the goal (if compatible) and with goal mixed in.
+  *
+  * @param varWeight weight of variables added based on context
+  * @param goalWeight weight of the goal
+  * @return optionally a local prover
+  */
   def goalToProver(
       varWeight: Double,
       goalWeight: Double
   ): MicroBot[SeekGoal, Option[LocalProver], HoTTPostWeb, QueryProver :: Set[
     HoTT.Term
   ] :: HNil, ID] = {
+    // check whether the provers context is an initial segment of the context of the goal
     val subContext: SeekGoal => QueryProver :: Set[Term] :: HNil => Boolean =
       (goal) => {
         case (qp: QueryProver) :: terms :: HNil => {
