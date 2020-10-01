@@ -59,9 +59,9 @@ object SimpleAcRun {
 
   object Reactive {
     import Hub.ReactiveMongo._
-    def coll(implicit database: DefaultDB) = database("simpleACpaths")
+    def coll(database: DefaultDB) = database("simpleACpaths")
 
-    implicit def mongoUpdate(implicit database: DefaultDB): Path => Unit =
+    def mongoUpdate(database: DefaultDB): Path => Unit =
       (p) => {
         val query = BSONDocument("id" -> p.id)
         val entry = BSONDocument("id" -> p.id, "path" -> write(p.pickle))

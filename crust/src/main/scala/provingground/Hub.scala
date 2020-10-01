@@ -66,5 +66,5 @@ object Hub {
   implicit val materializer  : Materializer      = akka.stream.SystemMaterializer(system).materializer
 
   implicit val executionContext
-    : _root_.scala.concurrent.ExecutionContextExecutor = system.dispatcher
+    : scala.concurrent.ExecutionContextExecutor = system.dispatcher
 }
