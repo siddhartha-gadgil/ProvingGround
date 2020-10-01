@@ -31,7 +31,7 @@ val commonLibs = List(
 trait CommonModule extends ScalaModule with ScalafmtModule {
   def scalaVersion     = scalaV
   override def ivyDeps = Agg(commonLibs: _*)
-  def version          = "0.1.1-SNAPSHOT"
+  def version          = "0.1.2-SNAPSHOT"
 
   def organization = "io.github.siddhartha-gadgil"
   def name         = "ProvingGround"
@@ -131,7 +131,7 @@ trait JvmModule extends CommonModule {
 }
 
 trait PGPublish extends PublishModule {
-  def publishVersion = "0.1.1"
+  def publishVersion = "0.1.2-SNAPSHOT"
 
   def pomSettings = PomSettings(
     description = "Automated theorem proving through learning in HoTT",
