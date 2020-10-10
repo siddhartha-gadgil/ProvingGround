@@ -181,7 +181,8 @@ object TypedPostResponse {
     * @param pw postability 
     * @param lv queryability of parameters on which the callback depends
     */ 
-  case class Callback[P, W, V, ID](update: W => V => P => Future[Unit], predicate: V => Boolean = (_ : V) => true)(
+  case class Callback[P, W, V, ID](update: W => V => P => Future[Unit], predicate: V => Boolean = (_ : V) => true,
+      name: Option[String] = None)(
       implicit pw: Postable[P, W, ID],
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
@@ -191,21 +192,23 @@ object TypedPostResponse {
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
-      logger.info(s"triggered callback ${this.hashCode().toHexString} for type ${pw.tag}")
+      val message = name.getOrElse(this.hashCode().toHexString)
+      logger.info(s"triggered callback ${message} for type ${pw.tag} with input hash ${content.hashCode()}")
       val auxFuture = lv.getAt(web, id, predicate)
       val task = auxFuture.flatMap { auxs =>
         Future.sequence(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
-      }.andThen(_ => logger.info(s"completed callback ${this.hashCode().toHexString} for type ${pw.tag}"))
+      }.andThen(_ => logger.info(s"completed callback ${message} for type ${pw.tag} with input hash ${content.hashCode()}"))
       task
     }
   }
 
   object Callback{
-    def simple[P, W, ID](func: W => P => Unit)(
+    def simple[P, W, ID](func: W => P => Unit,
+      name: Option[String] = None)(
       implicit pw: Postable[P, W, ID]) = 
-      Callback[P, W, Unit, ID]{
+      Callback[P, W, Unit, ID]({
         (web: W) => (_: Unit) => (p: P) => Future(func(web)(p))
-    }
+    }, name = name)
   }
 
   /**

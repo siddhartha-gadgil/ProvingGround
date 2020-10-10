@@ -326,7 +326,7 @@ object HoTTBot {
   }
 
   lazy val updateTerms: Callback[FinalState, HoTTPostWeb, Unit, ID] =
-    Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
+    Callback.simple ({ (web: HoTTPostWeb) => (fs: FinalState) =>
       val allTerms = fs.ts.terms.support union (fs.ts.typs.support
         .map(t => t: Term))
       val newTerms = allTerms -- web.terms
@@ -345,7 +345,7 @@ object HoTTBot {
       Utils.logger.info(s"Obtained ${allEquations.size} formal equations")
       val normalEquations = allEquations.map(TermData.isleNormalize(_))
       web.addEqns(normalEquations)
-    }
+    }, Some("update terms"))
 
   lazy val reportSuccesses: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
@@ -406,7 +406,7 @@ object HoTTBot {
             }
       }
     }
-    Callback(response)
+    Callback(response, name = Some("report proofs"))
   }
 
   def reportProofsSimple(
@@ -449,7 +449,7 @@ object HoTTBot {
             }
       }
     }
-    Callback(response)
+    Callback(response, name = Some("report proofs (simple)"))
   }
 
   def reportTangentLemmas(
@@ -528,7 +528,7 @@ object HoTTBot {
             logger.info(view1 + "\n" + view2 + "\n\n")
             Utils.report(view1 + "\n" + view2 + "\n\n")
           }
-    Callback(update)
+    Callback(update, name = Some("report base and tangent pairs"))
   }
 
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
