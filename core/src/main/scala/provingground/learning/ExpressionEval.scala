@@ -125,17 +125,17 @@ object ExpressionEval {
       initialState: TermState
   ): Map[Expression, Double] = {
     val atomVec = atoms.toVector.par
-    Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
+    Utils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
     val valueVec = atomVec.map(exp => initVal(exp, tg, initialState))
-    Utils.logger.info("Computed initial values")
+    Utils.logger.debug("Computed initial values")
     val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
       case (Some(x), n) if x > 0 => (atomVec(n), x)
     }
     val expMapVec = valueVec.zipWithIndex.collect(fn)
-    Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
-    Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+    Utils.logger.debug(s"Computed vector for map, size ${expMapVec.size}")
+    Utils.logger.debug(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
     val result = expMapVec.toMap
-    Utils.logger.info("Computed map")
+    Utils.logger.debug("Computed map")
     result.seq
   }
 
@@ -145,8 +145,8 @@ object ExpressionEval {
       initialState: TermState
   ): Task[Map[Expression, Double]] = {
     val atomVec = atoms.toVector
-    Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
-    Utils.logger.info(
+    Utils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
+    Utils.logger.debug(
       s"Computed (sizes of) memoized maps: ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" + 
       s", ${initialState.typFamilyDistMap.size}, ${initialState.termsWithTypsMap.size}, ${initialState.funcsWithDomsMap.size}"
     )
@@ -155,15 +155,15 @@ object ExpressionEval {
         atomVec.map(exp => Task(initVal(exp, tg, initialState)))
       )
     valueVecTask.map { valueVec =>
-      Utils.logger.info("Computed initial values")
+      Utils.logger.debug("Computed initial values")
       val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
         case (Some(x), n) if x > 0 => (atomVec(n), x)
       }
       val expMapVec = valueVec.zipWithIndex.collect(fn)
-      Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
-      Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+      Utils.logger.debug(s"Computed vector for map, size ${expMapVec.size}")
+      Utils.logger.debug(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
       val result = expMapVec.toMap
-      Utils.logger.info("Computed map")
+      Utils.logger.debug("Computed map")
       result
     }
   }
@@ -1048,16 +1048,16 @@ class ExprCalc(ev: ExpressionEval) {
   }
 
   def simpleNextVec(v: ParVector[Double]): ParVector[Double] = {
-    // Utils.logger.info("Computing new vector")
+    // Utils.logger.debug("Computing new vector")
     val fn: ((SumExpr, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         val z = v(j)
         if (z > 0) z else y
     }
-    // Utils.logger.info("Computing new vector: defined function")
+    // Utils.logger.debug("Computing new vector: defined function")
     val z = rhsExprs.zipWithIndex
-    // Utils.logger.info(s"Mapping ${z.size} expressions")
+    // Utils.logger.debug(s"Mapping ${z.size} expressions")
     z.par.map(fn)
   }
 
@@ -1104,7 +1104,7 @@ class ExprCalc(ev: ExpressionEval) {
       Utils.logger.error(s"Timeout for stable vector after $steps steps")
       initVec
     } else {
-      if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
+      if (steps % 100 == 2) Utils.logger.debug(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newVec    = nextVec(initVec, exponent)
       if (normalizedBounded(initVec.seq, newVec.seq))
@@ -1134,7 +1134,7 @@ class ExprCalc(ev: ExpressionEval) {
       initVec
     } else {
       if (steps % 100 == 2)
-        Utils.logger.info(
+        Utils.logger.debug(
           s"completed $steps steps without stable support, support size : ${initVec
             .count(_ > 0)}"
         )
@@ -1144,12 +1144,12 @@ class ExprCalc(ev: ExpressionEval) {
         n => (initVec(n) != 0) || (newVec(n) == 0)
       )
       if (check) {
-        Utils.logger.info(
+        Utils.logger.debug(
           s"stable support with support size ${newVec.count(_ != 0)}"
         )
         newVec
       } else {
-        // Utils.logger.info("recursive call for stable support vector")
+        // Utils.logger.debug("recursive call for stable support vector")
         val usedTime = System.currentTimeMillis() - startTime
         stableSupportVec(
           newVec,
@@ -1173,13 +1173,13 @@ class ExprCalc(ev: ExpressionEval) {
       (initMap, initSupport)
     } else {
       if (steps % 100 == 2)
-        Utils.logger.info(
+        Utils.logger.debug(
           s"completed $steps steps without stable support, support size : ${initMap.size}"
         )
       val startTime                   = System.currentTimeMillis()
       val (newMap, newSupport, check) = nextMapSupport(initMap, initSupport)
       if (check) {
-        Utils.logger.info(
+        Utils.logger.debug(
           s"stable support with support size ${newMap.size}"
         )
         (newMap, newSupport)
@@ -1207,11 +1207,11 @@ class ExprCalc(ev: ExpressionEval) {
       Utils.logger.error(s"Timeout for stable map after $steps steps")
       initMap
     } else {
-      if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
+      if (steps % 100 == 2) Utils.logger.debug(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newMap    = nextMap(initMap, support, exponent)
       if (normalizedMapBounded(initMap, newMap)) {
-        Utils.logger.info("Obtained stable map")
+        Utils.logger.debug("Obtained stable map")
         newMap
       } else {
         val usedTime = System.currentTimeMillis() - startTime
@@ -1235,14 +1235,14 @@ class ExprCalc(ev: ExpressionEval) {
     .getOrElse(ParVector.fill(equationVec.size)(0.0))
 
   lazy val finalVec: ParVector[Double] = {
-    Utils.logger.info(
+    Utils.logger.debug(
       s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
     )
-    Utils.logger.info(s"Number of equations: ${equationVec.size}")
-    Utils.logger.info(s"Computed initial vector with size: ${initVector.size}") // to avoid being part of time limit for stable vector
+    Utils.logger.debug(s"Number of equations: ${equationVec.size}")
+    Utils.logger.debug(s"Computed initial vector with size: ${initVector.size}") // to avoid being part of time limit for stable vector
     val stableSupport =
       stableSupportVec(initVector, maxTime, 0L)
-    Utils.logger.info("Obtained vector with stable support")
+    Utils.logger.debug("Obtained vector with stable support")
     stableVec(
       stableSupport,
       exponent,
@@ -1253,13 +1253,13 @@ class ExprCalc(ev: ExpressionEval) {
   }
 
   lazy val finalStableMap: Map[Int, Double] = {
-    Utils.logger.info(
+    Utils.logger.debug(
       s"Computing final map, with maximum time $maxTime, exponent: $exponent, decay: $decay"
     )
-    Utils.logger.info(s"Number of equations: ${equationVec.size}")
+    Utils.logger.debug(s"Number of equations: ${equationVec.size}")
     val (stableM, support) =
       stableSupportMap(startingMap, startingSupport, maxTime, 0L)
-    Utils.logger.info("Obtained map with stable support")
+    Utils.logger.debug("Obtained map with stable support")
     stableMap(
       stableM,
       support,

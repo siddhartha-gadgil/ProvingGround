@@ -684,13 +684,13 @@ object HoTTBot {
         eqs =>
           val neqs  = eqs.normalized
           val nodes = eqns union (neqs)
-          Utils.logger.info("Obtained normalized equations")
+          Utils.logger.debug("Obtained normalized equations")
           val groupedItEqns = Equation.groupIt(nodes)
-          Utils.logger.info("Obtained grouped equations as iterator")
+          Utils.logger.debug("Obtained grouped equations as iterator")
           val groupedVecEqns = groupedItEqns.toVector
-          Utils.logger.info("Obtained grouped equations as vector")
+          Utils.logger.debug("Obtained grouped equations as vector")
           val groupedEqns = Utils.makeSet(groupedVecEqns)
-          Utils.logger.info("Obtained set of grouped equations")
+          Utils.logger.debug("Obtained set of grouped equations")
           import qlp.lp
           Future(
             ExpressionEval.fromInitEqs(
@@ -1003,7 +1003,7 @@ object HoTTBot {
             val sc    = scale / ltot
             val pfTot = l.map(_._4).sum
             val pfSc  = if (pfTot == 0.0) 0.0 else pfScale / pfTot
-            Utils.logger.info(s"proof pwers scaled by $pfSc")
+            Utils.logger.debug(s"proof powers scaled by $pfSc")
             val tangLemmas = l.map {
               case (tp, pfOpt, w, u) => (tp, pfOpt, (w * sc) + (u * pfSc))
             }
@@ -1032,7 +1032,7 @@ object HoTTBot {
       groupedVec
       // .map(TermData.isleNormalize(_))
     )
-    Utils.logger.info("Created set of equations")
+    Utils.logger.debug("Created set of equations")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
       groupedSet,
@@ -1044,7 +1044,7 @@ object HoTTBot {
       decay,
       maxTime
     )
-    logger.info("Computed expression evaluator")
+    logger.debug("Computed expression evaluator")
     (expEv.finalTermState(), expEv)
   }
 
@@ -1073,7 +1073,7 @@ object HoTTBot {
     }
     for {
       groupedSet <- groupSetTask
-      _ = Utils.logger.info("Created set of equations")
+      _ = Utils.logger.debug("Created set of equations")
       expEv <- ExpressionEval.fromInitEqsTask(
         initialState,
         groupedSet,
@@ -1085,7 +1085,7 @@ object HoTTBot {
         decay,
         maxTime
       )
-      _ = logger.info("Computed expression evaluator")
+      _ = logger.debug("Computed expression evaluator")
     } yield (expEv.finalTermState(), expEv)
   }
 
@@ -1157,7 +1157,7 @@ object HoTTBot {
           logger.info(s"previous special init states are ${psps.contents.size}")
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
-          logger.info(s"Using ${neqs.size} equation nodes for base states")
+          logger.debug(s"Using ${neqs.size} equation nodes for base states")
           psps.contents.map(
             ps =>
               Future {
@@ -1218,7 +1218,7 @@ object HoTTBot {
           logger.info(s"previous special init states are ${psps.contents.size}")
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
-          logger.info(s"Using ${neqs.size} equation nodes for base states")
+          logger.debug(s"Using ${neqs.size} equation nodes for base states")
           // val eqVec = Equation.groupIt(neqs).toVector
           // Utils.logger.info("Grouped into equations from lookup")
           psps.contents.map(
@@ -1277,8 +1277,8 @@ object HoTTBot {
               case (t, pfOpt, p) => Weighted(pfOpt.getOrElse("lemma" :: t), p)
             })
             val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
-            logger.info(s"function domains: ${funcs.support.map(_.dom)}")
-            logger.info(s"lemma-proof types: ${lemPfDist.support.map(_.typ)}")
+            logger.debug(s"function domains: ${funcs.support.map(_.dom)}")
+            logger.debug(s"lemma-proof types: ${lemPfDist.support.map(_.typ)}")
             val eqs = SimpleEquations.allAppEquations(funcs, lemPfDist, cutoff)
             GeneratedEquationNodes(eqs.toSet)
           }
@@ -1433,7 +1433,7 @@ object HoTTBot {
           case ctbs :: tl :: HNil =>
             (_) =>
               Future {
-                logger.info(
+                logger.debug(
                   s"generating equations with ${ctbs.contents.size} base states and ${tl.lemmas.size} lemmas (before pruning)"
                 )
                 val tls = results
@@ -1441,13 +1441,13 @@ object HoTTBot {
                 val view1 =
                   s"Tangent lemmas (used with bases below): ${tls.size}\n${tls
                     .mkString("\n")}"
-                logger.info(view1)
+                logger.debug(view1)
                 ctbs.contents.foreach { tbs =>
                   val initString: String = tbs.initOpt
                     .map(_.ts.terms.supp)
                     .map(terms => s"initial terms ${terms.mkString(", ")}")
                     .getOrElse(s"no initial state recorded")
-                  logger.info(
+                  logger.debug(
                     s"Details for base state: $initString\nInitial state (optional): ${tbs.initOpt}"
                   )
                   val termsSet = tbs.ts.terms.support
@@ -1462,7 +1462,7 @@ object HoTTBot {
                           s"Type: $tp; best term: ${best} with weight ${tbs.ts.terms(best)}"
                       }
                       .mkString("\n")}"
-                  logger.info(view2)
+                  logger.debug(view2)
                   val baseLemmas = results
                     .map(typ => typ -> termsSet.filter(_.typ == typ))
                     .filter(_._2.nonEmpty)
@@ -1474,7 +1474,7 @@ object HoTTBot {
                           s"Type: $tp; best term: ${best} with weight ${tbs.ts.terms(best)}"
                       }
                       .mkString("\n")}"
-                  logger.info(view3)
+                  logger.debug(view3)
                   val view4 = inferTriples
                     .map {
                       case (f, x, fx) =>
@@ -1487,24 +1487,24 @@ object HoTTBot {
                       "\n",
                       "\n"
                     )
-                  logger.info(view4)
+                  logger.debug(view4)
                   if (verbose) Future {
                     tbs.evOpt.map { ev =>
-                      logger.info(
+                      logger.debug(
                         s"Extracting data from expression-evaluator for $initString"
                       )
                       val calc = ev.exprCalc
-                      logger.info(
+                      logger.debug(
                         s"Using expression-calculator for $initString"
                       )
                       steps.zipWithIndex.foreach {
                         case (typ, j) =>
                           Future {
-                            logger.info(
+                            logger.debug(
                               s"Tracing back $typ, step ${1 + j}, for base state with $initString"
                             )
                             val pfData = calc.proofData(typ)
-                            Utils.logger.info(
+                            Utils.logger.debug(
                               s"""|
                                 |Located proof data for $typ, step ${1 + j}, for base state $initString
                                 |Equations: 
@@ -1516,13 +1516,13 @@ object HoTTBot {
                               val backIndices = pfData
                                 .map(_._1)
                                 .flatMap(j => calc.traceIndices(j, depth))
-                              Utils.logger.info(
+                              Utils.logger.debug(
                                 s"The traced back indices for $typ, step ${1 + j}, for base with $initString with depth $depth are ${backIndices.size}, namely ${backIndices
                                   .mkString(", ")}"
                               )
 
                               backIndices.foreach { i =>
-                                Utils.logger.info(
+                                Utils.logger.debug(
                                   s"""|Details for index $i, traced back for $typ, step ${1 + j}, for base with $initString with depth $depth
                                                     |Equation: ${ev.exprCalc
                                        .equationVec(
@@ -1566,7 +1566,7 @@ object HoTTBot {
         (_) => {
           import qp.lp
 
-          logger.info(
+          logger.debug(
             s"generating equations with ${ctbs.contents.size} base states and ${tl.lemmas.size} lemmas (before pruning)"
           )
           val tls = results
@@ -1574,7 +1574,7 @@ object HoTTBot {
           val view1 =
             s"Tangent lemmas (used with bases below): ${tls.size}\n${tls
               .mkString("\n")}"
-          logger.info(view1)
+          logger.debug(view1)
           ctbs.contents.foreach { fs =>
             val termsSet = fs.ts.terms.support
             val pfs = steps
@@ -1588,7 +1588,7 @@ object HoTTBot {
                     s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
                 }
                 .mkString("\n")}"
-            logger.info(view2)
+            logger.debug(view2)
           }
 
           val provers =
@@ -1627,14 +1627,14 @@ object HoTTBot {
               .filter(_.cutoff < 1)
 
           var remaining = provers.size
-          logger.info(s"${provers.size} tangent provers after filtering")
+          logger.debug(s"${provers.size} tangent provers after filtering")
           val equationsTasks =
             provers.map { lpt =>
               lpt.enhancedEquationNodes
                 .map { eqns =>
-                  logger.info(s"obtained ${eqns.size} equation nodes")
+                  logger.debug(s"obtained ${eqns.size} equation nodes")
                   remaining = remaining - 1
-                  logger.info(s"provers still running: $remaining")
+                  logger.debug(s"provers still running: $remaining")
                   eqns
                 }
                 .onErrorRecover {
@@ -1642,13 +1642,13 @@ object HoTTBot {
                     logger.error(te.getMessage())
                     logger.debug(te)
                     remaining = remaining - 1
-                    logger.info(s"provers still running: $remaining")
+                    logger.debug(s"provers still running: $remaining")
                     Set.empty[EquationNode]
                   case te =>
                     logger.error(s"Serious error")
                     logger.error(te)
                     remaining = remaining - 1
-                    logger.info(s"provers still running: $remaining")
+                    logger.debug(s"provers still running: $remaining")
                     Set.empty[EquationNode]
                 }
             }
