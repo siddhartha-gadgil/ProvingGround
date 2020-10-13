@@ -753,10 +753,12 @@ object HoTTBot {
     ] = {
       case (terms :: qp :: HNil) => {
         case fs =>
+          val unknowns = fs.ts.orderedUnknowns
+          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknowns")
           StrategicProvers
             .liberalChomper(
               qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight)),
-              fs.ts.orderedUnknowns,
+              unknowns,
               accumTerms = terms
             )
             .map {

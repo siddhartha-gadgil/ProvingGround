@@ -43,7 +43,7 @@ object ChompSession {
   val tg    = TermGenParams(solverW = 0.05)
 
   val lp  = LocalProver(ts, tg).sharpen(10)
-  val lp0 = LocalProver(ts0).sharpen(10)
+  val lp0 = LocalProver(ts0).sharpen(50)
 
   val expFS =
     expEvToFinalState.andThen(updateTerms)
