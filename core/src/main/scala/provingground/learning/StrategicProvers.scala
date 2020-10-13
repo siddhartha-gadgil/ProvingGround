@@ -159,6 +159,7 @@ object StrategicProvers {
             termSet = termSet union (terms)
             if (ss.isEmpty) {
               failures.append(typ)
+              Utils.logger.info(s"failed to prove $typ")
               update(())
               liberalChomper(
                 lp,
@@ -172,6 +173,7 @@ object StrategicProvers {
               )
             } else {
               successes.append(ss)
+              ss.foreach(s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}"))
               update(())
               liberalChomper(
                 lp,

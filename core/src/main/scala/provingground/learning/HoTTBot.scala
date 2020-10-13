@@ -15,6 +15,7 @@ import Utils.logger
 import scala.concurrent._, duration._
 import provingground.learning.Expression.FinalVal
 import scala.math.Ordering.Double.TotalOrdering
+import fastparse.internal.Util
 
 case class QueryProver(lp: LocalProver)
 
@@ -124,6 +125,8 @@ object HoTTBot {
   type SimpleBot[P, Q] = MicroBot[P, Q, HoTTPostWeb, Unit, ID]
 
   type MicroHoTTBoTT[P, Q, V] = MicroBot[P, Q, HoTTPostWeb, V, ID]
+
+  type HoTTCallBack[P, Q] = Callback[P, HoTTPostWeb, Q, ID]
 
   lazy val lpToExpEv: SimpleBot[LocalProver, ExpressionEval] = {
     val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
@@ -326,26 +329,30 @@ object HoTTBot {
   }
 
   lazy val updateTerms: Callback[FinalState, HoTTPostWeb, Unit, ID] =
-    Callback.simple ({ (web: HoTTPostWeb) => (fs: FinalState) =>
-      val allTerms = fs.ts.terms.support union (fs.ts.typs.support
-        .map(t => t: Term))
-      val newTerms = allTerms -- web.terms
-      newTerms
-        .filter(isVar(_))
-        .foreach(t => logger.error(s"variable $t considered term"))
-      web.addTerms(newTerms)
-      val typs =
-        newTerms.collect { case t: Typ[u] => t: Typ[Term] } union allTerms.map(
-          _.typ
-        )
-      val allEquations = newTerms.flatMap(DE.formalEquations(_)) union (typs
-        .flatMap(
-          DE.formalTypEquations(_)
-        ))
-      Utils.logger.info(s"Obtained ${allEquations.size} formal equations")
-      val normalEquations = allEquations.map(TermData.isleNormalize(_))
-      web.addEqns(normalEquations)
-    }, Some("update terms"))
+    Callback.simple(
+      { (web: HoTTPostWeb) => (fs: FinalState) =>
+        val allTerms = fs.ts.terms.support union (fs.ts.typs.support
+          .map(t => t: Term))
+        val newTerms = allTerms -- web.terms
+        newTerms
+          .filter(isVar(_))
+          .foreach(t => logger.error(s"variable $t considered term"))
+        web.addTerms(newTerms)
+        val typs =
+          newTerms.collect { case t: Typ[u] => t: Typ[Term] } union allTerms
+            .map(
+              _.typ
+            )
+        val allEquations = newTerms.flatMap(DE.formalEquations(_)) union (typs
+          .flatMap(
+            DE.formalTypEquations(_)
+          ))
+        Utils.logger.info(s"Obtained ${allEquations.size} formal equations")
+        val normalEquations = allEquations.map(TermData.isleNormalize(_))
+        web.addEqns(normalEquations)
+      },
+      Some("update terms")
+    )
 
   lazy val reportSuccesses: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
@@ -545,12 +552,12 @@ object HoTTBot {
       }
     )
 
-    /**
-      * given an instance, which is just a term of specified types, looks for instances sought and
-      * in case of match returns the corresponding new goal and how the old is a consequence of the new.
-      *
-      * @return
-      */
+  /**
+    * given an instance, which is just a term of specified types, looks for instances sought and
+    * in case of match returns the corresponding new goal and how the old is a consequence of the new.
+    *
+    * @return
+    */
   lazy val instanceToGoal: MicroBot[Instance, Option[
     Consequence :: SeekGoal :: HNil
   ], HoTTPostWeb, SeekInstances, ID] = {
@@ -668,7 +675,8 @@ object HoTTBot {
             }
             .foreach(eqq => logger.error(s"Bad equation: $eqq"))
           web.addEqns(neqs)
-        }, name = Some("update equations")
+        },
+      name = Some("update equations")
     )
 
   def eqnsToExpEv(tgOpt: Option[TermGenParams] = None): MicroHoTTBoTT[
@@ -733,12 +741,82 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  def finalStateToChomp(solverWeight: Double = 0.05): MicroBot[
+    FinalState,
+    ChompResult,
+    HoTTPostWeb,
+    Set[HoTT.Term] :: QueryProver :: HNil,
+    ID
+  ] = {
+    val response: (Set[Term] :: QueryProver :: HNil) => FinalState => Future[
+      ChompResult
+    ] = {
+      case (terms :: qp :: HNil) => {
+        case fs =>
+          StrategicProvers
+            .liberalChomper(
+              qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight)),
+              fs.ts.orderedUnknowns,
+              accumTerms = terms
+            )
+            .map {
+              case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
+            }
+            .runToFuture
+      }
+    }
+    MicroBot(response)
+  }
+
+  def chompReport(
+      numFailures: Int = 10
+  ): HoTTCallBack[ChompResult, FinalState] = {
+    val response: HoTTPostWeb => FinalState => ChompResult => Future[Unit] =
+      (_) =>
+        (fs) =>
+          (cr) =>
+            Future {
+              Utils.logger.info(s"number of successes: ${cr.successes.size}")
+              val topFails = cr.failures
+                .map(tp => tp -> fs.ts.typs(tp))
+                .sortBy { case (_, p) => -p }
+                .take(numFailures)
+              Utils.logger.info(s"number of failures: ${cr.failures.size}")
+              Utils.logger.info(s"""top ${numFailures} failures: ${cr.failures
+                .mkString(", ")}""")
+            }
+    Callback(response, name = Some("chomp report"))
+  }
+
   val goalsAfterChomp
-      : MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, LocalProver :: TermResult :: HNil, ID] = {
-    val response: LocalProver :: TermResult :: HNil => ChompResult => Future[
+      : MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, QueryInitState :: FinalState :: HNil, ID] = {
+    val response: QueryInitState :: FinalState :: HNil => ChompResult => Future[
       Vector[WithWeight[SeekGoal]]
     ] = {
-      case lp :: (ts, _) :: HNil =>
+      case qis :: fs :: HNil =>
+        (cr) =>
+          Future {
+            val typDist = FiniteDistribution(cr.failures.map { typ =>
+              Weighted(typ, fs.ts.typs(typ))
+            }).safeNormalized
+            typDist.pmf.map {
+              case Weighted(x, p) =>
+                withWeight(SeekGoal(x, qis.init.context), p)
+            }
+          }
+    }
+
+    MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, QueryInitState :: FinalState :: HNil, ID](
+      response
+    )
+  }
+
+  val goalsAfterTRChomp
+      : MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, QueryInitState :: TermResult :: HNil, ID] = {
+    val response: QueryInitState :: TermResult :: HNil => ChompResult => Future[
+      Vector[WithWeight[SeekGoal]]
+    ] = {
+      case qis :: (ts, _) :: HNil =>
         (cr) =>
           Future {
             val typDist = FiniteDistribution(cr.failures.map { typ =>
@@ -746,12 +824,12 @@ object HoTTBot {
             }).safeNormalized
             typDist.pmf.map {
               case Weighted(x, p) =>
-                withWeight(SeekGoal(x, lp.initState.context), p)
+                withWeight(SeekGoal(x, qis.init.context), p)
             }
           }
     }
 
-    MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, LocalProver :: TermResult :: HNil, ID](
+    MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, QueryInitState :: TermResult :: HNil, ID](
       response
     )
   }
@@ -1061,10 +1139,11 @@ object HoTTBot {
   ) = {
     logger.info("Computing base state")
     val groupSetTask = Task {
-      val groupedVec = 
-       Equation.groupMap(equationNodes, 
-        DE.termStateInitMap(initialState)
-      ).values.toVector
+      val groupedVec =
+        Equation
+          .groupMap(equationNodes, DE.termStateInitMap(initialState))
+          .values
+          .toVector
       Utils.logger.info("Created vector of equations")
       Utils.makeSet(
         groupedVec
@@ -1899,7 +1978,7 @@ object HoTTBot {
 
   /**
     * generate instances with weights from a local prover
-    * alternatively we can just use a final state and given goal, 
+    * alternatively we can just use a final state and given goal,
     * with the final state generated from the local prover if desired,
     * but this way we target the type
     *
@@ -2120,7 +2199,7 @@ object HoTTBot {
             val ts = qp.lp.initState
             qp.lp.copy(
               initState =
-                ts.copy(terms = (ts.terms .+ (lem.proof, weight)).safeNormalized)
+                ts.copy(terms = (ts.terms.+(lem.proof, weight)).safeNormalized)
             )
           }
     //  qp.lp.sharpen(tangentScale).tangentProver(lem.proof).runToFuture
@@ -2159,13 +2238,13 @@ object HoTTBot {
   val fullGoalInContext: SimpleBot[SeekGoal, Option[SeekGoal]] =
     MicroBot.simple(_.inContext)
 
-/**
-  * prover with variables for the context of the goal (if compatible) and with goal mixed in.
-  *
-  * @param varWeight weight of variables added based on context
-  * @param goalWeight weight of the goal
-  * @return optionally a local prover
-  */
+  /**
+    * prover with variables for the context of the goal (if compatible) and with goal mixed in.
+    *
+    * @param varWeight weight of variables added based on context
+    * @param goalWeight weight of the goal
+    * @return optionally a local prover
+    */
   def goalToProver(
       varWeight: Double,
       goalWeight: Double

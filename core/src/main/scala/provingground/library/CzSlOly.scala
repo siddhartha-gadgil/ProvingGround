@@ -178,7 +178,7 @@ object CzSlOly {
   val web = new HoTTPostWeb()
   val ws  = WebState[HoTTPostWeb, HoTTPostWeb.ID](web)
 
-  lazy val wsF =
+  lazy val wsF : Future[WebState[HoTTPostWeb,HoTTPostWeb.ID]] =
     for {
       ws1  <- ws.post(TautologyInitState(tautGen), Set())
       ws2  <- ws1.postLast(transitivtyInit)
@@ -192,5 +192,5 @@ object CzSlOly {
       ws10 <- ws9.act(cappedSpecialBaseState(verbose = false))
     } yield ws10
 
-  lazy val sessF = wsF.map(ws => HoTTWebSession.launch(ws, bots))
+  lazy val sessF : Future[HoTTWebSession] = wsF.map(ws => HoTTWebSession.launch(ws, bots))
 }

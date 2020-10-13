@@ -193,11 +193,11 @@ object TypedPostResponse {
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
       val message = name.getOrElse(this.hashCode().toHexString)
-      logger.info(s"triggered callback ${message} for type ${pw.tag} with input hash ${content.hashCode()}")
+      logger.info(s"triggered callback '${message}' for type ${pw.tag} with input hash ${content.hashCode()}")
       val auxFuture = lv.getAt(web, id, predicate)
       val task = auxFuture.flatMap { auxs =>
         Future.sequence(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
-      }.andThen(_ => logger.info(s"completed callback ${message} for type ${pw.tag} with input hash ${content.hashCode()}"))
+      }.andThen(_ => logger.info(s"completed callback '${message}' for type ${pw.tag} with input hash ${content.hashCode()}"))
       task
     }
   }
@@ -578,8 +578,14 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
    pw.post(content, web , apexPosts.map(_.id).toSet).map{id => WebState(web, Vector(PostData.get(content, id)))} 
 
 
-  def queryApex[Q](predicate: Q => Boolean = (_: Q) => true)(implicit lp: LocalQueryable[Q, W, ID]) =
-    Future.sequence(apexPosts.map{
+  def queryApex[Q](predicate: Q => Boolean = (_: Q) => true)(implicit lp: LocalQueryable[Q, W, ID], qt: TypeTag[Q]) : Future[Vector[Q]] =
+    {
+      val result  = Future.sequence(apexPosts.map{
       pd => lp.getAt(web, pd.id, predicate)
     }).map(_.flatten)
+    result.foreach{v => 
+      Utils.logger.info(s"${v.size} responses to enquiry ${qt}")
+      v.foreach(x => Utils.logger.info(s"element: $x for $qt"))
+    }
+  result}
 }
