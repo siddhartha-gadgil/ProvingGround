@@ -409,7 +409,7 @@ object TypedPostResponse {
                       val idNewF = qw.post(c, web, Set(id))
                       idNewF.map(idNew => PostData.get(c, idNew)).andThen{
                         case Success(_) => remaining = remaining - 1
-                          Utils.logger.info(s"remaining $remaining responses of type ${qw.tag}") 
+                          Utils.logger.info(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
                         case Failure(exception) => 
                           Utils.logger.error(s"response failed with error")
                           Utils.logger.error(exception)
@@ -471,12 +471,12 @@ object TypedPostResponse {
                 aux => 
                   val newPostsTask = responses(aux)(content)
                    var remaining = newPostsTask.size
-                  Utils.logger.info(s"launching ${remaining} responses  of type ${qw.tag} in branch")
+                  Utils.logger.info(s"launching ${remaining} responses  of type ${qw.tag}  to posts of type ${pw.tag} in branch")
                   val newPostsData = newPostsTask.map(cF => cF.flatMap{c => 
                       val idNewT = Task.fromFuture(qw.post(c, web, Set(id)))
                       idNewT.map(idNew => PostData.get(c, idNew)).materialize.map{
                         case Success(result) => remaining = remaining - 1
-                          Utils.logger.info(s"remaining $remaining responses of type ${qw.tag}") 
+                          Utils.logger.info(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
                           result
                         case Failure(exception) => 
                           Utils.logger.error(s"response failed with error")

@@ -668,7 +668,7 @@ object HoTTBot {
             }
             .foreach(eqq => logger.error(s"Bad equation: $eqq"))
           web.addEqns(neqs)
-        }
+        }, name = Some("update equations")
     )
 
   def eqnsToExpEv(tgOpt: Option[TermGenParams] = None): MicroHoTTBoTT[
@@ -1543,7 +1543,7 @@ object HoTTBot {
               }
         }
     }
-    Callback(response)
+    Callback(response, name = Some("report base and tangent"))
   }
 
   def tangentEquations(
