@@ -174,6 +174,7 @@ object StrategicProvers {
             } else {
               successes.append(ss)
               ss.foreach(s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}"))
+              Utils.logger.info(s"goals remaining ${ys.size}")
               update(())
               liberalChomper(
                 lp,
