@@ -194,17 +194,17 @@ object HoTT {
           (x, y) match {
             case (ab: AbsPair[u, v], cd: AbsPair[w, x])
                 if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
-              replace(ab.first, cd.first) .replace (ab.second, cd.second)
+              replace(ab.first, cd.first).replace(ab.second, cd.second)
             case (ab: DepPair[u, v], cd: AbsPair[w, x]) if ab.indepComponents =>
-              replace(ab.first, cd.first) .replace (ab.second, cd.second)
+              replace(ab.first, cd.first).replace(ab.second, cd.second)
             case (FormalAppln(f, a), FormalAppln(g, b)) =>
-              replace(f, g) .replace (a, b)
+              replace(f, g).replace(a, b)
             case (MiscAppln(f, a), MiscAppln(g, b)) =>
-              replace(f, g) .replace (a, b)
+              replace(f, g).replace(a, b)
             case (FuncTyp(a, b), FuncTyp(c, d)) =>
-              replace(a, c) .replace (b, d)
+              replace(a, c).replace(b, d)
             case (PiDefn(a: Term, b), PiDefn(c: Term, d)) =>
-              replace(a, c) .replace (b, d)
+              replace(a, c).replace(b, d)
             case (PiTyp(fib1), PiTyp(fib2)) =>
               replace(fib1, fib2)
             case (xs: Symbolic, _)
@@ -212,7 +212,7 @@ object HoTT {
                   .symbObj(xs.name)
                   .typ == y.typ) =>
               val typchange = replace(x.typ, y.typ)
-              typchange .replace ((y.typ).symbObj(xs.name), y)
+              typchange.replace((y.typ).symbObj(xs.name), y)
 
             case _ => subs(x, y)
           }
@@ -303,7 +303,7 @@ object HoTT {
     // assert(result == x, s"avoiding var $t changed value of $x giving result $result")
     if (result != x) throw AvoidVarInvarianceException(t, x, result)
     result
-  } .ensuring (_ == x, s"avoiding var $t failed for $x")
+  }.ensuring(_ == x, s"avoiding var $t failed for $x")
 
   /**
     * Objects with simple substitution.
@@ -1235,7 +1235,7 @@ object HoTT {
 
     def newobj: ProdTyp[U, V] = {
       val newfirst = first.newobj
-      ProdTyp(newfirst, second .replace (first, newfirst))
+      ProdTyp(newfirst, second.replace(first, newfirst))
     }
 
     /**
@@ -1390,7 +1390,7 @@ object HoTT {
 
     def newobj: PairTerm[U, V] = {
       val newfirst = first.newobj
-      PairTerm(newfirst, second .replace (first, newfirst))
+      PairTerm(newfirst, second.replace(first, newfirst))
     }
 
     def subs(x: Term, y: Term): PairTerm[U, V] =
@@ -1515,7 +1515,7 @@ object HoTT {
 
     def newobj: FuncTyp[W, U] = {
       val newdom = dom.newobj
-      FuncTyp(newdom, codom .replace (dom, newdom))
+      FuncTyp(newdom, codom.replace(dom, newdom))
     }
 
     def subs(x: Term, y: Term): FuncTyp[W, U] =
@@ -1593,7 +1593,6 @@ object HoTT {
       * the dependent codomain on the family.
       */
     val codXs: IDFT
-
 
     /**
       * the definition data for all the introduction rules
@@ -2691,12 +2690,15 @@ object HoTT {
 
     lazy val dom: Typ[W] = variable.typ.asInstanceOf[Typ[W]]
 
-    lazy val depcodom: W => Typ[U] = (arg: W) => value.replace(variable, arg)
+    lazy val depcodom: W => Typ[U] = (arg: W) =>
+      value.replace(variable, avoidVar(variable, arg))
 
     lazy val typ = PiDefn(variable, value)
 
-    def act(arg: W): U =
-      depcodom(arg).symbObj(ApplnSym(this, arg))
+    def act(arg: W): U = {
+      val newarg = avoidVar(variable, arg)
+      value.replace(variable, newarg).symbObj(ApplnSym(this, newarg))
+    }
 
     override def canApply(arg: W): Boolean =
       (dom == arg.typ) || {
@@ -3092,7 +3094,7 @@ object HoTT {
 
     def newobj: IdentityTyp[U] = {
       val newlhs = lhs.newobj
-      IdentityTyp(dom .replace (lhs, newlhs), newlhs, rhs .replace (lhs, newlhs))
+      IdentityTyp(dom.replace(lhs, newlhs), newlhs, rhs.replace(lhs, newlhs))
     }
 
     def subs(x: Term, y: Term) =
