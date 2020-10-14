@@ -273,7 +273,14 @@ object HoTT {
       case pt: FuncTyp[u, v] =>
         FuncTyp(avoidVar(t, pt.dom), avoidVar(t, pt.codom)).asInstanceOf[U]
       case pt: PiDefn[u, v] =>
-        PiDefn(avoidVar(t, pt.variable), avoidVar(t, pt.value)).asInstanceOf[U]
+        // PiDefn(avoidVar(t, pt.variable), avoidVar(t, pt.value)).asInstanceOf[U]
+        if (t == pt.variable) {
+          val newvar = pt.variable.newobj
+          PiDefn(
+            newvar,
+            avoidVar(t, pt.value.replace(pt.variable, newvar))
+          ).asInstanceOf[U]
+        } else PiDefn(pt.variable, avoidVar(t, pt.value)).asInstanceOf[U]
       case pt: SigmaTyp[u, v] =>
         SigmaTyp(avoidVar(t, pt.fibers)).asInstanceOf[U]
 
