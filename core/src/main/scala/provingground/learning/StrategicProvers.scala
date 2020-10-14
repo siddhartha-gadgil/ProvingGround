@@ -232,9 +232,7 @@ object StrategicProvers {
       accumSucc: Vector[Successes] = Vector(),
       accumFail: Vector[Typ[Term]] = Vector(),
       accumEqs: Set[EquationNode] = Set(),
-      accumTerms: Set[Term] = Set(),
-      scale: Double = 2,
-      maxSteps: Int = 100
+      accumTerms: Set[Term] = Set()
   ): Task[
     (
         Vector[Successes],
@@ -259,9 +257,7 @@ object StrategicProvers {
                 accumSucc,
                 accumFail :+ typ,
                 accumEqs union eqs,
-                accumTerms union terms,
-                scale,
-                maxSteps
+                accumTerms union terms
               )
             } else {
               ss.foreach(
@@ -274,9 +270,7 @@ object StrategicProvers {
                 accumSucc :+ ss,
                 accumFail,
                 accumEqs union eqs,
-                accumTerms union terms,
-                scale,
-                maxSteps
+                accumTerms union terms
               )
             }
         }
