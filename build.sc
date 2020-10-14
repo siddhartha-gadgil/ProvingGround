@@ -220,7 +220,7 @@ def glog = {
 def gitlog() = {
   os.write.over(
     os.pwd / "mantle" / "src" / "main" / "resources" / "gitlog.txt",
-    glog.name
+    glog.name+"\n"
   )
 }
 
