@@ -250,6 +250,10 @@ case class LocalProver(
   def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
     mfd.varDist(initState, genMaxDepth, halted())(rv, cutoff).map(_._1)
 
+  def varDistEqs[Y](rv: RandomVar[Y]): Task[(FiniteDistribution[Y], Set[EquationNode] )] =
+    mfd.varDist(initState, genMaxDepth, halted())(rv, cutoff).map{case (fd, eqs, _) => (fd, eqs)}
+  
+
   def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
     mfd
       .nodeDist(initState, genMaxDepth, halted())(

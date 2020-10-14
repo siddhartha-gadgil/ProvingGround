@@ -20,7 +20,6 @@ import monix.tail.Iterant
 import collection.mutable.ArrayBuffer
 import scala.util.Success
 
-
 object StrategicProvers {
   type Successes =
     Vector[(HoTT.Typ[HoTT.Term], Double, Term)]
@@ -31,13 +30,20 @@ object StrategicProvers {
       Set[Term]
   )
 
+  object SeekResult {
+    def or(a: SeekResult, b: SeekResult) = (
+      a._1 ++ b._1,
+      a._2 union b._2,
+      a._3 union b._3
+    )
+  }
+
   def formal(sc: Successes): Set[EquationNode] = {
     val termsGroups = sc.toSet
     val terms       = termsGroups.map(_._3)
     terms.flatMap(t => DE.formalEquations(t))
   }
 
- 
   var currentGoal: Option[Typ[Term]] = None
 
   var update: Unit => Unit = (_) => ()
@@ -67,6 +73,34 @@ object StrategicProvers {
 
     bestTask[SeekResult](tasks, p => p._1.nonEmpty)
   }.map(_.getOrElse((Vector(), Set(), Set())))
+
+  def seekTyp(
+      lp: LocalProver,
+      typ: Typ[Term],
+      terms: Set[Term]
+  ): Task[SeekResult] = {
+    val base =
+      if (lp.tg.solverW == 0) lp
+      else lp.addLookup(terms)
+    lp.varDistEqs(TermRandomVars.termsWithTyp(typ)).map {
+      case (fd, eqs) =>
+        if (fd.pmf.isEmpty) (Vector(), eqs, Set())
+        else {
+          val best = fd.pmf.maxBy(_.weight)
+          (Vector((typ, best.weight, best.elem)), eqs, fd.support)
+        }
+    }
+  }
+
+  def solveTyp(
+      lp: LocalProver,
+      typ: Typ[Term],
+      terms: Set[Term]
+  ): Task[SeekResult] =
+    seekTyp(lp, typ, terms).flatMap { sr =>
+      if (sr._1.nonEmpty) Task.now(sr)
+      else seekTyp(lp, negate(typ), terms).map(nsr => SeekResult.or(sr, nsr))
+    }
 
   val successes: ArrayBuffer[Successes] = ArrayBuffer()
 
@@ -151,7 +185,7 @@ object StrategicProvers {
   ] =
     typs match {
       case Vector() =>
-        Task.now((accumSucc, accumFail, accumEqs, accumTerms)) 
+        Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typ +: ys =>
         seekGoal(lp, typ, accumTerms, scale, maxSteps).flatMap {
           case (ss, eqs, terms) =>
@@ -173,7 +207,9 @@ object StrategicProvers {
               )
             } else {
               successes.append(ss)
-              ss.foreach(s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}"))
+              ss.foreach(
+                s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
+              )
               Utils.logger.info(s"goals remaining ${ys.size}")
               update(())
               liberalChomper(
@@ -189,5 +225,60 @@ object StrategicProvers {
             }
         }
     }
-}
 
+  def targetChomper(
+      lp: LocalProver,
+      typs: Vector[Typ[Term]],
+      accumSucc: Vector[Successes] = Vector(),
+      accumFail: Vector[Typ[Term]] = Vector(),
+      accumEqs: Set[EquationNode] = Set(),
+      accumTerms: Set[Term] = Set(),
+      scale: Double = 2,
+      maxSteps: Int = 100
+  ): Task[
+    (
+        Vector[Successes],
+        Vector[Typ[Term]], // failures
+        Set[EquationNode],
+        Set[Term]
+    )
+  ] =
+    typs match {
+      case Vector() =>
+        Task.now((accumSucc, accumFail, accumEqs, accumTerms))
+      case typ +: ys =>
+        solveTyp(lp, typ, accumTerms).flatMap {
+          case (ss, eqs, terms) =>
+            equationNodes = equationNodes union (eqs)
+            termSet = termSet union (terms)
+            if (ss.isEmpty) {
+              Utils.logger.info(s"failed to prove $typ")
+              targetChomper(
+                lp,
+                ys,
+                accumSucc,
+                accumFail :+ typ,
+                accumEqs union eqs,
+                accumTerms union terms,
+                scale,
+                maxSteps
+              )
+            } else {
+              ss.foreach(
+                s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
+              )
+              Utils.logger.info(s"goals remaining ${ys.size}")
+              targetChomper(
+                lp,
+                ys,
+                accumSucc :+ ss,
+                accumFail,
+                accumEqs union eqs,
+                accumTerms union terms,
+                scale,
+                maxSteps
+              )
+            }
+        }
+    }
+}
