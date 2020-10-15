@@ -1237,3 +1237,35 @@ java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
 java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
 java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
 java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2020.10.15 11:40:59 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 11:40:59 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 11:40:59 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 11:40:59 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 11:40:59 [INFO] provingground.learning.StrategicProvers.targetChomper:248:26 - trying to prove ((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) → ((`A : 𝒰 _0 ) ~> (`A)) or (((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) , (∑((``A :  𝒰 _0) ↦ ((``A) → (Zero)))))
+2020.10.15 11:46:41 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 11:46:41 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 11:46:41 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 11:46:41 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 11:46:41 [INFO] provingground.learning.StrategicProvers.targetChomper:248:26 - trying to prove ((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) → ((`A : 𝒰 _0 ) ~> (`A)) or (((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) , (∑((``A :  𝒰 _0) ↦ ((``A) → (Zero)))))
+2020.10.15 11:49:18 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 11:49:18 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 11:49:18 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 11:49:18 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 11:49:18 [INFO] provingground.learning.StrategicProvers.targetChomper:248:26 - trying to prove ((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) → ((`A : 𝒰 _0 ) ~> (`A)) or (((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) , (∑((``A :  𝒰 _0) ↦ ((``A) → (Zero)))))
+2020.10.15 11:51:18 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 11:51:18 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 11:51:18 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 11:51:18 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 11:51:18 [INFO] provingground.learning.StrategicProvers.targetChomper:248:26 - trying to prove ((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) → ((`A : 𝒰 _0 ) ~> (`A)) or (((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) , (∑((``A :  𝒰 _0) ↦ ((``A) → (Zero)))))
+2020.10.15 12:54:02 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 12:54:02 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 12:54:02 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 12:54:02 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 12:54:02 [INFO] provingground.learning.StrategicProvers.targetChomper:248:26 - trying to prove ((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) → ((`A : 𝒰 _0 ) ~> (`A)) or (((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) , (∑((``A :  𝒰 _0) ↦ ((``A) → (Zero)))))
+2020.10.15 12:54:11 [INFO] provingground.learning.StrategicProvers.$anonfun:265:39 - proved (((`A : 𝒰 _0 ) ~> ((`A) → (𝒰 _0))) , (∑((``A :  𝒰 _0) ↦ ((``A) → (Zero))))) with proof (((`@a :  𝒰 _0) ↦ ((```@a :  `@a) ↦ (`@a))) , (((Zero) , ((`@a :  Zero) ↦ (`@a)))))
+2020.10.15 12:54:11 [INFO] provingground.learning.StrategicProvers.targetChomper:267:32 - goals remaining 0
