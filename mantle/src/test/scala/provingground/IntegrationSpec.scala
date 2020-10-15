@@ -310,6 +310,17 @@ class PiTypeSpec extends flatspec.AnyFlatSpec {
     assert(call(A)(B)(lambda(A)(B)(f))(a) === f(a))
   }
 
+
+  "Definitions involving nested Pi-Types" should "correctly escape variables" in {
+    val A = "A" :: Type
+    val B = "B" :: Type
+    val fn = "f" :: (A ~>: (B ~>: (A ->: B)))
+    val fArg = toTyp(fn(Unit)(Type)(Star))
+    val func = fn(fArg)(Type)
+    val arg = "x" :: fArg
+    assert(func(arg).typ == Type)
+  }
+
 }
 
 class EmptyAndUnitTypeSpec extends flatspec.AnyFlatSpec {
