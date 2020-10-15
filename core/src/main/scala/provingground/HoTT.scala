@@ -2337,6 +2337,8 @@ object HoTT {
     case _ => None
   }
 
+  var verbose: Boolean = false
+
   /**
     * A symbol to be used to generate new variables of a type,
     * without changing [[toString]].
@@ -2347,7 +2349,7 @@ object HoTT {
 
     lazy val outerSym: AnySym = outer.name
 
-    override def toString: String = "`" + variable.name.toString
+    override def toString: String = "`" + variable.name.toString + (if (verbose) s"@${hashCode()}" else "")
 
     def subs(x: Term, y: Term): InnerSym[U] = {
       this
@@ -2622,8 +2624,12 @@ object HoTT {
       if (variable.replace(x, y) == variable)
         PiDefn(variable, value.replace(xx, yy))
       else {
-        val newvar = variable.replace(x, y)
-        PiDefn(newvar, value.replace(variable, newvar).replace(xx, yy))
+        val newvar = variable.newobj
+        val newvalue = value.replace(variable, newvar)
+        // verbose = true
+        // pprint.log(s"created new variable $newvar for $variable substituting $x by $y, actually $xx by $yy")
+        // println(s"$value : ${value.typ} replaced by ${newvalue} : ${newvalue.typ}")
+        PiDefn(newvar.replace(xx, yy), newvalue.replace(xx, yy))
       }
       // PiDefn(variable.replace(x, y), value.replace(x, y))
     }
@@ -2719,8 +2725,11 @@ object HoTT {
     def subs(x: Term, y: Term): FuncLike[W, U] = (x, y) match {
       case (u, v: FuncLike[W, U]) if (u == this) => v
       case _ =>
+        val safe = variable.replace(x, y) == variable
+        val newvar = if (safe) variable else variable.newobj
+        val newvalue = if (safe) value else value.replace(variable, newvar)
         def symbobj(sym: AnySym) =
-          PiSymbolicFunc(sym, variable.replace(x, y), value.replace(x, y))
+          PiSymbolicFunc(sym, newvar.replace(x, y), newvalue.replace(x, y))
 
         symSubs(symbobj)(x, y)(name)
     }
