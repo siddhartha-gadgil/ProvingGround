@@ -245,6 +245,7 @@ object StrategicProvers {
       case Vector() =>
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typ +: ys =>
+        Utils.logger.info(s"trying to prove ${typ} or ${negate(typ)}")
         solveTyp(lp, typ, accumTerms).flatMap {
           case (ss, eqs, terms) =>
             equationNodes = equationNodes union (eqs)
