@@ -246,7 +246,11 @@ object StrategicProvers {
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typ +: ys =>
         Utils.logger.info(s"trying to prove ${typ} or ${negate(typ)}")
-        solveTyp(lp, typ, accumTerms).flatMap {
+        solveTyp(lp, typ, accumTerms).onErrorRecover {
+                      case te: TimeoutException =>
+                        Utils.logger.error(te)
+                        (Vector(), Set.empty[EquationNode], Set.empty[Term])
+                    }.flatMap {
           case (ss, eqs, terms) =>
             equationNodes = equationNodes union (eqs)
             termSet = termSet union (terms)

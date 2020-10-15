@@ -158,7 +158,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     FiniteDistribution(pmf filter (wt => p(wt.elem)))
 
   def purge(epsilon: Double): FiniteDistribution[T] =
-    filter((t: T) => apply(t) > epsilon)
+    FiniteDistribution(toMap.filter(_._2 > epsilon).map{case (x, p) => Weighted(x, p)})
+    // filter((t: T) => apply(t) > epsilon)
 
   def inRatioBall(that: FiniteDistribution[T], ratio: Double) : Boolean = 
     (that.support == support) && {
