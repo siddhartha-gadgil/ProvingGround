@@ -827,8 +827,9 @@ object HoTTBot {
       case qis :: fs :: HNil =>
         (cr) =>
           Future {
-            val typDist = FiniteDistribution(cr.failures.map { typ =>
-              Weighted(typ, fs.ts.typs(typ))
+            val typDist = FiniteDistribution(cr.failures.flatMap { typ =>
+              val p = fs.ts.typs(typ)
+              Vector(Weighted(typ, p/2), Weighted(negate(typ), p/2))
             }).safeNormalized
             typDist.pmf.map {
               case Weighted(x, p) =>
