@@ -329,18 +329,22 @@ object HoTTBot {
   }
 
   lazy val reportProved: Callback[Proved, HoTTPostWeb, Unit, ID] =
-    Callback.simple{
-      (_) => (proved) => Future{
-         Utils.logger.info(s"Proved ${proved.statement} by ${proved.proofOpt} in context ${proved.context}")
+    Callback.simple { (_) => (proved) =>
+      Future {
+        Utils.logger.info(
+          s"Proved ${proved.statement} by ${proved.proofOpt} in context ${proved.context}"
+        )
       }
-    } 
+    }
 
   lazy val reportContradicted: Callback[Contradicted, HoTTPostWeb, Unit, ID] =
-    Callback.simple{
-      (_) => (proved) => Future{
-         Utils.logger.info(s"Contradicted ${proved.statement} in context ${proved.context}")
+    Callback.simple { (_) => (proved) =>
+      Future {
+        Utils.logger.info(
+          s"Contradicted ${proved.statement} in context ${proved.context}"
+        )
       }
-    } 
+    }
 
   lazy val updateTerms: Callback[FinalState, HoTTPostWeb, Unit, ID] =
     Callback.simple(
@@ -843,7 +847,7 @@ object HoTTBot {
           Future {
             val typDist = FiniteDistribution(cr.failures.flatMap { typ =>
               val p = fs.ts.typs(typ)
-              Vector(Weighted(typ, p/2), Weighted(negate(typ), p/2))
+              Vector(Weighted(typ, p / 2), Weighted(negate(typ), p / 2))
             }).safeNormalized
             typDist.pmf.map {
               case Weighted(x, p) =>
@@ -857,8 +861,9 @@ object HoTTBot {
     )
   }
 
-  def failedAfterChomp(power: Double = 1.0)
-      : MiniBot[ChompResult, WithWeight[FailedToProve], HoTTPostWeb, QueryInitState :: FinalState :: HNil, ID] = {
+  def failedAfterChomp(power: Double = 1.0): MiniBot[ChompResult, WithWeight[
+    FailedToProve
+  ], HoTTPostWeb, QueryInitState :: FinalState :: HNil, ID] = {
     val response: QueryInitState :: FinalState :: HNil => ChompResult => Future[
       Vector[WithWeight[FailedToProve]]
     ] = {
@@ -867,11 +872,14 @@ object HoTTBot {
           Future {
             val typDist = FiniteDistribution(cr.failures.flatMap { typ =>
               val p = fs.ts.typs(typ)
-              Vector(Weighted(typ, p/2), Weighted(negate(typ), p/2))
+              Vector(Weighted(typ, p / 2), Weighted(negate(typ), p / 2))
             }).safeNormalized
             typDist.pmf.map {
               case Weighted(x, p) =>
-                withWeight(FailedToProve(x, qis.init.context), math.pow(p, power))
+                withWeight(
+                  FailedToProve(x, qis.init.context),
+                  math.pow(p, power)
+                )
             }
           }
     }
@@ -2180,6 +2188,24 @@ object HoTTBot {
     MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID](response)
   }
 
+  lazy val negateGoal: MicroBot[SeekGoal, Option[
+    Contradicts :: SeekGoal :: HNil
+  ], HoTTPostWeb, GatherPost[SeekGoal], ID] = {
+    val response: GatherPost[SeekGoal] => SeekGoal => Future[
+      Option[Contradicts :: SeekGoal :: HNil]
+    ] =
+      (previous) =>
+        sg =>
+          Future {
+            val newGoal =
+              SeekGoal(negate(sg.goal), sg.context, sg.forConsequences)
+            if (previous.contents.contains(newGoal)) None
+            else
+              Some(Contradicts.fromTyp(sg.goal, sg.context) :: newGoal :: HNil)
+          }
+    MicroBot(response)
+  }
+
   lazy val productBackward: SimpleBot[SeekGoal, Option[FromAll]] = {
     MicroBot.simple(
       (sk: SeekGoal) =>
@@ -2319,10 +2345,12 @@ object HoTTBot {
       varWeight: Double,
       goalWeight: Double
   ): MicroBot[SeekGoal, Option[LocalProver], HoTTPostWeb, QueryProver :: Set[
-    HoTT.Term 
+    HoTT.Term
   ] :: GatherMapPost[Decided] :: HNil, ID] = {
     // check whether the provers context is an initial segment of the context of the goal
-    val subContext: SeekGoal => QueryProver :: Set[Term] :: GatherMapPost[Decided] :: HNil => Boolean =
+    val subContext: SeekGoal => QueryProver :: Set[Term] :: GatherMapPost[
+      Decided
+    ] :: HNil => Boolean =
       (goal) => {
         case (qp: QueryProver) :: terms :: _ :: HNil => {
           val lpVars   = qp.lp.initState.context.variables
@@ -2333,9 +2361,10 @@ object HoTTBot {
         }
       }
 
-    val response: QueryProver :: Set[Term] :: GatherMapPost[Decided] :: HNil => SeekGoal => Future[
-      Option[LocalProver]
-    ] = {
+    val response
+        : QueryProver :: Set[Term] :: GatherMapPost[Decided] :: HNil => SeekGoal => Future[
+          Option[LocalProver]
+        ] = {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
         // println(qp)
         // pprint.log(qp)
@@ -2362,10 +2391,12 @@ object HoTTBot {
   def goalAttempt(
       varWeight: Double
   ): MicroBot[SeekGoal, Option[Either[FailedToProve, Proved]], HoTTPostWeb, QueryProver :: Set[
-    HoTT.Term 
+    HoTT.Term
   ] :: GatherMapPost[Decided] :: HNil, ID] = {
     // check whether the provers context is an initial segment of the context of the goal
-    val subContext: SeekGoal => QueryProver :: Set[Term] :: GatherMapPost[Decided] :: HNil => Boolean =
+    val subContext: SeekGoal => QueryProver :: Set[Term] :: GatherMapPost[
+      Decided
+    ] :: HNil => Boolean =
       (goal) => {
         case (qp: QueryProver) :: terms :: _ :: HNil => {
           val lpVars   = qp.lp.initState.context.variables
@@ -2374,33 +2405,44 @@ object HoTTBot {
         }
       }
 
-    val response: QueryProver :: Set[Term] :: GatherMapPost[Decided] :: HNil => SeekGoal => Future[
-      Option[Either[FailedToProve, Proved]]
-    ] = {
+    val response
+        : QueryProver :: Set[Term] :: GatherMapPost[Decided] :: HNil => SeekGoal => Future[
+          Option[Either[FailedToProve, Proved]]
+        ] = {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
         // println(qp)
         // pprint.log(qp)
         goal =>
-            if (goal.relevantGiven(terms, gp.contents)) {
-              val lpVars   = qp.lp.initState.context.variables
-              val goalVars = goal.context.variables
-              val newVars  = goalVars.drop(lpVars.size)
-              // pprint.log(newVars)
-              val withVars = newVars.foldLeft(qp.lp) {
-                case (lp: LocalProver, x: Term) =>
-                  // pprint.log(x)
-                  lp.addVar(x, varWeight)
-              }
-              withVars.varDist(
-                TermRandomVars.termsWithTyp(goal.goal)).runToFuture.map{
-                  fd => 
-                    if (fd.pmf.isEmpty) Some(Left(FailedToProve(goal.goal, goal.context, goal.forConsequences)))
-                    else {
-                      val best = fd.pmf.maxBy(_.weight)
-                      Some(Right(Proved(goal.goal, Some(best.elem), goal.context)))
-                    }
+          if (goal.relevantGiven(terms, gp.contents)) {
+            val lpVars   = qp.lp.initState.context.variables
+            val goalVars = goal.context.variables
+            val newVars  = goalVars.drop(lpVars.size)
+            // pprint.log(newVars)
+            val withVars = newVars.foldLeft(qp.lp) {
+              case (lp: LocalProver, x: Term) =>
+                // pprint.log(x)
+                lp.addVar(x, varWeight)
+            }
+            withVars
+              .varDist(TermRandomVars.termsWithTyp(goal.goal))
+              .runToFuture
+              .map { fd =>
+                if (fd.pmf.isEmpty)
+                  Some(
+                    Left(
+                      FailedToProve(
+                        goal.goal,
+                        goal.context,
+                        goal.forConsequences
+                      )
+                    )
+                  )
+                else {
+                  val best = fd.pmf.maxBy(_.weight)
+                  Some(Right(Proved(goal.goal, Some(best.elem), goal.context)))
                 }
-            } else Future.successful(None)
+              }
+          } else Future.successful(None)
     }
 
     MicroBot(response, subContext)

@@ -405,6 +405,19 @@ object HoTTMessages {
     )
   }
 
+  object Contradicts{
+    def fromTyp(statement: Typ[Term], context: Context) : Contradicts = {
+      val x = statement.Var
+      val conclusion = negate(statement)
+      val t = conclusion.Var
+      val contraOpt = ExstFunc.opt{
+        import Fold._
+        x :-> t :-> negateContra(statement)(x)(t)
+      }
+      Contradicts(statement, conclusion, contraOpt, context)
+    }
+  }
+
   case class RepresentationMap(
       rep: Map[GeneratorVariables.Variable[_], Vector[Double]]
   )
