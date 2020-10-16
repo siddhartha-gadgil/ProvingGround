@@ -912,7 +912,7 @@ object HoTTBot {
     )
   }
 
-  lazy val deducedEquations
+  lazy val deducedResults
       : MiniBot[Proved, Either[Contradicted, Proved], HoTTPostWeb, GatherMapPost[
         PropagateProof
       ] :: GatherMapPost[
@@ -2062,7 +2062,7 @@ object HoTTBot {
     *
     * @return
     */
-  lazy val instancesFromLp
+  lazy val instancesFromLP
       : MiniBot[SeekInstances, WithWeight[Instance], HoTTPostWeb, QueryProver, ID] = {
     val response: QueryProver => SeekInstances => Future[
       Vector[WithWeight[Instance]]
@@ -2414,6 +2414,7 @@ object HoTTBot {
         // pprint.log(qp)
         goal =>
           if (goal.relevantGiven(terms, gp.contents)) {
+            Utils.logger.info(s"attempting $goal with cutoff ${qp.lp.cutoff}")
             val lpVars   = qp.lp.initState.context.variables
             val goalVars = goal.context.variables
             val newVars  = goalVars.drop(lpVars.size)
@@ -2446,6 +2447,47 @@ object HoTTBot {
     }
 
     MicroBot(response, subContext)
+  }
+
+  def decided(web: HoTTPostWeb): Future[Set[HoTTMessages.Decided]] =
+    implicitly[Queryable[GatherMapPost[Decided], HoTTPostWeb]]
+      .get(web, (_) => true)
+      .map { gp =>
+        gp.contents
+      }
+
+  def topLevelGoals(web: HoTTPostWeb): Future[Set[SeekGoal]] =
+    implicitly[Queryable[GatherPost[SeekGoal], HoTTPostWeb]]
+      .get(web, (_) => true)
+      .map { gp =>
+        gp.contents.filter(_.forConsequences.isEmpty)
+      }
+
+  def topLevelRelevantGoals(web: HoTTPostWeb): Future[Set[SeekGoal]] =
+    for {
+      prior <- topLevelGoals(web)
+      dec   <- decided(web)
+    } yield {
+      val terms = web.terms
+      prior.filter(x => x.relevantGiven(terms, dec))
+    }
+
+  def topLevelRelevantGoalsBot[P](haltIfEmpty: Boolean = false)(
+      implicit pp: Postable[P, HoTTPostWeb, ID]
+  ): Callback[P, HoTTPostWeb, Unit, ID] = {
+    val response: HoTTPostWeb => Unit => P => Future[Unit] =
+      (web) =>
+        (_) =>
+          (_) =>
+            topLevelGoals(web).map { goals =>
+              Utils.logger.info(s"remaining top level goals: ${goals.size}")
+              Utils.logger.info(goals.mkString("\n"))
+              if (haltIfEmpty && goals.isEmpty) {
+                web.running = false
+                Utils.running = false
+              }
+            }
+    Callback(response)
   }
 
   // def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =

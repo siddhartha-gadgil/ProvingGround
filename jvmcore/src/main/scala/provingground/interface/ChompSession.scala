@@ -5,6 +5,7 @@ import provingground.learning.HoTTMessages._
 import HoTTBot._
 import scala.util._, Properties.envOrNone
 import Utils._
+import scala.concurrent._
 
 object ChompSession {
   Utils.logger = {
@@ -48,6 +49,24 @@ object ChompSession {
   val expFS =
     expEvToFinalState.andThen(updateTerms)
 
+  val bots: Vector[HoTTBot] = Vector(
+    goalAttempt(0.3),
+    negateGoal.triggerMap[FailedToProve](_.seek),
+    skolemBot.triggerMap[FailedToProve](_.seek),
+    productBackward.triggerMap[FailedToProve](_.seek),
+    coproductBackward.triggerMap[FailedToProve](_.seek),
+    goalInContext.triggerMap[FailedToProve](_.seek),
+    instanceToGoal,
+    instancesFromLP,
+    deducedResults,
+    sigmaBackward.triggerMap[FailedToProve](_.seek),
+    resolveFromAll,
+    resolveFromAny,
+    reportProved,
+    reportContradicted,
+    topLevelRelevantGoalsBot[FailedToProve]()
+  )
+
   lazy val wsF = 
     for {
         ws1 <- ws.post(lp0, Set())
@@ -57,5 +76,8 @@ object ChompSession {
         ws5 <- ws4.postLast(lp)
         ws6 <- ws5.act(finalStateToChomp().triggerWith[LocalProver])
         ws7 <- ws6.act(chompReport())
-    } yield ws7
+        ws8 <- ws7.act(failedAfterChomp())
+    } yield ws8
+
+  lazy val sessF : Future[HoTTWebSession] = wsF.map(ws => HoTTWebSession.launch(ws, bots))
 }
