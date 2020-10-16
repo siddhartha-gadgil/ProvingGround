@@ -5,6 +5,7 @@ import provingground.learning.HoTTMessages.Proved
 import provingground.learning.HoTTMessages.Contradicted
 import shapeless._, HList._
 
+
 /**
   * Messages to be posted for autonomous/interactive running.
   * These can be posted by a user, rule-based bot or a deep-learning system;
@@ -38,15 +39,16 @@ object HoTTMessages {
       context: Context,
       forConsequences: Set[Typ[Term]] = Set()
   ) {
+
     /**
       * check if a goal is still relevant, i.e., it has not been proved or disproved nor have its consequences
       *
       * @param terms
       * @return whether the goal is still worth proving
       */
-    def relevantGiven(terms: Set[Term]): Boolean =
-      terms
-        .map(_.typ)
+    def relevantGiven(terms: Set[Term], decisions: Set[Decided] = Set()): Boolean =
+      (terms
+        .map(_.typ).union(decisions.map(_.statement)))
         .intersect(
           forConsequences union forConsequences
             .map(negate) union Set(goal, negate(goal))
@@ -64,6 +66,7 @@ object HoTTMessages {
   }
 
   object SeekGoal {
+
     /**
       * view goal as a simpler goal in a context if possible
       *
@@ -72,7 +75,9 @@ object HoTTMessages {
       */
     def inContext(sk: SeekGoal): SeekGoal = sk.goal match {
       case PiDefn(variable: Term, value: Typ[u]) =>
-        inContext(SeekGoal(value, sk.context.addVariable(variable), sk.forConsequences))
+        inContext(
+          SeekGoal(value, sk.context.addVariable(variable), sk.forConsequences)
+        )
       case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
         val x = dom.Var
         inContext(
@@ -320,6 +325,26 @@ object HoTTMessages {
     } assert(contra("assume" :: statement).map(_.typ) == Some(Zero))
   }
 
+  object Contradicted{
+    def fromTerm(statement: Typ[Term], t: Term, context: Context) : Contradicted = {
+      require(t.typ == negate(statement))
+      val x = statement.Var
+      val contraOpt = ExstFunc.opt{
+        import Fold._
+        x :-> negateContra(statement)(x)(t)
+      }
+      Contradicted(statement, contraOpt, context)
+    }
+  }
+
+  case class FailedToProve(
+      statement: Typ[Term],
+      context: Context,
+      forConsequences: Set[Typ[Term]] = Set()
+  ){
+    lazy val seek = SeekGoal(statement, context, forConsequences)
+  }
+
   trait PropagateProof {
     def propagate(proofs: Set[Term]): Set[Decided]
 
@@ -378,6 +403,19 @@ object HoTTMessages {
           fold(contraMap("assume" :: premise).get)("also" :: conclusion).typ == Zero
         )
     )
+  }
+
+  object Contradicts{
+    def fromTyp(statement: Typ[Term], context: Context) : Contradicts = {
+      val x = statement.Var
+      val conclusion = negate(statement)
+      val t = conclusion.Var
+      val contraOpt = ExstFunc.opt{
+        import Fold._
+        x :-> t :-> negateContra(statement)(x)(t)
+      }
+      Contradicts(statement, conclusion, contraOpt, context)
+    }
   }
 
   case class RepresentationMap(

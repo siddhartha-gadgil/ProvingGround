@@ -4866,3 +4866,29 @@ Weight(0.9999999999999999)
 2020.10.15 15:58:41 [INFO] provingground.learning.PostBuffer.$anon.post:266:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (7,1548531597), content:
 SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),Empty,Set())
 2020.10.15 15:58:41 [INFO] provingground.learning.TypedPostResponse.MiniBot.$anonfun.applyOrElse:368:28 - completed all responses d4b011a6 of type TypeTag[provingground.learning.HoTTMessages.Weight :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.ChompResult]
+2020.10.15 16:52:50 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 16:52:50 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 16:52:50 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 16:52:50 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 16:57:13 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 16:57:13 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 16:57:13 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 16:57:13 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 17:02:48 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 17:02:48 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 17:02:48 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 17:02:48 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 17:13:51 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 17:13:51 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 17:13:51 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 17:13:51 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2020.10.15 19:20:13 [INFO] provingground.interface.ChompSession:25:14 - This is a Bot based run for goal chomping. For now this is the first attempt
+
+2020.10.15 19:20:13 [INFO] provingground.interface.ChompSession:30:14 - Number of threads: 8
+2020.10.15 19:20:13 [INFO] provingground.interface.ChompSession.<local ChompSession>:32:50 - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2020.10.15 19:20:13 [INFO] provingground.interface.ChompSession.<local ChompSession>:34:50 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+
