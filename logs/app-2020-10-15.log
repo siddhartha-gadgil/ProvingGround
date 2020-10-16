@@ -4859,3 +4859,10 @@ LocalProver(TermState([Unit : 0.3333333333333333, Zero : 0.3333333333333333, Sta
 2020.10.15 15:47:51 [INFO] provingground.learning.HoTTBot.$anonfun:815:32 - number of failures: 1
 2020.10.15 15:47:51 [INFO] provingground.learning.HoTTBot.$anonfun:816:32 - top 10 failures: ((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a))
 2020.10.15 15:47:51 [INFO] provingground.learning.TypedPostResponse.Callback.$anonfun.applyOrElse:200:33 - completed callback 'chomp report' for type TypeTag[provingground.learning.HoTTMessages.ChompResult] with input hash 1395155890
+2020.10.15 15:52:40 [INFO] provingground.learning.WebState.queryApex:587:24 - 1 responses to enquiry TypeTag[provingground.learning.HoTTMessages.ChompResult]
+2020.10.15 15:58:41 [INFO] provingground.learning.TypedPostResponse.MiniBot.post:352:20 - triggered (multiple) responses d4b011a6 of type TypeTag[provingground.learning.HoTTMessages.Weight :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.ChompResult]
+2020.10.15 15:58:41 [INFO] provingground.learning.PostBuffer.$anon.post:266:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (6,2112468006), content:
+Weight(0.9999999999999999)
+2020.10.15 15:58:41 [INFO] provingground.learning.PostBuffer.$anon.post:266:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (7,1548531597), content:
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),Empty,Set())
+2020.10.15 15:58:41 [INFO] provingground.learning.TypedPostResponse.MiniBot.$anonfun.applyOrElse:368:28 - completed all responses d4b011a6 of type TypeTag[provingground.learning.HoTTMessages.Weight :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.ChompResult]
