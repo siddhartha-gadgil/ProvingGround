@@ -843,6 +843,30 @@ object HoTTBot {
     )
   }
 
+  def failedAfterChomp(power: Double = 1.0)
+      : MiniBot[ChompResult, WithWeight[FailedToProve], HoTTPostWeb, QueryInitState :: FinalState :: HNil, ID] = {
+    val response: QueryInitState :: FinalState :: HNil => ChompResult => Future[
+      Vector[WithWeight[FailedToProve]]
+    ] = {
+      case qis :: fs :: HNil =>
+        (cr) =>
+          Future {
+            val typDist = FiniteDistribution(cr.failures.flatMap { typ =>
+              val p = fs.ts.typs(typ)
+              Vector(Weighted(typ, p/2), Weighted(negate(typ), p/2))
+            }).safeNormalized
+            typDist.pmf.map {
+              case Weighted(x, p) =>
+                withWeight(FailedToProve(x, qis.init.context), math.pow(p, power))
+            }
+          }
+    }
+
+    MiniBot[ChompResult, WithWeight[FailedToProve], HoTTPostWeb, QueryInitState :: FinalState :: HNil, ID](
+      response
+    )
+  }
+
   val goalsAfterTRChomp
       : MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, QueryInitState :: TermResult :: HNil, ID] = {
     val response: QueryInitState :: TermResult :: HNil => ChompResult => Future[

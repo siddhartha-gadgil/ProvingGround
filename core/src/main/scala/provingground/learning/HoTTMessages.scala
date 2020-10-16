@@ -38,6 +38,7 @@ object HoTTMessages {
       context: Context,
       forConsequences: Set[Typ[Term]] = Set()
   ) {
+
     /**
       * check if a goal is still relevant, i.e., it has not been proved or disproved nor have its consequences
       *
@@ -64,6 +65,7 @@ object HoTTMessages {
   }
 
   object SeekGoal {
+
     /**
       * view goal as a simpler goal in a context if possible
       *
@@ -72,7 +74,9 @@ object HoTTMessages {
       */
     def inContext(sk: SeekGoal): SeekGoal = sk.goal match {
       case PiDefn(variable: Term, value: Typ[u]) =>
-        inContext(SeekGoal(value, sk.context.addVariable(variable), sk.forConsequences))
+        inContext(
+          SeekGoal(value, sk.context.addVariable(variable), sk.forConsequences)
+        )
       case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
         val x = dom.Var
         inContext(
@@ -319,6 +323,12 @@ object HoTTMessages {
       contra <- contraOpt
     } assert(contra("assume" :: statement).map(_.typ) == Some(Zero))
   }
+
+  case class FailedToProve(
+      statement: Typ[Term],
+      context: Context,
+      forConsequences: Set[Typ[Term]] = Set()
+  )
 
   trait PropagateProof {
     def propagate(proofs: Set[Term]): Set[Decided]

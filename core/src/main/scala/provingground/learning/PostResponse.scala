@@ -263,6 +263,16 @@ object TypedPostResponse {
       )
       }
     
+  
+
+  def triggerMap[R](transform: R => P)(implicit rw: Postable[R, W, ID]) =
+        MicroBot[R, Q, W, V :: HNil, ID](
+        {
+          case  v :: HNil =>
+            r : R =>
+              response(v)(transform(r))
+        })
+    
     def :+[QQ : TypeTag, VV: TypeTag](that : MicroBot[P, QQ, W, VV, ID])(implicit qqw: Postable[QQ, W, ID], dgqq : DataGetter[QQ, W, ID],
       nilGetter: Postable[HNil, W, ID]) : MicroBot[P,Q :: QQ :: HNil,W,V :: VV :: HNil,ID] = 
       {
@@ -275,8 +285,8 @@ object TypedPostResponse {
              that.response(vv)(p).map(r2 => r1 :: r2 :: HNil) )             
           }
         }
-  }
 
+      }
   /**
     * Probabaly not needed, need to just post pairs
     *
@@ -434,7 +444,16 @@ object TypedPostResponse {
         }
       )
       }
-  }
+
+    def triggerMap[R](transform: R => P)(implicit rw: Postable[R, W, ID]) = 
+      DualMiniBot[R, Q, W, V :: HNil, ID](
+        {
+          case  v :: HNil =>
+            r : R =>
+              responses(v)(transform(r))
+        }
+      )  
+  } 
 
     /**
     * Bot responding to a post returning a vector of posts for  
@@ -505,6 +524,15 @@ object TypedPostResponse {
         }
       )
       }
+
+    def triggerMap[R](transform: R => P)(implicit rw: Postable[R, W, ID]) = 
+      DualMiniBotTask[R, Q, W, V :: HNil, ID](
+        {
+          case  v :: HNil =>
+            r : R =>
+              responses(v)(transform(r))
+        }
+      )  
   }
 
 
