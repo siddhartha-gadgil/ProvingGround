@@ -1216,6 +1216,14 @@ object HoTT {
     */
   val Type: Universe = Universe(0)
 
+  object ProdTyp{
+    lazy val A = Type.Var
+    lazy val B = Type.Var
+
+    lazy val proj1 = A :~> (B :~> ProdTyp(A, B).proj1)
+    lazy val proj2 = A :~> (B :~> ProdTyp(A, B).proj2)
+  }
+
   /**
     * The product type `A  times B`
     *
@@ -2842,6 +2850,14 @@ object HoTT {
     override def toString: String = name.toString + "_2"
   }
 
+  object SigmaTyp{
+    lazy val A = Type.Var
+    lazy val B = (A ->: Type).Var
+
+    lazy val proj1 = SigmaTyp(B).proj1
+    lazy val proj2 = SigmaTyp(B).proj2
+  }
+
   /**
     *  Sigma Type, i.e., dependent pair type.
     */
@@ -3543,6 +3559,12 @@ object HoTT {
       def subs(x: Term, y: Term) =
         FirstIncl(typ.replace(x, y), value.replace(x, y))
     }
+
+    lazy val A = Type.Var
+    lazy val B = Type.Var
+
+    lazy val incl1 = A :~> (B :~> PlusTyp(A, B).incl1)
+    lazy val incl2 = A :~> (B :~> PlusTyp(A, B).incl2)
 
     /**
       * B -> A + B

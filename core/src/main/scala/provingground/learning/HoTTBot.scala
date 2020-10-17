@@ -647,6 +647,68 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  lazy val viaZeroBot: MicroBot[SeekGoal, Option[
+    Consequence :: SeekGoal :: HNil
+  ], HoTTPostWeb, Unit, ID] = {
+    val response
+        : Unit => SeekGoal => Future[Option[Consequence :: SeekGoal :: HNil]] =
+      (_) =>
+        (goal) =>
+          Future {
+            goal.goal match {
+              case ft: FuncTyp[u, v] => 
+                val newGoal = negate(ft.dom)
+                if (newGoal == goal.goal) None 
+                else {
+                  val x = ft.dom.Var
+                  val y = newGoal.Var 
+                  val transform = {
+                    import Fold._
+                    y :-> (x :-> vacuous(ft.codom)(negateContra(goal.goal)(x)(y)))
+                  }
+                val cons =
+                  Consequence(
+                    newGoal,
+                    goal.goal,
+                    Option(ExstFunc(transform)),
+                    goal.context
+                  )
+                 Some(cons :: SeekGoal(
+                  newGoal,
+                  goal.context,
+                  goal.forConsequences + goal.goal
+                ) :: HNil) 
+                }
+              case pd: PiDefn[u, v] => 
+                val newGoal = negate(pd.domain)
+                if (newGoal == goal.goal) None 
+                else {
+                  val x = pd.domain.Var
+                  val y = newGoal.Var 
+                  val transform = {
+                    import Fold._
+                    y :-> (x :-> vacuous(pd.fibers(x))(negateContra(goal.goal)(x)(y)))
+                  }
+                val cons =
+                  Consequence(
+                    newGoal,
+                    goal.goal,
+                    Option(ExstFunc(transform)),
+                    goal.context
+                  )
+                 Some(cons :: SeekGoal(
+                  newGoal,
+                  goal.context,
+                  goal.forConsequences + goal.goal
+                ) :: HNil) 
+                }                
+              case _ => None
+            }
+          }
+
+    MicroBot(response)
+  }
+
   lazy val eqnSimpleUpdate
       : Callback[GeneratedEquationNodes, HoTTPostWeb, Unit, ID] =
     Callback.simple(
@@ -2456,30 +2518,30 @@ object HoTTBot {
         gp.contents
       }
 
-  def topLevelGoals(web: HoTTPostWeb): Future[Set[SeekGoal]] =
+  def topLevelGoals(web: HoTTPostWeb, context: Context): Future[Set[SeekGoal]] =
     implicitly[Queryable[GatherPost[SeekGoal], HoTTPostWeb]]
       .get(web, (_) => true)
       .map { gp =>
-        gp.contents.filter(_.forConsequences.isEmpty)
+        gp.contents.filter(goal => goal.forConsequences.isEmpty && goal.context == context)
       }
 
-  def topLevelRelevantGoals(web: HoTTPostWeb): Future[Set[SeekGoal]] =
+  def topLevelRelevantGoals(web: HoTTPostWeb, context: Context): Future[Set[SeekGoal]] =
     for {
-      prior <- topLevelGoals(web)
+      prior <- topLevelGoals(web, context)
       dec   <- decided(web)
     } yield {
       val terms = web.terms
       prior.filter(x => x.relevantGiven(terms, dec))
     }
 
-  def topLevelRelevantGoalsBot[P](haltIfEmpty: Boolean = false)(
+  def topLevelRelevantGoalsBot[P](haltIfEmpty: Boolean = false, context: Context = Context.Empty)(
       implicit pp: Postable[P, HoTTPostWeb, ID]
   ): Callback[P, HoTTPostWeb, Unit, ID] = {
     val response: HoTTPostWeb => Unit => P => Future[Unit] =
       (web) =>
         (_) =>
           (_) =>
-            topLevelGoals(web).map { goals =>
+            topLevelGoals(web, context).map { goals =>
               Utils.logger.info(s"remaining top level goals: ${goals.size}")
               Utils.logger.info(goals.mkString("\n"))
               if (haltIfEmpty && goals.isEmpty) {
