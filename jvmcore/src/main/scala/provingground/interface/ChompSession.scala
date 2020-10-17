@@ -52,6 +52,11 @@ object ChompSession {
     PlusTyp.incl1,
     PlusTyp.incl2
   )
+  val terms1 = FiniteDistribution.unif[Term](
+    Unit,
+    Zero,
+    Star
+  )
   val typs = FiniteDistribution.unif[Typ[Term]](Type, Unit, Zero)
   val ts   = TermState(terms, typs)
   val ts0  = TermState(FiniteDistribution(), FiniteDistribution.unif(Type))
