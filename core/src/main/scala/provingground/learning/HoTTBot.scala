@@ -656,62 +656,80 @@ object HoTTBot {
         (goal) =>
           Future {
             goal.goal match {
-              case ft: FuncTyp[u, v] => 
+              case ft: FuncTyp[u, v] =>
                 val newGoal = negate(ft.dom)
                 if (newGoal == goal.goal) {
-                  Utils.logger.info(s"nothing gained by contradicting hypothesis for ${goal.goal}")
-                  None} 
-                else {
-                  Utils.logger.info(s"try to prove $newGoal as contradicting hypothesis")
+                  Utils.logger.info(
+                    s"nothing gained by contradicting hypothesis for ${goal.goal}"
+                  )
+                  None
+                } else {
+                  Utils.logger.info(
+                    s"try to prove $newGoal as contradicting hypothesis"
+                  )
                   val x = ft.dom.Var
-                  val y = newGoal.Var 
+                  val y = newGoal.Var
                   val transform = {
                     import Fold._
-                    y :-> (x :-> vacuous(ft.codom)(negateContra(goal.goal)(x)(y)))
+                    y :-> (x :-> vacuous(ft.codom)(
+                      negateContra(goal.goal)(x)(y)
+                    ))
                   }
-                val cons =
-                  Consequence(
-                    newGoal,
-                    goal.goal,
-                    Option(ExstFunc(transform)),
-                    goal.context
-                  )
+                  val cons =
+                    Consequence(
+                      newGoal,
+                      goal.goal,
+                      Option(ExstFunc(transform)),
+                      goal.context
+                    )
                   Utils.logger.info(s"Consequence: $cons")
-                 Some(cons :: SeekGoal(
-                  newGoal,
-                  goal.context,
-                  goal.forConsequences + goal.goal
-                ) :: HNil) 
+                  Some(
+                    cons :: SeekGoal(
+                      newGoal,
+                      goal.context,
+                      goal.forConsequences + goal.goal
+                    ) :: HNil
+                  )
                 }
-              case pd: PiDefn[u, v] => 
+              case pd: PiDefn[u, v] =>
                 val newGoal = negate(pd.domain)
                 if (newGoal == goal.goal) {
-                  Utils.logger.info(s"nothing gained by contradicting hypothesis for ${goal.goal}")
-                  None}  
-                else {
-                  Utils.logger.info(s"try to prove $newGoal as contradicting hypothesis")
+                  Utils.logger.info(
+                    s"nothing gained by contradicting hypothesis for ${goal.goal}"
+                  )
+                  None
+                } else {
+                  Utils.logger.info(
+                    s"try to prove $newGoal as contradicting hypothesis"
+                  )
                   val x = pd.domain.Var
-                  val y = newGoal.Var 
+                  val y = newGoal.Var
                   val transform = {
                     import Fold._
-                    y :-> (x :-> vacuous(pd.fibers(x))(negateContra(goal.goal)(x)(y)))
+                    y :-> (x :-> vacuous(pd.fibers(x))(
+                      negateContra(goal.goal)(x)(y)
+                    ))
                   }
+                  val cons =
+                    Consequence(
+                      newGoal,
+                      goal.goal,
+                      Option(ExstFunc(transform)),
+                      goal.context
+                    )
                   Utils.logger.info(s"Consequence: $cons")
-                val cons =
-                  Consequence(
-                    newGoal,
-                    goal.goal,
-                    Option(ExstFunc(transform)),
-                    goal.context
+                  Some(
+                    cons :: SeekGoal(
+                      newGoal,
+                      goal.context,
+                      goal.forConsequences + goal.goal
+                    ) :: HNil
                   )
-                 Some(cons :: SeekGoal(
-                  newGoal,
-                  goal.context,
-                  goal.forConsequences + goal.goal
-                ) :: HNil) 
-                }                
+                }
               case _ =>
-                Utils.logger.info(s"cannot prove ${goal.goal} by contradicting hypothesis")
+                Utils.logger.info(
+                  s"cannot prove ${goal.goal} by contradicting hypothesis"
+                )
                 None
             }
           }
@@ -860,7 +878,10 @@ object HoTTBot {
     MicroBot(response, name = Some("chomp"))
   }
 
-  def finalStateToConcurrentChomp(solverWeight: Double = 0.05, concurrency: Int = Utils.threadNum): MicroBot[
+  def finalStateToConcurrentChomp(
+      solverWeight: Double = 0.05,
+      concurrency: Int = Utils.threadNum
+  ): MicroBot[
     FinalState,
     ChompResult,
     HoTTPostWeb,
@@ -2171,7 +2192,9 @@ object HoTTBot {
     ] =
       qp =>
         seekInst => {
-          Utils.logger.info(s"seeking instances for ${seekInst.typ} with cutoff ${qp.lp.cutoff}")
+          Utils.logger.info(
+            s"seeking instances for ${seekInst.typ} with cutoff ${qp.lp.cutoff}"
+          )
           import TermGeneratorNodes._, TermRandomVars._
           qp.lp
             .varDist(termsWithTyp(seekInst.typ))
@@ -2325,7 +2348,8 @@ object HoTTBot {
               )
             )
           case _ => None
-        }, Some("product resolved")
+        },
+      Some("product resolved")
     )
   }
 
@@ -2348,7 +2372,8 @@ object HoTTBot {
               )
             )
           case _ => None
-        }, Some("coproduct resolved")
+        },
+      Some("coproduct resolved")
     )
   }
 
@@ -2365,10 +2390,11 @@ object HoTTBot {
                 sk.forConsequences
               )
             )
-          case _ => 
+          case _ =>
             Utils.logger.info(s"no instances sought for ${sk.goal}")
-          None
-        }, Some("sigma-type resolved")
+            None
+        },
+      Some("sigma-type resolved")
     )
   }
 
@@ -2565,10 +2591,15 @@ object HoTTBot {
     implicitly[Queryable[GatherPost[SeekGoal], HoTTPostWeb]]
       .get(web, (_) => true)
       .map { gp =>
-        gp.contents.filter(goal => goal.forConsequences.isEmpty && goal.context == context)
+        gp.contents.filter(
+          goal => goal.forConsequences.isEmpty && goal.context == context
+        )
       }
 
-  def topLevelRelevantGoals(web: HoTTPostWeb, context: Context): Future[Set[SeekGoal]] =
+  def topLevelRelevantGoals(
+      web: HoTTPostWeb,
+      context: Context
+  ): Future[Set[SeekGoal]] =
     for {
       prior <- topLevelGoals(web, context)
       dec   <- decided(web)
@@ -2577,7 +2608,10 @@ object HoTTBot {
       prior.filter(x => x.relevantGiven(terms, dec))
     }
 
-  def topLevelRelevantGoalsBot[P](haltIfEmpty: Boolean = false, context: Context = Context.Empty)(
+  def topLevelRelevantGoalsBot[P](
+      haltIfEmpty: Boolean = false,
+      context: Context = Context.Empty
+  )(
       implicit pp: Postable[P, HoTTPostWeb, ID]
   ): Callback[P, HoTTPostWeb, Unit, ID] = {
     val response: HoTTPostWeb => Unit => P => Future[Unit] =
