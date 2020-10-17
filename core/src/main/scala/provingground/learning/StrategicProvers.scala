@@ -259,7 +259,7 @@ object StrategicProvers {
       case typGroup +: ys =>
         val resultGroup =
           typGroup.map { typ =>
-            solveTyp(lp, typGroup.head, accumTerms)
+            solveTyp(lp, typ, accumTerms)
               .onErrorRecover {
                 case te: TimeoutException =>
                   Utils.logger.error(te)
