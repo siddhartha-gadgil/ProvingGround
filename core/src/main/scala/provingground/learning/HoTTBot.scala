@@ -662,6 +662,7 @@ object HoTTBot {
                   Utils.logger.info(s"nothing gained by contradicting hypothesis for ${goal.goal}")
                   None} 
                 else {
+                  Utils.logger.info(s"try to prove $newGoal as contradicting hypothesis")
                   val x = ft.dom.Var
                   val y = newGoal.Var 
                   val transform = {
@@ -675,7 +676,7 @@ object HoTTBot {
                     Option(ExstFunc(transform)),
                     goal.context
                   )
-                Utils.logger.info(s"try to prove $newGoal as contradicting hypothesis")
+                  Utils.logger.info(s"Consequence: $cons")
                  Some(cons :: SeekGoal(
                   newGoal,
                   goal.context,
@@ -684,14 +685,18 @@ object HoTTBot {
                 }
               case pd: PiDefn[u, v] => 
                 val newGoal = negate(pd.domain)
-                if (newGoal == goal.goal) None 
+                if (newGoal == goal.goal) {
+                  Utils.logger.info(s"nothing gained by contradicting hypothesis for ${goal.goal}")
+                  None}  
                 else {
+                  Utils.logger.info(s"try to prove $newGoal as contradicting hypothesis")
                   val x = pd.domain.Var
                   val y = newGoal.Var 
                   val transform = {
                     import Fold._
                     y :-> (x :-> vacuous(pd.fibers(x))(negateContra(goal.goal)(x)(y)))
                   }
+                  Utils.logger.info(s"Consequence: $cons")
                 val cons =
                   Consequence(
                     newGoal,
@@ -706,7 +711,7 @@ object HoTTBot {
                 ) :: HNil) 
                 }                
               case _ =>
-                Utils.logger.info(s"cannot prove ${goal.goal} by contradicting hypotheses")
+                Utils.logger.info(s"cannot prove ${goal.goal} by contradicting hypothesis")
                 None
             }
           }
