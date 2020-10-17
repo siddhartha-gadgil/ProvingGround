@@ -97,7 +97,7 @@ object ChompSession {
       ws5 <- ws4.postLast(lp)
       ws6 <- ws5.act(finalStateToConcurrentChomp(concurrency=8).triggerWith[LocalProver])
       ws7 <- ws6.act(chompReport())
-      ws8 <- ws7.act(failedAfterChomp())
+      ws8 <- ws7.act(goalsAfterChomp)
     } yield ws8
 
   lazy val sessF: Future[HoTTWebSession] =

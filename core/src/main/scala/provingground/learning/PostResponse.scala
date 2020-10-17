@@ -221,7 +221,7 @@ object TypedPostResponse {
     * @param qw postability of the response post type
     * @param lv queryability of the other arguments
     */ 
-  case class MicroBot[P, Q, W, V, ID](response: V => P => Future[Q], predicate: P => V => Boolean = (_: P) => (_ : V) => true)(
+  case class MicroBot[P, Q, W, V, ID](response: V => P => Future[Q], predicate: P => V => Boolean = (_: P) => (_ : V) => true, name: Option[String] = None)(
       implicit val ppw: Postable[P, W, ID],
       val qw: Postable[Q, W, ID],
       val lv: LocalQueryable[V, W, ID],
@@ -233,7 +233,8 @@ object TypedPostResponse {
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
-      logger.info(s"triggered response ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+      val message = name.getOrElse(this.hashCode().toHexString)
+      logger.info(s"triggered response '${message}' of type ${qw.tag} to post of type ${pw.tag} with input hash ${content.hashCode()}")
       val auxFuture = lv.getAt(web, id, predicate(content)) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
@@ -247,7 +248,7 @@ object TypedPostResponse {
             })
         }
       val task = taskNest.flatMap(st => Future.sequence(st)).andThen(_ =>
-              logger.info(s"completed response ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+              logger.info(s"completed response '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
 )
       task
     }
@@ -271,7 +272,7 @@ object TypedPostResponse {
           case  v :: HNil =>
             r : R =>
               response(v)(transform(r))
-        })
+        }, name = this.name)
     
     def :+[QQ : TypeTag, VV: TypeTag](that : MicroBot[P, QQ, W, VV, ID])(implicit qqw: Postable[QQ, W, ID], dgqq : DataGetter[QQ, W, ID],
       nilGetter: Postable[HNil, W, ID]) : MicroBot[P,Q :: QQ :: HNil,W,V :: VV :: HNil,ID] = 
@@ -330,9 +331,9 @@ object TypedPostResponse {
   }
 
   object MicroBot{
-    def simple[P, Q, W, ID](func: P => Q)(implicit pw: Postable[P, W, ID],
+    def simple[P, Q, W, ID](func: P => Q, name: Option[String] = None)(implicit pw: Postable[P, W, ID],
     qw: Postable[Q, W, ID], dg: DataGetter[Q, W, ID]) = MicroBot[P, Q, W, Unit, ID](
-     (_ : Unit) => (p: P) => Future(func(p))
+     (_ : Unit) => (p: P) => Future(func(p)), name = name
     )
   }
 

@@ -112,7 +112,7 @@ object ErasablePostBuffer {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] = {
         val idF = buffer(web).post(content, pred)
         idF.map { id =>
-          logger.info(s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}")
+          logger.info(s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, hash : ${content.hashCode()}")
           logger.debug(
             s"Full post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}"
           )
@@ -264,7 +264,7 @@ object PostBuffer {
         val idF = buffer(web).post(content, pred)
         idF.map { id =>
           logger.info(
-            s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}"
+            s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}, hash: ${content.hashCode()}"
           )
           id
         }

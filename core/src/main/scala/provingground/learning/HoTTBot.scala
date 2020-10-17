@@ -644,7 +644,7 @@ object HoTTBot {
               }
           }
 
-    MicroBot(response)
+    MicroBot(response, name = Some("skolemizing goal"))
   }
 
   lazy val viaZeroBot: MicroBot[SeekGoal, Option[
@@ -658,7 +658,9 @@ object HoTTBot {
             goal.goal match {
               case ft: FuncTyp[u, v] => 
                 val newGoal = negate(ft.dom)
-                if (newGoal == goal.goal) None 
+                if (newGoal == goal.goal) {
+                  Utils.logger.info(s"nothing gained by contradicting hypothesis for ${goal.goal}")
+                  None} 
                 else {
                   val x = ft.dom.Var
                   val y = newGoal.Var 
@@ -673,6 +675,7 @@ object HoTTBot {
                     Option(ExstFunc(transform)),
                     goal.context
                   )
+                Utils.logger.info(s"try to prove $newGoal as contradicting hypothesis")
                  Some(cons :: SeekGoal(
                   newGoal,
                   goal.context,
@@ -702,11 +705,13 @@ object HoTTBot {
                   goal.forConsequences + goal.goal
                 ) :: HNil) 
                 }                
-              case _ => None
+              case _ =>
+                Utils.logger.info(s"cannot prove ${goal.goal} by contradicting hypotheses")
+                None
             }
           }
 
-    MicroBot(response)
+    MicroBot(response, name = Some("prove by contradicting hypothesis"))
   }
 
   lazy val eqnSimpleUpdate
@@ -847,7 +852,7 @@ object HoTTBot {
             .runToFuture
       }
     }
-    MicroBot(response)
+    MicroBot(response, name = Some("chomp"))
   }
 
   def finalStateToConcurrentChomp(solverWeight: Double = 0.05, concurrency: Int = Utils.threadNum): MicroBot[
@@ -877,7 +882,7 @@ object HoTTBot {
             .runToFuture
       }
     }
-    MicroBot(response)
+    MicroBot(response, name = Some("concurrent chomp"))
   }
 
   def finalStateToLiberalChomp(solverWeight: Double = 0.05): MicroBot[
@@ -2161,6 +2166,7 @@ object HoTTBot {
     ] =
       qp =>
         seekInst => {
+          Utils.logger.info(s"seeking instances for ${seekInst.typ} with cutoff ${qp.lp.cutoff}")
           import TermGeneratorNodes._, TermRandomVars._
           qp.lp
             .varDist(termsWithTyp(seekInst.typ))
@@ -2295,7 +2301,7 @@ object HoTTBot {
             else
               Some(Contradicts.fromTyp(sg.goal, sg.context) :: newGoal :: HNil)
           }
-    MicroBot(response)
+    MicroBot(response, name = Some("negating goal"))
   }
 
   lazy val productBackward: SimpleBot[SeekGoal, Option[FromAll]] = {
@@ -2314,7 +2320,7 @@ object HoTTBot {
               )
             )
           case _ => None
-        }
+        }, Some("product resolved")
     )
   }
 
@@ -2337,7 +2343,7 @@ object HoTTBot {
               )
             )
           case _ => None
-        }
+        }, Some("coproduct resolved")
     )
   }
 
@@ -2354,8 +2360,10 @@ object HoTTBot {
                 sk.forConsequences
               )
             )
-          case _ => None
-        }
+          case _ => 
+            Utils.logger.info(s"no instances sought for ${sk.goal}")
+          None
+        }, Some("sigma-type resolved")
     )
   }
 
@@ -2538,7 +2546,7 @@ object HoTTBot {
           } else Future.successful(None)
     }
 
-    MicroBot(response, subContext)
+    MicroBot(response, subContext, name = Some("attempting goal"))
   }
 
   def decided(web: HoTTPostWeb): Future[Set[HoTTMessages.Decided]] =
