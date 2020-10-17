@@ -36,6 +36,17 @@ object StrategicProvers {
       a._2 union b._2,
       a._3 union b._3
     )
+    def collate(
+        xs: Vector[(Typ[Term], SeekResult)]
+    ): (SeekResult, Vector[Typ[Term]]) =
+      (
+        (
+          xs.map(_._2).flatMap(_._1),
+          xs.map(_._2).flatMap(_._2).toSet,
+          xs.map(_._2).flatMap(_._3).toSet
+        ),
+        xs.filter(_._2._1.isEmpty).map(_._1)
+      )
   }
 
   def formal(sc: Successes): Set[EquationNode] = {
@@ -226,6 +237,57 @@ object StrategicProvers {
         }
     }
 
+  def concurrentTargetChomper(
+      lp: LocalProver,
+      typGroups: Vector[Vector[Typ[Term]]],
+      concurrency: Int = Utils.threadNum,
+      accumSucc: Vector[Successes] = Vector(),
+      accumFail: Vector[Typ[Term]] = Vector(),
+      accumEqs: Set[EquationNode] = Set(),
+      accumTerms: Set[Term] = Set()
+  ): Task[
+    (
+        Vector[Successes],
+        Vector[Typ[Term]], // failures
+        Set[EquationNode],
+        Set[Term]
+    )
+  ] =
+    typGroups match {
+      case Vector() =>
+        Task.now((accumSucc, accumFail, accumEqs, accumTerms))
+      case typGroup +: ys =>
+        val resultGroup =
+          typGroup.map { typ =>
+            solveTyp(lp, typGroup.head, accumTerms)
+              .onErrorRecover {
+                case te: TimeoutException =>
+                  Utils.logger.error(te)
+                  (Vector(), Set.empty[EquationNode], Set.empty[Term])
+              }
+              .map(typ -> _)
+          }
+        val result =
+          Task.sequence(resultGroup).map(SeekResult.collate(_))
+        result.flatMap {
+          case ((ss, eqs, terms), failures) =>
+            Utils.logger.info(s"proved ${ss.size} results")
+            if (failures.nonEmpty) Utils.logger.info(s"failed to prove ${failures.mkString("\n")}")
+            Utils.logger.info(s"remaining ${ys.size} groups to prove/disprove")
+            equationNodes = equationNodes union (eqs)
+            termSet = termSet union (terms)
+            concurrentTargetChomper(
+              lp,
+              ys,
+              concurrency,
+              accumSucc,
+              accumFail ++ failures,
+              accumEqs union eqs,
+              accumTerms union terms
+            )
+        }
+    }
+
   def targetChomper(
       lp: LocalProver,
       typs: Vector[Typ[Term]],
@@ -246,38 +308,40 @@ object StrategicProvers {
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typ +: ys =>
         Utils.logger.info(s"trying to prove ${typ} or ${negate(typ)}")
-        solveTyp(lp, typ, accumTerms).onErrorRecover {
-                      case te: TimeoutException =>
-                        Utils.logger.error(te)
-                        (Vector(), Set.empty[EquationNode], Set.empty[Term])
-                    }.flatMap {
-          case (ss, eqs, terms) =>
-            equationNodes = equationNodes union (eqs)
-            termSet = termSet union (terms)
-            if (ss.isEmpty) {
-              Utils.logger.info(s"failed to prove $typ")
-              targetChomper(
-                lp,
-                ys,
-                accumSucc,
-                accumFail :+ typ,
-                accumEqs union eqs,
-                accumTerms union terms
-              )
-            } else {
-              ss.foreach(
-                s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
-              )
-              Utils.logger.info(s"goals remaining ${ys.size}")
-              targetChomper(
-                lp,
-                ys,
-                accumSucc :+ ss,
-                accumFail,
-                accumEqs union eqs,
-                accumTerms union terms
-              )
-            }
-        }
+        solveTyp(lp, typ, accumTerms)
+          .onErrorRecover {
+            case te: TimeoutException =>
+              Utils.logger.error(te)
+              (Vector(), Set.empty[EquationNode], Set.empty[Term])
+          }
+          .flatMap {
+            case (ss, eqs, terms) =>
+              equationNodes = equationNodes union (eqs)
+              termSet = termSet union (terms)
+              if (ss.isEmpty) {
+                Utils.logger.info(s"failed to prove $typ")
+                targetChomper(
+                  lp,
+                  ys,
+                  accumSucc,
+                  accumFail :+ typ,
+                  accumEqs union eqs,
+                  accumTerms union terms
+                )
+              } else {
+                ss.foreach(
+                  s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
+                )
+                Utils.logger.info(s"goals remaining ${ys.size}")
+                targetChomper(
+                  lp,
+                  ys,
+                  accumSucc :+ ss,
+                  accumFail,
+                  accumEqs union eqs,
+                  accumTerms union terms
+                )
+              }
+          }
     }
 }

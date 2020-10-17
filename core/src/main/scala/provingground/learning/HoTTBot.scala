@@ -850,6 +850,36 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  def finalStateToConcurrentChomp(solverWeight: Double = 0.05, concurrency: Int = Utils.threadNum): MicroBot[
+    FinalState,
+    ChompResult,
+    HoTTPostWeb,
+    Set[HoTT.Term] :: QueryProver :: HNil,
+    ID
+  ] = {
+    val response: (Set[Term] :: QueryProver :: HNil) => FinalState => Future[
+      ChompResult
+    ] = {
+      case (terms :: qp :: HNil) => {
+        case fs =>
+          val unknowns = fs.ts.orderedUnknowns.grouped(concurrency).toVector
+          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknowns")
+          StrategicProvers
+            .concurrentTargetChomper(
+              qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight)),
+              unknowns,
+              concurrency,
+              accumTerms = terms
+            )
+            .map {
+              case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
+            }
+            .runToFuture
+      }
+    }
+    MicroBot(response)
+  }
+
   def finalStateToLiberalChomp(solverWeight: Double = 0.05): MicroBot[
     FinalState,
     ChompResult,
