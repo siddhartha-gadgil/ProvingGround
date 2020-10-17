@@ -95,7 +95,7 @@ object ChompSession {
       ws3 <- ws2.act(expnEqnUpdate)
       ws4 <- ws3.act(expFS)
       ws5 <- ws4.postLast(lp)
-      ws6 <- ws5.act(finalStateToChomp().triggerWith[LocalProver])
+      ws6 <- ws5.act(finalStateToConcurrentChomp(concurrency=8).triggerWith[LocalProver])
       ws7 <- ws6.act(chompReport())
       ws8 <- ws7.act(failedAfterChomp())
     } yield ws8
