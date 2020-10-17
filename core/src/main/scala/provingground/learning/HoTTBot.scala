@@ -665,7 +665,7 @@ object HoTTBot {
                   None
                 } else {
                   Utils.logger.info(
-                    s"try to prove $newGoal as contradicting hypothesis"
+                    s"try to prove $newGoal as contradicting hypothesis  for ${goal.goal}"
                   )
                   val x = ft.dom.Var
                   val y = newGoal.Var
@@ -700,7 +700,7 @@ object HoTTBot {
                   None
                 } else {
                   Utils.logger.info(
-                    s"try to prove $newGoal as contradicting hypothesis"
+                    s"try to prove $newGoal as contradicting hypothesis for ${goal.goal}"
                   )
                   val x = pd.domain.Var
                   val y = newGoal.Var
