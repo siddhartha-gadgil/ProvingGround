@@ -257,6 +257,7 @@ object StrategicProvers {
       case Vector() =>
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typGroup +: ys =>
+        Utils.logger.info(s"seeking result for group ${typGroup.mkString(" ; ")}")
         val resultGroup =
           typGroup.map { typ =>
             solveTyp(lp, typ, accumTerms)
