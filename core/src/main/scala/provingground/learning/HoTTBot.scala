@@ -863,7 +863,7 @@ object HoTTBot {
       case (terms :: qp :: HNil) => {
         case fs =>
           val unknowns = fs.ts.orderedUnknowns.grouped(concurrency).toVector
-          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknowns")
+          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknown groups")
           StrategicProvers
             .concurrentTargetChomper(
               qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight)),

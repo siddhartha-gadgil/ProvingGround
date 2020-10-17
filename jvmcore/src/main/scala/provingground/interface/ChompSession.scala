@@ -24,8 +24,12 @@ object ChompSession {
   }
 
   logger.info(
-    """|This is a Bot based run for goal chomping. For now this is the first attempt
-                 |""".stripMargin
+    """|
+       |This is a Bot based run for goal chomping. This has been refined a few times.
+       |Biggest change after first runs was having a session with bots.
+       |Also parallel chomping, proving via zero, using inclusions and projections,
+       |better reporting of status. 
+       |""".stripMargin
   )
 
   logger.info(s"Number of threads: $threadNum")
