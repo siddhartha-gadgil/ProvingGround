@@ -41,7 +41,7 @@ object ChompSession {
   val web = new HoTTPostWeb()
   val ws  = WebState[HoTTPostWeb, HoTTPostWeb.ID](web)
 
-  val terms = FiniteDistribution.unif[Term](
+  val terms1 = FiniteDistribution.unif[Term](
     Unit,
     Zero,
     Star,
@@ -52,7 +52,7 @@ object ChompSession {
     PlusTyp.incl1,
     PlusTyp.incl2
   )
-  val terms1 = FiniteDistribution.unif[Term](
+  val terms = FiniteDistribution.unif[Term](
     Unit,
     Zero,
     Star
