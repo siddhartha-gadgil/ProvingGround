@@ -48,7 +48,7 @@ object HoTTMessages {
       */
     def relevantGiven(terms: Set[Term], decisions: Set[Decided] = Set()): Boolean =
       (terms
-        .map(_.typ).union(decisions.map(_.statement)))
+        .map(_.typ).union(decisions.map(_.statement))).flatMap(typ => Set(typ, negate(typ)))
         .intersect(
           forConsequences union forConsequences
             .map(negate) union Set(goal, negate(goal))
