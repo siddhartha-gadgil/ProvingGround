@@ -672,7 +672,7 @@ object HoTTBot {
                   val transform = {
                     import Fold._
                     y :-> (x :-> vacuous(ft.codom)(
-                      negateContra(goal.goal)(x)(y)
+                      negateContra(ft.dom)(x)(y)
                     ))
                   }
                   val cons =
@@ -707,7 +707,7 @@ object HoTTBot {
                   val transform = {
                     import Fold._
                     y :-> (x :-> vacuous(pd.fibers(x))(
-                      negateContra(goal.goal)(x)(y)
+                      negateContra(pd.domain)(x)(y)
                     ))
                   }
                   val cons =
