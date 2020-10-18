@@ -2618,7 +2618,7 @@ object HoTTBot {
       (web) =>
         (_) =>
           (_) =>
-            topLevelGoals(web, context).map { goals =>
+            topLevelRelevantGoals(web, context).map { goals =>
               Utils.logger.info(s"remaining top level goals: ${goals.size}")
               Utils.logger.info(goals.mkString("\n"))
               if (haltIfEmpty && goals.isEmpty) {
