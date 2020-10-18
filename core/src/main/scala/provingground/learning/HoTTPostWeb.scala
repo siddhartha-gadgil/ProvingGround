@@ -19,6 +19,11 @@ import provingground.induction.ExstInducDefn
 class HoTTPostWeb {
   import HoTTPostWeb._
 
+  def halt() = {
+    Utils.logger.info("Halting HoTT-post-web session")
+    running = false
+  }
+
   var running: Boolean = true
 
   implicit val global: GlobalID[ID] = new CounterGlobalID()

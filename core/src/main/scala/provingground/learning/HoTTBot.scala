@@ -424,7 +424,7 @@ object HoTTBot {
               Utils.report(view)
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
-                  web.running = false
+                  web.halt()
                   Utils.running = false
                 }
               }
@@ -467,7 +467,7 @@ object HoTTBot {
               // Utils.report(view)
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
-                  web.running = false
+                  web.halt() 
                   Utils.running = false
                 }
               }
@@ -2622,7 +2622,7 @@ object HoTTBot {
               Utils.logger.info(s"remaining top level goals: ${goals.size}")
               Utils.logger.info(goals.mkString("\n"))
               if (haltIfEmpty && goals.isEmpty) {
-                web.running = false
+                web.halt() 
                 Utils.running = false
               }
             }
