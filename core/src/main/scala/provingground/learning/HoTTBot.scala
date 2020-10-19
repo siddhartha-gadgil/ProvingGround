@@ -2582,6 +2582,7 @@ object HoTTBot {
                 // pprint.log(x)
                 lp.addVar(x, varWeight)
             }
+            Utils.logger.info(s"initial state ${withVars.initState}")
             withVars
               .varDist(TermRandomVars.termsWithTyp(goal.goal))
               .runToFuture
