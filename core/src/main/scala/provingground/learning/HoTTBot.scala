@@ -2568,18 +2568,20 @@ object HoTTBot {
           Option[Either[FailedToProve, Proved]]
         ] = {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
-        // println(qp)
+          Utils.logger.info(s"using $qp")
         // pprint.log(qp)
         goal =>
           if (goal.relevantGiven(terms, gp.contents)) {
             Utils.logger.info(s"attempting $goal with cutoff ${qp.lp.cutoff}")
             val lpVars   = qp.lp.initState.context.variables
+            Utils.logger.info(s"lp-vars $lpVars")
             val goalVars = goal.context.variables
+            Utils.logger.info(s"goal-vars $goalVars")
             val newVars  = goalVars.drop(lpVars.size)
-            // pprint.log(newVars)
+            Utils.logger.info(s"new-vars $newVars")
             val withVars = newVars.foldLeft(qp.lp) {
               case (lp: LocalProver, x: Term) =>
-                // pprint.log(x)
+                pprint.log(x)
                 lp.addVar(x, varWeight)
             }
             Utils.logger.info(s"initial state ${withVars.initState}")
