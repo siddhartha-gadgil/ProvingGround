@@ -348,19 +348,20 @@ object TypedPostResponse {
     * @param qw postability of the response post type
     * @param lv queryability of the other arguments
     */
-  case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean = (_: V) => true)(
+  case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean = (_: V) => true, name : Option[String] = None)(
         implicit pw: Postable[P, W, ID],
         qw: Postable[Q, W, ID],
         lv: LocalQueryable[V, W, ID],
         dg: DataGetter[Q, W, ID]
     ) extends TypedPostResponse[P, W, ID] {
+      val message = name.getOrElse(this.hashCode().toHexString)
 
       def post(
           web: W,
           content: P,
           id: ID
       ): Future[Vector[PostData[_, W, ID]]] = {
-        logger.info(s"triggered (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+        logger.info(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val taskNest =
           auxFuture.map{
@@ -376,7 +377,7 @@ object TypedPostResponse {
               })
           }
         val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten)).andThen(_ =>
-                logger.info(s"completed all responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+                logger.info(s"completed all responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
 )
         task
       }
@@ -393,19 +394,20 @@ object TypedPostResponse {
     * @param qw postability of the response post type
     * @param lv queryability of the other arguments
     */
-  case class DualMiniBot[P, Q, W, V, ID](responses: V => P => Vector[Future[Q]], predicate: V => Boolean = (_: V) => true)(
+  case class DualMiniBot[P, Q, W, V, ID](responses: V => P => Vector[Future[Q]], predicate: V => Boolean = (_: V) => true, name: Option[String] = None)(
         implicit pw: Postable[P, W, ID],
         qw: Postable[Q, W, ID],
         lv: LocalQueryable[V, W, ID],
         dg: DataGetter[Q, W, ID]
     ) extends TypedPostResponse[P, W, ID] {
+      val message = name.getOrElse(this.hashCode().toHexString)
 
       def post(
           web: W,
           content: P,
           id: ID
       ): Future[Vector[PostData[_, W, ID]]] = {
-        logger.info(s"triggered (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+        logger.info(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag}")
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val taskNest =
           auxFuture.flatMap{
@@ -430,7 +432,7 @@ object TypedPostResponse {
                   newPostsData})
                   }
           }.andThen(_ => 
-          logger.info(s"completed (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+          logger.info(s"completed (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
           )
         taskNest
       }
@@ -467,7 +469,7 @@ object TypedPostResponse {
     * @param qw postability of the response post type
     * @param lv queryability of the other arguments
     */
-  case class DualMiniBotTask[P, Q, W, V, ID](responses: V => P => Vector[Task[Q]], predicate: V => Boolean = (_: V) => true)(
+  case class DualMiniBotTask[P, Q, W, V, ID](responses: V => P => Vector[Task[Q]], predicate: V => Boolean = (_: V) => true, name: Option[String] = None)(
         implicit pw: Postable[P, W, ID],
         qw: Postable[Q, W, ID],
         lv: LocalQueryable[V, W, ID],
@@ -480,7 +482,9 @@ object TypedPostResponse {
           content: P,
           id: ID
       ): Future[Vector[PostData[_, W, ID]]] = {
-        logger.info(s"triggered (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+        val message = name.getOrElse(this.hashCode().toHexString)
+
+        logger.info(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val auxTask = Task.fromFuture(auxFuture)
         val taskNest =
@@ -509,7 +513,7 @@ object TypedPostResponse {
                   }
           }
           .map{result => 
-          logger.info(s"completed (multiple) responses ${this.hashCode().toHexString} of type ${qw.tag} to posts of type ${pw.tag}")
+          logger.info(s"completed (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
           result
           }
         taskNest.runToFuture

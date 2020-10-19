@@ -329,22 +329,22 @@ object HoTTBot {
   }
 
   lazy val reportProved: Callback[Proved, HoTTPostWeb, Unit, ID] =
-    Callback.simple { (_) => (proved) =>
+    Callback.simple ({ (_) => (proved) =>
       Future {
         Utils.logger.info(
           s"Proved ${proved.statement} by ${proved.proofOpt} in context ${proved.context}"
         )
       }
-    }
+    }, name = Some("report proved"))
 
   lazy val reportContradicted: Callback[Contradicted, HoTTPostWeb, Unit, ID] =
-    Callback.simple { (_) => (proved) =>
+    Callback.simple ({ (_) => (proved) =>
       Future {
         Utils.logger.info(
           s"Contradicted ${proved.statement} in context ${proved.context}"
         )
       }
-    }
+    }, name = Some("report contradicted"))
 
   lazy val updateTerms: Callback[FinalState, HoTTPostWeb, Unit, ID] =
     Callback.simple(
@@ -612,7 +612,7 @@ object HoTTBot {
           )
       }
     }
-    MicroBot(response)
+    MicroBot(response, name = Some("goals from instances"))
   }
 
   lazy val skolemBot: MicroBot[SeekGoal, Option[
@@ -1056,7 +1056,7 @@ object HoTTBot {
           }
     }
 
-    MiniBot(response)
+    MiniBot(response, name = Some("deduced results"))
   }
 
   lazy val termsFromProofs: Callback[Proved, HoTTPostWeb, Unit, ID] =
@@ -2215,7 +2215,7 @@ object HoTTBot {
         }
 
     MiniBot[SeekInstances, WithWeight[Instance], HoTTPostWeb, QueryProver, ID](
-      response
+      response, name= Some("instances from local prover")
     )
   }
 
@@ -2293,7 +2293,7 @@ object HoTTBot {
             )
           }
 
-    MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](response)
+    MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](response, name = Some("resolve from-all into separate goals"))
   }
 
   lazy val resolveFromAny: MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID] = {
@@ -2311,7 +2311,7 @@ object HoTTBot {
             )
           }
 
-    MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID](response)
+    MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID](response, name = Some("resolve from-any into separate goals"))
   }
 
   lazy val negateGoal: MicroBot[SeekGoal, Option[
@@ -2626,7 +2626,7 @@ object HoTTBot {
                 Utils.running = false
               }
             }
-    Callback(response)
+    Callback(response, name = Some("remaining top level goals"))
   }
 
   // def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =

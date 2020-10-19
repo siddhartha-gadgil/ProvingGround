@@ -5,7 +5,6 @@ import provingground.learning.HoTTMessages.Proved
 import provingground.learning.HoTTMessages.Contradicted
 import shapeless._, HList._
 
-
 /**
   * Messages to be posted for autonomous/interactive running.
   * These can be posted by a user, rule-based bot or a deep-learning system;
@@ -46,9 +45,14 @@ object HoTTMessages {
       * @param terms
       * @return whether the goal is still worth proving
       */
-    def relevantGiven(terms: Set[Term], decisions: Set[Decided] = Set()): Boolean =
+    def relevantGiven(
+        terms: Set[Term],
+        decisions: Set[Decided] = Set()
+    ): Boolean =
       (terms
-        .map(_.typ).union(decisions.map(_.statement))).flatMap(typ => Set(typ, negate(typ)))
+        .map(_.typ)
+        .union(decisions.map(_.statement)))
+        .flatMap(typ => Set(typ, negate(typ)))
         .intersect(
           forConsequences union forConsequences
             .map(negate) union Set(goal, negate(goal))
@@ -325,11 +329,15 @@ object HoTTMessages {
     } assert(contra("assume" :: statement).map(_.typ) == Some(Zero))
   }
 
-  object Contradicted{
-    def fromTerm(statement: Typ[Term], t: Term, context: Context) : Contradicted = {
+  object Contradicted {
+    def fromTerm(
+        statement: Typ[Term],
+        t: Term,
+        context: Context
+    ): Contradicted = {
       require(t.typ == negate(statement))
       val x = statement.Var
-      val contraOpt = ExstFunc.opt{
+      val contraOpt = ExstFunc.opt {
         import Fold._
         x :-> negateContra(statement)(x)(t)
       }
@@ -341,7 +349,7 @@ object HoTTMessages {
       statement: Typ[Term],
       context: Context,
       forConsequences: Set[Typ[Term]] = Set()
-  ){
+  ) {
     lazy val seek = SeekGoal(statement, context, forConsequences)
   }
 
@@ -405,12 +413,12 @@ object HoTTMessages {
     )
   }
 
-  object Contradicts{
-    def fromTyp(statement: Typ[Term], context: Context) : Contradicts = {
-      val x = statement.Var
+  object Contradicts {
+    def fromTyp(statement: Typ[Term], context: Context): Contradicts = {
+      val x          = statement.Var
       val conclusion = negate(statement)
-      val t = conclusion.Var
-      val contraOpt = ExstFunc.opt{
+      val t          = conclusion.Var
+      val contraOpt = ExstFunc.opt {
         import Fold._
         x :-> t :-> negateContra(statement)(x)(t)
       }
@@ -481,6 +489,9 @@ object HoTTMessages {
     val forConsequences: Set[Typ[Term]]
 
     def sigma = SigmaTyp[U, V](goal)
+
+    override def toString(): String =
+      s"SeekInstances(type= $typ, goal = \u2211($goal), context = $context, forConsequences = $forConsequences)"
   }
 
   object SeekInstances {
