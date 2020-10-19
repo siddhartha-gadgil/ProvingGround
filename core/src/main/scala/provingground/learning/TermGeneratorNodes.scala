@@ -351,6 +351,27 @@ object TermGeneratorNodes {
       case defn :: HNil => domainForDefn(defn)
     }, DomForInduc)
 
+
+  /**
+    * Node for recursive definitions targeting a specific type
+    * given an inductive definition, generating a domain and
+    * invoking the node getting codomain; but not the recursion data here
+    */
+  def targetInducFuncs(
+      ind: ExstInducDefn,
+      target: Typ[Term]
+  ): Option[Term] =
+    target match {
+      case ft: FuncTyp[u, v] =>
+        ind.ind.recOpt(ft.dom, ft.codom)
+      case _ =>
+        goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
+          case (dom, targ) =>
+            val fnOpt = ind.ind.inducOpt(dom, targ)
+            fnOpt
+        }
+    }
+
 }
 
 /**
@@ -932,25 +953,7 @@ class TermGeneratorNodes[InitState](
         }
     }
 
-  /**
-    * Node for recursive definitions targeting a specific type
-    * given an inductive definition, generating a domain and
-    * invoking the node getting codomain; but not the recursion data here
-    */
-  def targetInducFuncs(
-      ind: ExstInducDefn,
-      target: Typ[Term]
-  ): Option[Term] =
-    target match {
-      case ft: FuncTyp[u, v] =>
-        ind.ind.recOpt(ft.dom, ft.codom)
-      case _ =>
-        goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
-          case (dom, targ) =>
-            val fnOpt = ind.ind.inducOpt(dom, targ)
-            fnOpt
-        }
-    }
+  
 
   /**
     * Node for recursive definitions given an inductive definition, generating a domain and

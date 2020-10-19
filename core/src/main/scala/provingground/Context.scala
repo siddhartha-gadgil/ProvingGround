@@ -20,6 +20,8 @@ object Context {
 
     val inductiveDefns: Vector[ExstInducStrucs] = Vector()
 
+    val statements: Vector[String] = Vector()
+
     def export(t: Term): Term = t
 
     def exportTyp(typ: Typ[Term]): Typ[Term] = typ
@@ -67,6 +69,8 @@ object Context {
 
     val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
 
+    val statements: Vector[String] = init.statements :+ s"Let ${defn.name} : ${defn.name.typ} = ${defn.value}"
+
     def export(t: Term): Term = init.export(t.replace(defn.name, defn.value))
 
     def exportTyp(t: Typ[Term]): Typ[Term] =
@@ -102,6 +106,8 @@ object Context {
 
     val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
 
+    val statements: Vector[String] = init.statements :+ s"Const ${constant} : ${constant.typ}"
+
     def export(t: Term): Term = init.export(t)
 
     def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
@@ -132,6 +138,8 @@ object Context {
     val definitions: Vector[Defn[Term]] = init.definitions
 
     val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns :+ defn
+
+    val statements: Vector[String] = init.statements :+ s"Inductive $defn"
 
     def export(t: Term): Term = init.export(t)
 
@@ -174,6 +182,8 @@ object Context {
 
     val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
 
+    val statements: Vector[String] = init.statements :+ s"$role $term : ${term.typ}"
+
     def export(t: Term): Term = init.export(t)
 
     def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
@@ -206,6 +216,8 @@ object Context {
     val definitions: Vector[Defn[Term]] = init.definitions
 
     val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
+
+    val statements: Vector[String] = init.statements :+ s"Given $variable : ${variable.typ}"
 
     def export(t: Term): Term =
       init.export(if (t.dependsOn(variable)) variable :~> t else t)
@@ -253,6 +265,10 @@ sealed trait Context {
   val definitions: Vector[Context.Defn[Term]]
 
   val inductiveDefns: Vector[ExstInducStrucs]
+
+  val statements: Vector[String]
+
+  override def toString(): String = statements.mkString("{", "; ","}")
 
   lazy val inducStruct: ExstInducStrucs =
     inductiveDefns.reverse

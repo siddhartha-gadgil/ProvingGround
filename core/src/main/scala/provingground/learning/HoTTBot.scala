@@ -1,6 +1,6 @@
 package provingground.learning
 
-import provingground._, HoTT._
+import provingground._, HoTT._, induction._
 import TypedPostResponse._
 import monix.eval._
 import LocalQueryable._
@@ -16,6 +16,7 @@ import scala.concurrent._, duration._
 import provingground.learning.Expression.FinalVal
 import scala.math.Ordering.Double.TotalOrdering
 import fastparse.internal.Util
+import provingground.induction.ExstInducDefn
 
 case class QueryProver(lp: LocalProver)
 
@@ -329,16 +330,19 @@ object HoTTBot {
   }
 
   lazy val reportProved: Callback[Proved, HoTTPostWeb, Unit, ID] =
-    Callback.simple ({ (_) => (proved) =>
-      Future {
-        Utils.logger.info(
-          s"Proved ${proved.statement} by ${proved.proofOpt} in context ${proved.context}"
-        )
-      }
-    }, name = Some("report proved"))
+    Callback.simple(
+      { (_) => (proved) =>
+        Future {
+          Utils.logger.info(
+            s"Proved ${proved.statement} by ${proved.proofOpt} in context ${proved.context}"
+          )
+        }
+      },
+      name = Some("report proved")
+    )
 
   lazy val reportContradicted: Callback[Contradicted, HoTTPostWeb, Unit, ID] =
-    Callback.simple ({ (_) => (proved) =>
+    Callback.simple({ (_) => (proved) =>
       Future {
         Utils.logger.info(
           s"Contradicted ${proved.statement} in context ${proved.context}"
@@ -467,7 +471,7 @@ object HoTTBot {
               // Utils.report(view)
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
-                  web.halt() 
+                  web.halt()
                   Utils.running = false
                 }
               }
@@ -2177,6 +2181,21 @@ object HoTTBot {
     )
   }
 
+  lazy val inductionBackward
+      : MicroHoTTBoTT[SeekGoal, Option[FromAll], GatherPost[ExstInducDefn]] = {
+    val response
+        : GatherPost[ExstInducDefn] => SeekGoal => Future[Option[FromAll]] =
+      gpInd =>
+        sg =>
+          Future {
+            import TermGeneratorNodes.targetInducFuncs
+            val funcs = gpInd.contents.flatMap(ind => targetInducFuncs(ind, sg.goal))
+            val fromAlls = funcs.flatMap(fn => FromAll.get(fn, sg.goal, sg.forConsequences, sg.context))
+            fromAlls.headOption
+          }
+    MicroBot(response)
+  }
+
   /**
     * generate instances with weights from a local prover
     * alternatively we can just use a final state and given goal,
@@ -2215,12 +2234,14 @@ object HoTTBot {
         }
 
     MiniBot[SeekInstances, WithWeight[Instance], HoTTPostWeb, QueryProver, ID](
-      response, name= Some("instances from local prover")
+      response,
+      name = Some("instances from local prover")
     )
   }
 
-  lazy val inductionBackward
-      : MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID] = {
+  lazy val inductionWeightedBackward: MiniBot[SeekGoal, WithWeight[
+    FunctionForGoal
+  ], HoTTPostWeb, QueryProver, ID] = {
     val response: QueryProver => SeekGoal => Future[
       Vector[WithWeight[FunctionForGoal]]
     ] =
@@ -2293,7 +2314,10 @@ object HoTTBot {
             )
           }
 
-    MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](response, name = Some("resolve from-all into separate goals"))
+    MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](
+      response,
+      name = Some("resolve from-all into separate goals")
+    )
   }
 
   lazy val resolveFromAny: MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID] = {
@@ -2311,7 +2335,10 @@ object HoTTBot {
             )
           }
 
-    MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID](response, name = Some("resolve from-any into separate goals"))
+    MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID](
+      response,
+      name = Some("resolve from-any into separate goals")
+    )
   }
 
   lazy val negateGoal: MicroBot[SeekGoal, Option[
@@ -2622,7 +2649,7 @@ object HoTTBot {
               Utils.logger.info(s"remaining top level goals: ${goals.size}")
               Utils.logger.info(goals.mkString("\n"))
               if (haltIfEmpty && goals.isEmpty) {
-                web.halt() 
+                web.halt()
                 Utils.running = false
               }
             }
