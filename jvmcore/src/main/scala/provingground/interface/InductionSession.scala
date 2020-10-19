@@ -60,7 +60,7 @@ object InductionSession {
   val ts   = TermState(terms, typs)
   val tg   = TermGenParams.zero.copy(appW = 0.2, unAppW = 0.2)
 
-  val lp = LocalProver (ts, tg).sharpen(10)
+  val lp = LocalProver (ts, tg)
 
   val hypothesis = n ~>: (f(n) =:= f(succ(n)))
 
@@ -90,7 +90,7 @@ object InductionSession {
   lazy val wsF =
     for {
       ws1 <- ws.post(lp, Set())
-      ws2 <- ws.postLast(exstInducDefn)
+      ws2 <- ws1.postLast(exstInducDefn)
       ws3 <- ws2.postLast(SeekGoal(goal, Context.Empty))
     } yield ws3
 
