@@ -2193,7 +2193,7 @@ object HoTTBot {
             val fromAlls = funcs.flatMap(fn => FromAll.get(fn, sg.goal, sg.forConsequences, sg.context))
             fromAlls.headOption
           }
-    MicroBot(response)
+    MicroBot(response, name = Some("induction resolved"))
   }
 
   /**
