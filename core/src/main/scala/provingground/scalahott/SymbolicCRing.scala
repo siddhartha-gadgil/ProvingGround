@@ -259,8 +259,10 @@ class SymbolicCRing[A: Ring] { self =>
     def reduce(vec: Vector[(LocalTerm, Int)]): LocalTerm = {
       val pairs = vec
         .groupBy(_._1)
-        .view.mapValues((seq) => (seq.map(_._2).sum))
-        .filter(_._2 != 0).toMap
+        .view
+        .mapValues((seq) => (seq.map(_._2).sum))
+        .filter(_._2 != 0)
+        .toMap
 
       if (pairs.isEmpty) Literal(one)
       else if (pairs.size > 1 || pairs.head._2 != 1) PiTerm(pairs)
@@ -375,6 +377,8 @@ class SymbolicCRing[A: Ring] { self =>
         FormalAppln(this, p)
 //        Comb(sum, Literal(a), p)
     }
+
+    override def toString(): String = s"(_ + $a)"
   }
 
   /**
@@ -386,6 +390,8 @@ class SymbolicCRing[A: Ring] { self =>
     val func: sum.type = sum
 
     val arg: LocalTerm = x
+
+    override def toString(): String = s"(_ + $x)"
 
     //    println(s"addterm $x")
 
@@ -528,6 +534,8 @@ class SymbolicCRing[A: Ring] { self =>
       with MiscAppln {
     val func: prod.type = prod
 
+    override def toString(): String = s"(_ * $x)"
+
     val arg: LocalTerm = Literal(b)
 
     val x: LocalTerm = Literal(b)
@@ -564,6 +572,8 @@ class SymbolicCRing[A: Ring] { self =>
     val func: prod.type = prod
 
     val arg: LocalTerm = x
+
+    override def toString(): String = s"(_ * $x)"
 
     val dom: LocalTyp.type = LocalTyp
 
@@ -609,7 +619,8 @@ class SymbolicCRing[A: Ring] { self =>
 object SymbolicCRing {
 
   def parse(typ: Typ[Term])(str: String): Option[Term] = typ match {
-    case FuncTyp(a: SymbolicCRing[u], ft: FuncTyp[v, w]) if a == ft.dom && ft.dom == ft.codom =>
+    case FuncTyp(a: SymbolicCRing[u], ft: FuncTyp[v, w])
+        if a == ft.dom && ft.dom == ft.codom =>
       str match {
         case x if x == a.sum.toString()  => Some(a.sum)
         case x if x == a.prod.toString() => Some(a.prod)
@@ -637,10 +648,13 @@ object SymbolicCRing {
         arg: RepTerm[A]
     ): RepTerm[B] = arg match {
       case domRing.Literal(x) => codomRing.Literal(f(x))
-      case domRing.Comb(op, x, y) if op == domRing.sum => codomRing.sum(act(x))(act(y))
-      case domRing.Comb(op, x, y) if op == domRing.prod => codomRing.prod(act(x))(act(y))
+      case domRing.Comb(op, x, y) if op == domRing.sum =>
+        codomRing.sum(act(x))(act(y))
+      case domRing.Comb(op, x, y) if op == domRing.prod =>
+        codomRing.prod(act(x))(act(y))
       case domRing.SigmaTerm(elems) => codomRing.SigmaTerm(elems.map(act))
-      case domRing.PiTerm(multElems) => codomRing.PiTerm(multElems.map{case (x, n) => (act(x), n)})
+      case domRing.PiTerm(multElems) =>
+        codomRing.PiTerm(multElems.map { case (x, n) => (act(x), n) })
     }
 
     val dom: domRing.LocalTyp.type = domRing.LocalTyp
