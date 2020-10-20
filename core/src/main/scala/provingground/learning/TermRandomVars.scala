@@ -27,6 +27,8 @@ import provingground.learning.Expression.Log
 import provingground.learning.Expression.IsleScale
 import provingground.learning.Expression.Coeff
 import provingground.learning.Expression.Sum
+import provingground.interface.ContextJson
+import cats.instances.vector
 
 object TermRandomVars {
 
@@ -90,7 +92,7 @@ object TermRandomVars {
     */
   case object Typs extends RandomVar[Typ[Term]]
 
-    /**
+  /**
     * distribution of functions : as existentials (wrapping terms), not as terms
     */
   case object Funcs extends RandomVar[ExstFunc]
@@ -357,10 +359,10 @@ object TermRandomVars {
           .asInstanceOf[Sort[U, V]]
       case Restrict(optMap) =>
         val newOptMap = optMap match {
-          case TypOpt  => TypOpt.asInstanceOf[U => Option[V]]
-          case TypAsTermOpt  => TypAsTermOpt.asInstanceOf[U => Option[V]]
-          case FuncOpt => FuncOpt.asInstanceOf[U => Option[V]]
-          case TypFamilyOpt  => TypFamilyOpt.asInstanceOf[U => Option[V]]
+          case TypOpt       => TypOpt.asInstanceOf[U => Option[V]]
+          case TypAsTermOpt => TypAsTermOpt.asInstanceOf[U => Option[V]]
+          case FuncOpt      => FuncOpt.asInstanceOf[U => Option[V]]
+          case TypFamilyOpt => TypFamilyOpt.asInstanceOf[U => Option[V]]
           case FuncWithDom(typ) =>
             FuncWithDom(typ.replace(x, y)).asInstanceOf[U => Option[V]]
           case _ =>
@@ -396,36 +398,37 @@ object TermRandomVars {
   def variableSubs[Y](
       x: Term,
       y: Term
-  )(v: Variable[Y]): Variable[Y] = 
+  )(v: Variable[Y]): Variable[Y] =
     if (x == y) v
-  else  (v: Variable[Y]) match {
-    case Elem(element, randomVar) =>
-      Elem(valueSubs(x, y)(element), randomVarSubs(x, y)(randomVar))
-    case ev: Event[a, b] =>
-      val newBase             = randomVarSubs(x, y)(ev.base)
-      val newSort: Sort[a, b] = sortSubs(x, y)(ev.sort)
-      Event(newBase, newSort)
-    case inIsleFull: InIsle[c, cc, _, d, _] =>
-      val inIsleTry =
-        Try(inIsleFull.asInstanceOf[InIsle[c, cc, TermState, d, Term]])
-      inIsleTry.fold(
-        fa => inIsleFull,
-        inIsle => {
-          import inIsle._
-          val newBoat    = boat.replace(x, y)
-          val newIsleVar = variableSubs(x, y)(isleVar)
-          val newIsle    = isleSub(x, y)(isle, boat)
-          InIsle(newIsleVar, newBoat, newIsle)
-        }
-      )
+    else
+      (v: Variable[Y]) match {
+        case Elem(element, randomVar) =>
+          Elem(valueSubs(x, y)(element), randomVarSubs(x, y)(randomVar))
+        case ev: Event[a, b] =>
+          val newBase             = randomVarSubs(x, y)(ev.base)
+          val newSort: Sort[a, b] = sortSubs(x, y)(ev.sort)
+          Event(newBase, newSort)
+        case inIsleFull: InIsle[c, cc, _, d, _] =>
+          val inIsleTry =
+            Try(inIsleFull.asInstanceOf[InIsle[c, cc, TermState, d, Term]])
+          inIsleTry.fold(
+            fa => inIsleFull,
+            inIsle => {
+              import inIsle._
+              val newBoat    = boat.replace(x, y)
+              val newIsleVar = variableSubs(x, y)(isleVar)
+              val newIsle    = isleSub(x, y)(isle, boat)
+              InIsle(newIsleVar, newBoat, newIsle)
+            }
+          )
 
-    case PairEvent(base1, base2, sort) =>
-      PairEvent(
-        randomVarSubs(x, y)(base1),
-        randomVarSubs(x, y)(base2),
-        sortSubs(x, y)(sort)
-      )
-  }
+        case PairEvent(base1, base2, sort) =>
+          PairEvent(
+            randomVarSubs(x, y)(base1),
+            randomVarSubs(x, y)(base2),
+            sortSubs(x, y)(sort)
+          )
+      }
 
   def isleNormalizeVars[Y](
       v: GeneratorVariables.Variable[Y],
@@ -461,7 +464,7 @@ object TermRandomVars {
     case InitialVal(variable) => InitialVal(fn(variable))
     case Sum(xs) =>
       Sum(
-       xs.map(x =>  expressionMapVars(fn)(x))
+        xs.map(x => expressionMapVars(fn)(x))
       )
     case IsleScale(boat: Term) =>
       val newBoat = "%boat" :: boat.typ
@@ -469,10 +472,10 @@ object TermRandomVars {
         newBoat
       )
     case IsleScale(boat) => IsleScale(boat)
-    case Log(exp)              => Log(expressionMapVars(fn)(exp))
-    case Literal(value)        => Literal(value)
-    case Exp(exp)              => Exp(expressionMapVars(fn)(exp))
-    case Coeff(node)           => Coeff(node)
+    case Log(exp)        => Log(expressionMapVars(fn)(exp))
+    case Literal(value)  => Literal(value)
+    case Exp(exp)        => Exp(expressionMapVars(fn)(exp))
+    case Coeff(node)     => Coeff(node)
     case Quotient(x, y) =>
       Quotient(
         expressionMapVars(fn)(x),
@@ -487,34 +490,35 @@ object TermRandomVars {
 
   def expressionSubs(x: Term, y: Term)(exp: Expression): Expression =
     if (x == y) exp
-    else    exp match {
-      case FinalVal(variable)   => FinalVal(variableSubs(x, y)(variable))
-      case InitialVal(variable) => InitialVal(variableSubs(x, y)(variable))
-      case Product(a, b) =>
-        Product(
-          expressionSubs(x, y)(a),
-          expressionSubs(x, y)(b)
-        )
-      case Quotient(a, b) =>
-        Quotient(
-          expressionSubs(x, y)(a),
-          expressionSubs(x, y)(b)
-        )
-      case Exp(exp) =>
-        Exp(expressionSubs(x, y)(exp))
-      case Literal(value) => Literal(value)
-      case Log(exp) =>
-        Log(expressionSubs(x, y)(exp))
-      case sc: IsleScale[u, v] =>
-        IsleScale(
-          valueSubs(x, y)(sc.boat)
-        )
-      case cf @ Coeff(node) => cf
-      case Sum(xs) =>
-        Sum(
-          xs.map(a => expressionSubs(x, y)(a))
-        )
-    }
+    else
+      exp match {
+        case FinalVal(variable)   => FinalVal(variableSubs(x, y)(variable))
+        case InitialVal(variable) => InitialVal(variableSubs(x, y)(variable))
+        case Product(a, b) =>
+          Product(
+            expressionSubs(x, y)(a),
+            expressionSubs(x, y)(b)
+          )
+        case Quotient(a, b) =>
+          Quotient(
+            expressionSubs(x, y)(a),
+            expressionSubs(x, y)(b)
+          )
+        case Exp(exp) =>
+          Exp(expressionSubs(x, y)(exp))
+        case Literal(value) => Literal(value)
+        case Log(exp) =>
+          Log(expressionSubs(x, y)(exp))
+        case sc: IsleScale[u, v] =>
+          IsleScale(
+            valueSubs(x, y)(sc.boat)
+          )
+        case cf @ Coeff(node) => cf
+        case Sum(xs) =>
+          Sum(
+            xs.map(a => expressionSubs(x, y)(a))
+          )
+      }
 
   def isleNormalizeVarExp[Y](
       v: GeneratorVariables.Variable[Y],
@@ -523,16 +527,22 @@ object TermRandomVars {
   ): (GeneratorVariables.Variable[Y], Expression) =
     v match {
       case Elem(element, randomVar) =>
-        val fn = 
+        val fn =
           new Expression.VariableMap {
-            def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = TermRandomVars.isleNormalizeVars(arg,Vector())
+            def apply[Y](
+                arg: GeneratorVariables.Variable[Y]
+            ): GeneratorVariables.Variable[Y] =
+              TermRandomVars.isleNormalizeVars(arg, Vector())
           }
         // (v: GeneratorVariables.Variable[Y])  => TermRandomVars.isleNormalizeVars(v,Vector())
         v -> expressionMapVars(fn)(rhs)
       case Event(base, sort) =>
-        val fn = 
+        val fn =
           new Expression.VariableMap {
-            def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = TermRandomVars.isleNormalizeVars(arg,Vector())
+            def apply[Y](
+                arg: GeneratorVariables.Variable[Y]
+            ): GeneratorVariables.Variable[Y] =
+              TermRandomVars.isleNormalizeVars(arg, Vector())
           }
         v -> expressionMapVars(fn)(rhs)
       case inIsleFull: InIsle[c, cc, _, d, _] =>
@@ -553,18 +563,24 @@ object TermRandomVars {
           }
         )
       case PairEvent(base1, base2, sort) =>
-      val fn = 
+        val fn =
           new Expression.VariableMap {
-            def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = TermRandomVars.isleNormalizeVars(arg,Vector())
+            def apply[Y](
+                arg: GeneratorVariables.Variable[Y]
+            ): GeneratorVariables.Variable[Y] =
+              TermRandomVars.isleNormalizeVars(arg, Vector())
           }
-      v -> expressionMapVars(fn)(rhs)
+        v -> expressionMapVars(fn)(rhs)
     }
 
   def isleNormalize(eq: EquationNode, varWeight: Double = 0.3): EquationNode = {
-    val fn = 
-          new Expression.VariableMap {
-            def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = TermRandomVars.isleNormalizeVars(arg,Vector())
-          }
+    val fn =
+      new Expression.VariableMap {
+        def apply[Y](
+            arg: GeneratorVariables.Variable[Y]
+        ): GeneratorVariables.Variable[Y] =
+          TermRandomVars.isleNormalizeVars(arg, Vector())
+      }
     eq.lhs match {
       case InitialVal(variable) =>
         val (newVar, newRhs) = isleNormalizeVarExp(variable, eq.rhs, Vector())
@@ -596,5 +612,103 @@ object TermRandomVars {
       .map(_.variable)
     genvars.exists(v => varDepends(t)(v))
   }
+
+  import scala.collection.immutable.Map
+  val randomVarStrings: Vector[(RandomVar[_], String)] =
+    Vector(
+      Funcs           -> "funcs",
+      Terms           -> "terms",
+      Typs            -> "types",
+      TargetTyps      -> "target-types",
+      Goals           -> "goals",
+      TypFamilies     -> "type-families",
+      TypsAndFamilies -> "types-and-families",
+      InducDefns      -> "induc-defns",
+      InducStrucs     -> "induc-structs",
+      IsleDomains     -> "isle-domains"
+    )
+
+  val rvStrMap = randomVarStrings.toMap
+
+  import ujson._, provingground.interface.TermJson.{termToJson, jsonToTerm}
+  import provingground.interface.InducJson._
+
+  def randomVarToJson(rv: RandomVar[_]): ujson.Value =
+    rv match {
+      case AtomVar(atom: Term) =>
+        Obj("family" -> Str("atom"), "atom" -> termToJson(atom).get)
+      case ContextTerms(ctx) =>
+        Obj("family" -> "context-terms", "ctx" -> ContextJson.toJson(ctx))
+      case ContextTyps(ctx) =>
+        Obj("family" -> "context-typs", "ctx" -> ContextJson.toJson(ctx))
+      case FuncFoldVar(func, depth) =>
+        Obj(
+          "family" -> "func-fold-var",
+          "func"   -> termToJson(func),
+          "depth"  -> Num(depth)
+        )
+      case IndexedIntroRuleTyps(typF) =>
+        Obj("family" -> "indexed-intro-rules-typ", "typF" -> termToJson(typF))
+      case IndexedIterFuncTypTo(typF) =>
+        Obj("family" -> "indexed-iter-func-typ-to", "typF" -> termToJson(typF))
+      case IntroRuleTypes(inductiveTyp) =>
+        Obj(
+          "family"        -> "intro-rules-typ",
+          "inductive-typ" -> termToJson(inductiveTyp)
+        )
+      case IterFuncTypTo(typ) =>
+        Obj("family" -> "iter-func-typ-to", "typF" -> termToJson(typ))
+      case PartiallyApplied(func) =>
+        Obj("family" -> "partially-applied", "func" -> termToJson(func))
+      case TypsFromFamily(typF) =>
+        Obj("family" -> "types-from-family", "typF" -> termToJson(typF))
+      case RandomVector(base) =>
+        Obj("family" -> "vector", "base" -> randomVarToJson(base))
+      case RandomVar
+            .AtCoord(rvF: RandomVarFamily[v, u], (head: Term) :: tail) =>
+        rvF match {
+          case TermsWithTyp =>
+            Obj("family" -> "terms-with-type", "coord" -> termToJson(head))
+          case FuncsWithDomain =>
+            Obj("family" -> "funcs-with-domain", "coord" -> termToJson(head))
+          case FuncForCod =>
+            Obj("family" -> "funcs-for-cod", "coord" -> termToJson(head))
+
+        }
+      case RandomVar.AtCoord(rvF, (head: ExstInducDefn) :: tail)
+          if rvF == DomForInduc =>
+        Obj(
+          "family"  -> "dom-for-induc",
+          "coord" -> upickle.default.write(head)
+        )
+
+      case randVar =>
+        Obj("family" -> "single", "value" -> Str(rvStrMap(randVar)))
+    }
+
+    def jsonToRandomVar(json: ujson.Value) : RandomVar[_] = 
+      {
+        val obj = json.obj
+        val family = obj("family").str
+        def termAt(s: String) = jsonToTerm()(obj(s)).get
+        family match {
+          case "atom" => jsonToRandomVar(obj("atom"))
+          case "context-terms" => ContextTerms(ContextJson.fromJson(obj("ctx")))
+          case "context-typs" => ContextTyps(ContextJson.fromJson(obj("ctx")))
+          case "func-fold-var" => FuncFoldVar(termAt("func"), obj("depth").num.toInt)
+          case "indexed-intro-rules-typ" => IndexedIntroRuleTyps(termAt("typF"))
+          case "indexed-iter-func-typ-to" => IndexedIterFuncTypTo(termAt("typF"))
+          case "intro-rules-typ" => IntroRuleTypes(toTyp(termAt("inductive-typ")))
+          case "iter-func-typ-to" => IterFuncTypTo(toTyp(termAt("typF")))
+          case "partially-applied" => PartiallyApplied(termAt("func"))
+          case "types-from-family" => TypsFromFamily(termAt("typF"))
+          case "vector" => RandomVector(jsonToRandomVar(obj("base")))
+          case "terms-with-type" => termsWithTyp(toTyp(termAt("coord")))
+          case "funcs-with-domain" => funcsWithDomain(toTyp(termAt("coord")))
+          case "funcs-for-cod" => funcForCod(toTyp(termAt("coord")))
+          case "dom-for-induc" => domForInduc(upickle.default.read[ExstInducDefn](obj("coord")))
+
+        }
+      }
 
 }
