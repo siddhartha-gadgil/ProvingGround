@@ -64,6 +64,12 @@ object TermRandomVars {
     override def toString = s"FuncWithDom($dom)"
   }
 
+  case class FuncWithDomFilter(dom: Typ[Term]) extends (ExstFunc => Boolean) {
+    def apply(v1: HoTT.ExstFunc): Boolean = v1.dom == dom
+
+    override def toString = s"FuncWithDomFilter($dom)"
+  }
+
   case class WithTyp(typ: Typ[Term]) extends (Term => Boolean) {
     def apply(t: Term): Boolean = t.typ == typ
 
@@ -194,7 +200,7 @@ object TermRandomVars {
   case object FuncsWithDomain
       extends RandomVar.SimpleFamily[Typ[Term], ExstFunc](
         Typs,
-        (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
+        (typ: Typ[Term]) => Sort.Filter[ExstFunc](FuncWithDomFilter(typ))
       )
 
   // def funcWithDomSort(dom: Typ[Term]): Sort.Filter[ExstFunc] =
@@ -630,10 +636,12 @@ object TermRandomVars {
 
   val rvStrMap = randomVarStrings.toMap
 
+  val strRvMap = randomVarStrings.map{case (x, y) => y -> x}.toMap
+
   import ujson._, provingground.interface.TermJson.{termToJson, jsonToTerm}
   import provingground.interface.InducJson._
 
-  def randomVarToJson(rv: RandomVar[_]): ujson.Value =
+  def randomVarToJson[X](rv: RandomVar[X]): ujson.Value =
     rv match {
       case AtomVar(atom: Term) =>
         Obj("family" -> Str("atom"), "atom" -> termToJson(atom).get)
@@ -678,37 +686,39 @@ object TermRandomVars {
       case RandomVar.AtCoord(rvF, (head: ExstInducDefn) :: tail)
           if rvF == DomForInduc =>
         Obj(
-          "family"  -> "dom-for-induc",
-          "coord" -> upickle.default.write(head)
+          "family" -> "dom-for-induc",
+          "coord"  -> upickle.default.write(head)
         )
 
       case randVar =>
         Obj("family" -> "single", "value" -> Str(rvStrMap(randVar)))
     }
 
-    def jsonToRandomVar(json: ujson.Value) : RandomVar[_] = 
-      {
-        val obj = json.obj
-        val family = obj("family").str
-        def termAt(s: String) = jsonToTerm()(obj(s)).get
-        family match {
-          case "atom" => jsonToRandomVar(obj("atom"))
-          case "context-terms" => ContextTerms(ContextJson.fromJson(obj("ctx")))
-          case "context-typs" => ContextTyps(ContextJson.fromJson(obj("ctx")))
-          case "func-fold-var" => FuncFoldVar(termAt("func"), obj("depth").num.toInt)
-          case "indexed-intro-rules-typ" => IndexedIntroRuleTyps(termAt("typF"))
-          case "indexed-iter-func-typ-to" => IndexedIterFuncTypTo(termAt("typF"))
-          case "intro-rules-typ" => IntroRuleTypes(toTyp(termAt("inductive-typ")))
-          case "iter-func-typ-to" => IterFuncTypTo(toTyp(termAt("typF")))
-          case "partially-applied" => PartiallyApplied(termAt("func"))
-          case "types-from-family" => TypsFromFamily(termAt("typF"))
-          case "vector" => RandomVector(jsonToRandomVar(obj("base")))
-          case "terms-with-type" => termsWithTyp(toTyp(termAt("coord")))
-          case "funcs-with-domain" => funcsWithDomain(toTyp(termAt("coord")))
-          case "funcs-for-cod" => funcForCod(toTyp(termAt("coord")))
-          case "dom-for-induc" => domForInduc(upickle.default.read[ExstInducDefn](obj("coord")))
+  def jsonToRandomVar(json: ujson.Value): RandomVar[_] = {
+    val obj               = json.obj
+    val family            = obj("family").str
+    def termAt(s: String) = jsonToTerm()(obj(s)).get
+    family match {
+      case "atom"          => jsonToRandomVar(obj("atom"))
+      case "context-terms" => ContextTerms(ContextJson.fromJson(obj("ctx")))
+      case "context-typs"  => ContextTyps(ContextJson.fromJson(obj("ctx")))
+      case "func-fold-var" =>
+        FuncFoldVar(termAt("func"), obj("depth").num.toInt)
+      case "indexed-intro-rules-typ"  => IndexedIntroRuleTyps(termAt("typF"))
+      case "indexed-iter-func-typ-to" => IndexedIterFuncTypTo(termAt("typF"))
+      case "intro-rules-typ"          => IntroRuleTypes(toTyp(termAt("inductive-typ")))
+      case "iter-func-typ-to"         => IterFuncTypTo(toTyp(termAt("typF")))
+      case "partially-applied"        => PartiallyApplied(termAt("func"))
+      case "types-from-family"        => TypsFromFamily(termAt("typF"))
+      case "vector"                   => RandomVector(jsonToRandomVar(obj("base")))
+      case "terms-with-type"          => termsWithTyp(toTyp(termAt("coord")))
+      case "funcs-with-domain"        => funcsWithDomain(toTyp(termAt("coord")))
+      case "funcs-for-cod"            => funcForCod(toTyp(termAt("coord")))
+      case "dom-for-induc" =>
+        domForInduc(upickle.default.read[ExstInducDefn](obj("coord")))
+      case "single" => strRvMap(obj("value").str)
 
-        }
-      }
+    }
+  }
 
 }
