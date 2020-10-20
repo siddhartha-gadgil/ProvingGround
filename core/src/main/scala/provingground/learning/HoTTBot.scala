@@ -2477,17 +2477,33 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  val goalInContext: SimpleBot[SeekGoal, Option[SeekGoal]] = MicroBot.simple(
+  val goalInContext: SimpleBot[SeekGoal, Option[ProofLambda :: SeekGoal :: HNil]] = MicroBot.simple(
     (sk: SeekGoal) =>
       sk.goal match {
         case PiDefn(variable: Term, value: Typ[u]) =>
-          Some(SeekGoal(value, sk.context.addVariable(variable), sk.goal +: sk.forConsequences))
+          val newSeek = SeekGoal(value, sk.context.addVariable(variable), sk.goal +: sk.forConsequences)
+          val pfLambda = ProofLambda(sk.goal, newSeek.goal, sk.context, newSeek.context, variable, true)
+          Some(pfLambda :: newSeek :: HNil)
         case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
           val x = dom.Var
-          Some(SeekGoal(codom, sk.context.addVariable(x), sk.goal +: sk.forConsequences))
+          val newSeek = SeekGoal(codom, sk.context.addVariable(x), sk.goal +: sk.forConsequences) 
+          val pfLambda = ProofLambda(sk.goal, newSeek.goal, sk.context, newSeek.context, x, false)
+          Some(pfLambda :: newSeek :: HNil)
         case _ => None
       }
   )
+
+  val exportProof : MicroHoTTBoTT[Proved, Option[Proved], GatherPost[ProofLambda]] = {
+    val response : GatherPost[ProofLambda] => Proved => Future[Option[Proved]] = 
+      (gpPfLam) =>
+        (proved) =>
+          Future{
+            gpPfLam.contents.flatMap(_.export(proved)).headOption
+          }
+    MicroBot(response, name = Some("export proof from context"))
+  }
+
+
 
   val fullGoalInContext: SimpleBot[SeekGoal, Option[SeekGoal]] =
     MicroBot.simple(_.inContext)
@@ -2568,20 +2584,14 @@ object HoTTBot {
           Option[Either[FailedToProve, Proved]]
         ] = {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
-          Utils.logger.info(s"using $qp")
         // pprint.log(qp)
         goal =>
           if (goal.relevantGiven(terms, gp.contents)) {
-            Utils.logger.info(s"attempting $goal with cutoff ${qp.lp.cutoff}")
             val lpVars   = qp.lp.initState.context.variables
-            Utils.logger.info(s"lp-vars $lpVars")
             val goalVars = goal.context.variables
-            Utils.logger.info(s"goal-vars $goalVars")
             val newVars  = goalVars.drop(lpVars.size)
-            Utils.logger.info(s"new-vars $newVars")
             val withVars = newVars.foldLeft(qp.lp) {
               case (lp: LocalProver, x: Term) =>
-                pprint.log(x)
                 lp.addVar(x, varWeight)
             }
             Utils.logger.info(s"initial state ${withVars.initState}")

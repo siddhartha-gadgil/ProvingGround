@@ -54,7 +54,8 @@ object InductionSession {
 
   val terms = FiniteDistribution.unif[Term](
     reflTerm(A),
-    transTerm(A)
+    transTerm(A),
+    f(zero)
   )
   val typs = FiniteDistribution.unif[Typ[Term]](NatTyp, A)
   val ts   = TermState(terms, typs)
@@ -74,6 +75,7 @@ object InductionSession {
     productBackward.triggerMap[FailedToProve](_.seek),
     coproductBackward.triggerMap[FailedToProve](_.seek),
     goalInContext.triggerMap[FailedToProve](_.seek),
+    exportProof,
     inductionBackward.triggerMap[FailedToProve](_.seek),
     instanceToGoal,
     instancesFromLP,

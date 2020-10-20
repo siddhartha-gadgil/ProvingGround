@@ -69,13 +69,13 @@ object HoTTMessages {
       Some(SeekGoal.inContext(this)).filter(nxt => nxt != this)
 
     lazy val outer: Option[SeekGoal] = context match {
-      case AppendVariable(init, variable : Term) =>
+      case AppendVariable(init, variable: Term) =>
         forConsequences match {
-          case (ft: FuncTyp[u, v]) +: tail if (ft.dom == variable.typ)   => 
+          case (ft: FuncTyp[u, v]) +: tail if (ft.dom == variable.typ) =>
             Some(SeekGoal(ft, init, tail))
-          case (pd: PiDefn[u, v]) +: tail if (pd.domain == variable.typ) => 
+          case (pd: PiDefn[u, v]) +: tail if (pd.domain == variable.typ) =>
             Some(SeekGoal(pd, init, tail))
-          case _                                                         => None
+          case _ => None
         }
       case _ => None
     }
@@ -401,6 +401,23 @@ object HoTTMessages {
     }
   }
 
+  case class ProofLambda(
+      outerGoal: Typ[Term],
+      innerGoal: Typ[Term],
+      outerContext: Context,
+      innerContext: Context,
+      variable: Term,
+      isDependent: Boolean
+  ) {
+    def export(pf: Proved) =
+      if (innerGoal == pf.statement && innerContext == pf.context) {
+        val pfOpt = pf.proofOpt.map { t =>
+          if (isDependent) variable :~> t else variable :-> t
+        }
+        Some(Proved(outerGoal, pfOpt, outerContext))
+      } else None
+  }
+
   case class Contradicts(
       premise: Typ[Term],
       conclusion: Typ[Term],
@@ -666,7 +683,7 @@ object HoTTMessages {
     val proofs = decisions.collect {
       case Proved(statement, proofOpt, context) =>
         proofOpt
-          .map(context.export(_))
+          .map(context.exportStrict(_))
           .getOrElse("proved" :: context.exportTyp(statement))
     }
 
