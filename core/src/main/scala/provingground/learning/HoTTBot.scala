@@ -609,7 +609,7 @@ object HoTTBot {
                   SeekGoal(
                     newGoal,
                     seek.context,
-                    seek.forConsequences + seek.sigma
+                    seek.sigma +: seek.forConsequences
                   ) :: HNil
               )
             } else None
@@ -643,7 +643,7 @@ object HoTTBot {
                 cons :: SeekGoal(
                   sk,
                   goal.context,
-                  goal.forConsequences + goal.goal
+                  goal.goal +: goal.forConsequences
                 ) :: HNil
               }
           }
@@ -691,7 +691,7 @@ object HoTTBot {
                     cons :: SeekGoal(
                       newGoal,
                       goal.context,
-                      goal.forConsequences + goal.goal
+                      goal.goal +: goal.forConsequences
                     ) :: HNil
                   )
                 }
@@ -726,7 +726,7 @@ object HoTTBot {
                     cons :: SeekGoal(
                       newGoal,
                       goal.context,
-                      goal.forConsequences + goal.goal
+                      goal.goal +: goal.forConsequences
                     ) :: HNil
                   )
                 }
@@ -2167,7 +2167,7 @@ object HoTTBot {
                       x,
                       goal.goal,
                       goal.context,
-                      goal.forConsequences + goal.goal
+                      goal.goal +: goal.forConsequences
                     ),
                     p
                   )
@@ -2309,7 +2309,7 @@ object HoTTBot {
                 SeekGoal(
                   typ,
                   fromAll.context,
-                  fromAll.forConsequences + fromAll.conclusion
+                  fromAll.conclusion +: fromAll.forConsequences 
                 )
             )
           }
@@ -2330,7 +2330,7 @@ object HoTTBot {
                 SeekGoal(
                   typ,
                   fromAny.context,
-                  fromAny.forConsequences + fromAny.conclusion
+                  fromAny.conclusion +: fromAny.forConsequences
                 )
             )
           }
@@ -2481,10 +2481,10 @@ object HoTTBot {
     (sk: SeekGoal) =>
       sk.goal match {
         case PiDefn(variable: Term, value: Typ[u]) =>
-          Some(SeekGoal(value, sk.context.addVariable(variable)))
+          Some(SeekGoal(value, sk.context.addVariable(variable), sk.goal +: sk.forConsequences))
         case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
           val x = dom.Var
-          Some(SeekGoal(codom, sk.context.addVariable(x), sk.forConsequences))
+          Some(SeekGoal(codom, sk.context.addVariable(x), sk.goal +: sk.forConsequences))
         case _ => None
       }
   )

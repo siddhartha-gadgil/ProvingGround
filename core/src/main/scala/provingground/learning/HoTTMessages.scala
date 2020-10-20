@@ -4,6 +4,7 @@ import provingground.induction.ExstInducDefn
 import provingground.learning.HoTTMessages.Proved
 import provingground.learning.HoTTMessages.Contradicted
 import shapeless._, HList._
+import provingground.Context.AppendVariable
 
 /**
   * Messages to be posted for autonomous/interactive running.
@@ -36,7 +37,7 @@ object HoTTMessages {
   case class SeekGoal(
       goal: Typ[Term],
       context: Context,
-      forConsequences: Set[Typ[Term]] = Set()
+      forConsequences: Vector[Typ[Term]] = Vector()
   ) {
 
     /**
@@ -54,7 +55,7 @@ object HoTTMessages {
         .union(decisions.map(_.statement)))
         .flatMap(typ => Set(typ, negate(typ)))
         .intersect(
-          forConsequences union forConsequences
+          forConsequences.toSet union forConsequences.toSet
             .map(negate) union Set(goal, negate(goal))
         )
         .isEmpty
@@ -66,6 +67,18 @@ object HoTTMessages {
       */
     def inContext: Option[SeekGoal] =
       Some(SeekGoal.inContext(this)).filter(nxt => nxt != this)
+
+    lazy val outer: Option[SeekGoal] = context match {
+      case AppendVariable(init, variable : Term) =>
+        forConsequences match {
+          case (ft: FuncTyp[u, v]) +: tail if (ft.dom == variable.typ)   => 
+            Some(SeekGoal(ft, init, tail))
+          case (pd: PiDefn[u, v]) +: tail if (pd.domain == variable.typ) => 
+            Some(SeekGoal(pd, init, tail))
+          case _                                                         => None
+        }
+      case _ => None
+    }
 
   }
 
@@ -348,7 +361,7 @@ object HoTTMessages {
   case class FailedToProve(
       statement: Typ[Term],
       context: Context,
-      forConsequences: Set[Typ[Term]] = Set()
+      forConsequences: Vector[Typ[Term]] = Vector()
   ) {
     lazy val seek = SeekGoal(statement, context, forConsequences)
   }
@@ -486,7 +499,7 @@ object HoTTMessages {
 
     def goalCast(t: Term) = goal(t.asInstanceOf[U])
     val context: Context
-    val forConsequences: Set[Typ[Term]]
+    val forConsequences: Vector[Typ[Term]]
 
     def sigma = SigmaTyp[U, V](goal)
 
@@ -499,7 +512,7 @@ object HoTTMessages {
         tp: Typ[X],
         gl: TypFamily[X, Y],
         ctx: Context,
-        fc: Set[Typ[Term]]
+        fc: Vector[Typ[Term]]
     ): SeekInstances =
       new SeekInstances {
         type U = X
@@ -512,7 +525,7 @@ object HoTTMessages {
 
         val context: Context = ctx
 
-        val forConsequences: Set[HoTT.Typ[HoTT.Term]] = fc
+        val forConsequences: Vector[HoTT.Typ[HoTT.Term]] = fc
 
       }
   }
@@ -541,7 +554,7 @@ object HoTTMessages {
       conclusion: Typ[Term],
       proofOpt: Option[Term],
       context: Context,
-      forConsequences: Set[Typ[Term]]
+      forConsequences: Vector[Typ[Term]]
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Set[Decided] =
       if (typs.toSet.subsetOf(proofs.map(_.typ))) {
@@ -582,7 +595,7 @@ object HoTTMessages {
     def get(
         fn: Term,
         cod: Typ[Term],
-        forConsequences: Set[Typ[Term]] = Set(),
+        forConsequences: Vector[Typ[Term]] = Vector(),
         context: Context
     ): Option[FromAll] =
       backward(fn, cod).map {
@@ -595,7 +608,7 @@ object HoTTMessages {
       fn: Term,
       goal: Typ[Term],
       context: Context,
-      forConsequences: Set[Typ[Term]] = Set()
+      forConsequences: Vector[Typ[Term]] = Vector()
   )
 
   /**
@@ -627,7 +640,7 @@ object HoTTMessages {
       exhaustive: Boolean,
       proofsOpt: Vector[Option[ExstFunc]],
       context: Context,
-      forConsequences: Set[Typ[Term]]
+      forConsequences: Vector[Typ[Term]]
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Set[Decided] =
       if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty) {
