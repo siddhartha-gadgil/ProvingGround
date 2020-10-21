@@ -620,23 +620,25 @@ object TermRandomVars {
   }
 
   import scala.collection.immutable.Map
-  val randomVarStrings: Vector[(RandomVar[_], String)] =
+  val randomVarStrings: Vector[(RandomVar[_], String, String)] =
     Vector(
-      Funcs           -> "funcs",
-      Terms           -> "terms",
-      Typs            -> "types",
-      TargetTyps      -> "target-types",
-      Goals           -> "goals",
-      TypFamilies     -> "type-families",
-      TypsAndFamilies -> "types-and-families",
-      InducDefns      -> "induc-defns",
-      InducStrucs     -> "induc-structs",
-      IsleDomains     -> "isle-domains"
+      (Funcs, "funcs", "func"),
+      (Terms, "terms", "term"),
+      (Typs, "types", "typ"),
+      (TargetTyps, "target-types", "typ"),
+      (Goals, "goals", "typ"),
+      (TypFamilies, "type-families", "term"),
+      (TypsAndFamilies, "types-and-families", "term"),
+      (InducDefns, "induc-defns", "induc-defn"),
+      (InducStrucs, "induc-structs", "induc-struc"),
+      (IsleDomains, "isle-domains", "typs")
     )
 
-  val rvStrMap = randomVarStrings.toMap
+  val rvStrMap = randomVarStrings.map { case (x, y, _) => (x, y) }.toMap
 
-  val strRvMap = randomVarStrings.map{case (x, y) => y -> x}.toMap
+  val rvElemMap = randomVarStrings.map { case (x, _, y) => (x, y) }.toMap
+
+  val strRvMap = randomVarStrings.map { case (x, y, _) => y -> x }.toMap
 
   import ujson._, provingground.interface.TermJson.{termToJson, jsonToTerm}
   import provingground.interface.InducJson._
@@ -644,43 +646,65 @@ object TermRandomVars {
   def randomVarToJson[X](rv: RandomVar[X]): ujson.Value =
     rv match {
       case AtomVar(atom: Term) =>
-        Obj("family" -> Str("atom"), "atom" -> termToJson(atom).get)
+        Obj(
+          "family"    -> Str("atom"),
+          "atom"      -> termToJson(atom).get,
+          "elem-type" -> "term"
+        )
       case ContextTerms(ctx) =>
-        Obj("family" -> "context-terms", "ctx" -> ContextJson.toJson(ctx))
+        Obj(
+          "family"    -> "context-terms",
+          "ctx"       -> ContextJson.toJson(ctx),
+          "elem-type" -> "term"
+        )
       case ContextTyps(ctx) =>
-        Obj("family" -> "context-typs", "ctx" -> ContextJson.toJson(ctx))
+        Obj(
+          "family"    -> "context-typs",
+          "ctx"       -> ContextJson.toJson(ctx),
+          "elem-type" -> "term"
+        )
       case FuncFoldVar(func, depth) =>
         Obj(
-          "family" -> "func-fold-var",
-          "func"   -> termToJson(func),
-          "depth"  -> Num(depth)
+          "family"    -> "func-fold-var",
+          "func"      -> termToJson(func),
+          "depth"     -> Num(depth),
+          "elem-type" -> "term"
         )
       case IndexedIntroRuleTyps(typF) =>
-        Obj("family" -> "indexed-intro-rules-typ", "typF" -> termToJson(typF))
+        Obj(
+          "family"    -> "indexed-intro-rules-typ",
+          "typF"      -> termToJson(typF),
+          "elem-type" -> "typ"
+        )
       case IndexedIterFuncTypTo(typF) =>
-        Obj("family" -> "indexed-iter-func-typ-to", "typF" -> termToJson(typF))
+        Obj(
+          "family"    -> "indexed-iter-func-typ-to",
+          "typF"      -> termToJson(typF),
+          "elem-type" -> "typ"
+        )
       case IntroRuleTypes(inductiveTyp) =>
         Obj(
           "family"        -> "intro-rules-typ",
-          "inductive-typ" -> termToJson(inductiveTyp)
+          "inductive-typ" -> termToJson(inductiveTyp),
+          "elem-type"     -> "typ"
         )
       case IterFuncTypTo(typ) =>
-        Obj("family" -> "iter-func-typ-to", "typF" -> termToJson(typ))
+        Obj("family" -> "iter-func-typ-to", "typF" -> termToJson(typ), "elem-type" -> "typ")
       case PartiallyApplied(func) =>
-        Obj("family" -> "partially-applied", "func" -> termToJson(func))
+        Obj("family" -> "partially-applied", "func" -> termToJson(func), "elem-type" -> "term")
       case TypsFromFamily(typF) =>
-        Obj("family" -> "types-from-family", "typF" -> termToJson(typF))
+        Obj("family" -> "types-from-family", "typF" -> termToJson(typF), "elem-type" -> "typ")
       case RandomVector(base) =>
-        Obj("family" -> "vector", "base" -> randomVarToJson(base))
+        Obj("family" -> "vector", "base" -> randomVarToJson(base), "elem-type" -> "vector")
       case RandomVar
             .AtCoord(rvF: RandomVarFamily[v, u], (head: Term) :: tail) =>
         rvF match {
           case TermsWithTyp =>
-            Obj("family" -> "terms-with-type", "coord" -> termToJson(head))
+            Obj("family" -> "terms-with-type", "coord" -> termToJson(head), "elem-type" -> "term")
           case FuncsWithDomain =>
-            Obj("family" -> "funcs-with-domain", "coord" -> termToJson(head))
+            Obj("family" -> "funcs-with-domain", "coord" -> termToJson(head), "elem-type" -> "func")
           case FuncForCod =>
-            Obj("family" -> "funcs-for-cod", "coord" -> termToJson(head))
+            Obj("family" -> "funcs-for-cod", "coord" -> termToJson(head), "elem-type" -> "term")
 
         }
       case RandomVar.AtCoord(rvF, (head: ExstInducDefn) :: tail)

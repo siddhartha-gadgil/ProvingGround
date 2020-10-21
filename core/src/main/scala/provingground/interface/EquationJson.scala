@@ -7,6 +7,9 @@ import provingground.learning.Sort.Filter
 import provingground.learning.Sort.Restrict
 import provingground.learning.TermRandomVars._, TermJson._
 import GeneratorVariables._
+import provingground.interface.InducJson._
+import scala.collection.mutable
+import provingground.learning.GeneratorNode.Island
 
 object EquationJson {
   def sortJson[S, T](sort: Sort[S, T]): ujson.Value =
@@ -76,8 +79,123 @@ object EquationJson {
     }
   }
 
-  def eventJson[S, T](event: Event[S, T]): ujson.Value = 
-    Obj("base" -> randomVarToJson(event.base), 
-        "sort" -> sortJson(event.sort))
+  def eventJson[S, T](event: Event[S, T]): ujson.Value =
+    Obj("base" -> randomVarToJson(event.base), "sort" -> sortJson(event.sort))
+
+  def polyJson(value: Any): ujson.Value = value match {
+    case t: Term => Obj("type" -> "term", "value" -> termToJson(t).get)
+    case fn: ExstFunc =>
+      Obj("type" -> "func", "value" -> termToJson(fn.func).get)
+    case ind: ExstInducDefn =>
+      Obj("type" -> "induc-defn", "value" -> upickle.default.write(ind))
+    case ind: ExstInducStrucs =>
+      Obj("type" -> "induc-struc", "value" -> InducJson.toJson(ind))
+    case v: Vector[u] =>
+      Obj(
+        "type"  -> "vector",
+        "value" -> Arr(v.map(polyJson(_)).to(mutable.ArrayBuffer))
+      )
+  }
+
+  def jsonPoly(js: ujson.Value): Any = {
+    val obj   = js.obj
+    val value = obj("value")
+    val tp    = obj("type").str
+    tp match {
+      case "term"       => jsonToTerm()(value).get: Term
+      case "func"       => ExstFunc.opt(jsonToTerm()(value).get).get: ExstFunc
+      case "induc-defn" => upickle.default.read[ExstInducDefn](value)
+      case "induc-struc" =>
+        InducJson.fromJson(ExstInducStrucs.Base)(value): ExstInducStrucs
+      case "vector" => value.arr.to(Vector).map(jsonPoly(_)): Vector[_]
+    }
+  }
+
+  def elemJson(el: Elem[_]): Value =
+    Obj(
+      "random-var" -> randomVarToJson(el.randomVar),
+      "element"    -> polyJson(el.element)
+    )
+
+  def jsonElem(js: ujson.Value): Elem[_] = {
+    val obj = js.obj
+    jsonToRandomVar(obj("random-var")) match {
+      case rv: RandomVar[u] =>
+        Elem[u](polyJson(obj("element")).asInstanceOf[u], rv)
+    }
+  }
+
+  import TermGeneratorNodes._
+
+  def isleJson[Y, InitState, O, Boat](
+      isle: Island[Y, InitState, O, Boat]
+  ): ujson.Value = {
+    val outputJS = randomVarToJson(isle.output)
+    val initMapJS = isle.initMap match {
+      case AddVar(typ) =>
+        Obj("family" -> "add-var", "type" -> termToJson(typ).get)
+    }
+    val exportJS = isle.export match {
+      case LamApply   => Str("lam-apply")
+      case LamFunc    => Str("lam-func")
+      case PiApply    => Str("pi-apply")
+      case SigmaApply => Str("sigma-apply")
+    }
+
+    val isleOutJS = isle.islandOutput match {
+      case ConstRandVar(randomVar) =>
+        Obj("family" -> "constant", "random-var" -> randomVarToJson(randomVar))
+      case PiOutput(pd) =>
+        Obj("family" -> "pi-output", "pi-defn" -> termToJson(pd).get)
+    }
+    Obj(
+      "output"        -> outputJS,
+      "island-output" -> isleOutJS,
+      "init-map"      -> initMapJS,
+      "export"        -> exportJS,
+      "final-map"     -> Str("enter-isle")
+    )
+  }
+
+  def jsonIsle(js: ujson.Value): Island[_, TermState, _, Term] = {
+    val obj      = js.obj
+    val output   = jsonToRandomVar(obj("output"))
+    val initMap  = AddVar(toTyp(jsonToTerm()(obj("init-map").obj("type")).get))
+    val finalMap = EnterIsle
+    val export = obj("export").str match {
+      case "lam-apply"   => LamApply
+      case "lam-func"    => LamFunc
+      case "pi-apply"    => PiApply
+      case "sigma-apply" => SigmaApply
+    }
+    output match {
+      case rv: RandomVar[y] =>
+        obj("island-output").obj("family").str match {
+          case "constant" =>
+            val crvBase = jsonToRandomVar(
+              obj("island-output").obj("random-var")
+            )
+            crvBase match {
+              case crv: RandomVar[o] =>
+                val islandOutput = ConstRandVar(crv)
+                Island[y, TermState, o, Term](
+                  rv,
+                  islandOutput,
+                  initMap,
+                  export.asInstanceOf[(Term, o) => y],
+                  finalMap
+                )
+            }
+          case "pi-output" =>
+            jsonToTerm()(obj("island-output").obj("pi-defn")).get match {
+              case pd: PiDefn[u, v] =>
+                val islandOutput = PiOutput(pd)
+                ???
+            }
+        }
+
+    }
+
+  }
 
 }
