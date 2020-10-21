@@ -283,6 +283,11 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
       GeneratorNode.ConditionFunc(this, conditionFamily, outputFamily),
       outputFamily
     )
+    // GeneratorNodeFamily.BasePi(
+    //   {case x :: HNil =>
+    //     BaseThenCondition(this, outputFamily.at(x :: HNil), conditionFamily(x))},
+    //   outputFamily
+    // )
 }
 
 sealed trait RecursiveGeneratorNode[State, +O]
@@ -294,9 +299,9 @@ object GeneratorNode {
       base: GeneratorNode[O],
       conditionFamily: D => Sort[S, T],
       outputFamily: RandomVarFamily[D :: HNil, T]
-  ) extends (D :: HNil => GeneratorNode[T]) {
-    def apply(v1: D :: HNil): GeneratorNode[T] =
-      BaseThenCondition[S, T](
+  ) extends (D :: HNil => BaseThenCondition[O, T]) {
+    def apply(v1: D :: HNil): BaseThenCondition[O, T] =
+      BaseThenCondition[O, T](
         base,
         outputFamily.at(v1),
         conditionFamily(v1.head)
