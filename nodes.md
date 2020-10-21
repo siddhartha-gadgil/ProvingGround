@@ -10,8 +10,14 @@ Cons(
     tail = BaseCons(
       headGen = BasePi(
         nodes = ConditionFunc(
-          base = FiberProductMap(quot = domOf, fiberVar = TermsWithTyp, f = Appln, baseInput = Funcs, output = Terms),
-          conditionFamily = <function1>,
+          base = FiberProductMap(
+            quot = domOf,
+            fiberVar = TermsWithTyp,
+            f = Appln,
+            baseInput = Funcs,
+            output = Terms
+          ),
+          conditionFamily = RestrictFuncWithDom,
           outputFamily = FuncsWithDomain
         ),
         outputFamily = FuncsWithDomain
@@ -21,7 +27,7 @@ Cons(
         headGen = BasePi(
           nodes = ConditionFunc(
             base = ZipMapOpt(f = UnifApplnOpt, input1 = Funcs, input2 = Terms, output = Terms),
-            conditionFamily = <function1>,
+            conditionFamily = RestrictFuncWithDom,
             outputFamily = FuncsWithDomain
           ),
           outputFamily = FuncsWithDomain
@@ -30,15 +36,21 @@ Cons(
         tail = BaseCons(
           headGen = BasePi(
             nodes = ConditionFunc(
-              base = FiberProductMap(quot = typeOf(_), fiberVar = FuncsWithDomain, f = FlipAppn, baseInput = Terms, output = Terms),
-              conditionFamily = <function1>,
+              base = FiberProductMap(
+                quot = typeOf(_),
+                fiberVar = FuncsWithDomain,
+                f = FlipAppn,
+                baseInput = Terms,
+                output = Terms
+              ),
+              conditionFamily = RestrictFuncWithDom,
               outputFamily = FuncsWithDomain
             ),
             outputFamily = FuncsWithDomain
           ),
           headCoeff = 0.1,
           tail = BaseCons(
-            headGen = BasePi(nodes = <function1>, outputFamily = FuncsWithDomain),
+            headGen = BasePi(nodes = LambdaIsleForFuncWithDomain, outputFamily = FuncsWithDomain),
             headCoeff = 0.1,
             tail = Target(output = FuncsWithDomain)
           )
@@ -54,7 +66,7 @@ Cons(
         headGen = Map(f = Identity, input = Typs, output = TargetTyps),
         headCoeff = 0.25000000000000006,
         tail = BaseCons(
-          headGen = Map(f = <function1>, input = Typs, output = TargetTyps),
+          headGen = Map(f = Negate, input = Typs, output = TargetTyps),
           headCoeff = 0.05,
           tail = Target(output = TargetTyps)
         )
@@ -70,15 +82,19 @@ Cons(
         ),
         tail = Cons(
           head = BaseCons(
-            headGen = BasePiOpt(nodesOpt = <function1>, outputFamily = DomForInduc),
+            headGen = BasePiOpt(nodesOpt = DomainForDefn, outputFamily = DomForInduc),
             headCoeff = 1.0,
             tail = Target(output = DomForInduc)
           ),
           tail = Cons(
-            head = BaseCons(headGen = Init(input = InducDefns), headCoeff = 1.0, tail = Target(output = InducDefns)),
+            head = BaseCons(
+              headGen = Init(input = InducDefns),
+              headCoeff = 1.0,
+              tail = Target(output = InducDefns)
+            ),
             tail = Cons(
               head = BaseCons(
-                headGen = BasePi(nodes = <function1>, outputFamily = FuncForCod),
+                headGen = BasePi(nodes = CodomainNode, outputFamily = FuncForCod),
                 headCoeff = 1.0,
                 tail = Target(output = FuncForCod)
               ),
@@ -87,10 +103,21 @@ Cons(
                   headGen = Init(input = Terms),
                   headCoeff = 0.45,
                   tail = BaseCons(
-                    headGen = FiberProductMap(quot = domOf, fiberVar = TermsWithTyp, f = Appln, baseInput = Funcs, output = Terms),
+                    headGen = FiberProductMap(
+                      quot = domOf,
+                      fiberVar = TermsWithTyp,
+                      f = Appln,
+                      baseInput = Funcs,
+                      output = Terms
+                    ),
                     headCoeff = 0.1,
                     tail = BaseCons(
-                      headGen = ZipMapOpt(f = UnifApplnOpt, input1 = Funcs, input2 = Terms, output = Terms),
+                      headGen = ZipMapOpt(
+                        f = UnifApplnOpt,
+                        input1 = Funcs,
+                        input2 = Terms,
+                        output = Terms
+                      ),
                       headCoeff = 0.1,
                       tail = BaseCons(
                         headGen = FiberProductMap(
@@ -102,7 +129,11 @@ Cons(
                         ),
                         headCoeff = 0.1,
                         tail = BaseCons(
-                          headGen = FlatMap(baseInput = Typs, fiberNode = LambdaIsle, output = Terms),
+                          headGen = FlatMap(
+                            baseInput = Typs,
+                            fiberNode = LambdaIsle,
+                            output = Terms
+                          ),
                           headCoeff = 0.1,
                           tail = BaseCons(
                             headGen = BaseThenCondition(
@@ -112,13 +143,26 @@ Cons(
                             ),
                             headCoeff = 0.05,
                             tail = BaseCons(
-                              headGen = ZipFlatMap(baseInput = TargetTyps, fiberVar = TermsWithTyp, f = Proj2, output = Terms),
+                              headGen = ZipFlatMap(
+                                baseInput = TargetTyps,
+                                fiberVar = TermsWithTyp,
+                                f = Proj2,
+                                output = Terms
+                              ),
                               headCoeff = 0.05,
                               tail = BaseCons(
-                                headGen = FlatMap(baseInput = InducDefns, fiberNode = <function1>, output = Terms),
+                                headGen = FlatMap(
+                                  baseInput = InducDefns,
+                                  fiberNode = RecFuncsFolded,
+                                  output = Terms
+                                ),
                                 headCoeff = 0.05,
                                 tail = BaseCons(
-                                  headGen = FlatMap(baseInput = InducDefns, fiberNode = <function1>, output = Terms),
+                                  headGen = FlatMap(
+                                    baseInput = InducDefns,
+                                    fiberNode = InducFuncsFolded,
+                                    output = Terms
+                                  ),
                                   headCoeff = 0.05,
                                   tail = Target(output = Terms)
                                 )
@@ -149,7 +193,12 @@ Cons(
                       headCoeff = 0.1,
                       tail = BaseCons(
                         headGen = BaseThenCondition(
-                          gen = ZipMapOpt(f = UnifApplnOpt, input1 = TypFamilies, input2 = Terms, output = Terms),
+                          gen = ZipMapOpt(
+                            f = UnifApplnOpt,
+                            input1 = TypFamilies,
+                            input2 = Terms,
+                            output = Terms
+                          ),
                           output = Typs,
                           condition = Restrict(optMap = TypOpt)
                         ),
@@ -158,21 +207,37 @@ Cons(
                           headGen = FlatMap(baseInput = Typs, fiberNode = PiIsle, output = Typs),
                           headCoeff = 0.1,
                           tail = BaseCons(
-                            headGen = FlatMap(baseInput = Typs, fiberNode = SigmaIsle, output = Typs),
+                            headGen = FlatMap(
+                              baseInput = Typs,
+                              fiberNode = SigmaIsle,
+                              output = Typs
+                            ),
                             headCoeff = 0.05,
                             tail = BaseCons(
-                              headGen = FlatMap(baseInput = TypFamilies, fiberNode = <function1>, output = Typs),
+                              headGen = FlatMap(
+                                baseInput = TypFamilies,
+                                fiberNode = FoldTypFamily,
+                                output = Typs
+                              ),
                               headCoeff = 0.05,
                               tail = BaseCons(
                                 headGen = BaseThenCondition(
-                                  gen = FlatMap(baseInput = InducDefns, fiberNode = <function1>, output = Terms),
+                                  gen = FlatMap(
+                                    baseInput = InducDefns,
+                                    fiberNode = RecFuncsFolded,
+                                    output = Terms
+                                  ),
                                   output = Typs,
                                   condition = Restrict(optMap = TypOpt)
                                 ),
                                 headCoeff = 0.05,
                                 tail = BaseCons(
                                   headGen = BaseThenCondition(
-                                    gen = FlatMap(baseInput = InducDefns, fiberNode = <function1>, output = Terms),
+                                    gen = FlatMap(
+                                      baseInput = InducDefns,
+                                      fiberNode = InducFuncsFolded,
+                                      output = Terms
+                                    ),
                                     output = Typs,
                                     condition = Restrict(optMap = TypOpt)
                                   ),
@@ -192,14 +257,25 @@ Cons(
                       headCoeff = 0.45,
                       tail = BaseCons(
                         headGen = BaseThenCondition(
-                          gen = FiberProductMap(quot = domOf, fiberVar = TermsWithTyp, f = Appln, baseInput = Funcs, output = Terms),
+                          gen = FiberProductMap(
+                            quot = domOf,
+                            fiberVar = TermsWithTyp,
+                            f = Appln,
+                            baseInput = Funcs,
+                            output = Terms
+                          ),
                           output = Funcs,
                           condition = Restrict(optMap = FuncOpt)
                         ),
                         headCoeff = 0.1,
                         tail = BaseCons(
                           headGen = BaseThenCondition(
-                            gen = ZipMapOpt(f = UnifApplnOpt, input1 = Funcs, input2 = Terms, output = Terms),
+                            gen = ZipMapOpt(
+                              f = UnifApplnOpt,
+                              input1 = Funcs,
+                              input2 = Terms,
+                              output = Terms
+                            ),
                             output = Funcs,
                             condition = Restrict(optMap = FuncOpt)
                           ),
@@ -219,28 +295,45 @@ Cons(
                             headCoeff = 0.1,
                             tail = BaseCons(
                               headGen = BaseThenCondition(
-                                gen = FlatMap(baseInput = Typs, fiberNode = LambdaIsle, output = Terms),
+                                gen = FlatMap(
+                                  baseInput = Typs,
+                                  fiberNode = LambdaIsle,
+                                  output = Terms
+                                ),
                                 output = Funcs,
                                 condition = Restrict(optMap = FuncOpt)
                               ),
                               headCoeff = 0.1,
                               tail = BaseCons(
                                 headGen = BaseThenCondition(
-                                  gen = ZipFlatMap(baseInput = TargetTyps, fiberVar = TermsWithTyp, f = Proj2, output = Terms),
+                                  gen = ZipFlatMap(
+                                    baseInput = TargetTyps,
+                                    fiberVar = TermsWithTyp,
+                                    f = Proj2,
+                                    output = Terms
+                                  ),
                                   output = Funcs,
                                   condition = Restrict(optMap = FuncOpt)
                                 ),
                                 headCoeff = 0.05,
                                 tail = BaseCons(
                                   headGen = BaseThenCondition(
-                                    gen = FlatMap(baseInput = InducDefns, fiberNode = <function1>, output = Terms),
+                                    gen = FlatMap(
+                                      baseInput = InducDefns,
+                                      fiberNode = RecFuncsFolded,
+                                      output = Terms
+                                    ),
                                     output = Funcs,
                                     condition = Restrict(optMap = FuncOpt)
                                   ),
                                   headCoeff = 0.05,
                                   tail = BaseCons(
                                     headGen = BaseThenCondition(
-                                      gen = FlatMap(baseInput = InducDefns, fiberNode = <function1>, output = Terms),
+                                      gen = FlatMap(
+                                        baseInput = InducDefns,
+                                        fiberNode = InducFuncsFolded,
+                                        output = Terms
+                                      ),
                                       output = Funcs,
                                       condition = Restrict(optMap = FuncOpt)
                                     ),
@@ -273,7 +366,12 @@ Cons(
                           headCoeff = 0.1,
                           tail = BaseCons(
                             headGen = BaseThenCondition(
-                              gen = ZipMapOpt(f = UnifApplnOpt, input1 = TypFamilies, input2 = Terms, output = Terms),
+                              gen = ZipMapOpt(
+                                f = UnifApplnOpt,
+                                input1 = TypFamilies,
+                                input2 = Terms,
+                                output = Terms
+                              ),
                               output = TypFamilies,
                               condition = Restrict(optMap = TypFamilyOpt)
                             ),
@@ -292,25 +390,42 @@ Cons(
                               ),
                               headCoeff = 0.1,
                               tail = BaseCons(
-                                headGen = FlatMap(baseInput = Typs, fiberNode = LambdaTypFamilyIsle, output = TypFamilies),
+                                headGen = FlatMap(
+                                  baseInput = Typs,
+                                  fiberNode = LambdaTypFamilyIsle,
+                                  output = TypFamilies
+                                ),
                                 headCoeff = 0.1,
                                 tail = BaseCons(
                                   headGen = BaseThenCondition(
-                                    gen = ZipFlatMap(baseInput = TargetTyps, fiberVar = TermsWithTyp, f = Proj2, output = Terms),
+                                    gen = ZipFlatMap(
+                                      baseInput = TargetTyps,
+                                      fiberVar = TermsWithTyp,
+                                      f = Proj2,
+                                      output = Terms
+                                    ),
                                     output = TypFamilies,
                                     condition = Restrict(optMap = TypFamilyOpt)
                                   ),
                                   headCoeff = 0.05,
                                   tail = BaseCons(
                                     headGen = BaseThenCondition(
-                                      gen = FlatMap(baseInput = InducDefns, fiberNode = <function1>, output = Terms),
+                                      gen = FlatMap(
+                                        baseInput = InducDefns,
+                                        fiberNode = RecFuncsFolded,
+                                        output = Terms
+                                      ),
                                       output = TypFamilies,
                                       condition = Restrict(optMap = TypFamilyOpt)
                                     ),
                                     headCoeff = 0.05,
                                     tail = BaseCons(
                                       headGen = BaseThenCondition(
-                                        gen = FlatMap(baseInput = InducDefns, fiberNode = <function1>, output = Terms),
+                                        gen = FlatMap(
+                                          baseInput = InducDefns,
+                                          fiberNode = InducFuncsFolded,
+                                          output = Terms
+                                        ),
                                         output = TypFamilies,
                                         condition = Restrict(optMap = TypFamilyOpt)
                                       ),
@@ -329,14 +444,21 @@ Cons(
                           headGen = Map(f = Identity, input = Typs, output = TypsAndFamilies),
                           headCoeff = 0.5,
                           tail = BaseCons(
-                            headGen = Map(f = GetFunc, input = TypFamilies, output = TypsAndFamilies),
+                            headGen = Map(
+                              f = GetFunc,
+                              input = TypFamilies,
+                              output = TypsAndFamilies
+                            ),
                             headCoeff = 0.5,
                             tail = Target(output = TypsAndFamilies)
                           )
                         ),
                         tail = Cons(
                           head = BaseCons(
-                            headGen = BasePi(nodes = InitFunc(base = FuncsWithDomain), outputFamily = FuncsWithDomain),
+                            headGen = BasePi(
+                              nodes = InitFunc(base = FuncsWithDomain),
+                              outputFamily = FuncsWithDomain
+                            ),
                             headCoeff = 0.45,
                             tail = BaseCons(
                               headGen = BasePi(
@@ -348,7 +470,7 @@ Cons(
                                     baseInput = Funcs,
                                     output = Terms
                                   ),
-                                  conditionFamily = <function1>,
+                                  conditionFamily = RestrictFuncWithDom,
                                   outputFamily = FuncsWithDomain
                                 ),
                                 outputFamily = FuncsWithDomain
@@ -357,8 +479,13 @@ Cons(
                               tail = BaseCons(
                                 headGen = BasePi(
                                   nodes = ConditionFunc(
-                                    base = ZipMapOpt(f = UnifApplnOpt, input1 = Funcs, input2 = Terms, output = Terms),
-                                    conditionFamily = <function1>,
+                                    base = ZipMapOpt(
+                                      f = UnifApplnOpt,
+                                      input1 = Funcs,
+                                      input2 = Terms,
+                                      output = Terms
+                                    ),
+                                    conditionFamily = RestrictFuncWithDom,
                                     outputFamily = FuncsWithDomain
                                   ),
                                   outputFamily = FuncsWithDomain
@@ -374,14 +501,17 @@ Cons(
                                         baseInput = Terms,
                                         output = Terms
                                       ),
-                                      conditionFamily = <function1>,
+                                      conditionFamily = RestrictFuncWithDom,
                                       outputFamily = FuncsWithDomain
                                     ),
                                     outputFamily = FuncsWithDomain
                                   ),
                                   headCoeff = 0.1,
                                   tail = BaseCons(
-                                    headGen = BasePi(nodes = <function1>, outputFamily = FuncsWithDomain),
+                                    headGen = BasePi(
+                                      nodes = LambdaIsleForFuncWithDomain,
+                                      outputFamily = FuncsWithDomain
+                                    ),
                                     headCoeff = 0.1,
                                     tail = Target(output = FuncsWithDomain)
                                   )
@@ -391,7 +521,10 @@ Cons(
                           ),
                           tail = Cons(
                             head = BaseCons(
-                              headGen = BasePi(nodes = InitFunc(base = TermsWithTyp), outputFamily = TermsWithTyp),
+                              headGen = BasePi(
+                                nodes = InitFunc(base = TermsWithTyp),
+                                outputFamily = TermsWithTyp
+                              ),
                               headCoeff = 0.06750000000000003,
                               tail = BaseCons(
                                 headGen = BasePi(
@@ -403,7 +536,7 @@ Cons(
                                       baseInput = Funcs,
                                       output = Terms
                                     ),
-                                    conditionFamily = <function1>,
+                                    conditionFamily = WithTypSort,
                                     outputFamily = TermsWithTyp
                                   ),
                                   outputFamily = TermsWithTyp
@@ -412,8 +545,13 @@ Cons(
                                 tail = BaseCons(
                                   headGen = BasePi(
                                     nodes = ConditionFunc(
-                                      base = ZipMapOpt(f = UnifApplnOpt, input1 = Funcs, input2 = Terms, output = Terms),
-                                      conditionFamily = <function1>,
+                                      base = ZipMapOpt(
+                                        f = UnifApplnOpt,
+                                        input1 = Funcs,
+                                        input2 = Terms,
+                                        output = Terms
+                                      ),
+                                      conditionFamily = WithTypSort,
                                       outputFamily = TermsWithTyp
                                     ),
                                     outputFamily = TermsWithTyp
@@ -429,35 +567,59 @@ Cons(
                                           baseInput = Terms,
                                           output = Terms
                                         ),
-                                        conditionFamily = <function1>,
+                                        conditionFamily = WithTypSort,
                                         outputFamily = TermsWithTyp
                                       ),
                                       outputFamily = TermsWithTyp
                                     ),
                                     headCoeff = 0.1,
                                     tail = BaseCons(
-                                      headGen = BasePiOpt(nodesOpt = <function1>, outputFamily = TermsWithTyp),
+                                      headGen = BasePiOpt(
+                                        nodesOpt = NodeForTyp,
+                                        outputFamily = TermsWithTyp
+                                      ),
                                       headCoeff = 0.41500000000000004,
                                       tail = BaseCons(
-                                        headGen = BasePiOpt(nodesOpt = <function1>, outputFamily = TermsWithTyp),
+                                        headGen = BasePiOpt(
+                                          nodesOpt = CurryForTyp,
+                                          outputFamily = TermsWithTyp
+                                        ),
                                         headCoeff = 0.41500000000000004,
                                         tail = BaseCons(
-                                          headGen = BasePiOpt(nodesOpt = <function1>, outputFamily = TermsWithTyp),
+                                          headGen = BasePiOpt(
+                                            nodesOpt = Incl1Node,
+                                            outputFamily = TermsWithTyp
+                                          ),
                                           headCoeff = 0.20750000000000002,
                                           tail = BaseCons(
-                                            headGen = BasePiOpt(nodesOpt = <function1>, outputFamily = TermsWithTyp),
+                                            headGen = BasePiOpt(
+                                              nodesOpt = Incl2Node,
+                                              outputFamily = TermsWithTyp
+                                            ),
                                             headCoeff = 0.20750000000000002,
                                             tail = BaseCons(
-                                              headGen = BasePi(nodes = <function1>, outputFamily = FuncForCod),
+                                              headGen = BasePi(
+                                                nodes = FoldedTargetFunctionNode,
+                                                outputFamily = FuncForCod
+                                              ),
                                               headCoeff = 0.05,
                                               tail = BaseCons(
-                                                headGen = BasePi(nodes = <function1>, outputFamily = TermsWithTyp),
+                                                headGen = BasePi(
+                                                  nodes = TargetInducNode,
+                                                  outputFamily = TermsWithTyp
+                                                ),
                                                 headCoeff = 0.05,
                                                 tail = BaseCons(
-                                                  headGen = BasePiOpt(nodesOpt = <function1>, outputFamily = TermsWithTyp),
+                                                  headGen = BasePiOpt(
+                                                    nodesOpt = SolverTyp,
+                                                    outputFamily = TermsWithTyp
+                                                  ),
                                                   headCoeff = 0.05,
                                                   tail = BaseCons(
-                                                    headGen = BasePiOpt(nodesOpt = <function1>, outputFamily = TermsWithTyp),
+                                                    headGen = BasePiOpt(
+                                                      nodesOpt = TypViaZeroNode,
+                                                      outputFamily = TermsWithTyp
+                                                    ),
                                                     headCoeff = 0.05,
                                                     tail = Target(output = TermsWithTyp)
                                                   )

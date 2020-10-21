@@ -151,6 +151,8 @@ object TermRandomVars {
 
   case object Negate extends (Typ[Term] => Typ[Term]){
     def apply(v1: HoTT.Typ[HoTT.Term]): HoTT.Typ[HoTT.Term] = negate(v1)
+
+    override def toString(): String = "Negate"
   }
 
   /**
@@ -195,6 +197,8 @@ object TermRandomVars {
 
   case object WithTypSort extends (Typ[Term] => Sort[Term, Term]){
     def apply(v1: HoTT.Typ[HoTT.Term]): Sort[HoTT.Term,HoTT.Term] = withTypSort(v1)
+
+    override def toString(): String = "WithTypSort"
   }
 
   def withTypNode(
@@ -223,6 +227,8 @@ object TermRandomVars {
       extends (Typ[Term] => Sort.Restrict[Term, ExstFunc]) {
     def apply(v1: HoTT.Typ[HoTT.Term]): Restrict[HoTT.Term, HoTT.ExstFunc] =
       Sort.Restrict[Term, ExstFunc](FuncWithDom(v1))
+
+    override def toString(): String = "RestrictFuncWithDom"
   }
 
   def funcWithDomTermNode(

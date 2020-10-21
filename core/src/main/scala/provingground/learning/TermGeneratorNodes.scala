@@ -125,6 +125,8 @@ object TermGeneratorNodes {
       pt: PlusTyp[U, V]
   ) extends (Term => Term) {
     def apply(x: Term) = pt.i(x.asInstanceOf[U])
+
+    override def toString(): String = "Incl1"
   }
 
   /**
@@ -144,6 +146,8 @@ object TermGeneratorNodes {
       pt: PlusTyp[U, V]
   ) extends (Term => Term) {
     def apply(x: Term) = pt.j(x.asInstanceOf[V])
+
+    override def toString(): String = "Incl2"
   }
 
   /**
@@ -222,8 +226,11 @@ object TermGeneratorNodes {
       funcForCod(typ)
     )
 
-  case object CodomainNode extends (Typ[Term] :: HNil => GeneratorNode[Term]){
-    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): GeneratorNode[HoTT.Term] = codomainNode(v1.head)
+  case object CodomainNode extends (Typ[Term] :: HNil => GeneratorNode[Term]) {
+    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): GeneratorNode[HoTT.Term] =
+      codomainNode(v1.head)
+
+    override def toString(): String = "CodomainNode"
   }
 
   /**
@@ -263,8 +270,13 @@ object TermGeneratorNodes {
     case _ => None
   }
 
-  case object TypViaZeroNode extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]){
-    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): Option[GeneratorNode[HoTT.Term]] = typViaZeroNodeOpt(v1.head)
+  case object TypViaZeroNode
+      extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]) {
+    def apply(
+        v1: HoTT.Typ[HoTT.Term] :: HNil
+    ): Option[GeneratorNode[HoTT.Term]] = typViaZeroNodeOpt(v1.head)
+
+    override def toString(): String = "TypViaZeroNode"
   }
 
   /**
@@ -274,12 +286,22 @@ object TermGeneratorNodes {
       : GeneratorNodeFamily.BasePiOpt[HoTT.Typ[HoTT.Term] :: HNil, HoTT.Term] =
     GeneratorNodeFamily.BasePiOpt(TypViaZeroNode, TermsWithTyp)
 
-  case object Incl1Node extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]){
-    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): Option[GeneratorNode[HoTT.Term]] = incl1Node(v1.head)
+  case object Incl1Node
+      extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]) {
+    def apply(
+        v1: HoTT.Typ[HoTT.Term] :: HNil
+    ): Option[GeneratorNode[HoTT.Term]] = incl1Node(v1.head)
+
+    override def toString(): String = "Incl1Node"
   }
 
-  case object Incl2Node extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]){
-    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): Option[GeneratorNode[HoTT.Term]] = incl2Node(v1.head)
+  case object Incl2Node
+      extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]) {
+    def apply(
+        v1: HoTT.Typ[HoTT.Term] :: HNil
+    ): Option[GeneratorNode[HoTT.Term]] = incl2Node(v1.head)
+
+    override def toString(): String = "Incl2Node"
   }
 
   /**
@@ -357,8 +379,12 @@ object TermGeneratorNodes {
   def domainForDefn(ind: ExstInducDefn): Option[GeneratorNode[Term]] =
     domainForStruct(ind.ind, ind.typFamily, ind)
 
-  case object DomainForDefn extends (ExstInducDefn :: HNil => Option[GeneratorNode[Term]]){
-    def apply(v1: ExstInducDefn :: HNil): Option[GeneratorNode[HoTT.Term]] = domainForDefn(v1.head)
+  case object DomainForDefn
+      extends (ExstInducDefn :: HNil => Option[GeneratorNode[Term]]) {
+    def apply(v1: ExstInducDefn :: HNil): Option[GeneratorNode[HoTT.Term]] =
+      domainForDefn(v1.head)
+
+    override def toString(): String = "DomainForDefn"
   }
 
   /**
@@ -395,6 +421,8 @@ object TermGeneratorNodes {
       extends (ExstInducDefn => Option[Term]) {
     def apply(v1: ExstInducDefn): Option[HoTT.Term] =
       targetInducFuncs(v1, target)
+
+    override def toString(): String = s"TargetInducFuncs($target)"
   }
 }
 
@@ -651,6 +679,8 @@ class TermGeneratorNodes[InitState](
     def apply(
         v1: HoTT.Typ[HoTT.Term] :: HNil
     ): Option[GeneratorNode[HoTT.Term]] = nodeForTyp(v1.head)
+
+    override def toString(): String = "NodeForTyp"
   }
 
   /**
@@ -682,12 +712,16 @@ class TermGeneratorNodes[InitState](
     def apply(
         v1: HoTT.Typ[HoTT.Term] :: HNil
     ): Option[GeneratorNode[HoTT.Term]] = curryForTyp(v1.head)
+
+    override def toString(): String = "CurryForTyp"
   }
 
   case class FoldFuncTargetNode(typ: Typ[Term])
       extends (Term => Option[GeneratorNode[Term]]) {
     def apply(v1: HoTT.Term): Option[GeneratorNode[HoTT.Term]] =
       foldFuncTargetNode(v1, typ, termsWithTyp(typ))
+
+    override def toString(): String = s"FoldFuncTargetNode($typ)"
   }
 
   /**
@@ -706,6 +740,8 @@ class TermGeneratorNodes[InitState](
         v1: HoTT.Typ[HoTT.Term] :: HNil
     ): GeneratorNode.FlatMapOpt[HoTT.Term, HoTT.Term] =
       foldedTargetFunctionNode(v1.head)
+
+    override def toString(): String = "FoldedTargetFunctionNode"
   }
 
   /**
@@ -714,7 +750,7 @@ class TermGeneratorNodes[InitState](
   val typAsCodNodeFamily
       : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
-        FoldedTargetFunctionNode
+      FoldedTargetFunctionNode
     }, FuncForCod)
 
   /**
@@ -740,6 +776,8 @@ class TermGeneratorNodes[InitState](
         v1: HoTT.Typ[HoTT.Term] :: HNil
     ): GeneratorNode.Island[HoTT.ExstFunc, InitState, HoTT.Term, HoTT.Term] =
       lambdaIsleForFuncWithDomain(v1.head)
+
+    override def toString(): String = "LambdaIsleForFuncWithDomain"
   }
 
   /**
@@ -793,12 +831,17 @@ class TermGeneratorNodes[InitState](
       FuncsWithDomain
     )
 
-  case object SolverTyp extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]){
-    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): Option[GeneratorNode[HoTT.Term]] = {
+  case object SolverTyp
+      extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]) {
+    def apply(
+        v1: HoTT.Typ[HoTT.Term] :: HNil
+    ): Option[GeneratorNode[HoTT.Term]] = {
       val typ = v1.head
       solver(typ)
-          .map(Atom(_, termsWithTyp(typ)))
+        .map(Atom(_, termsWithTyp(typ)))
     }
+
+    override def toString(): String = "SolverTyp"
   }
 
   /**
@@ -806,7 +849,7 @@ class TermGeneratorNodes[InitState](
     */
   val solveFamily: GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term] =
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
-      SolverTyp 
+      SolverTyp
     }, TermsWithTyp)
 
   /**
@@ -867,14 +910,16 @@ class TermGeneratorNodes[InitState](
     case fn: FuncLike[u, v] =>
       FlatMap(
         termsWithTyp(fn.dom),
-        (x: Term) =>
-          foldTypFamily(fn(x.asInstanceOf[u])), 
+        (x: Term) => foldTypFamily(fn(x.asInstanceOf[u])),
         Typs
       )
   }
 
-  case object FoldTypFamily extends (ExstFunc => GeneratorNode[Typ[Term]]){
-    def apply(v1: HoTT.ExstFunc): GeneratorNode[HoTT.Typ[HoTT.Term]] = foldTypFamily(v1.term)
+  case object FoldTypFamily extends (ExstFunc => GeneratorNode[Typ[Term]]) {
+    def apply(v1: HoTT.ExstFunc): GeneratorNode[HoTT.Typ[HoTT.Term]] =
+      foldTypFamily(v1.term)
+
+    override def toString(): String = "FoldTypFamily"
   }
 
   /**
@@ -898,8 +943,7 @@ class TermGeneratorNodes[InitState](
         case fn: FuncLike[u, v] =>
           FlatMap(
             termsWithTyp(fn.dom),
-            (x: Term) =>
-              foldFuncNode(fn(x.asInstanceOf[u]), depth - 1), 
+            (x: Term) => foldFuncNode(fn(x.asInstanceOf[u]), depth - 1),
             FuncFoldVar(t, depth)
           )
       }
@@ -921,7 +965,7 @@ class TermGeneratorNodes[InitState](
             FlatMapOpt(
               termsWithTyp(fn.dom),
               (x: Term) =>
-                foldFuncTargetNode(fn(x.asInstanceOf[u]), target, output), 
+                foldFuncTargetNode(fn(x.asInstanceOf[u]), target, output),
               output
             )
           )
@@ -961,7 +1005,7 @@ class TermGeneratorNodes[InitState](
     FlatMapOpt[Term, Term](
       termsWithTyp(typFamilyTarget(dom).get),
       (codom: Term) => {
-        val fnOpt = ind.ind.inducOpt(dom, codom) 
+        val fnOpt = ind.ind.inducOpt(dom, codom)
         fnOpt.map { fn =>
           foldFuncNode(fn, ind.intros.size)
         }
@@ -976,8 +1020,7 @@ class TermGeneratorNodes[InitState](
   def recFuncsFolded(ind: ExstInducDefn): GeneratorNode[Term] =
     FlatMap[Term, Term](
       domForInduc(ind),
-      dom =>
-        recFuncsFoldedGivenDomNode(ind, dom),
+      dom => recFuncsFoldedGivenDomNode(ind, dom),
       Terms
     )
 
@@ -988,7 +1031,7 @@ class TermGeneratorNodes[InitState](
   val recFuncFoldedNode: GeneratorNode[Term] =
     FlatMap[ExstInducDefn, Term](
       InducDefns,
-      RecFuncsFolded, 
+      RecFuncsFolded,
       Terms
     )
 
@@ -999,19 +1042,22 @@ class TermGeneratorNodes[InitState](
   def inducFuncsFolded(ind: ExstInducDefn): GeneratorNode[Term] =
     FlatMap[Term, Term](
       domForInduc(ind),
-      dom =>
-        inducFuncsFoldedGivenDomNode(ind, dom), 
+      dom => inducFuncsFoldedGivenDomNode(ind, dom),
       Terms
     )
 
   case object InducFuncsFolded extends (ExstInducDefn => GeneratorNode[Term]) {
     def apply(v1: ExstInducDefn): GeneratorNode[HoTT.Term] =
       inducFuncsFolded(v1)
+
+    override def toString(): String = "InducFuncsFolded"
   }
 
   case object RecFuncsFolded extends (ExstInducDefn => GeneratorNode[Term]) {
     def apply(v1: ExstInducDefn): GeneratorNode[HoTT.Term] =
       recFuncsFolded(v1)
+
+    override def toString(): String = "RecFuncsFolded"
   }
 
   /**
@@ -1043,6 +1089,8 @@ class TermGeneratorNodes[InitState](
       extends (ExstInducDefn => Option[GeneratorNode[Term]]) {
     def apply(v1: ExstInducDefn): Option[GeneratorNode[HoTT.Term]] =
       targetInducFuncsFolded(v1, target)
+
+    override def toString(): String = "TargetInducFuncsFolded"
   }
 
   /**
@@ -1074,6 +1122,8 @@ class TermGeneratorNodes[InitState](
         v1: HoTT.Typ[HoTT.Term] :: HNil
     ): GeneratorNode.FlatMapOpt[ExstInducDefn, HoTT.Term] =
       targetInducNode(v1.head)
+
+    override def toString(): String = "TargetInducNode"
   }
 
   /**
