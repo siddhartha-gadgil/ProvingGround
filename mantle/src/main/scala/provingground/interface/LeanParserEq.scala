@@ -65,7 +65,7 @@ class LeanParserEq(
           Elem(result, tailVar)
         )
       )
-      funcFoldEqs(y, depth - 1, args.tail, result) + eq // FIXME use iterated function application
+      funcFoldEqs(y, depth - 1, args.tail, result) + eq
     }
 
   def recAppEq(
@@ -111,7 +111,8 @@ class LeanParserEq(
           FinalVal(Elem(res, Terms)),
           coeff * FinalVal(Elem(target, Typs)) * FinalVal(Elem(res, foldVar))
         )
-      val foldEqs = funcFoldEqs(recFn, depth, vecInter, res)
+      val foldEqs = // funcFoldEqs(recFn, depth, vecInter, res)
+          DE.funcFoldEqs(recFn, vecInter)
       res -> ((argsFmlyTermEq._2 union vecEq._2 union foldEqs) + baseEq)
     }
 
