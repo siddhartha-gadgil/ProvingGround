@@ -1,6 +1,6 @@
 package provingground.interface
 
-import provingground._, HoTT._, learning._, translation._, induction._
+import provingground._, HoTT.{Variable =>_, _}, learning._, translation._, induction._
 import ujson._
 import provingground.learning.Sort.All
 import provingground.learning.Sort.Filter
@@ -198,4 +198,27 @@ object EquationJson {
 
   }
 
+  def variableJson[Y](v:  Variable[Y]): ujson.Value = v match {
+      case ev @ Event(base, sort) => Obj("type" -> "event", "value" -> eventJson(ev)) 
+      case InIsle(isleVar, boat: Term, isle) => 
+        Obj("type"-> "in-isle", "isle-var" -> variableJson(isleVar), "boat" -> termToJson(boat).get, "isle" -> isleJson(isle))
+      case PairEvent(base1, base2, sort) => throw new Exception("trying to serialize pair events, not expected")
+      case elem @Elem(element, randomVar) => Obj("type" -> "elem", "value" -> elemJson(elem))
+      case _ => throw new Exception(s"cannot serialize $v")
+  }
+
+  def jsonVariable(js: ujson.Value) : Variable[_] = 
+    js.obj("type").str match {
+        case "event" => jsonEvent(js.obj("value"))
+        case "elem" => jsonElem(js.obj("value"))
+        case "in-isle" =>
+            val boat = jsonToTerm()(js.obj("boat")).get 
+            jsonVariable(js.obj("isle-var")) match {
+                case isleVar : Variable[y] =>
+                jsonIsle(js.obj("isle")) match {
+                    case isle: Island[yy, TermState, o, Term] =>
+                        InIsle[y, yy, TermState, o, Term](isleVar, boat, isle)
+                }
+            }
+    }
 }

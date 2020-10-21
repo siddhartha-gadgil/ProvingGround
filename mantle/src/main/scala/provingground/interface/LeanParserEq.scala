@@ -65,7 +65,7 @@ class LeanParserEq(
           Elem(result, tailVar)
         )
       )
-      funcFoldEqs(y, depth - 1, args.tail, result) + eq
+      funcFoldEqs(y, depth - 1, args.tail, result) + eq // FIXME use iterated function application
     }
 
   def recAppEq(
