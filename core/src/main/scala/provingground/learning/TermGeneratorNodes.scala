@@ -222,6 +222,10 @@ object TermGeneratorNodes {
       funcForCod(typ)
     )
 
+  case object CodomainNode extends (Typ[Term] :: HNil => GeneratorNode[Term]){
+    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): GeneratorNode[HoTT.Term] = codomainNode(v1.head)
+  }
+
   /**
     * Node family for generating functions that target a codomain;
     * they are not applied yet, instead form terms of a customised random variable.
@@ -229,7 +233,7 @@ object TermGeneratorNodes {
   val codomainNodeFamily
       : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
-      case typ :: HNil => codomainNode(typ)
+      CodomainNode
     }, FuncForCod)
 
   /**
@@ -259,12 +263,24 @@ object TermGeneratorNodes {
     case _ => None
   }
 
+  case object TypViaZeroNode extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]){
+    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): Option[GeneratorNode[HoTT.Term]] = typViaZeroNodeOpt(v1.head)
+  }
+
   /**
     * node family to target (dependent) function types by mapping domain to zero (i.e. contradict hypothesis)
     */
   val typViaZeroFamily
       : GeneratorNodeFamily.BasePiOpt[HoTT.Typ[HoTT.Term] :: HNil, HoTT.Term] =
-    GeneratorNodeFamily.simplePiOpt(typViaZeroNodeOpt, TermsWithTyp)
+    GeneratorNodeFamily.BasePiOpt(TypViaZeroNode, TermsWithTyp)
+
+  case object Incl1Node extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]){
+    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): Option[GeneratorNode[HoTT.Term]] = incl1Node(v1.head)
+  }
+
+  case object Incl2Node extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]){
+    def apply(v1: HoTT.Typ[HoTT.Term] :: HNil): Option[GeneratorNode[HoTT.Term]] = incl2Node(v1.head)
+  }
 
   /**
     * node family to target products using inclusions
@@ -272,7 +288,7 @@ object TermGeneratorNodes {
   val incl1TypNodeFamily
       : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
-      case typ :: HNil => incl1Node(typ)
+      Incl1Node
     }, TermsWithTyp)
 
   /**
@@ -281,7 +297,7 @@ object TermGeneratorNodes {
   val incl2TypNodeFamily
       : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
-      case typ :: HNil => incl2Node(typ)
+      Incl2Node
     }, TermsWithTyp)
 
   /**
@@ -341,6 +357,10 @@ object TermGeneratorNodes {
   def domainForDefn(ind: ExstInducDefn): Option[GeneratorNode[Term]] =
     domainForStruct(ind.ind, ind.typFamily, ind)
 
+  case object DomainForDefn extends (ExstInducDefn :: HNil => Option[GeneratorNode[Term]]){
+    def apply(v1: ExstInducDefn :: HNil): Option[GeneratorNode[HoTT.Term]] = domainForDefn(v1.head)
+  }
+
   /**
     * Node family for generating domains for a given inductive structure, with an inductive definition also given.
     * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
@@ -348,7 +368,7 @@ object TermGeneratorNodes {
   val domainForDefnNodeFamily
       : GeneratorNodeFamily[ExstInducDefn :: HNil, Term] =
     GeneratorNodeFamily.BasePiOpt[ExstInducDefn :: HNil, Term]({
-      case defn :: HNil => domainForDefn(defn)
+      DomainForDefn
     }, DomForInduc)
 
   /**

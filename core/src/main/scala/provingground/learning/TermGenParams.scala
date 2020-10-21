@@ -205,7 +205,7 @@ case class TermGenParams(
   val isleDomainsNode: NodeCoeffs[TermState, Double, HNil, Typ[
     Term
   ]] = (GeneratorNode
-    .Map(identity[Typ[Term]], Typs, IsleDomains) -> 1.0) :: IsleDomains
+    .Map(Idty[Typ[Term]](), Typs, IsleDomains) -> 1.0) :: IsleDomains
     .target[TermState, Double, Typ[Term]]
 
   val funcForCodNodes: NodeCoeffs[TermState, Double, Typ[Term] :: HNil, Term] =

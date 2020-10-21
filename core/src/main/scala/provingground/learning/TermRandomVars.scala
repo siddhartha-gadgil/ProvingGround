@@ -149,6 +149,10 @@ object TermRandomVars {
       Map[ExstFunc, Term](ExstFunc.GetFunc, TypFamilies, TypsAndFamilies)
   }
 
+  case object Negate extends (Typ[Term] => Typ[Term]){
+    def apply(v1: HoTT.Typ[HoTT.Term]): HoTT.Typ[HoTT.Term] = negate(v1)
+  }
+
   /**
     * distribution of types to target for generating terms; either a generated type or a goal.
     */
@@ -157,7 +161,7 @@ object TermRandomVars {
 
     def fromTyp: Map[Typ[Term], Typ[Term]] = Map(Idty(), Typs, TargetTyps)
 
-    def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
+    def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(Negate, Typs, TargetTyps)
   }
 
   case object IsleDomains extends RandomVar[Typ[Term]]

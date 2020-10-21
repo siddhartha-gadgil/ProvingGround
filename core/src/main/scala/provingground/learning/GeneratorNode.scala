@@ -74,10 +74,13 @@ class RandomVarFamily[Dom <: HList, +O](
 
   def at(x: Dom) = RandomVar.AtCoord(this, x)
 
-  def init[Y >: O] = BasePi((x: Dom) => GeneratorNode.Init[Y](at(x)), this)
+  def init[Y >: O] = BasePi(RandomVarFamily.InitFunc[Dom, O, Y](this), this)
 }
 
 object RandomVarFamily {
+  case class InitFunc[Dom <: HList, O, Y >: O](base : RandomVarFamily[Dom, O]) extends (Dom => GeneratorNode.Init[Y]){
+    def apply(v1: Dom): GeneratorNode.Init[Y] = GeneratorNode.Init[Y](RandomVar.AtCoord(base, v1))
+  }
 
   /**
     * The associated distribution for a random variable family,
