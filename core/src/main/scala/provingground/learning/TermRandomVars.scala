@@ -189,10 +189,14 @@ object TermRandomVars {
   def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
     Sort.Filter[Term](WithTyp(typ))
 
+  case object WithTypSort extends (Typ[Term] => Sort[Term, Term]){
+    def apply(v1: HoTT.Typ[HoTT.Term]): Sort[HoTT.Term,HoTT.Term] = withTypSort(v1)
+  }
+
   def withTypNode(
       node: GeneratorNode[Term]
   ): GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
-    node.pi(withTypSort, TermsWithTyp)
+    node.pi(WithTypSort, TermsWithTyp)
 
   /**
     * family of distribution of (existential) functions with specifed domain.
@@ -211,11 +215,17 @@ object TermRandomVars {
   // ): GeneratorNodeFamily[Typ[Term] :: HNil, ExstFunc] =
   //   node.pi(funcWithDomSort, FuncsWithDomain)
 
+  case object RestrictFuncWithDom
+      extends (Typ[Term] => Sort.Restrict[Term, ExstFunc]) {
+    def apply(v1: HoTT.Typ[HoTT.Term]): Restrict[HoTT.Term, HoTT.ExstFunc] =
+      Sort.Restrict[Term, ExstFunc](FuncWithDom(v1))
+  }
+
   def funcWithDomTermNode(
       node: GeneratorNode[Term]
   ): GeneratorNodeFamily[::[Typ[Term], HNil], ExstFunc] =
     node.pi(
-      (dom: Typ[Term]) => Sort.Restrict[Term, ExstFunc](FuncWithDom(dom)),
+      RestrictFuncWithDom,
       FuncsWithDomain
     )
 
@@ -689,22 +699,50 @@ object TermRandomVars {
           "elem-type"     -> "typ"
         )
       case IterFuncTypTo(typ) =>
-        Obj("family" -> "iter-func-typ-to", "typF" -> termToJson(typ), "elem-type" -> "typ")
+        Obj(
+          "family"    -> "iter-func-typ-to",
+          "typF"      -> termToJson(typ),
+          "elem-type" -> "typ"
+        )
       case PartiallyApplied(func) =>
-        Obj("family" -> "partially-applied", "func" -> termToJson(func), "elem-type" -> "term")
+        Obj(
+          "family"    -> "partially-applied",
+          "func"      -> termToJson(func),
+          "elem-type" -> "term"
+        )
       case TypsFromFamily(typF) =>
-        Obj("family" -> "types-from-family", "typF" -> termToJson(typF), "elem-type" -> "typ")
+        Obj(
+          "family"    -> "types-from-family",
+          "typF"      -> termToJson(typF),
+          "elem-type" -> "typ"
+        )
       case RandomVector(base) =>
-        Obj("family" -> "vector", "base" -> randomVarToJson(base), "elem-type" -> "vector")
+        Obj(
+          "family"    -> "vector",
+          "base"      -> randomVarToJson(base),
+          "elem-type" -> "vector"
+        )
       case RandomVar
             .AtCoord(rvF: RandomVarFamily[v, u], (head: Term) :: tail) =>
         rvF match {
           case TermsWithTyp =>
-            Obj("family" -> "terms-with-type", "coord" -> termToJson(head), "elem-type" -> "term")
+            Obj(
+              "family"    -> "terms-with-type",
+              "coord"     -> termToJson(head),
+              "elem-type" -> "term"
+            )
           case FuncsWithDomain =>
-            Obj("family" -> "funcs-with-domain", "coord" -> termToJson(head), "elem-type" -> "func")
+            Obj(
+              "family"    -> "funcs-with-domain",
+              "coord"     -> termToJson(head),
+              "elem-type" -> "func"
+            )
           case FuncForCod =>
-            Obj("family" -> "funcs-for-cod", "coord" -> termToJson(head), "elem-type" -> "term")
+            Obj(
+              "family"    -> "funcs-for-cod",
+              "coord"     -> termToJson(head),
+              "elem-type" -> "term"
+            )
 
         }
       case RandomVar.AtCoord(rvF, (head: ExstInducDefn) :: tail)
