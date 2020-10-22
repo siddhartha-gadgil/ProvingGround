@@ -22,6 +22,7 @@ import provingground.learning.GeneratorNode.FlatMap
 import provingground.learning.GeneratorNode.FlatMapOpt
 import provingground.learning.GeneratorNode.BaseThenCondition
 import provingground.learning.GeneratorNode.RecursiveThenCondition
+import provingground.learning.GeneratorNode.Idty
 
 object EquationJson {
   def sortJson[S, T](sort: Sort[S, T]): ujson.Value =
@@ -267,6 +268,24 @@ object EquationJson {
         "input"  -> randomVarToJson(input),
         "output" -> randomVarToJson(output)
       )
+    case MapOpt(f: TargetInducFuncs, input, output) =>
+      Obj(
+        "type"   -> "map-opt",
+        "family" -> "target-induc-funcs",
+        "typ"    -> termToJson(f.target).get,
+        "f"      -> Str(f.toString()),
+        "input"  -> randomVarToJson(input),
+        "output" -> randomVarToJson(output)
+      )
+    case MapOpt(f: TargetCodomain, input, output) =>
+      Obj(
+        "type"   -> "map-opt",
+        "family" -> "target-codomain",
+        "typ"    -> termToJson(f.typ).get,
+        "f"      -> Str(f.toString()),
+        "input"  -> randomVarToJson(input),
+        "output" -> randomVarToJson(output)
+      )
     case MapOpt(f, input, output) =>
       Obj(
         "type"   -> "map-opt",
@@ -274,9 +293,20 @@ object EquationJson {
         "input"  -> randomVarToJson(input),
         "output" -> randomVarToJson(output)
       )
+    case ZipMap(ptt: PTTerm[u, v], input1, input2, output) =>
+      Obj(
+        "type"   -> "zip-map",
+        "family" -> Str("ptterm"),
+        "pt"     -> termToJson(ptt.pt),
+        "input1" -> randomVarToJson(input1),
+        "input2" -> randomVarToJson(input2),
+        "output" -> randomVarToJson(output)
+      )
+
     case ZipMap(f, input1, input2, output) =>
       Obj(
         "type"   -> "zip-map",
+        "family" -> Str("single"),
         "f"      -> Str(f.toString()),
         "input1" -> randomVarToJson(input1),
         "input2" -> randomVarToJson(input2),
@@ -299,9 +329,20 @@ object EquationJson {
         "base-input" -> randomVarToJson(baseInput),
         "output"     -> randomVarToJson(output)
       )
+    case ZipFlatMap(baseInput, fiberVar: STFibVar[u, v], f, output) =>
+      Obj(
+        "type"       -> "zip-flat-map",
+        "family"     -> "single",
+        "typ"        -> termToJson(fiberVar.pt).get,
+        "base-input" -> randomVarToJson(baseInput),
+        "fiber-var"  -> Str(fiberVar.toString()),
+        "f"          -> Str(f.toString()),
+        "output"     -> randomVarToJson(output)
+      )
     case ZipFlatMap(baseInput, fiberVar, f, output) =>
       Obj(
         "type"       -> "zip-flat-map",
+        "family"     -> "single",
         "base-input" -> randomVarToJson(baseInput),
         "fiber-var"  -> Str(fiberVar.toString()),
         "f"          -> Str(f.toString()),
@@ -335,5 +376,102 @@ object EquationJson {
       )
     case isle @ Island(output, islandOutput, initMap, export, finalMap) =>
       Obj("type" -> "island", "island" -> isleJson(isle))
+  }
+
+  def jsonGenNode(
+      js: Value,
+      tgn: TermGeneratorNodes[TermState]
+  ): GeneratorNode[_] = {
+    val obj           = js.obj
+    def rv(s: String) = jsonToRandomVar(obj(s))
+    obj("type").str match {
+      case "init" => Init(jsonToRandomVar(obj("input")))
+      case "atom" =>
+        rv("output") match {
+          case output: RandomVar[u] =>
+            Atom(jsonPoly(obj("value")).asInstanceOf[u], output)
+        }
+      case "map" =>
+        (rv("input"), rv("output")) match {
+          case (input: RandomVar[u], output: RandomVar[v]) =>
+            val f: Any = obj("f").str match {
+              case "Identity" => Idty[u]()
+              case "Negate"   => Negate
+              case "GetFunc"  => ExstFunc.GetFunc
+            }
+            GeneratorNode.Map(f.asInstanceOf[u => v], input, output)
+        }
+      case "map-opt" =>
+        obj("family").str match {
+          case "target-induc-funcs" =>
+            val typ = toTyp(jsonToTerm()(obj("typ")).get)
+            MapOpt[ExstInducDefn, Term](
+              TargetInducFuncs(typ),
+              rv("input").asInstanceOf[RandomVar[ExstInducDefn]],
+              rv("output").asInstanceOf[RandomVar[Term]]
+            )
+          case "target-codomain" =>
+            val typ = toTyp(jsonToTerm()(obj("typ")).get)
+            MapOpt[ExstFunc, Term](
+              TargetCodomain(typ),
+              rv("input").asInstanceOf[RandomVar[ExstFunc]],
+              rv("output").asInstanceOf[RandomVar[Term]]
+            )
+        }
+      case "zip-map" =>
+        val pt = toTyp(jsonToTerm()(obj("pt")).get) match {
+          case pd: ProdTyp[x, y] => pd
+        }
+        ZipMap[Term, Term, Term](
+          PTTerm(pt),
+          termsWithTyp(pt.first),
+          termsWithTyp(pt.second),
+          termsWithTyp(pt)
+        )
+      case "zip-map-opt" =>
+        (rv("input1"), rv("input2"), rv("output")) match {
+          case (
+              input1: RandomVar[u1],
+              input2: RandomVar[u2],
+              output: RandomVar[v]
+              ) =>
+            val f = tgn.UnifApplnOpt
+            ZipMapOpt(
+              f.asInstanceOf[(u1, u2) => Option[v]],
+              input1,
+              input2,
+              output
+            )
+        }
+      case "fiber-product-map" =>
+        obj("fiber-var").str match {
+          case "TermsWithTypFn" =>
+            FiberProductMap[ExstFunc, Term, Typ[Term], Term](
+              DomFn,
+              TermsWithTypFn,
+              tgn.Appln,
+              rv("base-input").asInstanceOf[RandomVar[ExstFunc]],
+              Terms
+            )
+          case "FuncsWithDomainFn" =>
+            FiberProductMap[Term, ExstFunc, Typ[Term], Term](
+              TypFn,
+              FuncsWithDomainFn,
+              tgn.FlipAppln,
+              Terms,
+              Terms
+            )
+        }
+      case "zip-flat-map" =>
+        val pt = jsonToTerm()(obj("typ")).get match {
+          case st: SigmaTyp[u, v] => st
+        }
+        ZipFlatMap[Term, Term, Term](
+          termsWithTyp(pt.fibers.dom),
+          STFibVar(pt),
+          STTerm(pt),
+          termsWithTyp(pt)
+        )
+    }
   }
 }

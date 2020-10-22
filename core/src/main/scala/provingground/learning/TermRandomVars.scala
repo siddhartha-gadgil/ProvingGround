@@ -127,7 +127,7 @@ object TermRandomVars {
   case object TermsWithTypFn extends (Typ[Term] => RandomVar[Term]) {
     def apply(typ: Typ[Term]) = RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
 
-    override def toString = "TermsWithTyp"
+    override def toString = "TermsWithTypFn"
   }
 
   /**
@@ -251,7 +251,7 @@ object TermRandomVars {
   case object FuncsWithDomainFn extends (Typ[Term] => RandomVar[ExstFunc]) {
     def apply(typ: Typ[Term]) = RandomVar.AtCoord(FuncsWithDomain, typ :: HNil)
 
-    override def toString = "FuncsWithDomain"
+    override def toString = "FuncsWithDomainFn"
   }
 
   case object DomForInduc

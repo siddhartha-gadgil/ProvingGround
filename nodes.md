@@ -16,7 +16,7 @@ We record the cases, parameters that need enumeration and possible values.
     * f : [UnifApplnOpt]
 * FiberProductMap
     * quot : [domOf = DomFn, typeOf(_) = TypFn]
-    * fiberVar : [TermsWithTyp, FuncsWithDomain]
+    * fiberVar : [TermsWithTyp, FuncsWithDomainFn]
     * f : [Appln, FlipAppln]
 * ZipFlatMap
     * fiberVar : [TermsWithTyp]
@@ -62,7 +62,7 @@ Cons(
             nodes = ConditionFunc(
               base = FiberProductMap(
                 quot = typeOf(_),
-                fiberVar = FuncsWithDomain,
+                fiberVar = FuncsWithDomainFn,
                 f = FlipAppln,
                 baseInput = Terms,
                 output = Terms
@@ -146,7 +146,7 @@ Cons(
                       tail = BaseCons(
                         headGen = FiberProductMap(
                           quot = typeOf(_),
-                          fiberVar = FuncsWithDomain,
+                          fiberVar = FuncsWithDomainFn,
                           f = FlipAppln,
                           baseInput = Terms,
                           output = Terms
@@ -308,7 +308,7 @@ Cons(
                             headGen = BaseThenCondition(
                               gen = FiberProductMap(
                                 quot = typeOf(_),
-                                fiberVar = FuncsWithDomain,
+                                fiberVar = FuncsWithDomainFn,
                                 f = FlipAppln,
                                 baseInput = Terms,
                                 output = Terms
@@ -404,7 +404,7 @@ Cons(
                               headGen = BaseThenCondition(
                                 gen = FiberProductMap(
                                   quot = typeOf(_),
-                                  fiberVar = FuncsWithDomain,
+                                  fiberVar = FuncsWithDomainFn,
                                   f = FlipAppln,
                                   baseInput = Terms,
                                   output = Terms
@@ -520,7 +520,7 @@ Cons(
                                     nodes = ConditionFunc(
                                       base = FiberProductMap(
                                         quot = typeOf(_),
-                                        fiberVar = FuncsWithDomain,
+                                        fiberVar = FuncsWithDomainFn,
                                         f = FlipAppln,
                                         baseInput = Terms,
                                         output = Terms
@@ -586,7 +586,7 @@ Cons(
                                       nodes = ConditionFunc(
                                         base = FiberProductMap(
                                           quot = typeOf(_),
-                                          fiberVar = FuncsWithDomain,
+                                          fiberVar = FuncsWithDomainFn,
                                           f = FlipAppln,
                                           baseInput = Terms,
                                           output = Terms

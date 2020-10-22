@@ -215,13 +215,18 @@ object TermGeneratorNodes {
     override def toString(): String = s"STFibVar($pt)"
   }
 
+  case class TargetCodomain(typ: Typ[Term]) extends (ExstFunc => Option[Term]) {
+    def apply(v1: HoTT.ExstFunc): Option[HoTT.Term] =
+      Unify.targetCodomain(v1.func, typ)
+  }
+
   /**
     * Node for generating functions that target a codomain;
     * they are not applied yet, instead form terms of a customised random variable.
     */
   def codomainNode(typ: Typ[Term]): GeneratorNode[Term] =
     MapOpt[ExstFunc, Term](
-      fn => Unify.targetCodomain(fn.func, typ),
+      TargetCodomain(typ),
       Funcs,
       funcForCod(typ)
     )
