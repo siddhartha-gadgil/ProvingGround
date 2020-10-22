@@ -1249,7 +1249,7 @@ class TermGeneratorNodes[InitState](
   def otherHeadNode(inductiveTyp: Typ[Term]): FlatMap[Typ[Term], Typ[Term]] =
     FlatMap(
       Typs,
-      otherHeadIsle(inductiveTyp),
+      otherHeadIsle(inductiveTyp), //unused
       IntroRuleTypes(inductiveTyp)
     )
 
@@ -1352,7 +1352,7 @@ class TermGeneratorNodes[InitState](
   def iterFuncNode(targetTyp: Typ[Term]): FlatMap[Typ[Term], Typ[Term]] =
     FlatMap(
       Typs,
-      iterFuncIsle(targetTyp),
+      iterFuncIsle(targetTyp), //unused
       IterFuncTypTo(targetTyp)
     )
 
@@ -1422,7 +1422,7 @@ class TermGeneratorNodes[InitState](
   def indexedSelfHeadNode(typF: Term) =
     FlatMap(
       TypsFromFamily(typF),
-      indexedOtherHeadIsle(typF),
+      indexedOtherHeadIsle(typF), // unused
       IndexedIntroRuleTyps(typF)
     )
 
@@ -1435,7 +1435,7 @@ class TermGeneratorNodes[InitState](
   def indexedOtherHeadNode(typF: Term) =
     FlatMap(
       Typs,
-      indexedOtherHeadIsle(typF),
+      indexedOtherHeadIsle(typF), // unused
       IndexedIntroRuleTyps(typF)
     )
 
@@ -1465,8 +1465,8 @@ class TermGeneratorNodes[InitState](
   def indexedIterFuncNode(targetTyp: Term): FlatMap[Typ[Term], Typ[Term]] =
     FlatMap(
       Typs,
-      indexedIterFuncIsle(targetTyp),
-      IndexedIterFuncTypTo(targetTyp)
+      indexedIterFuncIsle(targetTyp), //unused
+      IndexedIterFuncTypTo(targetTyp) 
     )
 
   /**
@@ -1478,7 +1478,7 @@ class TermGeneratorNodes[InitState](
   def indexedIterHeadNode(inductiveTyp: Term) =
     FlatMap(
       IndexedIterFuncTypTo(inductiveTyp),
-      indexedOtherHeadIsle(inductiveTyp),
+      indexedOtherHeadIsle(inductiveTyp), // unused
       IndexedIntroRuleTyps(inductiveTyp)
     )
 

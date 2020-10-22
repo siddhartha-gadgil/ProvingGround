@@ -332,7 +332,7 @@ object EquationJson {
     case ZipFlatMap(baseInput, fiberVar: STFibVar[u, v], f, output) =>
       Obj(
         "type"       -> "zip-flat-map",
-        "family"     -> "single",
+        "family"     -> "st-fibvar",
         "typ"        -> termToJson(fiberVar.pt).get,
         "base-input" -> randomVarToJson(baseInput),
         "fiber-var"  -> Str(fiberVar.toString()),
@@ -355,9 +355,23 @@ object EquationJson {
         "fiber-node" -> Str(fiberNode.toString()),
         "output"     -> randomVarToJson(output)
       )
+    case FlatMapOpt(
+        baseInput,
+        fiberNodeOpt: TermGeneratorNodes[_]#TargetInducFuncsFolded,
+        output
+        ) =>
+      Obj(
+        "type"           -> "flat-map-opt",
+        "family"         -> "target-induc-funcs-folded",
+        "typ"            -> termToJson(fiberNodeOpt.target).get,
+        "base-input"     -> randomVarToJson(baseInput),
+        "fiber-node-opt" -> Str(fiberNodeOpt.toString()),
+        "output"         -> randomVarToJson(output)
+      )
     case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
       Obj(
         "type"           -> "flat-map-opt",
+        "family"         -> "single",
         "base-input"     -> randomVarToJson(baseInput),
         "fiber-node-opt" -> Str(fiberNodeOpt.toString()),
         "output"         -> randomVarToJson(output)
@@ -472,6 +486,30 @@ object EquationJson {
           STTerm(pt),
           termsWithTyp(pt)
         )
+      case "flat-map-opt" =>
+        val typ = toTyp(jsonToTerm()(obj("typ")).get)
+        FlatMapOpt[ExstInducDefn, Term](
+          InducDefns,
+          tgn.TargetInducFuncsFolded(typ),
+          termsWithTyp(typ)
+        )
+      case "flat-map" =>
+        val fiberNode = {
+          import tgn._
+          fromSeq(
+            LambdaIsle,
+            PiIsle,
+            RecFuncsFolded,
+            InducFuncsFolded,
+            SigmaIsle,
+            FoldTypFamily,
+            LambdaTypFamilyIsle
+          )(obj("fiber-node").str)
+        }
+        (rv("input"), rv("output")) match {
+          case (input: RandomVar[u], output: RandomVar[v]) =>
+            FlatMap[u, v](input, fiberNode.asInstanceOf[u => GeneratorNode[v]], output)
+        }
     }
   }
 }
