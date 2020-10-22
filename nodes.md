@@ -2,6 +2,30 @@
 
 Verified there are no lambdas, but we can use this to look for cases
 
+We record the cases, parameters that need enumeration and possible values.
+
+* Init
+* Atom
+* Map
+    * f : [Identity, Negate, GetFunc]
+* MapOpt
+    * f : []
+* ZipMap
+    * f : []
+* ZipMapOpt
+    * f : [UnifApplnOpt]
+* FiberProductMap
+    * quot : [domOf = DomFn, typeOf(_) = TypFn]
+    * fiberVar : [TermsWithTyp, FuncsWithDomain]
+    * f : [Appln, FlipAppln]
+* ZipFlatMap
+    * fiberVar : [TermsWithTyp]
+    * f : [Proj2]
+* FlatMap
+    * fiberNode : [LambdaIsle, PiIsle, RecFuncsFolded, InducFuncsFolded, SigmaIsle, FoldTypFamily, LambdaTypFamilyIsle]
+* FlatMapOpt
+    * fiberNodeOpt : []
+
 ```scala
 Cons(
   head = BaseCons(
@@ -39,7 +63,7 @@ Cons(
               base = FiberProductMap(
                 quot = typeOf(_),
                 fiberVar = FuncsWithDomain,
-                f = FlipAppn,
+                f = FlipAppln,
                 baseInput = Terms,
                 output = Terms
               ),
@@ -123,7 +147,7 @@ Cons(
                         headGen = FiberProductMap(
                           quot = typeOf(_),
                           fiberVar = FuncsWithDomain,
-                          f = FlipAppn,
+                          f = FlipAppln,
                           baseInput = Terms,
                           output = Terms
                         ),
@@ -285,7 +309,7 @@ Cons(
                               gen = FiberProductMap(
                                 quot = typeOf(_),
                                 fiberVar = FuncsWithDomain,
-                                f = FlipAppn,
+                                f = FlipAppln,
                                 baseInput = Terms,
                                 output = Terms
                               ),
@@ -381,7 +405,7 @@ Cons(
                                 gen = FiberProductMap(
                                   quot = typeOf(_),
                                   fiberVar = FuncsWithDomain,
-                                  f = FlipAppn,
+                                  f = FlipAppln,
                                   baseInput = Terms,
                                   output = Terms
                                 ),
@@ -497,7 +521,7 @@ Cons(
                                       base = FiberProductMap(
                                         quot = typeOf(_),
                                         fiberVar = FuncsWithDomain,
-                                        f = FlipAppn,
+                                        f = FlipAppln,
                                         baseInput = Terms,
                                         output = Terms
                                       ),
@@ -563,7 +587,7 @@ Cons(
                                         base = FiberProductMap(
                                           quot = typeOf(_),
                                           fiberVar = FuncsWithDomain,
-                                          f = FlipAppn,
+                                          f = FlipAppln,
                                           baseInput = Terms,
                                           output = Terms
                                         ),

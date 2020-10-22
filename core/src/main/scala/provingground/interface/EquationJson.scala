@@ -1,6 +1,7 @@
 package provingground.interface
 
-import provingground._, HoTT.{Variable =>_, _}, learning._, translation._, induction._
+import provingground._, HoTT.{Variable => _, _}, learning._, translation._,
+induction._
 import ujson._
 import provingground.learning.Sort.All
 import provingground.learning.Sort.Filter
@@ -10,6 +11,17 @@ import GeneratorVariables._
 import provingground.interface.InducJson._
 import scala.collection.mutable
 import provingground.learning.GeneratorNode.Island
+import provingground.learning.GeneratorNode.Init
+import provingground.learning.GeneratorNode.Atom
+import provingground.learning.GeneratorNode.MapOpt
+import provingground.learning.GeneratorNode.ZipMap
+import provingground.learning.GeneratorNode.ZipMapOpt
+import provingground.learning.GeneratorNode.FiberProductMap
+import provingground.learning.GeneratorNode.ZipFlatMap
+import provingground.learning.GeneratorNode.FlatMap
+import provingground.learning.GeneratorNode.FlatMapOpt
+import provingground.learning.GeneratorNode.BaseThenCondition
+import provingground.learning.GeneratorNode.RecursiveThenCondition
 
 object EquationJson {
   def sortJson[S, T](sort: Sort[S, T]): ujson.Value =
@@ -198,27 +210,130 @@ object EquationJson {
 
   }
 
-  def variableJson[Y](v:  Variable[Y]): ujson.Value = v match {
-      case ev @ Event(base, sort) => Obj("type" -> "event", "value" -> eventJson(ev)) 
-      case InIsle(isleVar, boat: Term, isle) => 
-        Obj("type"-> "in-isle", "isle-var" -> variableJson(isleVar), "boat" -> termToJson(boat).get, "isle" -> isleJson(isle))
-      case PairEvent(base1, base2, sort) => throw new Exception("trying to serialize pair events, not expected")
-      case elem @Elem(element, randomVar) => Obj("type" -> "elem", "value" -> elemJson(elem))
-      case _ => throw new Exception(s"cannot serialize $v")
+  def variableJson[Y](v: Variable[Y]): ujson.Value = v match {
+    case ev @ Event(base, sort) =>
+      Obj("type" -> "event", "value" -> eventJson(ev))
+    case InIsle(isleVar, boat: Term, isle) =>
+      Obj(
+        "type"     -> "in-isle",
+        "isle-var" -> variableJson(isleVar),
+        "boat"     -> termToJson(boat).get,
+        "isle"     -> isleJson(isle)
+      )
+    case PairEvent(base1, base2, sort) =>
+      throw new Exception("trying to serialize pair events, not expected")
+    case elem @ Elem(element, randomVar) =>
+      Obj("type" -> "elem", "value" -> elemJson(elem))
+    case _ => throw new Exception(s"cannot serialize $v")
   }
 
-  def jsonVariable(js: ujson.Value) : Variable[_] = 
+  def jsonVariable(js: ujson.Value): Variable[_] =
     js.obj("type").str match {
-        case "event" => jsonEvent(js.obj("value"))
-        case "elem" => jsonElem(js.obj("value"))
-        case "in-isle" =>
-            val boat = jsonToTerm()(js.obj("boat")).get 
-            jsonVariable(js.obj("isle-var")) match {
-                case isleVar : Variable[y] =>
-                jsonIsle(js.obj("isle")) match {
-                    case isle: Island[yy, TermState, o, Term] =>
-                        InIsle[y, yy, TermState, o, Term](isleVar, boat, isle)
-                }
+      case "event" => jsonEvent(js.obj("value"))
+      case "elem"  => jsonElem(js.obj("value"))
+      case "in-isle" =>
+        val boat = jsonToTerm()(js.obj("boat")).get
+        jsonVariable(js.obj("isle-var")) match {
+          case isleVar: Variable[y] =>
+            jsonIsle(js.obj("isle")) match {
+              case isle: Island[yy, TermState, o, Term] =>
+                InIsle[y, yy, TermState, o, Term](isleVar, boat, isle)
             }
+        }
     }
+
+  def fromList[A](l: List[A])(s: String) =
+    l.find(_.toString() == s)
+      .getOrElse(
+        throw new Exception(
+          s"expected one of ${l.mkString("[", " ,", "]")} but got $s"
+        )
+      )
+
+  def fromSeq[A](xs: A*)(s: String) = fromList(xs.toList)(s)
+
+  def genNodeJson[X](gen: GeneratorNode[X]): Value = gen match {
+    case Init(input) => Obj("type" -> "init", "input" -> randomVarToJson(input))
+    case Atom(value, output) =>
+      Obj(
+        "type"   -> "atom",
+        "value"  -> polyJson(value),
+        "output" -> randomVarToJson(output)
+      )
+    case provingground.learning.GeneratorNode.Map(f, input, output) =>
+      Obj(
+        "type"   -> "map",
+        "f"      -> Str(f.toString()),
+        "input"  -> randomVarToJson(input),
+        "output" -> randomVarToJson(output)
+      )
+    case MapOpt(f, input, output) =>
+      Obj(
+        "type"   -> "map-opt",
+        "f"      -> Str(f.toString()),
+        "input"  -> randomVarToJson(input),
+        "output" -> randomVarToJson(output)
+      )
+    case ZipMap(f, input1, input2, output) =>
+      Obj(
+        "type"   -> "zip-map",
+        "f"      -> Str(f.toString()),
+        "input1" -> randomVarToJson(input1),
+        "input2" -> randomVarToJson(input2),
+        "output" -> randomVarToJson(output)
+      )
+    case ZipMapOpt(f, input1, input2, output) =>
+      Obj(
+        "type"   -> "zip-map-opt",
+        "f"      -> Str(f.toString()),
+        "input1" -> randomVarToJson(input1),
+        "input2" -> randomVarToJson(input2),
+        "output" -> randomVarToJson(output)
+      )
+    case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
+      Obj(
+        "type"       -> "fiber-product-map",
+        "quot"       -> Str(quot.toString()),
+        "fiber-var"  -> Str(fiberVar.toString()),
+        "f"          -> Str(f.toString()),
+        "base-input" -> randomVarToJson(baseInput),
+        "output"     -> randomVarToJson(output)
+      )
+    case ZipFlatMap(baseInput, fiberVar, f, output) =>
+      Obj(
+        "type"       -> "zip-flat-map",
+        "base-input" -> randomVarToJson(baseInput),
+        "fiber-var"  -> Str(fiberVar.toString()),
+        "f"          -> Str(f.toString()),
+        "output"     -> randomVarToJson(output)
+      )
+    case FlatMap(baseInput, fiberNode, output) =>
+      Obj(
+        "type"       -> "flat-map",
+        "base-input" -> randomVarToJson(baseInput),
+        "fiber-node" -> Str(fiberNode.toString()),
+        "output"     -> randomVarToJson(output)
+      )
+    case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
+      Obj(
+        "type"           -> "flat-map-opt",
+        "base-input"     -> randomVarToJson(baseInput),
+        "fiber-node-opt" -> Str(fiberNodeOpt.toString()),
+        "output"         -> randomVarToJson(output)
+      )
+    case BaseThenCondition(gen, output, condition) =>
+      Obj(
+        "type"   -> "base-then-condition",
+        "gen"    -> genNodeJson(gen),
+        "output" -> randomVarToJson(output)
+      )
+    case RecursiveThenCondition(gen, output, condition) =>
+      Obj(
+        "type"   -> "recursive-then-condition",
+        "gen"    -> genNodeJson(gen),
+        "output" -> randomVarToJson(output)
+      )
+    case isle @ Island(output, islandOutput, initMap, export, finalMap) =>
+      Obj("type" -> "island", "island" -> isleJson(isle))
+  }
 }

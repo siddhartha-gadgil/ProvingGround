@@ -460,7 +460,7 @@ class TermGeneratorNodes[InitState](
   case object FlipAppln extends ((Term, ExstFunc) => Term) {
     def apply(arg: Term, fn: ExstFunc): Term = appln(fn, arg)
 
-    override def toString = "FlipAppn"
+    override def toString = "FlipAppln"
   }
 
   /**
