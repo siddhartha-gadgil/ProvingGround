@@ -23,6 +23,15 @@ import provingground.learning.GeneratorNode.FlatMapOpt
 import provingground.learning.GeneratorNode.BaseThenCondition
 import provingground.learning.GeneratorNode.RecursiveThenCondition
 import provingground.learning.GeneratorNode.Idty
+import provingground.learning.Expression.FinalVal
+import provingground.learning.Expression.InitialVal
+import provingground.learning.Expression.Log
+import provingground.learning.Expression.Exp
+import provingground.learning.Expression.Sum
+import provingground.learning.Expression.Literal
+import provingground.learning.Expression.Quotient
+import provingground.learning.Expression.Coeff
+import provingground.learning.Expression.IsleScale
 
 object EquationJson {
   def sortJson[S, T](sort: Sort[S, T]): ujson.Value =
@@ -203,7 +212,13 @@ object EquationJson {
             jsonToTerm()(obj("island-output").obj("pi-defn")).get match {
               case pd: PiDefn[u, v] =>
                 val islandOutput = PiOutput(pd)
-                ???
+                Island[Term, TermState, Term, Term](
+                  termsWithTyp(pd),
+                  PiOutput(pd),
+                  AddVar(pd.domain),
+                  LamApply,
+                  EnterIsle
+                )
             }
         }
 
@@ -508,8 +523,97 @@ object EquationJson {
         }
         (rv("input"), rv("output")) match {
           case (input: RandomVar[u], output: RandomVar[v]) =>
-            FlatMap[u, v](input, fiberNode.asInstanceOf[u => GeneratorNode[v]], output)
+            FlatMap[u, v](
+              input,
+              fiberNode.asInstanceOf[u => GeneratorNode[v]],
+              output
+            )
         }
     }
   }
+
+  def expressionJson(exp: Expression): Value = exp match {
+    case FinalVal(variable) =>
+      Obj("type" -> "final-val", "variable" -> variableJson(variable))
+    case InitialVal(variable) =>
+      Obj("type" -> "initial-val", "variable" -> variableJson(variable))
+    case Log(exp) => Obj("type" -> "log", "exp" -> expressionJson(exp))
+    case Exp(exp) => Obj("type" -> "exp", "exp" -> expressionJson(exp))
+    case Sum(xs) =>
+      Obj(
+        "type" -> "sum",
+        "xs"   -> Arr(xs.map(expressionJson(_)).to(mutable.ArrayBuffer))
+      )
+    case provingground.learning.Expression.Product(x, y) =>
+      Obj(
+        "type" -> "product",
+        "x"    -> expressionJson(x),
+        "y"    -> expressionJson(y)
+      )
+    case Literal(value) => Obj("type" -> "literal", "value" -> Num(value))
+    case Quotient(x, y) =>
+      Obj(
+        "type" -> "quotient",
+        "x"    -> expressionJson(x),
+        "y"    -> expressionJson(y)
+      )
+    case Coeff(node) => Obj("type" -> "coeff", "node" -> genNodeJson(node))
+    case IsleScale(boat: Term) =>
+      Obj("type" -> "isle-scale", "boat" -> termToJson(boat).get)
+    case IsleScale(boat) => throw new Exception(s"boat $boat is not a term")
+  }
+
+  def jsonExpression(
+      js: Value,
+      tgn: TermGeneratorNodes[TermState]
+  ): Expression = {
+    val obj = js.obj
+    obj("type").str match {
+      case "final-val"   => FinalVal(jsonVariable(obj("variable")))
+      case "initial-val" => InitialVal(jsonVariable(obj("variable")))
+      case "log"         => Log(jsonExpression(obj("exp"), tgn))
+      case "exp"         => Exp(jsonExpression(obj("exp"), tgn))
+      case "product" =>
+        provingground.learning.Expression
+          .Product(jsonExpression(obj("x"), tgn), jsonExpression(obj("y"), tgn))
+      case "quotient" =>
+        Quotient(jsonExpression(obj("x"), tgn), jsonExpression(obj("y"), tgn))
+      case "literal"    => Literal(obj("value").num)
+      case "isle-scale" => IsleScale(jsonToTerm()(obj("boat")).get)
+      case "coeff"      => Coeff(jsonGenNode(obj("node"), tgn))
+      case "sum"        => Sum(obj("xs").arr.to(Vector).map(jsonExpression(_, tgn)))
+    }
+  }
+
+  def equationJson(eqn: Equation): Value =
+    Obj(
+      "type" -> "equation",
+      "lhs"  -> expressionJson(eqn.lhs),
+      "rhs"  -> expressionJson(eqn.rhs)
+    )
+
+  def equationNodeJson(eqn: EquationNode): Value =
+    Obj(
+      "type" -> "equation-node",
+      "lhs"  -> expressionJson(eqn.lhs),
+      "rhs"  -> expressionJson(eqn.rhs)
+    )
+
+  def jsonEquation(
+      js: Value,
+      tgn: TermGeneratorNodes[TermState] = TermGeneratorNodes.Base
+  ): Equation =
+    Equation(
+      jsonExpression(js.obj("lhs"), tgn),
+      jsonExpression(js.obj("rhs"), tgn)
+    )
+
+  def jsonEquationNode(
+      js: Value,
+      tgn: TermGeneratorNodes[TermState] = TermGeneratorNodes.Base
+  ): EquationNode =
+    EquationNode(
+      jsonExpression(js.obj("lhs"), tgn),
+      jsonExpression(js.obj("rhs"), tgn)
+    )
 }
