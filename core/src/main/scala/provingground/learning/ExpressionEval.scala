@@ -147,8 +147,8 @@ object ExpressionEval {
     val atomVec = atoms.toVector
     Utils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
     Utils.logger.debug(
-      s"Computed (sizes of) memoized maps: ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" + 
-      s", ${initialState.typFamilyDistMap.size}, ${initialState.termsWithTypsMap.size}, ${initialState.funcsWithDomsMap.size}"
+      s"Computed (sizes of) memoized maps: ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" +
+        s", ${initialState.typFamilyDistMap.size}, ${initialState.termsWithTypsMap.size}, ${initialState.funcsWithDomsMap.size}"
     )
     val valueVecTask =
       Task.parSequence(
@@ -161,7 +161,9 @@ object ExpressionEval {
       }
       val expMapVec = valueVec.zipWithIndex.collect(fn)
       Utils.logger.debug(s"Computed vector for map, size ${expMapVec.size}")
-      Utils.logger.debug(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+      Utils.logger.debug(
+        s"Zero initial values are ${valueVec.count(_.isEmpty)}"
+      )
       val result = expMapVec.toMap
       Utils.logger.debug("Computed map")
       result
@@ -614,6 +616,29 @@ case class ProdExpr(
     if (result.isNaN()) 0 else result
   }
 
+  def gradient(v: ParVector[Double]): Vector[(Int, Double)] = {
+    val numeratorTerms = indices.map(v(_))
+    val denominatorTerms = negIndices.map { j =>
+      val y = v(j)
+      if (y > 0) 1.0 / y else 1.0
+    }
+    val numerator   = numeratorTerms.product
+    val denominator = denominatorTerms.product
+    val posLiebnitz = (0 until (numeratorTerms.size))
+      .map { j =>
+        j -> (numeratorTerms.take(j) ++ numeratorTerms.drop(j + 1)).product * constant * denominator
+      }
+      .to(Vector)
+    val negLiebnitz = (0 until (denominatorTerms.size))
+      .map { j =>
+        j -> -(denominatorTerms.take(j) ++ denominatorTerms.drop(j + 1)).product / (denominatorTerms(
+          j
+        ) * denominatorTerms(j)) * constant * numerator
+      }
+      .to(Vector)
+    ExprCalc.vecSum(Vector(posLiebnitz, negLiebnitz))
+  }
+
   def evaluate(m: Map[Int, Double]): Double = {
     val subTerms = (indices.map(j => m.getOrElse(j, 0.0)) ++ negIndices.map {
       j =>
@@ -690,6 +715,9 @@ case class SumExpr(terms: Vector[ProdExpr]) {
     result
   }
 
+  def gradient(v: ParVector[Double]): Vector[(Int, Double)] =
+    ExprCalc.vecSum(terms.map(_.gradient(v)))
+
   def evaluate(m: Map[Int, Double]): Double = {
     val subTerms = terms.map(_.evaluate(m))
     val result   = subTerms.sum
@@ -703,9 +731,14 @@ case class SumExpr(terms: Vector[ProdExpr]) {
 
 object SumExpr {}
 
-class ExprCalc(ev: ExpressionEval) {
-  import SumExpr._, ev._
-  lazy val equationVec: Vector[Equation] = equations.toVector //.par
+class ExprEquations(
+    ev: ExpressionEval,
+    initMap: Map[Expression, Double],
+    equationSet: Set[Equation],
+    params: TermGenParams
+) {
+  import SumExpr._
+  lazy val equationVec: Vector[Equation] = equationSet.toVector //.par
 
   lazy val size = equationVec.size
 
@@ -714,7 +747,7 @@ class ExprCalc(ev: ExpressionEval) {
     .zipWithIndex
     .toMap
 
-  lazy val initPar = init.par
+  lazy val initPar = initMap.par
 
   def getProd(exp: Expression): ProdExpr =
     initPar
@@ -726,7 +759,11 @@ class ExprCalc(ev: ExpressionEval) {
       .getOrElse(
         exp match {
           case cf @ Coeff(_) =>
-            ProdExpr(cf.get(tg.nodeCoeffSeq).getOrElse(0), Vector(), Vector())
+            ProdExpr(
+              cf.get(params.nodeCoeffSeq).getOrElse(0),
+              Vector(),
+              Vector()
+            )
           case Product(x, y)        => getProd(x) * getProd(y)
           case Quotient(x, y)       => getProd(x) / getProd(y)
           case Literal(value)       => ProdExpr(value, Vector(), Vector())
@@ -756,13 +793,49 @@ class ExprCalc(ev: ExpressionEval) {
   lazy val constantEquations: Set[Int] =
     (0 until (size)).filter(i => rhsExprs(i).isConstant).toSet
 
-  lazy val constantMap = startingMap.filter {
-    case (j, _) => constantEquations.contains(j)
+}
+
+object ExprCalc {
+  def vecSum(vecs: Vector[Vector[(Int, Double)]]) =
+    vecs.reduce(_ ++ _).groupMapReduce(_._1)(_._2)(_ + _).toVector
+
+  def getGenerators(
+      exps: List[Expression]
+  ): Option[(Set[Term], Set[Typ[Term]])] = exps match {
+    case FinalVal(Elem(x, v)) :: next =>
+      getGenerators(next).flatMap {
+        case (tailTerms, tailTyps) =>
+          (x, v) match {
+            case (typ: Typ[u], Typs) => Some((tailTerms, tailTyps + typ))
+            case (t: Term, _)        => Some((tailTerms + t, tailTyps))
+            case (fn: ExstFunc, _)   => Some((tailTerms + fn.func, tailTyps))
+            case _                   => None
+          }
+      }
+    case Nil => Some((Set(), Set()))
+    case _   => None
   }
 
+  def generatorSets(
+      traces: Set[Set[Expression]]
+  ): Set[(Set[HoTT.Term], Set[HoTT.Typ[HoTT.Term]])] =
+    traces.flatMap(s => getGenerators(s.toList))
+}
+
+class ExprCalc(
+    ev: ExpressionEval,
+    initMap: Map[Expression, Double],
+    equationSet: Set[Equation],
+    params: TermGenParams
+) extends ExprEquations(ev, initMap, equationSet, params) {
+  import SumExpr._, ev._, ExprCalc._
   lazy val startingMap = {
     val v = rhsExprs.zipWithIndex.filter(_._1.hasConstant)
     (v.map { case (exp, j) => j -> exp.initialValue }.toMap.filter(_._2 > 0))
+  }
+
+  lazy val constantMap = startingMap.filter {
+    case (j, _) => constantEquations.contains(j)
   }
 
   lazy val startingSupport = {
@@ -896,31 +969,6 @@ class ExprCalc(ev: ExpressionEval) {
       .get(elem)
       .map(index => recTraceSet(Set(Set(index)), depth, relativeTo, Set()))
       .getOrElse(Set())
-
-  def getGenerators(
-      exps: List[Expression]
-  ): Option[(Set[Term], Set[Typ[Term]])] = exps match {
-    case FinalVal(Elem(x, v)) :: next =>
-      getGenerators(next).flatMap {
-        case (tailTerms, tailTyps) =>
-          (x, v) match {
-            case (typ: Typ[u], Typs) => Some((tailTerms, tailTyps + typ))
-            case (t: Term, _)        => Some((tailTerms + t, tailTyps))
-            case (fn: ExstFunc, _)   => Some((tailTerms + fn.func, tailTyps))
-            case _                   => None
-          }
-      }
-    case Nil => Some((Set(), Set()))
-    case _   => None
-  }
-
-  def generatorSets(
-      traces: Set[Set[Expression]]
-  ): Set[(Set[HoTT.Term], Set[HoTT.Typ[HoTT.Term]])] =
-    traces.flatMap(s => getGenerators(s.toList))
-
-  def vecSum(vecs: Vector[Vector[(Int, Double)]]) =
-    vecs.reduce(_ ++ _).groupMapReduce(_._1)(_._2)(_ + _).toVector
 
   def gradientStep(index: Int): Vector[(Int, Double)] = {
     val rhs = rhsExprs(index)
@@ -1422,7 +1470,7 @@ trait ExpressionEval { self =>
   //   .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   // val init: Map[Expression, Double] = initMap(eqAtoms(equations), tg, initialState)
 
-  lazy val exprCalc = new ExprCalc(this)
+  lazy val exprCalc = new ExprCalc(this, init, equations, tg)
 
   /**
     * The final distributions, obtained from the initial one by finding an almost solution.
@@ -1626,7 +1674,7 @@ trait ExpressionEval { self =>
       )
     import isle._
     val boat  = variable
-    val coeff = Coeff(Base.piNode .| (typAsTermSort, Terms))
+    val coeff = Coeff(Base.piNode.|(typAsTermSort, Terms))
     val isleEqs: Set[Equation] =
       equations.map(_.mapVars {
         InIsle.variableMap(boat, isle)
