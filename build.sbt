@@ -15,8 +15,8 @@ resolvers in ThisBuild += Resolver.sonatypeRepo("snapshots")
 
 // addCompilerPlugin("io.tryp" % "splain" % "0.2.7" cross CrossVersion.patch)
 
-libraryDependencies += compilerPlugin(
-  "org.scalameta" % "semanticdb-scalac" % "4.3.0" cross CrossVersion.full)
+// libraryDependencies += compilerPlugin(
+//   "org.scalameta" % "semanticdb-scalac" % "4.3.0" cross CrossVersion.full)
 scalacOptions += "-Yrangepos"
 // scalacOptions += "-P:splain:all:true"
 
@@ -34,15 +34,15 @@ lazy val commonSettings = baseSettings ++ Seq(
     // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.1.2",
      "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
-    "org.typelevel" %%% "spire"         % "0.17.0-M1",
+    "org.typelevel" %%% "spire"         % "0.17.0",
     "com.lihaoyi"   %%% "fansi"         % "0.2.9",
     "com.lihaoyi"   %%% "upickle"       % upickleV,
     "com.lihaoyi"   %%% "fastparse"     % "2.3.0",
     "com.chuusai"   %%% "shapeless"     % "2.4.0-M1",
-    "org.typelevel" %%% "cats-core"     % "2.1.0",
+    "org.typelevel" %%% "cats-core"     % "2.2.0",
     "io.monix"      %%% "monix"         % "3.2.2",
     "org.scalameta" %%% "scalameta"     % "4.3.10",
-    "com.outr"      %%% "scribe"        % "2.7.10",
+    "com.outr"      %%% "scribe"        % "2.8.6",
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
     "com.lihaoyi"   %%% "pprint"        % "0.5.9",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
@@ -152,7 +152,7 @@ lazy val acSettings = Seq(
 
 lazy val nfSettings = Seq(
   name := "NormalForm",
-  libraryDependencies ++= Seq("org.typelevel" %%% "spire" % "0.17.0-M1"),
+  libraryDependencies ++= Seq("org.typelevel" %%% "spire" % "0.17.0"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.NormalForm._"""
 )
@@ -171,8 +171,8 @@ lazy val client = project
     // resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.7",
-      "com.lihaoyi"  %%% "scalatags"   % "0.9.1",
+      "org.scala-js" %%% "scalajs-dom" % "1.1.0",
+      "com.lihaoyi"  %%% "scalatags"   % "0.9.2",
       "com.lihaoyi"  %%% "upickle"     % upickleV,
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       // "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
