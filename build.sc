@@ -14,15 +14,15 @@ val ammV = "2.2.0"
 val commonLibs = List(
   ivy"org.scala-lang.modules::scala-parser-combinators::1.1.2",
   ivy"org.scala-lang.modules::scala-xml:1.2.0",
-  ivy"org.typelevel::spire::0.17.0-M1",
-  ivy"com.lihaoyi::fansi::0.2.8",
+  ivy"org.typelevel::spire::0.17.0",
+  ivy"com.lihaoyi::fansi::0.2.9",
   ivy"com.lihaoyi::upickle::1.2.0",
   ivy"com.lihaoyi::fastparse::2.3.0",
   ivy"com.chuusai::shapeless::2.4.0-M1",
-  ivy"org.typelevel::cats-core::2.1.0",
+  ivy"org.typelevel::cats-core::2.2.0",
   ivy"io.monix::monix::3.2.2",
   ivy"com.lihaoyi::pprint::0.6.0",
-  ivy"com.outr::scribe::2.7.10",
+  ivy"com.outr::scribe::2.8.6",
   ivy"org.scala-lang.modules::scala-parallel-collections:0.2.0",
   ivy"com.lihaoyi::sourcecode::0.2.1"//,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
@@ -97,7 +97,7 @@ repl.pprinter() = {
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule {
-  def scalaJSVersion = "0.6.33"
+  def scalaJSVersion = "1.3.0"
 }
 
 val jvmLibs = List(
@@ -161,7 +161,7 @@ object core extends Module {
   }
 
   object js extends CommonJSModule with SbtModule {
-    override def scalaJSVersion = "0.6.33"
+    override def scalaJSVersion = "1.3.0"
     override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }
@@ -357,8 +357,8 @@ object client extends CommonJSModule with SbtModule {
   )
 
   override def ivyDeps = Agg(
-    ivy"org.scala-js::scalajs-dom::0.9.7",
-    ivy"com.lihaoyi::scalatags::0.8.3",
+    ivy"org.scala-js::scalajs-dom::1.1.0",
+    ivy"com.lihaoyi::scalatags::0.9.2",
     // ivy"com.scalawarrior::scalajs-ace::0.0.4"
   )
 

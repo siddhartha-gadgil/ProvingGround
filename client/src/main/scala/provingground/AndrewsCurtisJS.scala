@@ -26,7 +26,7 @@ object AndrewsCurtisJS {
   import dom.ext._
 
   import interface.Header._
-  import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
+  // import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
 
   val sse = new dom.EventSource("/acstream")
 
