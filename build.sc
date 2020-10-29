@@ -97,7 +97,7 @@ repl.pprinter() = {
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule {
-  def scalaJSVersion = "1.3.0"
+  def scalaJSVersion = "1.2.0"
 }
 
 val jvmLibs = List(
@@ -161,7 +161,7 @@ object core extends Module {
   }
 
   object js extends CommonJSModule with SbtModule {
-    override def scalaJSVersion = "1.3.0"
+    override def scalaJSVersion = "1.2.0"
     override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }

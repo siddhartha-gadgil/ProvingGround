@@ -13,7 +13,7 @@ import scala.collection.parallel._
 import TermGeneratorNodes._
 import scala.math.Ordering.Double.TotalOrdering
 
-trait TermsTypThms {self =>
+trait TermsTypThms { self =>
   val terms: FD[Term]
   val typs: FD[Typ[Term]]
   val vars: Vector[Term]
@@ -64,19 +64,19 @@ trait TermsTypThms {self =>
     )
   }
 
-  def tangent(xs: Term*) : TermsTypThms = new TermsTypThms {
+  def tangent(xs: Term*): TermsTypThms = new TermsTypThms {
     val terms: FD[HoTT.Term] = FD.uniform(xs.toSeq)
-    
+
     val typs: FD[HoTT.Typ[HoTT.Term]] = FD.empty
-    
+
     val vars: Vector[HoTT.Term] = self.vars
-    
+
     val inds: FD[ExstInducDefn] = self.inds
-    
+
     val goals: FD[HoTT.Typ[HoTT.Term]] = self.goals
-    
+
     val context: Context = self.context
-    
+
   }
 }
 
@@ -84,8 +84,8 @@ object TermsTypThms {
   import interface._, TermJson._
 
   def fromJson(js: ujson.Value): TermsTypThms = new TermsTypThms {
-    val context = ContextJson.fromJson(obj("context"))
     val obj     = js.obj
+    val context = ContextJson.fromJson(obj("context"))
     val terms   = jsToFD(context.inducStruct)(obj("terms"))
     val typs = jsToFD(context.inducStruct)(obj("types")).map {
       case tp: Typ[Term] => tp
