@@ -341,8 +341,8 @@ case class TermGenParams(
 }
 
 trait EvolvedStateLike {
-  val init: TermState
-  val result: TermState
+  val init: TermsTypThms
+  val result: TermsTypThms
   val params: TermGenParams
 
   val goalsAttained: Set[Typ[Term]] =

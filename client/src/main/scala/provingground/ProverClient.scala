@@ -176,14 +176,20 @@ object InteractiveProver {
     )
   }
 
-  def getEvolvedState(data: ujson.Value, result: String): EvolvedState = {
+  def getEvolvedState(data: ujson.Value, result: String): EvolvedStateLike = {
     val dataObj = data.obj
     val termGenParams =
       read[TermGenParams](dataObj("generator-parameters").str)
-    val epsilon     = dataObj("epsilon").num
-    val initState   = TermState.fromJson(dataObj("initial-state"))
-    val resultState = TermState.fromJson(ujson.read(result))
-    EvolvedState(initState, resultState, termGenParams, epsilon)
+    val initState   = TermsTypThms.fromJson(dataObj("initial-state"))
+    val resultState = TermsTypThms.fromJson(ujson.read(result))
+    new EvolvedStateLike{
+      val init: TermsTypThms = initState
+      
+      val result: TermsTypThms = resultState
+      
+      val params: TermGenParams = termGenParams
+      
+    }
   }
 
   @JSExport
@@ -474,7 +480,7 @@ object InteractiveProver {
 
       stepButton.onclick = (_) => step()
 
-      def tangentStep(base: TermState, tangent: TermState): Unit = {
+      def tangentStep(base: TermsTypThms, tangent: TermsTypThms): Unit = {
         val data = ujson.Obj(
           "epsilon"              -> ujson.Num(epsilon),
           "generator-parameters" -> write(tg),
@@ -495,7 +501,7 @@ object InteractiveProver {
         sentJobs += (data.hashCode() -> ujson.write(js))
       }
 
-      def tangentButton(base: TermState, tangent: Term): Button = {
+      def tangentButton(base: TermsTypThms, tangent: Term): Button = {
         val tangentState = base.tangent(tangent)
         val btn = button(`type` := "button",
                          `class` := "button button-success")("Go").render
@@ -515,7 +521,7 @@ object InteractiveProver {
         btn
       }
 
-      def thmTable(ts: TermState): JsDom.TypedTag[Table] = {
+      def thmTable(ts: TermsTypThms): JsDom.TypedTag[Table] = {
         val rows =
           for {
             (t, p, q, h) <- ts.thmWeights
@@ -541,7 +547,7 @@ object InteractiveProver {
         )
       }
 
-      def termStateView(ts: TermState): JsDom.TypedTag[Div] =
+      def termStateView(ts: TermsTypThms): JsDom.TypedTag[Div] =
         div(`class` := "panel panel-info")(
           div(`class` := "panel-heading")(h3("Evolved Term State")),
           div(`class` := "panel-body")(

@@ -13,6 +13,94 @@ import scala.collection.parallel._
 import TermGeneratorNodes._
 import scala.math.Ordering.Double.TotalOrdering
 
+trait TermsTypThms {self =>
+  val terms: FD[Term]
+  val typs: FD[Typ[Term]]
+  val vars: Vector[Term]
+  val inds: FD[ExstInducDefn]
+  val goals: FD[Typ[Term]]
+  val context: Context
+
+  lazy val termSet = terms.support
+
+  lazy val typSet = typs.support
+
+  lazy val termTypsSet = termSet.map(_.typ)
+
+  lazy val goalSet = goals.support
+
+  lazy val thmsByPf: FD[Typ[Term]] =
+    terms
+      .map(_.typ)
+      .flatten
+      .filter((t) => (typSet.contains(t)) || goalSet.contains(t))
+      .safeNormalized
+
+  lazy val thmsBySt: FD[Typ[Term]] =
+    typs.filter(termTypsSet.contains(_)).flatten.safeNormalized
+
+  lazy val thmWeights: Vector[(Typ[Term], Double, Double, Double)] =
+    (for {
+      Weighted(x, p) <- thmsBySt.pmf
+      q = thmsByPf(x)
+      h = -p / (q * math.log(q))
+    } yield (x, p, q, h)).sortBy(_._4).reverse
+
+  def goalThmsBySt(goalW: Double) =
+    (typs ++ goals).filter(termTypsSet.contains(_)).flatten.safeNormalized
+
+  import interface._, TermJson._
+
+  def json: ujson.Obj = {
+    ujson.Obj(
+      "terms" -> fdJson(terms),
+      "types" -> fdJson(typs.map((t) => t: Term)),
+      "variables" -> ujson.Arr(
+        vars.map((t) => termToJson(t).get): _*
+      ),
+      "goals"                -> fdJson(goals.map((t) => t: Term)),
+      "inductive-structures" -> InducJson.fdJson(inds),
+      "context"              -> ContextJson.toJson(context)
+    )
+  }
+
+  def tangent(xs: Term*) : TermsTypThms = new TermsTypThms {
+    val terms: FD[HoTT.Term] = FD.uniform(xs.toSeq)
+    
+    val typs: FD[HoTT.Typ[HoTT.Term]] = FD.empty
+    
+    val vars: Vector[HoTT.Term] = self.vars
+    
+    val inds: FD[ExstInducDefn] = self.inds
+    
+    val goals: FD[HoTT.Typ[HoTT.Term]] = self.goals
+    
+    val context: Context = self.context
+    
+  }
+}
+
+object TermsTypThms {
+  import interface._, TermJson._
+
+  def fromJson(js: ujson.Value): TermsTypThms = new TermsTypThms {
+    val context = ContextJson.fromJson(obj("context"))
+    val obj     = js.obj
+    val terms   = jsToFD(context.inducStruct)(obj("terms"))
+    val typs = jsToFD(context.inducStruct)(obj("types")).map {
+      case tp: Typ[Term] => tp
+    }
+    val goals = jsToFD(context.inducStruct)(obj("goals")).map {
+      case tp: Typ[Term] => tp
+    }
+    val vars = obj("variables").arr.toVector
+      .map((t) => jsToTermExst(context.inducStruct)(t).get)
+
+    val inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn]
+
+  }
+}
+
 /**
   * A state, typically the initial state, for generating terms, types etc
   *
@@ -28,7 +116,7 @@ case class TermState(
     inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
     goals: FD[Typ[Term]] = FD.empty,
     context: Context = Context.Empty
-) {
+) extends TermsTypThms {
   def subs(x: Term, y: Term) =
     TermState(
       terms.map(_.replace(x, y)),
@@ -91,7 +179,7 @@ case class TermState(
 
   lazy val typFamilyDist = terms.condMap(TypFamilyOpt)
 
-  lazy val typFamilyDistMap:ParMap[ExstFunc, Double] = {
+  lazy val typFamilyDistMap: ParMap[ExstFunc, Double] = {
     val base = termDistMap.flatMap {
       case (x, w) =>
         TypFamilyOpt(x).map { fn =>
@@ -146,43 +234,14 @@ case class TermState(
         val total = m.values.sum
         typ -> m.map { case (x, p) => (x, p / total) }
     }
-  // termTyps
-  //   .map(
-  //     typ =>
-  //       (typ: Typ[Term]) -> (terms
-  //         .condMap(FuncOpt)
-  //         .conditioned(_.dom == typ): FD[ExstFunc]).toMap
-  //   )
-  //   .toMap
 
   lazy val allTyps = termTyps union typs.support
 
   lazy val extraTyps = terms.support.map(_.typ) -- typs.support
 
-  lazy val termSet = terms.support
-
-  lazy val typSet = typs.support
-
-  lazy val termTypsSet = termSet.map(_.typ)
-
-  lazy val goalSet = goals.support
-
-  lazy val thmsByPf: FD[Typ[Term]] =
-    terms
-      .map(_.typ)
-      .flatten
-      .filter((t) => (typSet.contains(t)) || goalSet.contains(t))
-      .safeNormalized
-
-  lazy val thmsBySt: FD[Typ[Term]] =
-    typs.filter(termTypsSet.contains(_)).flatten.safeNormalized
-
   lazy val thmsByStMap = thmsBySt.toMap
 
   lazy val thmsByPfMap = thmsByPf.pmf.map { case Weighted(x, p) => (x, p) }.toMap
-
-  def goalThmsBySt(goalW: Double) =
-    (typs ++ goals).filter(termTypsSet.contains(_)).flatten.safeNormalized
 
   lazy val successes: Vector[(HoTT.Typ[HoTT.Term], Double, Term)] =
     goals.filter(goal => termTypsSet.contains(goal)).pmf.map {
@@ -239,13 +298,6 @@ case class TermState(
       }
     case _ => FD.empty
   }
-
-  lazy val thmWeights: Vector[(Typ[Term], Double, Double, Double)] =
-    (for {
-      Weighted(x, p) <- thmsBySt.pmf
-      q = thmsByPf(x)
-      h = -p / (q * math.log(q))
-    } yield (x, p, q, h)).sortBy(_._4).reverse
 
   lazy val pfSet: Vector[Term] =
     terms.flatten.supp.filter(t => typSet.contains(t.typ))
@@ -326,7 +378,7 @@ case class TermState(
     ) -> x
   }
 
-  def tangent(xs: Term*): TermState =
+  override def tangent(xs: Term*): TermState =
     this.copy(
       terms = FD.uniform(xs),
       typs = FD.empty
@@ -337,21 +389,6 @@ case class TermState(
       terms = fd,
       typs = FD.empty
     )
-
-  import interface._, TermJson._
-
-  def json: ujson.Obj = {
-    ujson.Obj(
-      "terms" -> fdJson(terms),
-      "types" -> fdJson(typs.map((t) => t: Term)),
-      "variables" -> ujson.Arr(
-        vars.map((t) => termToJson(t).get): _*
-      ),
-      "goals"                -> fdJson(goals.map((t) => t: Term)),
-      "inductive-structures" -> InducJson.fdJson(inds),
-      "context"              -> ContextJson.toJson(context)
-    )
-  }
 
   def inIsle(x: Term) =
     TermState(
