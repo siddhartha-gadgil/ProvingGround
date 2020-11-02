@@ -12,7 +12,6 @@ TermGeneratorNodes.{_}
 
 import annotation.tailrec
 import spire.util.Opt
-import provingground.learning.SumExpr._
 import fastparse.internal.Util
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
@@ -616,7 +615,7 @@ case class ProdExpr(
     if (result.isNaN()) 0 else result
   }
 
-  def gradient(v: ParVector[Double]): Vector[(Int, Double)] = {
+  def gradient(v: collection.parallel.ParSeq[Double]): Vector[(Int, Double)] = {
     val numeratorTerms = indices.map(v(_))
     val denominatorTerms = negIndices.map { j =>
       val y = v(j)
@@ -715,7 +714,7 @@ case class SumExpr(terms: Vector[ProdExpr]) {
     result
   }
 
-  def gradient(v: ParVector[Double]): Vector[(Int, Double)] =
+  def gradient(v: collection.parallel.ParSeq[Double]): Vector[(Int, Double)] =
     ExprCalc.vecSum(terms.map(_.gradient(v)))
 
   def evaluate(m: Map[Int, Double]): Double = {
@@ -729,7 +728,66 @@ case class SumExpr(terms: Vector[ProdExpr]) {
   override def toString() = terms.mkString(" + ")
 }
 
-object SumExpr {}
+object ExprEquations {
+  def varGroups(
+      vars: Vector[GeneratorVariables.Variable[_]]
+  ): Vector[Vector[GeneratorVariables.Variable[_]]] = {
+    val elems      = vars collect { case el: Elem[_] => el }
+    val elemGroups = elems.groupBy(_.randomVar).map(_._2).to(Vector)
+    val isleVars = vars
+      .collect { case isl: InIsle[_, _, _, _, _] => isl }
+      .groupBy(isl => (isl.isle, isl.boat))
+      .map(_._2)
+      .toVector
+    val isleGroups = isleVars.flatMap(gp => varGroups(gp))
+    elemGroups ++ isleGroups
+  }
+
+  def indexedVarGroups(
+      vars: Vector[(Int, GeneratorVariables.Variable[_])]
+  ): ParVector[Vector[Int]] = {
+    val elems = vars collect { case (n, el: Elem[_]) => n -> el }
+    val elemGroups =
+      elems.groupMap(_._2.randomVar)(_._1).map(_._2).to(ParVector)
+    val isleVars: Vector[Vector[(Int, GeneratorVariables.Variable[_])]] = vars
+      .collect { case (n, isl: InIsle[_, _, _, _, _]) => n -> isl }
+      .groupBy { case (_, isl) => (isl.isle, isl.boat) }
+      .map(_._2)
+      .toVector
+    val isleGroups = isleVars.flatMap(gp => indexedVarGroups(gp))
+    elemGroups ++ isleGroups
+  }
+
+  def exprGroups(exps: Vector[Expression]): Vector[Vector[Expression]] = {
+    val finGps =
+      varGroups(exps.collect { case FinalVal(variable) => variable }).map(
+        vv => vv.map(exp => FinalVal(exp))
+      )
+    val initGps = varGroups(exps.collect {
+      case InitialVal(variable) => variable
+    }).map(
+      vv => vv.map(exp => InitialVal(exp))
+    )
+    finGps ++ initGps
+  }
+
+  def indexedExprGroups(
+      exps: Vector[(Expression, Int)]
+  ): ParVector[Vector[Int]] = {
+    val finGps = indexedVarGroups(exps.collect {
+      case (FinalVal(variable), n) => n -> variable
+    })
+    val initGps = indexedVarGroups(exps.collect {
+      case (InitialVal(variable), n) => n -> variable
+    })
+    finGps ++ initGps
+  }
+
+  def parVector(v: Vector[(Int, Double)], size: Int): ParVector[Double] = {
+    val m = v.toMap
+    (0 until (size)).to(ParVector).map(n => m.getOrElse(n, 0.0))
+  }
+}
 
 class ExprEquations(
     ev: ExpressionEval,
@@ -737,7 +795,7 @@ class ExprEquations(
     equationSet: Set[Equation],
     params: TermGenParams
 ) {
-  import SumExpr._
+  import ExprEquations._, ExprCalc.vecSum
   lazy val equationVec: Vector[Equation] = equationSet.toVector //.par
 
   lazy val size = equationVec.size
@@ -746,6 +804,21 @@ class ExprEquations(
     .map(_.lhs)
     .zipWithIndex
     .toMap
+
+  // Set total probability as 1 for each group
+  lazy val randomVarIndices: ParVector[Vector[Int]] = indexedExprGroups(
+    equationVec.map(_.lhs).zipWithIndex
+  )
+
+  // already orthonormal
+  lazy val totalProbEquations: ParVector[ParVector[Double]] =
+    randomVarIndices.map { gp =>
+      val scaled = 1.0 / sqrt(gp.size.toDouble)
+      val s      = gp.toSet
+      (0 until (size))
+        .to(ParVector)
+        .map(n => if (s.contains(n)) scaled else 0.0)
+    }
 
   lazy val initPar = initMap.par
 
@@ -793,10 +866,33 @@ class ExprEquations(
   lazy val constantEquations: Set[Int] =
     (0 until (size)).filter(i => rhsExprs(i).isConstant).toSet
 
+  // not orthonormal
+  def equationGradients(
+      v: collection.parallel.ParSeq[Double]
+  ): ParVector[ParVector[Double]] = {
+    (0 until (size)).to(ParVector).map { n =>
+      val rhsGrad = rhsExprs(n).gradient(v)
+      parVector(
+        vecSum(Vector(rhsGrad, Vector(n -> -1.0))),
+        size
+      )
+    }
+  }
+
+  def orthonormalGradients(
+      v: collection.parallel.ParSeq[Double],
+      cutoff: Double = 0.0
+  ): ParVector[ParVector[Double]] =
+    ParGramSchmidt.orthonormalize(
+      equationGradients(v),
+      totalProbEquations,
+      cutoff
+    )
+
 }
 
 object ExprCalc {
-  def vecSum(vecs: Vector[Vector[(Int, Double)]]) =
+  def vecSum(vecs: Vector[Vector[(Int, Double)]]): Vector[(Int, Double)] =
     vecs.reduce(_ ++ _).groupMapReduce(_._1)(_._2)(_ + _).toVector
 
   def getGenerators(
