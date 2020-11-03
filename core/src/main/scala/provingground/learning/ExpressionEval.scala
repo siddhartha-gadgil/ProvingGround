@@ -805,6 +805,9 @@ class ExprEquations(
     .zipWithIndex
     .toMap
 
+  def mapToIndexMap[V](m: Map[Expression, V]): Map[Int, V] =
+    m.map { case (exp, v) => indexMap(exp) -> v }
+
   // Set total probability as 1 for each group
   lazy val randomVarIndices: ParVector[Vector[Int]] = indexedExprGroups(
     equationVec.map(_.lhs).zipWithIndex
@@ -858,6 +861,8 @@ class ExprEquations(
   lazy val rhsExprs: Vector[SumExpr] =
     equationVec.map(eq => simplify(eq.rhs))
 
+  lazy val rhsExprsPar = rhsExprs.par
+
   def rhsInvolves(js: Set[Int]): Set[Int] =
     (0 until (size))
       .filter(i => js.exists(j => rhsExprs(i).indices.contains(j)))
@@ -888,6 +893,44 @@ class ExprEquations(
       totalProbEquations,
       cutoff
     )
+
+  lazy val termIndices: Vector[Int] = {
+    val pfn: PartialFunction[(Equation, Int), Int] = {
+      case (Equation(FinalVal(Elem(_, Terms)), _), j) => j
+    }
+    equationVec.zipWithIndex.collect(pfn)
+  }
+
+  lazy val initTermIndices: Vector[Int] = {
+    val pfn: PartialFunction[(Equation, Int), Int] = {
+      case (Equation(InitialVal(Elem(_, Terms)), _), j) => j
+    }
+    equationVec.zipWithIndex.collect(pfn)
+  }
+
+  lazy val typIndices: Vector[Int] = {
+    val pfn: PartialFunction[(Equation, Int), Int] = {
+      case (Equation(FinalVal(Elem(_, Typs)), _), j) => j
+    }
+    equationVec.zipWithIndex.collect(pfn)
+  }
+
+  lazy val initTypIndices: Vector[Int] = {
+    val pfn: PartialFunction[(Equation, Int), Int] = {
+      case (Equation(InitialVal(Elem(_, Typs)), _), j) => j
+    }
+    equationVec.zipWithIndex.collect(pfn)
+  }
+
+  lazy val thmPfIndices =
+    equationVec.zipWithIndex
+      .collect {
+        case (Equation(FinalVal(Elem(x: Term, Terms)), _), j) => j -> x.typ
+      }
+      .flatMap {
+        case (j, t) => indexMap.get(FinalVal(Elem(t, Typs))).map(k => j -> k)
+      }
+      .groupMap(_._2)(_._1)
 
 }
 
@@ -993,20 +1036,6 @@ class ExprCalc(
       }
       .filter(_._2 > 0)
       .toMap ++ constantMap
-  }
-
-  lazy val termIndices: Vector[Int] = {
-    val pfn: PartialFunction[(Equation, Int), Int] = {
-      case (Equation(FinalVal(Elem(_, Terms)), _), j) => j
-    }
-    equationVec.zipWithIndex.collect(pfn)
-  }
-
-  lazy val typIndices: Vector[Int] = {
-    val pfn: PartialFunction[(Equation, Int), Int] = {
-      case (Equation(FinalVal(Elem(_, Typs)), _), j) => j
-    }
-    equationVec.zipWithIndex.collect(pfn)
   }
 
   def proofData(typ: Typ[Term]): Vector[(Int, Equation)] =
