@@ -6,7 +6,7 @@ import spire.math._
 import spire.implicits._
 import ExpressionEval._, ExprCalc._, ExprEquations._
 
-import scala.collection.parallel._, immutable.ParVector
+import scala.collection.parallel._, immutable.ParVector, collection.parallel
 
 class SpireExprEquations(
     ev: ExpressionEval,
@@ -18,12 +18,12 @@ class SpireExprEquations(
 
   def sigmoid(x: Jet[Double]): Jet[Double] = exp(x) / (1 + exp(x))
 
-  def indexJet(n: Int, v: collection.parallel.ParSeq[Double]) =
+  def indexJet(n: Int, v: parallel.ParSeq[Double]) =
     sigmoid(v(n) + Jet.h[Double](n))
 
   def prodJet(
       prod: ProdExpr,
-      v: collection.parallel.ParSeq[Double]
+      v: parallel.ParSeq[Double]
   ): Jet[Double] = {
     val num = prod.indices
       .map { n =>
@@ -33,11 +33,11 @@ class SpireExprEquations(
     prod.negIndices.map(n => 1 / indexJet(n, v)).fold(num)(_ * _)
   }
 
-  def sumJet(sum: SumExpr, v: collection.parallel.ParSeq[Double]): Jet[Double] =
+  def sumJet(sum: SumExpr, v: parallel.ParSeq[Double]): Jet[Double] =
     sum.terms.map(prodJet(_, v)).fold(0: Jet[Double])(_ + _)
 
   def matchEquationsJet(
-      v: collection.parallel.ParSeq[Double]
+      v: parallel.ParSeq[Double]
   ): ParVector[Jet[Double]] =
     rhsExprsPar.zipWithIndex.map { rhsN: (SumExpr, Int) =>
       val (rhs, n) = rhsN
@@ -45,7 +45,7 @@ class SpireExprEquations(
     }
 
   def scaledMatchEquationsJet(
-      v: collection.parallel.ParSeq[Double]
+      v: parallel.ParSeq[Double]
   ): ParVector[Jet[Double]] =
     rhsExprsPar.zipWithIndex.map { rhsN: (SumExpr, Int) =>
       val (rhs, n) = rhsN
@@ -55,7 +55,7 @@ class SpireExprEquations(
     }
 
   def totalProbEqnsJet(
-      v: collection.parallel.ParSeq[Double]
+      v: parallel.ParSeq[Double]
   ): ParVector[Jet[Double]] =
     randomVarIndices.map { gp =>
       val s = gp.toSet
@@ -65,7 +65,16 @@ class SpireExprEquations(
       terms.fold(-1: Jet[Double])(_ + _)
     }
 
-  def initTermsEntropy(v: collection.parallel.ParSeq[Double]): Jet[Double] =
+  // gradient is also returned to allow flowing towards this
+  def equationsOrthonormal(
+      v: parallel.ParSeq[Double]
+  ): (ParVector[ParVector[Double]], Jet[Double]) = {
+    val eqns = (scaledMatchEquationsJet(v) ++ totalProbEqnsJet(v))
+    val mse  = eqns.map(err => err * err).fold(0: Jet[Double])(_ + _)
+    ParGramSchmidt.orthonormalize(eqns.map(_.infinitesimal.to(ParVector))) -> mse
+  }
+
+  def initTermsEntropy(v: parallel.ParSeq[Double]): Jet[Double] =
     initTermIndices
       .map { j =>
         val p = indexJet(j, v)
@@ -73,7 +82,7 @@ class SpireExprEquations(
       }
       .fold(0: Jet[Double])(_ + _)
 
-  def initTypsEntropy(v: collection.parallel.ParSeq[Double]): Jet[Double] =
+  def initTypsEntropy(v: parallel.ParSeq[Double]): Jet[Double] =
     initTermIndices
       .map { j =>
         val p = indexJet(j, v)
@@ -82,7 +91,7 @@ class SpireExprEquations(
       .fold(0: Jet[Double])(_ + _)
 
   def thmPfsJet(
-      v: collection.parallel.ParSeq[Double]
+      v: parallel.ParSeq[Double]
   ): Vector[(Jet[Double], Jet[Double])] =
     thmPfIndices.toVector.map {
       case (thm, pfs) =>
@@ -92,7 +101,7 @@ class SpireExprEquations(
         )
     }
 
-  def thmPfsKL(v: collection.parallel.ParSeq[Double]): Jet[Double] =
+  def thmPfsKL(v: parallel.ParSeq[Double]): Jet[Double] =
     thmPfsJet(v)
       .map {
         case (p, q) => p * log(p / q)
@@ -100,8 +109,8 @@ class SpireExprEquations(
       .fold(0: Jet[Double])(_ + _)
 
   def thmPfsFlattenedKL(
-      v: collection.parallel.ParSeq[Double],
-      exponent: Double // for instance 1/2 - both distributions are flattened to reduce importance of a few high-probability mismatches.
+      v: parallel.ParSeq[Double],
+      exponent: Double // for instance 0.5 - both distributions are flattened to reduce importance of a few high-probability mismatches.
   ): Jet[Double] = {
     val thmPfs     = thmPfsJet(v)
     val powerTotal = thmPfs.map(_._1.pow(exponent)).fold(0: Jet[Double])(_ + _)
@@ -112,6 +121,56 @@ class SpireExprEquations(
           p1 * log(p / q)
       }
       .fold(0: Jet[Double])(_ + _)
+  }
+
+  def normalizedInitErrors(
+      initVals: Map[Int, Double],
+      v: parallel.ParSeq[Double]
+  ) =
+    initVals.toVector.map {
+      case (j, c) =>
+        val p = indexJet(j, v)
+        (p - c) / (p + c)
+    }
+
+  def mseInitJet(
+      initVals: Map[Int, Double],
+      v: parallel.ParSeq[Double]
+  ): Jet[Double] =
+    (normalizedInitErrors(initVals, v) ++ scaledMatchEquationsJet(v) ++ totalProbEqnsJet(
+      v
+    )).map(err => err * err).fold(0: Jet[Double])(_ + _)
+
+  // iterators mainly as demos; we may want more parameters etc and alos use monix Iterant instead
+  def initIterator(
+      initVals: Map[Int, Double],
+      seed: ParVector[Double],
+      scale: Double
+  ): Iterator[ParVector[Double]] = {
+    def nextStep(v: ParVector[Double]): ParVector[Double] = {
+      val shift = mseInitJet(initVals, v).infinitesimal.to(ParVector)
+      v.zip(shift).map {
+        case (current, derivative) => current - (derivative * scale)
+      }
+    }
+    Iterator.iterate(seed)(nextStep(_))
+  }
+
+  def entropyPerpIterator(
+      seed: ParVector[Double],
+      scale: Double
+  ): Iterator[ParVector[Double]] = {
+    def nextStep(v: ParVector[Double]): ParVector[Double] = {
+      val (onb, eqnsShift) = equationsOrthonormal(v)
+      val entJet           = initTermsEntropy(v) + initTypsEntropy(v) + thmPfsKL(v)
+      val shift =
+        ParGramSchmidt.makePerpFromON(onb, entJet.infinitesimal.to(ParVector))
+      v.zip(shift).zip(eqnsShift.infinitesimal.to(ParVector)).map {
+        case ((current, derivative), correction) =>
+          current - ((derivative + correction) * scale)
+      }
+    }
+    Iterator.iterate(seed)(nextStep(_))
   }
 
 }
