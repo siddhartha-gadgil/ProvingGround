@@ -751,7 +751,7 @@ object ExprEquations {
       elems.groupMap(_._2.randomVar)(_._1).map(_._2).to(ParVector)
     val isleVars: Vector[Vector[(Int, GeneratorVariables.Variable[_])]] = vars
       .collect { case (n, isl: InIsle[_, _, _, _, _]) => n -> isl }
-      .groupBy { case (_, isl) => (isl.isle, isl.boat) }
+      .groupMap { case (_, isl) => (isl.isle, isl.boat) }{case (n, isl) => (n, isl.isleVar)}
       .map(_._2)
       .toVector
     val isleGroups = isleVars.flatMap(gp => indexedVarGroups(gp))
@@ -790,20 +790,26 @@ object ExprEquations {
 }
 
 class ExprEquations(
-    ev: ExpressionEval,
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
-    params: TermGenParams
+    params: TermGenParams,
+    initVariables : Vector[Expression] =  Vector()
 ) {
   import ExprEquations._, ExprCalc.vecSum
   lazy val equationVec: Vector[Equation] = equationSet.toVector //.par
 
   lazy val size = equationVec.size
 
+  lazy val varVec = equationVec.map(_.lhs)
+
   lazy val indexMap: Map[Expression, Int] = equationVec
     .map(_.lhs)
     .zipWithIndex
-    .toMap
+    .toMap ++ (
+      initVariables.zipWithIndex.map{
+        case (exp, n) => exp -> (n + size)
+      }
+    )
 
   def mapToIndexMap[V](m: Map[Expression, V]): Map[Int, V] =
     m.map { case (exp, v) => indexMap(exp) -> v }
@@ -966,7 +972,7 @@ class ExprCalc(
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
     params: TermGenParams
-) extends ExprEquations(ev, initMap, equationSet, params) {
+) extends ExprEquations(initMap, equationSet, params, Vector()) {
   import SumExpr._, ev._, ExprCalc._
   lazy val startingMap = {
     val v = rhsExprs.zipWithIndex.filter(_._1.hasConstant)

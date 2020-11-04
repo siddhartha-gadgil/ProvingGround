@@ -9,12 +9,14 @@ import ExpressionEval._, ExprCalc._, ExprEquations._
 import scala.collection.parallel._, immutable.ParVector, collection.parallel
 
 class SpireExprEquations(
-    ev: ExpressionEval,
-    initMap: Map[Expression, Double],
+    initMap: Map[Expression, Double], // values specified and frozen
     equationSet: Set[Equation],
-    params: TermGenParams
-) extends ExprEquations(ev, initMap, equationSet, params) {
-  implicit val jetDim: JetDim = JetDim(size)
+    params: TermGenParams,
+    initVariables: Vector[Expression] = Vector() // values that can evolve
+) extends ExprEquations(initMap, equationSet, params, initVariables) {
+  val numVars = size + initVariables.size
+
+  implicit val jetDim: JetDim = JetDim(numVars)
 
   def sigmoid(x: Jet[Double]): Jet[Double] = exp(x) / (1 + exp(x))
 
@@ -141,19 +143,20 @@ class SpireExprEquations(
       v
     )).map(err => err * err).fold(0: Jet[Double])(_ + _)
 
-  // iterators mainly as demos; we may want more parameters etc and alos use monix Iterant instead
+  // iterators mainly as demos; we may want more parameters etc and also use monix Iterant instead
   def initIterator(
-      initVals: Map[Int, Double],
-      seed: ParVector[Double],
-      scale: Double
-  ): Iterator[ParVector[Double]] = {
-    def nextStep(v: ParVector[Double]): ParVector[Double] = {
-      val shift = mseInitJet(initVals, v).infinitesimal.to(ParVector)
+      initVals: Map[Int, Double] = Map(),
+      seed: ParVector[Double] = ParVector.fill(numVars)(0.0),
+      scale: Double = 0.1
+  ): Iterator[(ParVector[Double], Double)] = {
+    def nextStep(v: ParVector[Double]): (ParVector[Double], Double) = {
+      val mse   = mseInitJet(initVals, v)
+      val shift = mse.infinitesimal.to(ParVector)
       v.zip(shift).map {
-        case (current, derivative) => current - (derivative * scale)
-      }
+        case (current, derivative) => (current - (derivative * scale))
+      } -> mse.real
     }
-    Iterator.iterate(seed)(nextStep(_))
+    Iterator.iterate((seed, 0.0)) { case (v, _) => nextStep(v) }
   }
 
   def entropyPerpIterator(
@@ -172,5 +175,7 @@ class SpireExprEquations(
     }
     Iterator.iterate(seed)(nextStep(_))
   }
+
+  def toProb(x: Double) = exp(x) / (1 + exp(x))
 
 }
