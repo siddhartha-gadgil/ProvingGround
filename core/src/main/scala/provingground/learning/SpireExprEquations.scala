@@ -67,9 +67,8 @@ class SpireExprEquations(
       v: parallel.ParSeq[Double]
   ): ParVector[Jet[Double]] =
     randomVarIndices.map { gp =>
-      val s = gp.toSet
-      val terms = (0 until (size)).map { n =>
-        if (s.contains(n)) indexJet(n, v) else (0: Jet[Double])
+      val terms = gp.map { n =>
+        indexJet(n, v)
       }
       terms.fold(-1: Jet[Double])(_ + _)
     }
