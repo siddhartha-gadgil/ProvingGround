@@ -7,6 +7,11 @@ import spire.implicits._
 import ExpressionEval._, ExprCalc._, ExprEquations._
 
 import scala.collection.parallel._, immutable.ParVector, collection.parallel
+import GeneratorVariables._, TermRandomVars._
+
+object SpireExprEquations {
+  def toProb(x: Double) = exp(x) / (1 + exp(x))
+}
 
 class SpireExprEquations(
     initMap: Map[Expression, Double], // values specified and frozen
@@ -14,6 +19,8 @@ class SpireExprEquations(
     params: TermGenParams,
     initVariables: Vector[Expression] = Vector() // values that can evolve
 ) extends ExprEquations(initMap, equationSet, params, initVariables) {
+  import SpireExprEquations._
+
   val numVars = size + initVariables.size
 
   implicit val jetDim: JetDim = JetDim(numVars)
@@ -176,6 +183,14 @@ class SpireExprEquations(
     Iterator.iterate(seed)(nextStep(_))
   }
 
-  def toProb(x: Double) = exp(x) / (1 + exp(x))
+  def termDist(v: ParVector[Double]) =
+    FiniteDistribution(termIndexVec.map {
+      case (x, n) => Weighted(x, toProb(v(n)))
+    })
+
+  def typDist(v: ParVector[Double]) =
+    FiniteDistribution(typIndexVec.map {
+      case (x, n) => Weighted(x, toProb(v(n)))
+    })
 
 }

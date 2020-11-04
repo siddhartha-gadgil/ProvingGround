@@ -907,11 +907,18 @@ class ExprEquations(
     equationVec.zipWithIndex.collect(pfn)
   }
 
-  lazy val initTermIndices: Vector[Int] = {
-    val pfn: PartialFunction[(Equation, Int), Int] = {
-      case (Equation(InitialVal(Elem(_, Terms)), _), j) => j
+  lazy val termIndexVec: Vector[(Term, Int)] = {
+    val pfn: PartialFunction[(Equation, Int), (Term, Int)] = {
+      case (Equation(FinalVal(Elem(x: Term, Terms)), _), j) => x -> j
     }
     equationVec.zipWithIndex.collect(pfn)
+  }
+
+  lazy val initTermIndices: Vector[Int] = {
+    val pfn: PartialFunction[(Expression, Int), Int] = {
+      case (InitialVal(Elem(_, Terms)), j) => j + size
+    }
+    initVariables.zipWithIndex.collect(pfn)
   }
 
   lazy val typIndices: Vector[Int] = {
@@ -921,11 +928,18 @@ class ExprEquations(
     equationVec.zipWithIndex.collect(pfn)
   }
 
-  lazy val initTypIndices: Vector[Int] = {
-    val pfn: PartialFunction[(Equation, Int), Int] = {
-      case (Equation(InitialVal(Elem(_, Typs)), _), j) => j
+  lazy val typIndexVec: Vector[(Typ[Term], Int)] = {
+    val pfn: PartialFunction[(Equation, Int), (Typ[Term], Int)] = {
+      case (Equation(FinalVal(Elem(x: Typ[u], Typs)), _), j) => x -> j
     }
     equationVec.zipWithIndex.collect(pfn)
+  }
+
+  lazy val initTypIndices: Vector[Int] = {
+    val pfn: PartialFunction[(Expression, Int), Int] = {
+      case (InitialVal(Elem(_, Typs)), j) => j + size
+    }
+    initVariables.zipWithIndex.collect(pfn)
   }
 
   lazy val thmPfIndices =
