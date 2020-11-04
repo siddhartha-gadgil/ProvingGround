@@ -27,8 +27,19 @@ class SpireExprEquations(
 
   def sigmoid(x: Jet[Double]): Jet[Double] = exp(x) / (1 + exp(x))
 
-  def indexJet(n: Int, v: parallel.ParSeq[Double]) =
+  def indexJet(n: Int, v: parallel.ParSeq[Double]) = {
+    // val x = v(n)
+    // val arr = Array.fill(numVars)(0.0).updated(n, 1.0/(1.0 + exp(x)))
+    // val jet =  new Jet(1.0/(1.0 + exp(-x)), arr)
+    // if (jet.real.isNaN()) {
+    //   pprint.log(n)
+    //   pprint.log(x)
+    //   pprint.log(jet.real)
+    // }
+    // jet
     sigmoid(v(n) + Jet.h[Double](n))
+  }
+    
 
   def prodJet(
       prod: ProdExpr,
