@@ -89,8 +89,8 @@ class SpireExprEquations(
       v: parallel.ParSeq[Double]
   ): (ParVector[ParVector[Double]], Jet[Double]) = {
     val eqns = (scaledMatchEquationsJet(v) ++ totalProbEqnsJet(v))
-    val mse  = eqns.map(err => err * err).fold(0: Jet[Double])(_ + _)
-    ParGramSchmidt.orthonormalize(eqns.map(_.infinitesimal.to(ParVector))) -> mse
+    val sse  = eqns.map(err => err * err).fold(0: Jet[Double])(_ + _)
+    ParGramSchmidt.orthonormalize(eqns.map(_.infinitesimal.to(ParVector))) -> sse
   }
 
   def initTermsEntropy(v: parallel.ParSeq[Double]): Jet[Double] =
@@ -152,7 +152,7 @@ class SpireExprEquations(
         (p - c) / (p + c)
     }
 
-  def mseInitJet(
+  def sseInitJet(
       initVals: Map[Int, Double],
       v: parallel.ParSeq[Double]
   ): Jet[Double] =
@@ -167,11 +167,11 @@ class SpireExprEquations(
       scale: Double = 0.1
   ): Iterator[(ParVector[Double], Double)] = {
     def nextStep(v: ParVector[Double]): (ParVector[Double], Double) = {
-      val mse   = mseInitJet(initVals, v)
-      val shift = mse.infinitesimal.to(ParVector)
+      val sse   = sseInitJet(initVals, v)
+      val shift = sse.infinitesimal.to(ParVector)
       v.zip(shift).map {
         case (current, derivative) => (current - (derivative * scale))
-      } -> mse.real
+      } -> sse.real
     }
     Iterator.iterate((seed, 0.0)) { case (v, _) => nextStep(v) }
   }
