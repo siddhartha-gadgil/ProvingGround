@@ -24,7 +24,7 @@ val commonLibs = List(
   ivy"com.lihaoyi::pprint::0.6.0",
   ivy"com.outr::scribe::2.8.6",
   ivy"org.scala-lang.modules::scala-parallel-collections:0.2.0",
-  ivy"com.lihaoyi::sourcecode::0.2.1"//,
+  ivy"com.lihaoyi::sourcecode::0.2.1" //,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
@@ -203,7 +203,9 @@ val mantleLibs = List(
   ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta7",
   ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
   // ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7",
-  ivy"org.mongodb.scala::mongo-scala-driver:2.8.0"
+  ivy"org.mongodb.scala::mongo-scala-driver:2.8.0",
+  ivy"org.tensorflow:tensorflow-core-platform:0.2.0",
+  ivy"org.tensorflow:tensorflow-framework:0.2.0"
 )
 
 def glog = {
@@ -220,7 +222,7 @@ def glog = {
 def gitlog() = {
   os.write.over(
     os.pwd / "mantle" / "src" / "main" / "resources" / "gitlog.txt",
-    glog.name+"\n"
+    glog.name + "\n"
   )
 }
 
@@ -234,13 +236,15 @@ object mantle extends CommonModule with SbtModule with PGPublish {
       super.ivyDeps() ++ Agg(mantleLibs: _*)
     }
 
-  override def unmanagedClasspath = 
-      T{
-        import coursier._
-        val files = Fetch().addDependencies(dep"org.nd4j:nd4j-native-platform:1.0.0-beta7").run()
-        val pathRefs = files.map(f => PathRef(Path(f)))
-        Agg(pathRefs : _*)
-      }
+  override def unmanagedClasspath =
+    T {
+      import coursier._
+      val files = Fetch()
+        .addDependencies(dep"org.nd4j:nd4j-native-platform:1.0.0-beta7")
+        .run()
+      val pathRefs = files.map(f => PathRef(Path(f)))
+      Agg(pathRefs: _*)
+    }
 
   override def resources: Sources = T.sources {
     def base: Seq[Path] = super.resources().map(_.path)
@@ -324,7 +328,7 @@ object jvmRoot extends CommonModule {
   }
 }
 
-object jvmcore extends CommonModule with SbtModule{
+object jvmcore extends CommonModule with SbtModule {
   def moduleDeps = Seq(core.jvm)
 }
 object exploring extends JvmModule {
@@ -358,7 +362,7 @@ object client extends CommonJSModule with SbtModule {
 
   override def ivyDeps = Agg(
     ivy"org.scala-js::scalajs-dom::1.1.0",
-    ivy"com.lihaoyi::scalatags::0.9.2",
+    ivy"com.lihaoyi::scalatags::0.9.2"
     // ivy"com.scalawarrior::scalajs-ace::0.0.4"
   )
 
@@ -404,15 +408,17 @@ object deepwalk extends JvmModule {
     super.ivyDeps() ++ Agg(
       ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta7",
       ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta7",
-      ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
+      ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7"
       // ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7"
     )
 
-    override def unmanagedClasspath = 
-      T{
-        import coursier._
-        val files = Fetch().addDependencies(dep"org.nd4j:nd4j-native-platform:1.0.0-beta7").run()
-        val pathRefs = files.map(f => PathRef(Path(f)))
-        Agg(pathRefs : _*)
-      }
+  override def unmanagedClasspath =
+    T {
+      import coursier._
+      val files = Fetch()
+        .addDependencies(dep"org.nd4j:nd4j-native-platform:1.0.0-beta7")
+        .run()
+      val pathRefs = files.map(f => PathRef(Path(f)))
+      Agg(pathRefs: _*)
+    }
 }
