@@ -2,12 +2,10 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.13.3"
 
-val ammV = "2.2.0"
+val ammV     = "2.2.0"
 val upickleV = "0.9.9"
 
-
 scalaVersion in ThisBuild := scalaV
-
 
 resolvers += Resolver.sonatypeRepo("releases")
 
@@ -19,7 +17,6 @@ resolvers in ThisBuild += Resolver.sonatypeRepo("snapshots")
 //   "org.scalameta" % "semanticdb-scalac" % "4.3.0" cross CrossVersion.full)
 scalacOptions += "-Yrangepos"
 // scalacOptions += "-P:splain:all:true"
-
 
 lazy val jsProjects = Seq(client)
 
@@ -33,20 +30,20 @@ lazy val commonSettings = baseSettings ++ Seq(
   libraryDependencies ++= Seq(
     // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.1.2",
-     "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
-    "org.typelevel" %%% "spire"         % "0.17.0",
-    "com.lihaoyi"   %%% "fansi"         % "0.2.9",
-    "com.lihaoyi"   %%% "upickle"       % upickleV,
-    "com.lihaoyi"   %%% "fastparse"     % "2.3.0",
-    "com.chuusai"   %%% "shapeless"     % "2.4.0-M1",
-    "org.typelevel" %%% "cats-core"     % "2.2.0",
-    "io.monix"      %%% "monix"         % "3.2.2",
-    "org.scalameta" %%% "scalameta"     % "4.3.10",
-    "com.outr"      %%% "scribe"        % "2.8.6",
+    "org.scala-lang.modules" %% "scala-xml"                 % "1.2.0",
+    "org.typelevel"          %%% "spire"                    % "0.17.0",
+    "com.lihaoyi"            %%% "fansi"                    % "0.2.9",
+    "com.lihaoyi"            %%% "upickle"                  % upickleV,
+    "com.lihaoyi"            %%% "fastparse"                % "2.3.0",
+    "com.chuusai"            %%% "shapeless"                % "2.4.0-M1",
+    "org.typelevel"          %%% "cats-core"                % "2.2.0",
+    "io.monix"               %%% "monix"                    % "3.2.2",
+    "org.scalameta"          %%% "scalameta"                % "4.3.10",
+    "com.outr"               %%% "scribe"                   % "2.8.6",
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
-    "com.lihaoyi"   %%% "pprint"        % "0.5.9",
+    "com.lihaoyi" %%% "pprint" % "0.5.9",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
-    "com.lihaoyi"   %%% "sourcecode"    % "0.2.1"
+    "com.lihaoyi" %%% "sourcecode" % "0.2.1"
   ),
   libraryDependencies ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -56,13 +53,17 @@ lazy val commonSettings = baseSettings ++ Seq(
         Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0")
     }
   },
-  scalacOptions in Compile ++= Seq("-unchecked",
-                                   "-deprecation",
-                                   "-feature",
-                                   "-language:existentials"),
-  scalacOptions in (Compile, doc) ++= Seq("-diagrams",
-                                          "-implicits",
-                                          "-implicits-show-all"),
+  scalacOptions in Compile ++= Seq(
+    "-unchecked",
+    "-deprecation",
+    "-feature",
+    "-language:existentials"
+  ),
+  scalacOptions in (Compile, doc) ++= Seq(
+    "-diagrams",
+    "-implicits",
+    "-implicits-show-all"
+  ),
   testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
 )
 
@@ -74,19 +75,19 @@ assemblyMergeStrategy in assembly := {
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
-    "com.lihaoyi" %% "os-lib" % "0.7.0",
-    "com.github.nscala-time" %% "nscala-time"   % "2.22.0",
-    "org.mongodb.scala" %% "mongo-scala-driver" % "2.8.0",
-    "org.reactivemongo"      %% "reactivemongo" % "0.20.1",
-    "com.typesafe.akka"      %% "akka-actor"    % akkaV,
-    "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
+    "com.lihaoyi"            % "ammonite"            % ammV cross CrossVersion.full,
+    "com.lihaoyi"            %% "os-lib"             % "0.7.0",
+    "com.github.nscala-time" %% "nscala-time"        % "2.22.0",
+    "org.mongodb.scala"      %% "mongo-scala-driver" % "2.8.0",
+    "org.reactivemongo"      %% "reactivemongo"      % "0.20.1",
+    "com.typesafe.akka"      %% "akka-actor"         % akkaV,
+    "com.typesafe.akka"      %% "akka-slf4j"         % akkaV,
     // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
     "org.scalactic" %% "scalactic" % "3.2.0",
     "org.scalatest" %% "scalatest" % "3.2.0" % "test",
-    "com.lihaoyi" %% "cask" % "0.7.3",
+    "com.lihaoyi"   %% "cask"      % "0.7.3",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
-    "com.typesafe" % "config" % "1.3.0",
+    "com.typesafe"             % "config"     % "1.3.0",
     "org.apache.logging.log4j" % "log4j-core" % "2.13.0",
     // "org.mongodb"  %% "casbah" % "3.1.1",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
@@ -98,18 +99,20 @@ lazy val jvmSettings = Seq(
 //    "com.lihaoyi" %% "ammonite-ops" % ammV,
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,
     // "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
-    "org.slf4j"   % "slf4j-api"    % "1.7.30",
-    "org.slf4j"   % "slf4j-simple" % "1.7.30",
+    "org.slf4j" % "slf4j-api"    % "1.7.30",
+    "org.slf4j" % "slf4j-simple" % "1.7.30",
     // Last stable release
     // "org.scalanlp" %% "breeze" % "0.13.2",
-    "com.atlassian.commonmark" % "commonmark" % "0.13.1",
-    "org.scalameta" %% "mdoc" % "2.1.1",
-    "org.platanios" %% "tensorflow" % "0.5.1-SNAPSHOT" classifier "linux-cpu-x86_64",
-    "org.deeplearning4j" % "deeplearning4j-core"  % "1.0.0-beta4",
-      "org.deeplearning4j" % "deeplearning4j-graph" % "1.0.0-beta4",
-      "org.nd4j"           % "nd4j-native-platform" % "1.0.0-beta4",
-      "org.deeplearning4j" % "deeplearning4j-nlp"   % "1.0.0-beta4",
-    "org.eclipse.jgit" % "org.eclipse.jgit" % "5.6.0.201912101111-r"
+    "com.atlassian.commonmark" % "commonmark"               % "0.13.1",
+    "org.scalameta"            %% "mdoc"                    % "2.1.1",
+    "org.platanios"            %% "tensorflow"              % "0.5.1-SNAPSHOT" classifier "linux-cpu-x86_64",
+    "org.tensorflow"           % "tensorflow-core-platform" % "0.2.0",
+    "org.tensorflow"           % "tensorflow-framework"     % "0.2.0",
+    "org.deeplearning4j"       % "deeplearning4j-core"      % "1.0.0-beta4",
+    "org.deeplearning4j"       % "deeplearning4j-graph"     % "1.0.0-beta4",
+    "org.nd4j"                 % "nd4j-native-platform"     % "1.0.0-beta4",
+    "org.deeplearning4j"       % "deeplearning4j-nlp"       % "1.0.0-beta4",
+    "org.eclipse.jgit"         % "org.eclipse.jgit"         % "5.6.0.201912101111-r"
   )
   // ,
   // resources in Compile += (fastOptJS in (client, Compile)).value.data
@@ -138,10 +141,9 @@ lazy val nlpSettings = Seq(
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0" classifier "models",
     "com.google.protobuf" % "protobuf-java"    % "2.6.1",
-    "edu.mit" % "jwi" % "2.2.3"
+    "edu.mit"             % "jwi"              % "2.2.3"
   )
 )
-
 
 lazy val acSettings = Seq(
   name := "AndrewsCurtis",
@@ -166,14 +168,15 @@ lazy val client = project
     // persistLauncher in Test := false,
     // sourceMapsDirectories += coreJS.base / "..",
     unmanagedSourceDirectories in Compile := Seq(
-      (scalaSource in Compile).value),
+      (scalaSource in Compile).value
+    ),
     Compile / fastOptJS / artifactPath := baseDirectory.value / "target" / "out.js",
     // resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "1.1.0",
       "com.lihaoyi"  %%% "scalatags"   % "0.9.2",
-      "com.lihaoyi"  %%% "upickle"     % upickleV,
+      "com.lihaoyi"  %%% "upickle"     % upickleV
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       // "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
@@ -182,14 +185,17 @@ lazy val client = project
   .enablePlugins(ScalaJSPlugin)
   .dependsOn(coreJS)
 
-lazy val core = (sbtcrossproject.crossProject(JSPlatform, JVMPlatform).crossType(sbtcrossproject.CrossType.Pure) in file("core"))
+lazy val core = (sbtcrossproject
+  .crossProject(JSPlatform, JVMPlatform)
+  .crossType(sbtcrossproject.CrossType.Pure) in file("core"))
   .settings(commonSettings: _*)
   .settings(name := "ProvingGround-Core")
   .settings(
     libraryDependencies ++= Seq(
 //      "com.lihaoyi" %%% "upickle" % upickleV
-    ))
-  // .jsConfigure(_ enablePlugins ScalaJSWeb)
+    )
+  )
+// .jsConfigure(_ enablePlugins ScalaJSWeb)
 //  .jsSettings(sourceMapsBase := baseDirectory.value / "..")
 
 lazy val coreJVM = core.jvm
@@ -208,26 +214,24 @@ lazy val server = (project in file("server"))
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-http"       % "10.1.1",
       "com.vmunier"       %% "scalajs-scripts" % "1.1.4",
-      "com.typesafe.akka" %% "akka-actor"  % akkaV,
-      "com.typesafe.akka" %% "akka-stream" % akkaV,
-      "com.github.scopt"  %% "scopt"       % "3.7.1"
+      "com.typesafe.akka" %% "akka-actor"      % akkaV,
+      "com.typesafe.akka" %% "akka-stream"     % akkaV,
+      "com.github.scopt"  %% "scopt"           % "3.7.1"
     )
     // ,
     // resources in Compile += (fastOptJS in (client, Compile)).value.data
-
   )
   // .enablePlugins(JavaAppPackaging, UniversalPlugin)
   .dependsOn(coreJVM)
-
 
 val initCommands =
   """import provingground._, HoTT._, induction._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
 
 lazy val leanlib =
   (project in file("leanlib"))
-  .settings(commonSettings: _*)
-  .settings(jvmSettings: _*)
-  .dependsOn(coreJVM)
+    .settings(commonSettings: _*)
+    .settings(jvmSettings: _*)
+    .dependsOn(coreJVM)
 
 // lazy  val rootLocation: File = file(".").getAbsoluteFile
 
@@ -250,20 +254,21 @@ lazy val mantle = (project in file("mantle"))
     val file = (sourceManaged in Test).value / "amm.scala"
     IO.write(
       file,
-      s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
+      s"""object amm extends App { ammonite.Main("$initCommands").run() }"""
+    )
     Seq(file)
   }.taskValue)
   .dependsOn(coreJVM)
   .dependsOn(server)
   .dependsOn(trepplein)
   .dependsOn(leanlib)
-  // .enablePlugins(SbtWeb
-    // , TutPlugin
-  // )
+// .enablePlugins(SbtWeb
+// , TutPlugin
+// )
 
-  lazy val crust = (project in file("crust"))
+lazy val crust = (project in file("crust"))
   .settings(
-    name := "ProvingGround-crust",
+    name := "ProvingGround-crust"
     // resourceDirectory := baseDirectory.value / "docs"
     // scalaJSProjects := Seq(client),
     // pipelineStages in Assets := Seq(scalaJSPipeline)
@@ -276,7 +281,8 @@ lazy val mantle = (project in file("mantle"))
     val file = (sourceManaged in Test).value / "amm.scala"
     IO.write(
       file,
-      s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
+      s"""object amm extends App { ammonite.Main("$initCommands").run() }"""
+    )
     Seq(file)
   }.taskValue)
   .dependsOn(coreJVM)
@@ -285,14 +291,15 @@ lazy val mantle = (project in file("mantle"))
   .dependsOn(leanlib)
   .dependsOn(mantle)
 
-
 lazy val exploring = project
-  .settings(name := "ProvingGround-exploring",
-            libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV)
+  .settings(
+    name := "ProvingGround-exploring",
+    libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV
+  )
   .dependsOn(coreJVM)
   .dependsOn(mantle)
   .dependsOn(crust)
-  // .enablePlugins(JavaAppPackaging, UniversalPlugin)
+// .enablePlugins(JavaAppPackaging, UniversalPlugin)
 
 val nlpInitCommands =
   "import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, translation._, Functors._, SubTypePattern._, TreeToMath._, StanfordParser._"
@@ -305,10 +312,11 @@ lazy val nlp = (project in file("nlp"))
     val file = (sourceManaged in Test).value / "amm.scala"
     IO.write(
       file,
-      s"""object amm extends App { ammonite.Main("$nlpInitCommands").run() }""")
+      s"""object amm extends App { ammonite.Main("$nlpInitCommands").run() }"""
+    )
     Seq(file)
   }.taskValue)
-       .settings(jvmSettings : _*)
+  .settings(jvmSettings: _*)
   .dependsOn(coreJVM)
   .dependsOn(mantle)
   .dependsOn(crust)
@@ -329,11 +337,10 @@ lazy val deepwalk = (project in file("deepwalk"))
       "org.nd4j"           % "nd4j-native-platform" % "1.0.0-beta4",
       "org.deeplearning4j" % "deeplearning4j-nlp"   % "1.0.0-beta4",
 //              "org.deeplearning4j" % "deeplearning4j-ui" % "1.0.0-beta4",
-      "org.nd4j"    % "nd4j-native"   % "1.0.0-beta4"
+      "org.nd4j" % "nd4j-native" % "1.0.0-beta4"
     )
   )
   .settings(baseSettings: _*)
-  
 
 // lazy val playServer = (project in file("play-server"))
 //   .enablePlugins(PlayScala)
@@ -370,7 +377,8 @@ lazy val realfunctions = (project in file("realfunctions"))
     //   "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
     //   "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/"
     //   ),
-    name := "RealFunctions")
+    name := "RealFunctions"
+  )
 
 // lazy val digressions = (project in file("digressions"))
 //   .settings(commonSettings: _*)
