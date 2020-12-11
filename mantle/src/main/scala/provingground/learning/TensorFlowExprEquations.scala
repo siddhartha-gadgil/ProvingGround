@@ -4,7 +4,7 @@ import provingground._, HoTT._
 
 import ExpressionEval._, ExprCalc._, ExprEquations._
 import GeneratorVariables._, TermRandomVars._
-import org.tensorflow._, org.tensorflow.op._, types._
+import org.tensorflow._, org.tensorflow.op._, types._, core._
 import org.tensorflow.framework.optimizers.GradientDescent
 import scala.util.{Using, Try}
 import scala.jdk.CollectionConverters._
@@ -23,7 +23,7 @@ object TensorFlowExprEquations {
       params: TermGenParams,
       learningRate: Float
   ) = {
-    new TensorFlowExprEquations(
+    new TensorFlowExprVarEquations(
       ExpressionEval
         .initMap(ExpressionEval.eqAtoms(equationSet), params, initState),
       equationSet,
@@ -56,11 +56,30 @@ object TensorFlowExprEquations {
       equationEvolver(graph, initState, equationSet, params, learningRate)
     evolver.quickCheck()
   }
+
+  def matrixCheck(
+      initState: TermState,
+      equationSet: Set[Equation],
+      params: TermGenParams,
+      learningRate: Float = 0.1f
+  ) =
+    Using(new Graph()) { graph =>
+      val evolver =
+        new TensorFlowExprEquations(
+          ExpressionEval
+            .initMap(ExpressionEval.eqAtoms(equationSet), params, initState),
+          equationSet,
+          params,
+          graph,
+          learningRate
+        )
+      evolver.quickCheck()
+    }.flatten
 }
 
 import TensorFlowExprEquations._
 
-class TensorFlowExprEquations(
+class TensorFlowExprVarEquations(
     initMap: Map[Expression, Double], // values specified and frozen
     equationSet: Set[Equation],
     params: TermGenParams,
@@ -68,8 +87,7 @@ class TensorFlowExprEquations(
     learningRate: Float,
     initVariables: Vector[Expression] = Vector() // values that can evolve
 ) extends ExprEquations(initMap, equationSet, params, initVariables) {
-  val numVars = size + initVariables.size
-  val tf      = Ops.create(graph)
+  val tf = Ops.create(graph)
   val xs = (0 until (numVars)).toVector
     .map(j => tf.withName(s"x$j").variable(tf.constant(0f)))
   val ps: Vector[Operand[TFloat32]] = xs.map(
@@ -78,23 +96,25 @@ class TensorFlowExprEquations(
 
   def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
     if (prod.constant == 0) None
-    else Some{
-      val num: Operand[TFloat32] = prod.indices
-        .map(ps(_))
-        .fold[Operand[TFloat32]](tf.constant(prod.constant.toFloat))(
-          tf.math.mul(_, _)
-        )
-      prod.negIndices
-        .map(n => tf.math.reciprocal(ps(n)))
-        .fold[Operand[TFloat32]](num)(tf.math.mul(_, _))
-    }
+    else
+      Some {
+        val num: Operand[TFloat32] = prod.indices
+          .map(ps(_))
+          .fold[Operand[TFloat32]](tf.constant(prod.constant.toFloat))(
+            tf.math.mul(_, _)
+          )
+        prod.negIndices
+          .map(n => tf.math.reciprocal(ps(n)))
+          .fold[Operand[TFloat32]](num)(tf.math.mul(_, _))
+      }
   }
 
   def sumOp(sum: SumExpr): Option[Operand[TFloat32]] = {
     val terms = sum.terms
       .flatMap(prodOp(_))
     // if (terms.isEmpty) println("all product terms with 0 coefficients") else println("Got a sum")
-    if (terms.isEmpty) None else Some(terms.reduce[Operand[TFloat32]](tf.math.add(_, _)))
+    if (terms.isEmpty) None
+    else Some(terms.reduce[Operand[TFloat32]](tf.math.add(_, _)))
   }
 
   def equationsLogMismatch(
@@ -128,9 +148,9 @@ class TensorFlowExprEquations(
 
   val matchEquationsOp: Vector[(Operand[TFloat32], Operand[TFloat32])] =
     rhsExprs.zipWithIndex.map {
-      case (rhs, n) => 
+      case (rhs, n) =>
         // if (sumOp(rhs).isEmpty) println(s"Zero rhs in ${equationVec(n)}")
-        (ps(n),  sumOp(rhs).getOrElse(tf.constant(0f)) )
+        (ps(n), sumOp(rhs).getOrElse(tf.constant(0f)))
     }
 
   val totalProbEquationsOp: Vector[(Operand[TFloat32], Operand[TFloat32])] =
@@ -173,5 +193,140 @@ class TensorFlowExprEquations(
       }
       println("getting terms")
       termDist(session)
+    }
+}
+
+class TensorFlowExprEquations(
+    initMap: Map[Expression, Double], // values specified and frozen
+    equationSet: Set[Equation],
+    params: TermGenParams,
+    graph: Graph,
+    learningRate: Float,
+    initVariables: Vector[Expression] = Vector() // values that can evolve
+) extends ExprEquations(initMap, equationSet, params, initVariables) {
+  val tf = Ops.create(graph)
+  // println(numVars)
+  val xVec = tf.variable(tf.constant(Array.fill(numVars)(0f)))
+  val pVec = tf.math.sigmoid(xVec)
+  // val reciprocalPVec = tf.math.reciprocal(pVec)
+
+  def ps(n: Int): Operand[TFloat32] =
+    tf.reduceSum(
+      tf.math.mul(
+        pVec,
+        tf.oneHot(
+          tf.constant(n),
+          tf.constant(numVars),
+          tf.constant(1f),
+          tf.constant(0f)
+        )
+      ),
+      tf.constant(0)
+    )
+
+  val pCol = tf.reshape(
+    pVec,
+    tf.constant(Array(numVars, 1))
+  )
+
+  val linearMatrix = tf.constant(linearTerms)
+
+  val linearRHS = tf.reshape(
+    tf.sparse.sparseMatMul(linearMatrix, pCol),
+    tf.constant(Array(size))
+  )
+
+  val pColBatches = tf.reshape(
+    tf.tile(pVec, tf.constant(Array(size))),
+    tf.constant(Array(size, numVars, 1))
+  )
+
+  val bilinearMatrixBatches = tf.constant(bilinearTerms)
+
+  val bilinearQuotientBatches = tf.constant(bilienarQuotient)
+
+  val bilinearRHS =
+    tf.reshape(
+      tf.sparse.sparseMatMul(
+        pColBatches,
+        tf.sparse.sparseMatMul(bilinearMatrixBatches, pColBatches),
+        sparse.SparseMatMul.transposeA(true),
+        sparse.SparseMatMul.transposeB(false)
+      ),
+      tf.constant(Array(size))
+    )
+
+  val bilQuotRHS = tf.reshape(
+    tf.sparse.sparseMatMul(
+      pColBatches,
+      tf.sparse
+        .sparseMatMul(bilinearQuotientBatches, tf.math.reciprocal(pColBatches)),
+      sparse.SparseMatMul.transposeA(true),
+      sparse.SparseMatMul.transposeB(false)
+    ),
+    tf.constant(Array(size))
+  )
+
+  // Used only for complicated expressions
+  def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
+    if (prod.constant == 0) None
+    else
+      Some {
+        val num: Operand[TFloat32] = prod.indices
+          .map(ps(_))
+          .fold[Operand[TFloat32]](tf.constant(prod.constant.toFloat))(
+            tf.math.mul(_, _)
+          )
+        prod.negIndices
+          .map(n => tf.math.reciprocal(ps(n)))
+          .fold[Operand[TFloat32]](num)(tf.math.mul(_, _))
+      }
+  }
+
+  val complexRHSTerms = complexTerms.toVector.flatMap {
+    case (i, prod) =>
+      prodOp(prod).map { x =>
+        tf.oneHot(tf.constant(i), tf.constant(size), x, tf.constant(0f))
+      }
+  }
+
+  val rhsVec: Operand[TFloat32] =
+    complexRHSTerms.fold(
+      tf.math.add(bilQuotRHS, tf.math.add(bilinearRHS, linearRHS))
+    )(
+      tf.math.add(_, _)
+    )
+
+  val lhsVec = tf.slice(pVec, tf.constant(0), tf.constant(size))
+
+  val totProbMat = tf.constant(totalProbMatrix)
+
+  val totProbVec = tf.reshape(
+    tf.sparse.sparseMatMul(totProbMat, pCol),
+    tf.constant(Array(randomVarIndices.size))
+  )
+
+  val fullLHS = tf.concat(
+    List[Operand[TFloat32]](lhsVec, totProbVec).asJava,
+    tf.constant(0)
+  )
+  val fullRHS = tf.concat(
+    List[Operand[TFloat32]](rhsVec, tf.onesLike(totProbVec)).asJava,
+    tf.constant(0)
+  )
+
+  val mismatch = tf.reduceSum(
+    tf.math.div(
+      tf.math.abs(tf.math.sub(fullLHS, fullRHS)),
+      tf.math.add(fullLHS, fullRHS)
+    ),
+    tf.constant(0)
+  )
+
+  def quickCheck(): Try[Tensor[TFloat32]] =
+    Using(new Session(graph)) { session =>
+      session.run(tf.init())
+      val output = session.runner().fetch(mismatch).run()
+      output.get(0).expect(TFloat32.DTYPE)
     }
 }

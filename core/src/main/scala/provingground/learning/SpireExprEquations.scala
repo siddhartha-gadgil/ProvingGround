@@ -21,7 +21,7 @@ class SpireExprEquations(
 ) extends ExprEquations(initMap, equationSet, params, initVariables) {
   import SpireExprEquations._
 
-  val numVars = size + initVariables.size
+  // val numVars = size + initVariables.size
 
   implicit val jetDim: JetDim = JetDim(numVars)
 

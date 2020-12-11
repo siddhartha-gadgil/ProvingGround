@@ -22,6 +22,7 @@ import shapeless.ops.product
 import scala.collection.mutable
 import scala.concurrent._
 import monix.eval._
+import scala.collection.mutable.ArrayBuffer
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -751,7 +752,9 @@ object ExprEquations {
       elems.groupMap(_._2.randomVar)(_._1).map(_._2).to(ParVector)
     val isleVars: Vector[Vector[(Int, GeneratorVariables.Variable[_])]] = vars
       .collect { case (n, isl: InIsle[_, _, _, _, _]) => n -> isl }
-      .groupMap { case (_, isl) => (isl.isle, isl.boat) }{case (n, isl) => (n, isl.isleVar)}
+      .groupMap { case (_, isl) => (isl.isle, isl.boat) } {
+        case (n, isl) => (n, isl.isleVar)
+      }
       .map(_._2)
       .toVector
     val isleGroups = isleVars.flatMap(gp => indexedVarGroups(gp))
@@ -793,12 +796,14 @@ class ExprEquations(
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
     params: TermGenParams,
-    initVariables : Vector[Expression] =  Vector()
+    initVariables: Vector[Expression] = Vector()
 ) {
   import ExprEquations._, ExprCalc.vecSum
   lazy val equationVec: Vector[Equation] = equationSet.toVector //.par
 
   lazy val size = equationVec.size
+
+  val numVars = size + initVariables.size
 
   lazy val varVec = equationVec.map(_.lhs)
 
@@ -806,10 +811,10 @@ class ExprEquations(
     .map(_.lhs)
     .zipWithIndex
     .toMap ++ (
-      initVariables.zipWithIndex.map{
-        case (exp, n) => exp -> (n + size)
-      }
-    )
+    initVariables.zipWithIndex.map {
+      case (exp, n) => exp -> (n + size)
+    }
+  )
 
   def mapToIndexMap[V](m: Map[Expression, V]): Map[Int, V] =
     m.map { case (exp, v) => indexMap(exp) -> v }
@@ -951,6 +956,35 @@ class ExprEquations(
         case (j, t) => indexMap.get(FinalVal(Elem(t, Typs))).map(k => j -> k)
       }
       .groupMap(_._2)(_._1)
+
+  lazy val (bilinearTerms, bilienarQuotient, linearTerms, complexTerms) = {
+    val bilMatrix =
+      Array.fill(size)(Array.fill(numVars)(Array.fill(numVars)(0f)))
+    val divMatrix =
+      Array.fill(size)(Array.fill(numVars)(Array.fill(numVars)(0f)))
+    val linMatrix = Array.fill(size)(Array.fill(numVars)(0f))
+    val complex   = ArrayBuffer.empty[(Int, ProdExpr)]
+
+    rhsExprs.zipWithIndex.foreach {
+      case (rhs, k) =>
+        rhs.terms.foreach { prod =>
+          (prod.indices, prod.negIndices) match {
+            case (Vector(j), Vector()) =>
+              linMatrix(k)(j) = linMatrix(k)(j) + prod.constant.toFloat
+            case (Vector(i, j), Vector()) =>
+              bilMatrix(k)(i)(j) = bilMatrix(k)(i)(j) + prod.constant.toFloat
+            case (Vector(i), Vector(j)) =>
+              divMatrix(k)(i)(j) = divMatrix(k)(i)(j) + prod.constant.toFloat
+            case _ => complex.append(k -> prod)
+          }
+        }
+    }
+    (bilMatrix, divMatrix, linMatrix, complex)
+  }
+
+  val totalProbMatrix = randomVarIndices.map { v =>
+    (0 to numVars).map(j => if (v.contains(j)) 1f else 0f).toArray
+  }.toArray
 
 }
 
