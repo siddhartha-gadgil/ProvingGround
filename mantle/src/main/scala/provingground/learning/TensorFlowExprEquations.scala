@@ -229,6 +229,11 @@ class TensorFlowExprEquations(
     tf.constant(Array(numVars, 1))
   )
 
+  val pRow = tf.reshape(
+    pVec,
+    tf.constant(Array(1, numVars))
+  )
+
   val linearMatrix = tf.constant(linearTerms)
 
   val linearRHS = tf.reshape(
@@ -236,36 +241,66 @@ class TensorFlowExprEquations(
     tf.constant(Array(size))
   )
 
-  val pColBatches = tf.reshape(
-    tf.tile(pVec, tf.constant(Array(size))),
-    tf.constant(Array(size, numVars, 1))
-  )
+  // val pColBatches = tf.reshape(
+  //   tf.tile(pVec, tf.constant(Array(size))),
+  //   tf.constant(Array(size, numVars, 1))
+  // )
 
-  val bilinearMatrixBatches = tf.constant(bilinearTerms)
+  // val bilinearMatrixBatches = tf.constant(bilinearTerms)
 
-  val bilinearQuotientBatches = tf.constant(bilienarQuotient)
+  val bilinearMatrices = bilinearTerms.map { arr =>
+    tf.constant(arr)
+  }
 
-  val bilinearRHS =
-    tf.reshape(
+  val bilinearRHSEntries =
+    bilinearMatrices.map { mat =>
       tf.sparse.sparseMatMul(
-        pColBatches,
-        tf.sparse.sparseMatMul(bilinearMatrixBatches, pColBatches),
-        sparse.SparseMatMul.transposeA(true),
-        sparse.SparseMatMul.transposeB(false)
-      ),
-      tf.constant(Array(size))
-    )
+        pRow,
+        tf.sparse.sparseMatMul(mat, pCol)
+      )
+    }
 
-  val bilQuotRHS = tf.reshape(
-    tf.sparse.sparseMatMul(
-      pColBatches,
-      tf.sparse
-        .sparseMatMul(bilinearQuotientBatches, tf.math.reciprocal(pColBatches)),
-      sparse.SparseMatMul.transposeA(true),
-      sparse.SparseMatMul.transposeB(false)
-    ),
-    tf.constant(Array(size))
-  )
+  val bilQuotMatrices = bilienarQuotient.map { arr =>
+    tf.constant(arr)
+  }
+
+  val bilQuotRHSEntries =
+    bilQuotMatrices.map { mat =>
+      tf.sparse.sparseMatMul(
+        pRow,
+        tf.sparse.sparseMatMul(mat, pCol)
+      )
+    }
+
+  val bilEntries : List[Operand[TFloat32]] = bilQuotRHSEntries.zip(bilinearRHSEntries).map{
+    case (y1, y2) => tf.reshape(tf.math.add(y1, y2), tf.constant(Array(1)))
+  }.toList
+
+  val bilRHS = tf.concat(bilEntries.asJava, tf.constant(0))
+
+  // val bilinearQuotientBatches = tf.constant(bilienarQuotient)
+
+  // val bilinearRHS =
+  //   tf.reshape(
+  //     tf.sparse.sparseMatMul(
+  //       pColBatches,
+  //       tf.sparse.sparseMatMul(bilinearMatrixBatches, pColBatches),
+  //       sparse.SparseMatMul.transposeA(true),
+  //       sparse.SparseMatMul.transposeB(false)
+  //     ),
+  //     tf.constant(Array(size))
+  //   )
+
+  // val bilQuotRHS = tf.reshape(
+  //   tf.sparse.sparseMatMul(
+  //     pColBatches,
+  //     tf.sparse
+  //       .sparseMatMul(bilinearQuotientBatches, tf.math.reciprocal(pColBatches)),
+  //     sparse.SparseMatMul.transposeA(true),
+  //     sparse.SparseMatMul.transposeB(false)
+  //   ),
+  //   tf.constant(Array(size))
+  // )
 
   // Used only for complicated expressions
   def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
@@ -292,12 +327,13 @@ class TensorFlowExprEquations(
 
   val rhsVec: Operand[TFloat32] =
     complexRHSTerms.fold(
-      tf.math.add(bilQuotRHS, tf.math.add(bilinearRHS, linearRHS))
+      // tf.math.add(bilQuotRHS, tf.math.add(bilinearRHS, linearRHS))
+      bilRHS
     )(
       tf.math.add(_, _)
     )
 
-  val lhsVec = tf.slice(pVec, tf.constant(0), tf.constant(size))
+  val lhsVec = tf.slice(pVec, tf.constant(Array(0)), tf.constant(Array(size)))
 
   val totProbMat = tf.constant(totalProbMatrix)
 

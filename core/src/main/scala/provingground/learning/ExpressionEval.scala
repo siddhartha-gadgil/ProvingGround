@@ -983,7 +983,7 @@ class ExprEquations(
   }
 
   val totalProbMatrix = randomVarIndices.map { v =>
-    (0 to numVars).map(j => if (v.contains(j)) 1f else 0f).toArray
+    (0 until numVars).map(j => if (v.contains(j)) 1f else 0f).toArray
   }.toArray
 
 }
