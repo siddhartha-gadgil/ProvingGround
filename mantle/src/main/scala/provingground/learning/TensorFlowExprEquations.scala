@@ -6,7 +6,7 @@ import ExpressionEval._, ExprCalc._, ExprEquations._
 import GeneratorVariables._, TermRandomVars._
 import org.tensorflow._, org.tensorflow.op._, types._
 import org.tensorflow.framework.optimizers.GradientDescent
-import scala.util.Using
+import scala.util.{Using, Try}
 
 object TensorFlowExprEquations {
   def opLookup(v: Operand[TFloat32], sess: Session): Float = {
@@ -19,14 +19,16 @@ object TensorFlowExprEquations {
       graph: Graph,
       initState: TermState,
       equationSet: Set[Equation],
-      params: TermGenParams
+      params: TermGenParams,
+      learningRate: Float
   ) = {
     new TensorFlowExprEquations(
       ExpressionEval
         .initMap(ExpressionEval.eqAtoms(equationSet), params, initState),
       equationSet,
       params,
-      graph
+      graph,
+      learningRate
     )
   }
 
@@ -36,24 +38,23 @@ object TensorFlowExprEquations {
       params: TermGenParams,
       steps: Int,
       learningRate: Float = 0.1f
-  ) =
-    Using.Manager { use =>
-      val graph   = use(new Graph())
-      println("Seeking evolver")
-      val evolver = equationEvolver(graph, initState, equationSet, params)
-      println("Got evolver")
-      val session = use(new Session(graph))
-      val gd      = evolver.gradientDescent(learningRate)
-      session.run(evolver.tf.init())
-      val loss  = evolver.mismatch
-      val shift = gd.minimize(loss)
-      println("Running steps")
-      (0 until steps).foreach{j => 
-        // if (j %10 == 0)
-         println(s"Ran $j steps")
-        session.run(shift)}
-      evolver.termDist(session)
-    }
+  ): Try[FiniteDistribution[HoTT.Term]] =
+    Using(new Graph()) { graph =>
+      val evolver =
+        equationEvolver(graph, initState, equationSet, params, learningRate)
+      evolver.fit(steps)
+    }.flatten
+
+  def quickCheck(
+      initState: TermState,
+      equationSet: Set[Equation],
+      params: TermGenParams,
+      learningRate: Float = 0.1f
+  ) = Using(new Graph()) { graph =>
+    val evolver =
+      equationEvolver(graph, initState, equationSet, params, learningRate)
+    evolver.quickCheck()
+  }
 }
 
 import TensorFlowExprEquations._
@@ -63,6 +64,7 @@ class TensorFlowExprEquations(
     equationSet: Set[Equation],
     params: TermGenParams,
     graph: Graph,
+    learningRate: Float,
     initVariables: Vector[Expression] = Vector() // values that can evolve
 ) extends ExprEquations(initMap, equationSet, params, initVariables) {
   val numVars = size + initVariables.size
@@ -70,7 +72,7 @@ class TensorFlowExprEquations(
   val xs = (0 until (numVars)).toVector
     .map(j => tf.withName(s"x$j").variable(tf.constant(0f)))
   val ps: Vector[Operand[TFloat32]] = xs.map(
-    x => //x
+    x => 
       tf.math.sigmoid(x)
   )
 
@@ -126,5 +128,27 @@ class TensorFlowExprEquations(
   def termDist(session: Session) =
     FiniteDistribution(termProbs(session).map { case (x, p) => Weighted(x, p) })
 
-  def gradientDescent(l: Float) = new GradientDescent(graph, l)
+  val optimizer = new GradientDescent(graph, learningRate)
+
+  val shift = optimizer.minimize(mismatch)
+
+  def quickCheck(): Try[Tensor[TFloat32]] =
+    Using(new Session(graph)) { session =>
+      session.run(tf.init())
+      val output = session.runner().fetch(mismatch).run()
+      output.get(0).expect(TFloat32.DTYPE)
+    }
+
+  def fit(steps: Int): Try[FiniteDistribution[HoTT.Term]] =
+    Using(new Session(graph)) { session =>
+      println("Running steps")
+      session.run(tf.init())
+      (0 until steps).foreach { j =>
+        // if (j %10 == 0)
+        println(s"Ran $j steps")
+        session.run(shift)
+      }
+      println("getting terms")
+      termDist(session)
+    }
 }
