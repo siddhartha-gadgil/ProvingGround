@@ -7,7 +7,8 @@ import GeneratorVariables._, TermRandomVars._
 import org.tensorflow._, org.tensorflow.op._, types._
 import org.tensorflow.framework.optimizers.GradientDescent
 import scala.util.{Using, Try}
-
+import scala.jdk.CollectionConverters._
+import org.tensorflow.op.linalg.MatMul
 object TensorFlowExprEquations {
   def opLookup(v: Operand[TFloat32], sess: Session): Float = {
     val result = sess.runner().fetch(v).run()
@@ -72,25 +73,29 @@ class TensorFlowExprEquations(
   val xs = (0 until (numVars)).toVector
     .map(j => tf.withName(s"x$j").variable(tf.constant(0f)))
   val ps: Vector[Operand[TFloat32]] = xs.map(
-    x => 
-      tf.math.sigmoid(x)
+    x => tf.math.sigmoid(x)
   )
 
-  def prodOp(prod: ProdExpr): Operand[TFloat32] = {
-    val num: Operand[TFloat32] = prod.indices
-      .map(ps(_))
-      .fold[Operand[TFloat32]](tf.constant(prod.constant.toFloat))(
-        tf.math.mul(_, _)
-      )
-    prod.negIndices
-      .map(n => tf.math.reciprocal(ps(n)))
-      .fold[Operand[TFloat32]](num)(tf.math.mul(_, _))
+  def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
+    if (prod.constant == 0) None
+    else Some{
+      val num: Operand[TFloat32] = prod.indices
+        .map(ps(_))
+        .fold[Operand[TFloat32]](tf.constant(prod.constant.toFloat))(
+          tf.math.mul(_, _)
+        )
+      prod.negIndices
+        .map(n => tf.math.reciprocal(ps(n)))
+        .fold[Operand[TFloat32]](num)(tf.math.mul(_, _))
+    }
   }
 
-  def sumOp(sum: SumExpr): Operand[TFloat32] =
-    sum.terms
-      .map(prodOp(_))
-      .fold[Operand[TFloat32]](tf.constant(0f))(tf.math.add(_, _))
+  def sumOp(sum: SumExpr): Option[Operand[TFloat32]] = {
+    val terms = sum.terms
+      .flatMap(prodOp(_))
+    // if (terms.isEmpty) println("all product terms with 0 coefficients") else println("Got a sum")
+    if (terms.isEmpty) None else Some(terms.reduce[Operand[TFloat32]](tf.math.add(_, _)))
+  }
 
   def equationsLogMismatch(
       eqs: Vector[(Operand[TFloat32], Operand[TFloat32])]
@@ -105,9 +110,27 @@ class TensorFlowExprEquations(
       )
   }
 
+  def equationsRatioMismatch(
+      eqs: Vector[(Operand[TFloat32], Operand[TFloat32])]
+  ): Operand[TFloat32] = {
+    eqs
+      .map {
+        case (lhs, rhs) =>
+          tf.math.div(
+            tf.math.abs(tf.math.sub(lhs, rhs)),
+            tf.math.add(lhs, rhs)
+          )
+      }
+      .reduce[Operand[TFloat32]](
+        tf.math.add(_, _)
+      )
+  }
+
   val matchEquationsOp: Vector[(Operand[TFloat32], Operand[TFloat32])] =
     rhsExprs.zipWithIndex.map {
-      case (rhs, n) => (ps(n), sumOp(rhs))
+      case (rhs, n) => 
+        // if (sumOp(rhs).isEmpty) println(s"Zero rhs in ${equationVec(n)}")
+        (ps(n),  sumOp(rhs).getOrElse(tf.constant(0f)) )
     }
 
   val totalProbEquationsOp: Vector[(Operand[TFloat32], Operand[TFloat32])] =
@@ -117,7 +140,7 @@ class TensorFlowExprEquations(
         (gp.map(ps(_)).reduce(tf.math.add(_, _)), tf.constant(1f))
       }
 
-  val mismatch: Operand[TFloat32] = equationsLogMismatch(
+  val mismatch: Operand[TFloat32] = equationsRatioMismatch(
     matchEquationsOp ++ totalProbEquationsOp
   )
 
