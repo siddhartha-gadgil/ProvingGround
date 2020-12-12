@@ -5,7 +5,7 @@ import provingground._, HoTT._
 import ExpressionEval._, ExprCalc._, ExprEquations._
 import GeneratorVariables._, TermRandomVars._
 import org.tensorflow._, org.tensorflow.op._, types._, core._
-import org.tensorflow.framework.optimizers.GradientDescent
+import org.tensorflow.framework.optimizers.{GradientDescent, Adam}
 import scala.util.{Using, Try}
 import scala.jdk.CollectionConverters._
 import org.tensorflow.op.linalg.MatMul
@@ -60,8 +60,7 @@ object TensorFlowExprEquations {
   def matrixCheck(
       initState: TermState,
       equationSet: Set[Equation],
-      params: TermGenParams,
-      learningRate: Float = 0.1f
+      params: TermGenParams
   ) =
     Using(new Graph()) { graph =>
       val evolver =
@@ -70,10 +69,27 @@ object TensorFlowExprEquations {
             .initMap(ExpressionEval.eqAtoms(equationSet), params, initState),
           equationSet,
           params,
-          graph,
-          learningRate
+          graph
         )
       evolver.quickCheck()
+    }.flatten
+
+  def tuned(
+      steps: Int,
+      initState: TermState,
+      equationSet: Set[Equation],
+      params: TermGenParams
+  ) =
+    Using(new Graph()) { graph =>
+      val evolver =
+        new TensorFlowExprEquations(
+          ExpressionEval
+            .initMap(ExpressionEval.eqAtoms(equationSet), params, initState),
+          equationSet,
+          params,
+          graph
+        )
+      evolver.fit(steps)
     }.flatten
 }
 
@@ -201,14 +217,11 @@ class TensorFlowExprEquations(
     equationSet: Set[Equation],
     params: TermGenParams,
     graph: Graph,
-    learningRate: Float,
     initVariables: Vector[Expression] = Vector() // values that can evolve
 ) extends ExprEquations(initMap, equationSet, params, initVariables) {
-  val tf = Ops.create(graph)
-  // println(numVars)
+  val tf   = Ops.create(graph)
   val xVec = tf.variable(tf.constant(Array.fill(numVars)(0f)))
   val pVec = tf.math.sigmoid(xVec)
-  // val reciprocalPVec = tf.math.reciprocal(pVec)
 
   def ps(n: Int): Operand[TFloat32] =
     tf.reduceSum(
@@ -241,13 +254,6 @@ class TensorFlowExprEquations(
     tf.constant(Array(size))
   )
 
-  // val pColBatches = tf.reshape(
-  //   tf.tile(pVec, tf.constant(Array(size))),
-  //   tf.constant(Array(size, numVars, 1))
-  // )
-
-  // val bilinearMatrixBatches = tf.constant(bilinearTerms)
-
   val bilinearMatrices = bilinearTerms.map { arr =>
     tf.constant(arr)
   }
@@ -272,35 +278,21 @@ class TensorFlowExprEquations(
       )
     }
 
-  val bilEntries : List[Operand[TFloat32]] = bilQuotRHSEntries.zip(bilinearRHSEntries).map{
-    case (y1, y2) => tf.reshape(tf.math.add(y1, y2), tf.constant(Array(1)))
-  }.toList
+  val bilEntries: List[Operand[TFloat32]] = bilQuotRHSEntries
+    .zip(bilinearRHSEntries)
+    .map {
+      case (y1, y2) => tf.reshape(tf.math.add(y1, y2), tf.constant(Array[Int]()))
+    }
+    .toList
 
-  val bilRHS = tf.concat(bilEntries.asJava, tf.constant(0))
-
-  // val bilinearQuotientBatches = tf.constant(bilienarQuotient)
-
-  // val bilinearRHS =
-  //   tf.reshape(
-  //     tf.sparse.sparseMatMul(
-  //       pColBatches,
-  //       tf.sparse.sparseMatMul(bilinearMatrixBatches, pColBatches),
-  //       sparse.SparseMatMul.transposeA(true),
-  //       sparse.SparseMatMul.transposeB(false)
-  //     ),
-  //     tf.constant(Array(size))
-  //   )
-
-  // val bilQuotRHS = tf.reshape(
-  //   tf.sparse.sparseMatMul(
-  //     pColBatches,
-  //     tf.sparse
-  //       .sparseMatMul(bilinearQuotientBatches, tf.math.reciprocal(pColBatches)),
-  //     sparse.SparseMatMul.transposeA(true),
-  //     sparse.SparseMatMul.transposeB(false)
-  //   ),
-  //   tf.constant(Array(size))
-  // )
+  val bilRHS =
+    bilEntries.zipWithIndex
+      .map {
+        case (x, i) =>
+          tf.oneHot(tf.constant(i), tf.constant(size), x, tf.constant(0f))
+      }
+      .reduce[Operand[TFloat32]](tf.math.add(_, _))
+  //tf.concat(bilEntries.asJava, tf.constant(0))
 
   // Used only for complicated expressions
   def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
@@ -335,34 +327,62 @@ class TensorFlowExprEquations(
 
   val lhsVec = tf.slice(pVec, tf.constant(Array(0)), tf.constant(Array(size)))
 
-  val totProbMat = tf.constant(totalProbMatrix)
+  // val totProbMat = tf.constant(totalProbMatrix)
 
-  val totProbVec = tf.reshape(
-    tf.sparse.sparseMatMul(totProbMat, pCol),
-    tf.constant(Array(randomVarIndices.size))
-  )
+  // val totProbVec = tf.reshape(
+  //   tf.sparse.sparseMatMul(totProbMat, pCol),
+  //   tf.constant(Array(randomVarIndices.size))
+  // )
 
-  val fullLHS = tf.concat(
-    List[Operand[TFloat32]](lhsVec, totProbVec).asJava,
-    tf.constant(0)
-  )
-  val fullRHS = tf.concat(
-    List[Operand[TFloat32]](rhsVec, tf.onesLike(totProbVec)).asJava,
-    tf.constant(0)
-  )
-
-  val mismatch = tf.reduceSum(
+  def ratioDiff(x: Operand[TFloat32], y: Operand[TFloat32]): Operand[TFloat32] =
     tf.math.div(
-      tf.math.abs(tf.math.sub(fullLHS, fullRHS)),
-      tf.math.add(fullLHS, fullRHS)
-    ),
-    tf.constant(0)
-  )
+      tf.math.abs(tf.math.sub(x, y)),
+      tf.math.add(x, y)
+    )
+
+  val totalProbEquationsOp: Vector[(Operand[TFloat32], Operand[TFloat32])] =
+    randomVarIndices
+      .to(Vector)
+      .map { gp =>
+        (gp.map(ps(_)).reduce(tf.math.add(_, _)), tf.constant(1f))
+      }
+
+  val totProbErr =
+    totalProbEquationsOp
+      .map { case (x, y) => ratioDiff(x, y) }
+      .reduce(tf.math.add(_, _))
+
+  val eqnErr =
+    tf.reduceSum(ratioDiff(lhsVec, rhsVec), tf.constant(0))
+
+  val mismatch = tf.math.add(totProbErr, eqnErr)
+
+  val optimizer = new Adam(graph)
+
+  val shift = optimizer.minimize(mismatch)
 
   def quickCheck(): Try[Tensor[TFloat32]] =
     Using(new Session(graph)) { session =>
       session.run(tf.init())
       val output = session.runner().fetch(mismatch).run()
       output.get(0).expect(TFloat32.DTYPE)
+    }
+
+  def fit(steps: Int): Try[(Vector[(Expression, Float)], Float)] =
+    Using(new Session(graph)) { session =>
+      println("Running steps")
+      session.run(tf.init())
+      (0 until steps).foreach { j =>
+        // if (j %10 == 0)
+        println(s"Ran $j steps")
+        session.run(shift)
+      }
+      println("getting probabilities")
+      val output   = session.runner().fetch(pVec).fetch(mismatch).run
+      val allProbs = output.get(0).expect(TFloat32.DTYPE)
+      val probs = equationVec.zipWithIndex.map {
+        case (eq, j) => eq.lhs -> allProbs.data().getFloat(j)
+      }
+      (probs, output.get(1).expect(TFloat32.DTYPE).data().getFloat())
     }
 }
