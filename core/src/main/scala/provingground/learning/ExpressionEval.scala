@@ -957,7 +957,17 @@ class ExprEquations(
       }
       .groupMap(_._2)(_._1)
 
-  lazy val (bilinearTerms, bilienarQuotient, linearTerms, complexTerms) = {
+
+}
+
+class FatExprEquations(
+    initMap: Map[Expression, Double],
+    equationSet: Set[Equation],
+    params: TermGenParams,
+    initVariables: Vector[Expression] = Vector()
+) extends ExprEquations(initMap, equationSet, params, initVariables){
+
+    lazy val (bilinearTerms, bilienarQuotient, linearTerms, complexTerms) = {
     val bilMatrix =
       Array.fill(size)(Array.fill(numVars)(Array.fill(numVars)(0f)))
     val divMatrix =

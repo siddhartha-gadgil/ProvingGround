@@ -64,7 +64,7 @@ object TensorFlowExprEquations {
   ) =
     Using(new Graph()) { graph =>
       val evolver =
-        new TensorFlowExprEquations(
+        new TensorFlowFatExprEquations(
           ExpressionEval
             .initMap(ExpressionEval.eqAtoms(equationSet), params, initState),
           equationSet,
@@ -237,6 +237,131 @@ class TensorFlowExprEquations(
       tf.constant(0)
     )
 
+  def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
+    if (prod.constant == 0) None
+    else
+      Some {
+        val num: Operand[TFloat32] = prod.indices
+          .map(ps(_))
+          .fold[Operand[TFloat32]](tf.constant(prod.constant.toFloat))(
+            tf.math.mul(_, _)
+          )
+        prod.negIndices
+          .map(n => tf.math.reciprocal(ps(n)))
+          .fold[Operand[TFloat32]](num)(tf.math.mul(_, _))
+      }
+  }
+
+  def sumOp(sum: SumExpr): Option[Operand[TFloat32]] = {
+    val terms = sum.terms
+      .flatMap(prodOp(_))
+    // if (terms.isEmpty) println("all product terms with 0 coefficients") else println("Got a sum")
+    if (terms.isEmpty) None
+    else Some(terms.reduce[Operand[TFloat32]](tf.math.add(_, _)))
+  }
+
+  def equationsLogMismatch(
+      eqs: Vector[(Operand[TFloat32], Operand[TFloat32])]
+  ): Operand[TFloat32] = {
+    eqs
+      .map {
+        case (lhs, rhs) =>
+          tf.math.squaredDifference(tf.math.log(lhs), tf.math.log(rhs))
+      }
+      .reduce[Operand[TFloat32]](
+        tf.math.add(_, _)
+      )
+  }
+
+  def equationsRatioMismatch(
+      eqs: Vector[(Operand[TFloat32], Operand[TFloat32])]
+  ): Operand[TFloat32] = {
+    eqs
+      .map {
+        case (lhs, rhs) =>
+          tf.math.div(
+            tf.math.abs(tf.math.sub(lhs, rhs)),
+            tf.math.add(lhs, rhs)
+          )
+      }
+      .reduce[Operand[TFloat32]](
+        tf.math.add(_, _)
+      )
+  }
+
+  val matchEquationsOp: Vector[(Operand[TFloat32], Operand[TFloat32])] =
+    rhsExprs.zipWithIndex.map {
+      case (rhs, n) =>
+        // if (sumOp(rhs).isEmpty) println(s"Zero rhs in ${equationVec(n)}")
+        (ps(n), sumOp(rhs).getOrElse(tf.constant(0f)))
+    }
+
+  val totalProbEquationsOp: Vector[(Operand[TFloat32], Operand[TFloat32])] =
+    randomVarIndices
+      .to(Vector)
+      .map { gp =>
+        (gp.map(ps(_)).reduce(tf.math.add(_, _)), tf.constant(1f))
+      }
+
+  val mismatch: Operand[TFloat32] = equationsRatioMismatch(
+    matchEquationsOp ++ totalProbEquationsOp
+  )
+
+  val optimizer = new Adam(graph)
+
+  val shift = optimizer.minimize(mismatch)
+
+  def quickCheck(): Try[Tensor[TFloat32]] =
+    Using(new Session(graph)) { session =>
+      session.run(tf.init())
+      val output = session.runner().fetch(mismatch).run()
+      output.get(0).expect(TFloat32.DTYPE)
+    }
+
+  def fit(steps: Int): Try[(Vector[(Expression, Float)], Float)] =
+    Using(new Session(graph)) { session =>
+      println("Running steps")
+      session.run(tf.init())
+      (0 until steps).foreach { j =>
+        // if (j %10 == 0)
+        println(s"Ran $j steps")
+        session.run(shift)
+      }
+      println("getting probabilities")
+      val output   = session.runner().fetch(pVec).fetch(mismatch).run
+      val allProbs = output.get(0).expect(TFloat32.DTYPE)
+      val probs = equationVec.zipWithIndex.map {
+        case (eq, j) => eq.lhs -> allProbs.data().getFloat(j)
+      }
+      (probs, output.get(1).expect(TFloat32.DTYPE).data().getFloat())
+    }
+}
+
+class TensorFlowFatExprEquations(
+    initMap: Map[Expression, Double], // values specified and frozen
+    equationSet: Set[Equation],
+    params: TermGenParams,
+    graph: Graph,
+    initVariables: Vector[Expression] = Vector() // values that can evolve
+) extends FatExprEquations(initMap, equationSet, params, initVariables) {
+  val tf   = Ops.create(graph)
+  val xVec = tf.variable(tf.constant(Array.fill(numVars)(0f)))
+  val pVec = tf.math.sigmoid(xVec)
+
+  def ps(n: Int): Operand[TFloat32] =
+    tf.reduceSum(
+      tf.math.mul(
+        pVec,
+        tf.oneHot(
+          tf.constant(n),
+          tf.constant(numVars),
+          tf.constant(1f),
+          tf.constant(0f)
+        )
+      ),
+      tf.constant(0)
+    )
+
   val pCol = tf.reshape(
     pVec,
     tf.constant(Array(numVars, 1))
@@ -281,7 +406,8 @@ class TensorFlowExprEquations(
   val bilEntries: List[Operand[TFloat32]] = bilQuotRHSEntries
     .zip(bilinearRHSEntries)
     .map {
-      case (y1, y2) => tf.reshape(tf.math.add(y1, y2), tf.constant(Array[Int]()))
+      case (y1, y2) =>
+        tf.reshape(tf.math.add(y1, y2), tf.constant(Array[Int]()))
     }
     .toList
 
