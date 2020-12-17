@@ -77,32 +77,28 @@ object QueryEquations {
         val lookup = web.equationNodes
         val gatheredGen =
           LocalQueryable
-            .queryAt[GatherPost[GeneratedEquationNodes], HoTTPostWeb, HoTTPostWeb.ID](
+            .query[GatherPost[GeneratedEquationNodes], HoTTPostWeb](
               web,
-              id,
               (_) => true
             )
             .map(
-              v =>
-                v.flatMap(gp => gp.contents.flatMap(_.eqn))
+              gp =>
+                gp.contents
+                  .flatMap(_.eqn)
                   .map(TermData.isleNormalize(_))
             )
         val gatheredExpEv =
           LocalQueryable
-            .queryAt[GatherPost[ExpressionEval], HoTTPostWeb, HoTTPostWeb.ID](
+            .query[GatherPost[ExpressionEval], HoTTPostWeb](
               web,
-              id,
               (_) => true
             )
             .map(
-              v =>
-                v.flatMap(
-                  gp =>
-                    gp.contents
-                      .flatMap(_.equations)
-                      .flatMap(Equation.split(_))
-                      .map(TermData.isleNormalize(_))
-                )
+              gp =>
+                gp.contents
+                  .flatMap(_.equations)
+                  .flatMap(Equation.split(_))
+                  .map(TermData.isleNormalize(_))
             )
         for {
           genEqs <- gatheredGen
@@ -2189,8 +2185,11 @@ object HoTTBot {
         sg =>
           Future {
             import TermGeneratorNodes.targetInducFuncs
-            val funcs = gpInd.contents.flatMap(ind => targetInducFuncs(ind, sg.goal))
-            val fromAlls = funcs.flatMap(fn => FromAll.get(fn, sg.goal, sg.forConsequences, sg.context))
+            val funcs =
+              gpInd.contents.flatMap(ind => targetInducFuncs(ind, sg.goal))
+            val fromAlls = funcs.flatMap(
+              fn => FromAll.get(fn, sg.goal, sg.forConsequences, sg.context)
+            )
             fromAlls.headOption
           }
     MicroBot(response, name = Some("induction resolved"))
@@ -2309,7 +2308,7 @@ object HoTTBot {
                 SeekGoal(
                   typ,
                   fromAll.context,
-                  fromAll.conclusion +: fromAll.forConsequences 
+                  fromAll.conclusion +: fromAll.forConsequences
                 )
             )
           }
@@ -2477,33 +2476,56 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  val goalInContext: SimpleBot[SeekGoal, Option[ProofLambda :: SeekGoal :: HNil]] = MicroBot.simple(
-    (sk: SeekGoal) =>
-      sk.goal match {
-        case PiDefn(variable: Term, value: Typ[u]) =>
-          val newSeek = SeekGoal(value, sk.context.addVariable(variable), sk.goal +: sk.forConsequences)
-          val pfLambda = ProofLambda(sk.goal, newSeek.goal, sk.context, newSeek.context, variable, true)
-          Some(pfLambda :: newSeek :: HNil)
-        case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
-          val x = dom.Var
-          val newSeek = SeekGoal(codom, sk.context.addVariable(x), sk.goal +: sk.forConsequences) 
-          val pfLambda = ProofLambda(sk.goal, newSeek.goal, sk.context, newSeek.context, x, false)
-          Some(pfLambda :: newSeek :: HNil)
-        case _ => None
-      }
-  )
+  val goalInContext
+      : SimpleBot[SeekGoal, Option[ProofLambda :: SeekGoal :: HNil]] =
+    MicroBot.simple(
+      (sk: SeekGoal) =>
+        sk.goal match {
+          case PiDefn(variable: Term, value: Typ[u]) =>
+            val newSeek = SeekGoal(
+              value,
+              sk.context.addVariable(variable),
+              sk.goal +: sk.forConsequences
+            )
+            val pfLambda = ProofLambda(
+              sk.goal,
+              newSeek.goal,
+              sk.context,
+              newSeek.context,
+              variable,
+              true
+            )
+            Some(pfLambda :: newSeek :: HNil)
+          case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
+            val x = dom.Var
+            val newSeek = SeekGoal(
+              codom,
+              sk.context.addVariable(x),
+              sk.goal +: sk.forConsequences
+            )
+            val pfLambda = ProofLambda(
+              sk.goal,
+              newSeek.goal,
+              sk.context,
+              newSeek.context,
+              x,
+              false
+            )
+            Some(pfLambda :: newSeek :: HNil)
+          case _ => None
+        }
+    )
 
-  val exportProof : MicroHoTTBoTT[Proved, Option[Proved], GatherPost[ProofLambda]] = {
-    val response : GatherPost[ProofLambda] => Proved => Future[Option[Proved]] = 
+  val exportProof
+      : MicroHoTTBoTT[Proved, Option[Proved], GatherPost[ProofLambda]] = {
+    val response: GatherPost[ProofLambda] => Proved => Future[Option[Proved]] =
       (gpPfLam) =>
         (proved) =>
-          Future{
+          Future {
             gpPfLam.contents.flatMap(_.export(proved)).headOption
           }
     MicroBot(response, name = Some("export proof from context"))
   }
-
-
 
   val fullGoalInContext: SimpleBot[SeekGoal, Option[SeekGoal]] =
     MicroBot.simple(_.inContext)
