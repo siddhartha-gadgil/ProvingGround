@@ -172,7 +172,7 @@ object CzSlOly {
     // expnEqnUpdate,
     reportProofsSimple(results, goalOpt = Some(results(0))),
     reportProofsSimple(steps, "Steps (in final state)"),
-    reportBaseTangentsCalc(results, steps, inferTriples, verbose = false)
+    // reportBaseTangentsCalc(results, steps, inferTriples, verbose = false)
   )
 
   val web = new HoTTPostWeb()

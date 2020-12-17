@@ -453,7 +453,7 @@ object HoTTBot {
         case _ =>
           (fs: FinalState) =>
             Future {
-              val termsSet = fs.ts.terms.support
+              val termsSet = fs.ts.terms.support.par
               val pfs = results
                 .map(typ => typ -> termsSet.filter(_.typ == typ))
                 .filter(_._2.nonEmpty)
