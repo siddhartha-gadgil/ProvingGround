@@ -351,13 +351,13 @@ object HoTTBot {
   lazy val updateTerms: Callback[FinalState, HoTTPostWeb, Unit, ID] =
     Callback.simple(
       { (web: HoTTPostWeb) => (fs: FinalState) =>
-        val allTerms = fs.ts.terms.support union (fs.ts.typs.support
-          .map(t => t: Term))
-        val newTerms = allTerms -- web.terms
+        val allTerms = fs.ts.terms.support union (fs.ts.typs.support.par
+          .map(t => t: Term).seq)
+        val newTerms = (allTerms -- web.terms).par
         newTerms
           .filter(isVar(_))
           .foreach(t => logger.error(s"variable $t considered term"))
-        web.addTerms(newTerms)
+        web.addTerms(newTerms.seq)
         val typs =
           newTerms.collect { case t: Typ[u] => t: Typ[Term] } union allTerms
             .map(
@@ -369,7 +369,7 @@ object HoTTBot {
           ))
         Utils.logger.info(s"Obtained ${allEquations.size} formal equations")
         val normalEquations = allEquations.map(TermData.isleNormalize(_))
-        web.addEqns(normalEquations)
+        web.addEqns(normalEquations.seq)
       },
       Some("update terms")
     )
