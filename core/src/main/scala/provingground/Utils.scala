@@ -11,7 +11,8 @@ object Utils {
   val threadNum = scala.util.Properties.envOrNone("THREADS").map(_.toInt).getOrElse(8) 
 
   implicit val ec: scala.concurrent.ExecutionContext =
-    ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(threadNum))
+    ExecutionContext.global
+    // ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(threadNum))
 
   type MapDist[A] = Map[A, Double]
 
