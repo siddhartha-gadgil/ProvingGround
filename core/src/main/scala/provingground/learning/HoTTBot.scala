@@ -83,9 +83,9 @@ object QueryEquations {
             )
             .map(
               gp =>
-                gp.contents.toVector
-                  .map(_.normalized.toVector)
-              // .flatten
+                gp.contents
+                  .flatMap(_.eqn)
+                  .map(TermData.isleNormalize(_))
             )
         val gatheredExpEv =
           LocalQueryable
@@ -95,12 +95,10 @@ object QueryEquations {
             )
             .map(
               gp =>
-                gp.contents.toVector
-                  .flatMap(_.equations.toVector)
-                  .map(
-                    Equation.split(_).toVector.map(TermData.isleNormalize(_))
-                  )
-              // .flatten
+                gp.contents
+                  .flatMap(_.equations)
+                  .flatMap(Equation.split(_))
+                  .map(TermData.isleNormalize(_))
             )
         for {
           genEqs <- gatheredGen
@@ -108,7 +106,7 @@ object QueryEquations {
         } yield
           Vector(
             QueryEquations(
-              Equation.group(Utils.gatherSet(genEqs ++ expEqs, lookup))
+              Equation.group(lookup union genEqs.toSet union expEqs.toSet)
             )
           )
       }
