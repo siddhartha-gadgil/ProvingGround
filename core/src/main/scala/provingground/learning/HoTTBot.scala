@@ -1605,7 +1605,7 @@ object HoTTBot {
           eqsFut.map(eqs => GeneratedEquationNodes(eqs))
         }
     }
-    MicroBot(response)
+    MicroBot(response, name = Some("unified application equations"))
   }
 
   def timedUnAppEquations(
