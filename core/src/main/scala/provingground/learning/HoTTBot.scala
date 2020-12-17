@@ -17,6 +17,8 @@ import provingground.learning.Expression.FinalVal
 import scala.math.Ordering.Double.TotalOrdering
 import fastparse.internal.Util
 import provingground.induction.ExstInducDefn
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
 
 case class QueryProver(lp: LocalProver)
 
@@ -176,7 +178,7 @@ object HoTTBot {
 
   val finalStateToLemma: SimpleBot[FinalState, Lemmas] =
     MicroBot.simple(
-      (fs) => Lemmas(fs.ts.lemmas)
+      (fs) => Lemmas(fs.ts.lemmas.par)
     )
 
   val finalStateToNewLemmas
@@ -186,7 +188,7 @@ object HoTTBot {
         (fs) =>
           Future {
             val proved = qinit.init.terms.map(_.typ).support
-            Lemmas(fs.ts.lemmas.filterNot {
+            Lemmas(fs.ts.lemmas.par.filterNot {
               case (tp, _, _) => proved.contains(tp)
             })
           }
@@ -268,7 +270,7 @@ object HoTTBot {
               s"avoiding ${proved.size} types as tautologies and generators."
             )
             Lemmas(
-              (fs.ts.lemmas).filterNot {
+              (fs.ts.lemmas.par).filterNot {
                 case (tp, _, _) => proved.contains(tp)
               },
               Some(
@@ -1070,7 +1072,7 @@ object HoTTBot {
       (_) =>
         (lp) =>
           lp.lemmas.runToFuture
-            .map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
+            .map(v => Lemmas(v.par.map(xy => (xy._1, None, xy._2))))
     MicroBot(response)
   }
 
@@ -1152,7 +1154,7 @@ object HoTTBot {
       (_) =>
         (lp) =>
           lp.lemmas.runToFuture
-            .map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
+            .map(v => Lemmas(v.par.map(xy => (xy._1, None, xy._2))))
     MicroBot(response)
   }
 
@@ -1164,7 +1166,7 @@ object HoTTBot {
           Future(
             lemmas.lemmas.map {
               case (tp, pfOpt, w) => withWeight(UseLemma(tp, pfOpt), w)
-            }
+            }.seq
           )
     MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID](response)
   }
@@ -1180,7 +1182,7 @@ object HoTTBot {
             val sc = scale / l.map(_._3).sum
             l.map {
               case (tp, pfOpt, w) => withWeight(UseLemma(tp, pfOpt), w * sc)
-            }
+            }.seq
           }
     MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID](response)
   }
@@ -1215,7 +1217,7 @@ object HoTTBot {
                 )
             )
           val allEqs = Task
-            .parSequence(eqGps)
+            .parSequence(eqGps.seq)
             .map(_.fold(Set.empty[EquationNode])(_ union _))
             .map(GeneratedEquationNodes(_))
           allEqs.runToFuture
@@ -1391,7 +1393,7 @@ object HoTTBot {
               lems.lemmas.map {
                 case (typ, pfOpt, p) =>
                   Weighted(pfOpt.getOrElse("pf" :: typ), p)
-              }
+              }.seq
             )
             val baseDist = lp.initState.terms
             val tdist    = (baseDist * (1.0 - lemmaMix) ++ (lemPfDist * lemmaMix))
@@ -1446,7 +1448,7 @@ object HoTTBot {
                   lems.lemmas.map {
                     case (typ, pfOpt, p) =>
                       Weighted(pfOpt.getOrElse("pf" :: typ), p)
-                  }
+                  }.seq
                 )
                 val baseDist = ps.ts.terms
                 val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
@@ -1508,7 +1510,7 @@ object HoTTBot {
                 lems.lemmas.map {
                   case (typ, pfOpt, p) =>
                     Weighted(pfOpt.getOrElse("pf" :: typ), p)
-                }
+                }.seq
               )
               val baseDist = ps.ts.terms
               val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
@@ -1558,7 +1560,7 @@ object HoTTBot {
           Future {
             val lemPfDist = FiniteDistribution(tl.lemmas.map {
               case (t, pfOpt, p) => Weighted(pfOpt.getOrElse("lemma" :: t), p)
-            })
+            }.seq)
             val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
             logger.debug(s"function domains: ${funcs.support.map(_.dom)}")
             logger.debug(s"lemma-proof types: ${lemPfDist.support.map(_.typ)}")
@@ -1593,7 +1595,7 @@ object HoTTBot {
                   val lemPfDist = FiniteDistribution(tl.lemmas.map {
                     case (t, pfOpt, p) =>
                       Weighted(pfOpt.getOrElse("lemma" :: t), p)
-                  })
+                  }.seq)
                   val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
                   SimpleEquations.unAppEquations(funcs, lemPfDist, cutoff)
 
@@ -1628,7 +1630,7 @@ object HoTTBot {
                     val lemPfDist = FiniteDistribution(tl.lemmas.map {
                       case (t, pfOpt, p) =>
                         Weighted(pfOpt.getOrElse("lemma" :: t), p)
-                    })
+                    }.seq)
                     val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
                     SimpleEquations.timedUnAppEquations(
                       funcs,
@@ -1999,7 +2001,7 @@ object HoTTBot {
                   }
                   .map(GeneratedEquationNodes(_))
                   .runToFuture
-            }
+            }.seq
           )
 
     }
@@ -2060,7 +2062,7 @@ object HoTTBot {
                 l0.map {
                   case (typ, pfOpt, p) =>
                     Weighted(pfOpt.getOrElse("pf" :: typ), p / l0tot)
-                }
+                }.seq
               )
               val tdist     = (baseDist * (1.0 - lemmaMix) ++ (lemPfDist * lemmaMix))
               val baseState = lp.initState
@@ -2108,7 +2110,7 @@ object HoTTBot {
                 )
             )
           val allEqs = Task
-            .parSequence(eqGps)
+            .parSequence(eqGps.seq)
             .map(_.fold(Set.empty[EquationNode])(_ union _))
             .map(GeneratedEquationNodes(_))
           allEqs.runToFuture.map(aEq => usedLemmas :: aEq :: HNil)
@@ -2127,7 +2129,7 @@ object HoTTBot {
             val s = lemmas.lemmas.map(_._1).toSet
             (sizes.flatMap {
               case (j, w) =>
-                val ss = s.subsets(j).toSet
+                val ss = s.seq.subsets(j).toSet
                 val fdsUnscaled = ss.map { supp =>
                   FiniteDistribution {
                     val weights = supp.flatMap(

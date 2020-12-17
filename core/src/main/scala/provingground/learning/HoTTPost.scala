@@ -11,6 +11,8 @@ import shapeless._
 import scala.collection.View
 import scala.reflect.runtime.universe._
 import HoTTMessages._
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
 
 @deprecated("migrating to HoTTPostWeb", "soon")
 class HoTTPost { web =>
@@ -365,13 +367,13 @@ object HoTTPost {
 
   lazy val lpLemmas: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[Lemmas] =
-      (_) => (lp) => lp.lemmas.runToFuture.map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
+      (_) => (lp) => lp.lemmas.runToFuture.map(v => Lemmas(v.map(xy => (xy._1, None, xy._2)).par))
     MicroBot(response)
   }
 
   lazy val lptLemmas: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalTangentProver => Future[Lemmas] =
-      (_) => (lp) => lp.lemmas.runToFuture.map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
+      (_) => (lp) => lp.lemmas.runToFuture.map(v => Lemmas(v.map(xy => (xy._1, None, xy._2)).par))
     MicroBot(response)
   }
 
@@ -382,7 +384,7 @@ object HoTTPost {
           Future.sequence(lm.lemmas.map {
             case (tp, _, w) =>
               lp.tangentProver("lemma" :: tp).map(_.sharpen(w)).runToFuture : Future[LocalTangentProver]
-          })
+          }.seq)
     new MiniBot[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](
       response,
       (_) => true

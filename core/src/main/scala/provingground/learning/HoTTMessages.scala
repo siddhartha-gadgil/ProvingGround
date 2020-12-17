@@ -5,6 +5,8 @@ import provingground.learning.HoTTMessages.Proved
 import provingground.learning.HoTTMessages.Contradicted
 import shapeless._, HList._
 import provingground.Context.AppendVariable
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
 
 /**
   * Messages to be posted for autonomous/interactive running.
@@ -210,7 +212,7 @@ object HoTTMessages {
     *
     */
   case class Lemmas(
-      lemmas: Vector[(Typ[Term], Option[Term], Double)],
+      lemmas: ParVector[(Typ[Term], Option[Term], Double)],
       byStatement: Option[Map[Typ[Term], Double]] = None
   ) {
     def weight(tp: Typ[Term]): Double =
@@ -218,7 +220,7 @@ object HoTTMessages {
   }
 
   case class UsedLemmas(
-      lemmas: Vector[(Typ[Term], Double)]
+      lemmas: ParVector[(Typ[Term], Double)]
   ) {
     lazy val weightMap = lemmas.toMap
 
@@ -229,11 +231,11 @@ object HoTTMessages {
   }
 
   case class TangentLemmas(
-      lemmas: Vector[(Typ[Term], Option[Term], Double)]
+      lemmas: ParVector[(Typ[Term], Option[Term], Double)]
   )
 
   case class BaseMixinLemmas(
-      lemmas: Vector[(Typ[Term], Option[Term], Double)]
+      lemmas: ParVector[(Typ[Term], Option[Term], Double)]
   )
 
   /**
