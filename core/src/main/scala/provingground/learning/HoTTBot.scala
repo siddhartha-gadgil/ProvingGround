@@ -1227,8 +1227,8 @@ object HoTTBot {
 
   def avoidLemmas(decay: Double = 0.5, cutoff: Double = 0.04)(
       v: Vector[UsedLemmas]
-  ): Set[HoTT.Typ[HoTT.Term]] = {
-    val allLemmas = v.flatMap(_.support).toSet
+  ): ParSet[HoTT.Typ[HoTT.Term]] = {
+    val allLemmas = v.par.flatMap(_.support).to(ParSet)
     val l         = v.length
     def hasLargeWeight(typ: Typ[Term]) =
       (0 until (l)).exists(j => v(j).weight(typ) * math.pow(decay, j) > cutoff)
@@ -1605,7 +1605,7 @@ object HoTTBot {
           eqsFut.map(eqs => GeneratedEquationNodes(eqs))
         }
     }
-    MicroBot(response)
+    MicroBot(response, name = Some("unified application equations"))
   }
 
   def timedUnAppEquations(
