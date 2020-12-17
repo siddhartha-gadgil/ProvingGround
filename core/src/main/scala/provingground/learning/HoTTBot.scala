@@ -278,7 +278,7 @@ object HoTTBot {
           }
         }
     }
-    MicroBot(response)
+    MicroBot(response, name = Some("final state to filtered lemmas"))
   }
 
   lazy val lptToTermResult: SimpleBot[LocalTangentProver, TermResult] = {
@@ -1541,7 +1541,10 @@ object HoTTBot {
           )
         }
     }
-    DualMiniBotTask(response)
+    DualMiniBotTask(
+      response,
+      name = Some("base state from special initial state")
+    )
   }
 
   // temporary, for testing
