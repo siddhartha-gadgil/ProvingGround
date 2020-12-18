@@ -270,7 +270,7 @@ object HoTTBot {
               s"avoiding ${proved.size} types as tautologies and generators."
             )
             Lemmas(
-              (fs.ts.lemmas.par).filterNot {
+              (fs.ts.lemmasPar.par).filterNot {
                 case (tp, _, _) => proved.contains(tp)
               },
               Some(

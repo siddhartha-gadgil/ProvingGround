@@ -8,7 +8,7 @@ import provingground.learning.GeneratorNode.{Map, MapOpt}
 import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
-import scala.collection.parallel._
+import scala.collection.parallel.immutable._
 
 import TermGeneratorNodes._
 import scala.math.Ordering.Double.TotalOrdering
@@ -159,7 +159,7 @@ case class TermState(
 
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
-  lazy val termDistMap = terms.toParMap
+  lazy val termDistMap: ParMap[Term, Double] = terms.toParMap
 
   lazy val typDistMap = typs.toParMap
 
@@ -173,9 +173,24 @@ case class TermState(
         }
     }
     val total = base.values.sum
-    if (total > 0) base.mapValues(_ * (1 / total))
+    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
     else ParMap.empty
   }
+
+  lazy val thmsSet: ParSet[Typ[Term]] = termDistMap.keySet
+    .map(_.typ)
+    .intersect(typDistMap.keySet union (goalSet))
+    .to(ParSet)
+
+  lazy val thmsByStParMap: ParMap[Typ[Term], Double] = {
+    val base  = typDistMap.filterKeys(thmsSet.contains(_))
+    val total = base.values.sum
+    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
+    else ParMap.empty
+  }
+
+  lazy val thmsByPfParMap: ParMap[Typ[Term], Double] =
+    thmsSet.map(tp => tp -> termsWithTypsMap(tp).map(_._2).sum).to(ParMap)
 
   lazy val typFamilyDist = terms.condMap(TypFamilyOpt)
 
@@ -187,7 +202,7 @@ case class TermState(
         }
     }
     val total = base.values.sum
-    if (total > 0) base.mapValues(_ * (1 / total))
+    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
     else ParMap.empty
   }
 
@@ -203,7 +218,8 @@ case class TermState(
     )
     .toMap
 
-  lazy val termsWithTypsMap =
+  lazy val termsWithTypsMap
+      : ParMap[HoTT.Typ[HoTT.Term], ParMap[HoTT.Term, Double]] =
     termDistMap.groupBy(_._1.typ: Typ[Term]).map {
       case (typ, m) =>
         val total = m.values.sum
@@ -328,6 +344,20 @@ case class TermState(
           -(thmsByStMap(x) / (q * math.log(q)))
         )
     }
+    .sortBy(_._3)
+    .reverse
+
+  lazy val lemmasPar: Vector[(Typ[Term], Option[Term], Double)] = thmsSet
+    .map { tp =>
+      val pfs = termsWithTypsMap(tp)
+      val q   = pfs.map(_._2).sum
+      (
+        tp,
+        Some(pfs.maxBy(_._2)._1),
+        -(thmsByStParMap(tp) / (q * math.log(q)))
+      )
+    }
+    .to(Vector)
     .sortBy(_._3)
     .reverse
 
