@@ -274,7 +274,7 @@ object HoTTBot {
                 case (tp, _, _) => proved.contains(tp)
               },
               Some(
-                fs.ts.thmsBySt.toMap
+                fs.ts.thmsByStMap
               )
             )
           }

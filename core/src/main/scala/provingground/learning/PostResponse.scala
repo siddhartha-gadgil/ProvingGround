@@ -92,9 +92,13 @@ class SimpleSession[W, ID](
     */ 
   def post[P](content: P, preds: Set[ID], withResponse: Boolean = true)(implicit pw: Postable[P, W, ID]): Future[PostData[_, W, ID]] = {
     val postIdFuture = pw.post(content, web, preds)
-    if (withResponse) postIdFuture.foreach { postID => // posting done, the id is now the predecessor for further posts
+    if (withResponse) postIdFuture.onComplete(attempt => attempt.fold(err => {
+      Utils.logger.error(err.getMessage())
+      Utils.logger.error(err.getStackTrace().mkString("\n"))
+       throw err}, 
+    { postID => // posting done, the id is now the predecessor for further posts
       respond(content, postID)
-    }
+    }))
     postIdFuture.map{id => 
       val data = PostData(content, id)
       logs.foreach{fn => fn(data).foreach(_ => ())}
