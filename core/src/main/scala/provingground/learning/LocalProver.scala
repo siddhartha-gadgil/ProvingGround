@@ -415,7 +415,8 @@ trait LocalProverStep {
       eqs <- equationNodes
       ns  <- nextState
     } yield {
-      val additional = ns.allTyps.flatMap { typ =>
+      val eqnTypes = eqs.collect{case eq @ EquationNode(FinalVal(Elem(t: Term, Terms)), _) => t.typ: Typ[Term]}
+      val additional = (ns.allTyps union eqnTypes).flatMap { typ =>
         val eqs = DE.formalTypEquations(typ)
         Expression.rhsOrphans(eqs).foreach {
           case (exp, eqq) => logger.debug(s"for type: $typ\n$exp\n orphan in formal $eqq")
