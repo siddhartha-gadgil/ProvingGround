@@ -622,7 +622,7 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
     }).map(_.flatten)
     result.foreach{v => 
       Utils.logger.info(s"${v.size} responses to enquiry ${qt}")
-      v.foreach(x => Utils.logger.info(s"element: $x for $qt"))
+      // v.foreach(x => Utils.logger.info(s"element: $x for $qt"))
     }
   result}
 }
