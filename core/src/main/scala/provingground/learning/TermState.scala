@@ -210,7 +210,7 @@ case class TermState(
 
   lazy val typOrFamilyDistMap = typOrFamilyDist.toMap
 
-  lazy val termTyps = terms.support.map(_.typ)
+  lazy val termTyps = terms.support.map(_.typ : Typ[Term])
 
   lazy val termWithTyps = termTyps
     .map(
@@ -251,7 +251,7 @@ case class TermState(
         typ -> m.map { case (x, p) => (x, p / total) }
     }
 
-  lazy val allTyps = termTyps union typs.support
+  lazy val allTyps = termTyps union typs.support union termSet.collect { case t: Typ[u] => t : Typ[Term]}
 
   lazy val extraTyps = terms.support.map(_.typ) -- typs.support
 
