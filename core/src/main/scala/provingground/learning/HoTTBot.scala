@@ -68,14 +68,12 @@ case class QueryEquations(equations: Set[Equation]) {
 }
 
 object QueryEquations {
-  implicit val lqe
-      : LocalQueryable[QueryEquations, HoTTPostWeb, HoTTPostWeb.ID] =
-    new LocalQueryable[QueryEquations, HoTTPostWeb, HoTTPostWeb.ID] {
-      def getAt(
+  implicit val lqe: Queryable[QueryEquations, HoTTPostWeb] =
+    new Queryable[QueryEquations, HoTTPostWeb] {
+      def get(
           web: HoTTPostWeb,
-          id: HoTTPostWeb.ID,
           predicate: QueryEquations => Boolean
-      ): Future[Vector[QueryEquations]] = {
+      ): Future[QueryEquations] = {
         val lookup = web.equationNodes
         val gatheredGen =
           LocalQueryable
@@ -106,11 +104,9 @@ object QueryEquations {
           genEqs <- gatheredGen
           expEqs <- gatheredExpEv
         } yield
-          Vector(
             QueryEquations(
               Equation.group(lookup union genEqs.toSet union expEqs.toSet)
             )
-          )
       }
     }
 }
@@ -352,7 +348,8 @@ object HoTTBot {
     Callback.simple(
       { (web: HoTTPostWeb) => (fs: FinalState) =>
         val allTerms = fs.ts.terms.support union (fs.ts.typs.support.par
-          .map(t => t: Term).seq)
+          .map(t => t: Term)
+          .seq)
         val newTerms = (allTerms -- web.terms).par
         newTerms
           .filter(isVar(_))
