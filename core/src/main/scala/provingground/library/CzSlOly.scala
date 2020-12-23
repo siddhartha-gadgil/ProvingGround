@@ -128,7 +128,7 @@ object CzSlOly {
   val localProver: LocalProver = LocalProver(
     termState,
     TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
-    cutoff = 3 * math.pow(10, -6),
+    cutoff = math.pow(10, -5),
     maxTime = Some(1800000L)
   ).noIsles
 
