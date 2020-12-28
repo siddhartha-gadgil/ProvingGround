@@ -155,12 +155,13 @@ object CzSlOly {
     ),
     lemRefine,
     cappedSpecialBaseState(verbose = false),
-    timedUnAppEquations(
-      math.pow(10, -3),
-      120.minutes,
-      3,
-      Some(math.pow(10, -11))
-    ),
+    // timedUnAppEquations(
+    //   math.pow(10, -3),
+    //   120.minutes,
+    //   3,
+    //   Some(math.pow(10, -11))
+    // ),
+    cappedForkedTangentEquations,
     eqnsToExpEv(
       Some(
         TermGenParams.zero
