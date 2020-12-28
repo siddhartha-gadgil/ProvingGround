@@ -104,9 +104,9 @@ object QueryEquations {
           genEqs <- gatheredGen
           expEqs <- gatheredExpEv
         } yield
-            QueryEquations(
-              Equation.group(lookup union genEqs.toSet union expEqs.toSet)
-            )
+          QueryEquations(
+            Equation.group(lookup union genEqs.toSet union expEqs.toSet)
+          )
       }
     }
 }
@@ -1303,8 +1303,10 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.info("Computing base state")
-    val groupedVec = Equation.groupIt(equationNodes).toVector ++ Equation
-      .groupIt(DE.termStateInit(initialState))
+    val groupedVec = Equation
+      .groupMap(equationNodes, DE.termStateInitMap(initialState))
+      .values
+      .toVector
     Utils.logger.info("Created vector of equations")
     val groupedSet = Utils.makeSet(
       groupedVec
