@@ -1573,7 +1573,7 @@ object HoTTBot {
   def cappedSpecialBaseState(
       verbose: Boolean = true
   ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
-    baseStateFromSpecialInit(verbose)
+    baseStateFromSpecialInitTask(verbose)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   def unAppEquations(
