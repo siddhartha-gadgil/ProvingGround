@@ -2013,8 +2013,8 @@ object HoTTBot {
       .triggerWith[TangentBaseCompleted.type]
       .reduce(
         (v: Vector[GeneratedEquationNodes]) => {
-          val all = v.map(_.eqn).fold(Set.empty[EquationNode])(_ union _)
-          GeneratedEquationNodes(all) :: EquationsCompleted :: HNil
+          val all =  Utils.gatherSet(v.map(_.eqn.toVector), Set())
+          GeneratedEquationNodes(all) 
         }
       )
 
