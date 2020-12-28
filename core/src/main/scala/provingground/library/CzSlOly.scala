@@ -154,7 +154,13 @@ object CzSlOly {
         .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)
     ),
     lemRefine,
-    cappedSpecialBaseState(verbose = false),
+    cappedBaseState(
+      lemmaMix = 0.5,
+      cutoffScale = 0.05, 
+      tgOpt = Some(TermGenParams.zero.copy(unAppW = 0.4)),
+      depthOpt = Some(2),
+      verbose = false
+    ),
     timedUnAppEquations(
       math.pow(10, -3),
       120.minutes,
@@ -171,14 +177,14 @@ object CzSlOly {
     updateTerms,
     // expnEqnUpdate,
     reportProofsSimple(results, goalOpt = Some(results(0))),
-    reportProofsSimple(steps, "Steps (in final state)"),
+    reportProofsSimple(steps, "Steps (in final state)")
     // reportBaseTangentsCalc(results, steps, inferTriples, verbose = false)
   )
 
   val web = new HoTTPostWeb()
   val ws  = WebState[HoTTPostWeb, HoTTPostWeb.ID](web)
 
-  lazy val wsF : Future[WebState[HoTTPostWeb,HoTTPostWeb.ID]] =
+  lazy val wsF: Future[WebState[HoTTPostWeb, HoTTPostWeb.ID]] =
     for {
       ws1  <- ws.post(TautologyInitState(tautGen), Set())
       ws2  <- ws1.postLast(transitivtyInit)
@@ -192,5 +198,6 @@ object CzSlOly {
       ws10 <- ws9.act(cappedSpecialBaseState(verbose = false))
     } yield ws10
 
-  lazy val sessF : Future[HoTTWebSession] = wsF.map(ws => HoTTWebSession.launch(ws, bots))
+  lazy val sessF: Future[HoTTWebSession] =
+    wsF.map(ws => HoTTWebSession.launch(ws, bots))
 }
