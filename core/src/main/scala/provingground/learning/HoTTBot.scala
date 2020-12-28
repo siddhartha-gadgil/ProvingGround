@@ -1571,7 +1571,7 @@ object HoTTBot {
   def cappedSpecialBaseState(
       verbose: Boolean = true
   ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
-    baseStateFromSpecialInitTask(verbose)
+    baseStateFromSpecialInit(verbose)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   def unAppEquations(
