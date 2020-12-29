@@ -110,7 +110,14 @@ object TermRandomVars {
       extends RandomVar.SimpleFamily[Typ[Term], Term](
         Typs,
         (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
-      )
+      ) {
+    def unapply(x: Any): Option[Typ[Term]] = x match {
+      case RandomVar.AtCoord(fmly, (typ: Typ[Term]) :: HNil)
+          if fmly == TermsWithTyp =>
+        Some(typ)
+      case _ => None
+    }
+  }
 
   /**
     * distribution of terms with a specific type
@@ -149,7 +156,7 @@ object TermRandomVars {
       Map[ExstFunc, Term](ExstFunc.GetFunc, TypFamilies, TypsAndFamilies)
   }
 
-  case object Negate extends (Typ[Term] => Typ[Term]){
+  case object Negate extends (Typ[Term] => Typ[Term]) {
     def apply(v1: HoTT.Typ[HoTT.Term]): HoTT.Typ[HoTT.Term] = negate(v1)
 
     override def toString(): String = "Negate"
@@ -195,8 +202,9 @@ object TermRandomVars {
   def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
     Sort.Filter[Term](WithTyp(typ))
 
-  case object WithTypSort extends (Typ[Term] => Sort[Term, Term]){
-    def apply(v1: HoTT.Typ[HoTT.Term]): Sort[HoTT.Term,HoTT.Term] = withTypSort(v1)
+  case object WithTypSort extends (Typ[Term] => Sort[Term, Term]) {
+    def apply(v1: HoTT.Typ[HoTT.Term]): Sort[HoTT.Term, HoTT.Term] =
+      withTypSort(v1)
 
     override def toString(): String = "WithTypSort"
   }
