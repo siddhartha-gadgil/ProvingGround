@@ -232,7 +232,11 @@ object HoTTMessages {
 
   case class TangentLemmas(
       lemmas: ParVector[(Typ[Term], Option[Term], Double)]
-  )
+  ) {
+    lazy val fd = FiniteDistribution(lemmas.map {
+      case (tp, pfOpt, w) => Weighted(pfOpt.getOrElse("lemma" :: tp), w)
+    }.seq).safeNormalized
+  }
 
   case class BaseMixinLemmas(
       lemmas: ParVector[(Typ[Term], Option[Term], Double)]

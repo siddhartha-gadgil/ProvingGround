@@ -1650,7 +1650,41 @@ object HoTTBot {
           eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet, true))
         }.runToFuture
     }
-    MicroBot(response)
+    MicroBot(response, name = Some("unified equations"))
+  }
+
+  def lpUnAppEquations(
+      cutoff: Double,
+      maxTime: FiniteDuration
+  ): MicroHoTTBoTT[TangentBaseCompleted.type, GeneratedEquationNodes, Collated[
+    TangentBaseState
+  ] :: TangentLemmas :: Set[Term] :: HNil] = {
+    val response
+        : Collated[TangentBaseState] :: TangentLemmas :: Set[Term] :: HNil => TangentBaseCompleted.type => Future[
+          GeneratedEquationNodes
+        ] = {
+      case tbss :: tl :: terms :: HNil =>
+        (_) => {
+          val eqsTask = Task
+            .parSequenceUnordered(tbss.contents.toSet.map {
+              (tb: TangentBaseState) =>
+                {
+                  val lpt = LocalTangentProver(
+                    tb.ts,
+                    Set(),
+                    TermState(tl.fd, FiniteDistribution.empty),
+                    TermGenParams.zero.copy(unAppW = 0.4),
+                    cutoff,
+                    limit = maxTime
+                  )
+                  lpt.enhancedEquationNodes
+                }
+            })
+            .map(_.flatten)
+          eqsTask.map(eqs => GeneratedEquationNodes(eqs.toSet, true))
+        }.runToFuture
+    }
+    MicroBot(response, name = Some("local prover equations"))
   }
 
   def cappedBaseState(
@@ -2013,8 +2047,8 @@ object HoTTBot {
       .triggerWith[TangentBaseCompleted.type]
       .reduce(
         (v: Vector[GeneratedEquationNodes]) => {
-          val all =  Utils.gatherSet(v.map(_.eqn.toVector), Set())
-          GeneratedEquationNodes(all) 
+          val all = Utils.gatherSet(v.map(_.eqn.toVector), Set())
+          GeneratedEquationNodes(all)
         }
       )
 
