@@ -1676,7 +1676,7 @@ object HoTTBot {
                     TermGenParams.zero.copy(unAppW = 0.4),
                     cutoff,
                     limit = maxTime,
-                    genMaxDepth = Some(2)
+                    genMaxDepth = Some(1)
                   )
                   lpt.enhancedEquationNodes
                 }
