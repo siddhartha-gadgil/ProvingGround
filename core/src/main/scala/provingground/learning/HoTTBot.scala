@@ -1675,7 +1675,8 @@ object HoTTBot {
                     TermState(tl.fd, FiniteDistribution.empty),
                     TermGenParams.zero.copy(unAppW = 0.4),
                     cutoff,
-                    limit = maxTime
+                    limit = maxTime,
+                    genMaxDepth = Some(2)
                   )
                   lpt.enhancedEquationNodes
                 }
