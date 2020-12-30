@@ -447,7 +447,8 @@ trait LocalProverStep {
       eqs <- equationNodes
       ns  <- nextState
     } yield {
-      def additional = ns.allTyps.flatMap { typ =>
+      val eqnTypes = eqs.collect{case eq @ EquationNode(FinalVal(Elem(t: Term, Terms)), _) => t.typ: Typ[Term]}
+      def additional = (ns.allTyps union(eqnTypes)).flatMap { typ =>
         val eqs = DE.formalTypEquations(typ)
         eqs
           .collect {
@@ -790,7 +791,7 @@ case class LocalTangentProver(
     stateFromEquation: Boolean = false,
     exponent: Double = 0.5,
     decay: Double = 1,
-    maxTime: Option[Long]
+    maxTime: Option[Long] = None
 ) extends LocalProverStep {
 
   def withCutoff(ctf: Double): LocalTangentProver = this.copy(cutoff = ctf)
