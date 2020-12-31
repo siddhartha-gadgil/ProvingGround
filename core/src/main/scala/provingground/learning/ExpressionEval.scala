@@ -624,18 +624,15 @@ case class ProdExpr(
     }
     val numerator   = numeratorTerms.product
     val denominator = denominatorTerms.product
-    val posLiebnitz = (0 until (numeratorTerms.size))
-      .map { j =>
-        j -> (numeratorTerms.take(j) ++ numeratorTerms.drop(j + 1)).product * constant * denominator
-      }
-      .to(Vector)
-    val negLiebnitz = (0 until (denominatorTerms.size))
-      .map { j =>
+    val posLiebnitz = Vector.tabulate(numeratorTerms.size) { j =>
+      j -> (numeratorTerms.take(j) ++ numeratorTerms.drop(j + 1)).product * constant * denominator
+    }
+    val negLiebnitz = Vector.tabulate(denominatorTerms.size)
+      { j =>
         j -> -(denominatorTerms.take(j) ++ denominatorTerms.drop(j + 1)).product / (denominatorTerms(
           j
         ) * denominatorTerms(j)) * constant * numerator
       }
-      .to(Vector)
     ExprCalc.vecSum(Vector(posLiebnitz, negLiebnitz))
   }
 
@@ -788,7 +785,7 @@ object ExprEquations {
 
   def parVector(v: Vector[(Int, Double)], size: Int): ParVector[Double] = {
     val m = v.toMap
-    (0 until (size)).to(ParVector).map(n => m.getOrElse(n, 0.0))
+    ParVector.tabulate(size)(n => m.getOrElse(n, 0.0))
   }
 }
 
@@ -829,9 +826,7 @@ class ExprEquations(
     randomVarIndices.map { gp =>
       val scaled = 1.0 / sqrt(gp.size.toDouble)
       val s      = gp.toSet
-      (0 until (size))
-        .to(ParVector)
-        .map(n => if (s.contains(n)) scaled else 0.0)
+      ParVector.tabulate(size)(n => if (s.contains(n)) scaled else 0.0)
     }
 
   lazy val initPar = initMap.par
@@ -886,7 +881,7 @@ class ExprEquations(
   def equationGradients(
       v: collection.parallel.ParSeq[Double]
   ): ParVector[ParVector[Double]] = {
-    (0 until (size)).to(ParVector).map { n =>
+    ParVector.tabulate(size) { n =>
       val rhsGrad = rhsExprs(n).gradient(v)
       parVector(
         vecSum(Vector(rhsGrad, Vector(n -> -1.0))),
@@ -957,7 +952,6 @@ class ExprEquations(
       }
       .groupMap(_._2)(_._1)
 
-
 }
 
 class FatExprEquations(
@@ -965,9 +959,9 @@ class FatExprEquations(
     equationSet: Set[Equation],
     params: TermGenParams,
     initVariables: Vector[Expression] = Vector()
-) extends ExprEquations(initMap, equationSet, params, initVariables){
+) extends ExprEquations(initMap, equationSet, params, initVariables) {
 
-    lazy val (bilinearTerms, bilienarQuotient, linearTerms, complexTerms) = {
+  lazy val (bilinearTerms, bilienarQuotient, linearTerms, complexTerms) = {
     val bilMatrix =
       Array.fill(size)(Array.fill(numVars)(Array.fill(numVars)(0f)))
     val divMatrix =
@@ -1162,7 +1156,7 @@ class ExprCalc(
   def gradientStep(index: Int): Vector[(Int, Double)] = {
     val rhs = rhsExprs(index)
     val branches: Vector[Vector[(Int, Double)]] = rhs.terms.map { prod =>
-      (0 until (prod.indices.size)).toVector.map { j =>
+      Vector.tabulate(prod.indices.size) { j =>
         val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
         val denominator = prod.negIndices.map(finalVec(_)).product
         val coeff =
@@ -1187,7 +1181,7 @@ class ExprCalc(
 
   // currently computed gradients up to a given depth
   val gradientTerms: Vector[mutable.ArrayBuffer[Vector[(Int, Double)]]] =
-    (0 until size).toVector.map(j => mutable.ArrayBuffer(Vector(j -> 1.0)))
+    Vector.tabulate(size)(j => mutable.ArrayBuffer(Vector(j -> 1.0)))
 
   def gradientUptoMemo(j: Int, depth: Int): Vector[Vector[(Int, Double)]] = {
     val memo = gradientTerms(j)
@@ -1224,7 +1218,7 @@ class ExprCalc(
       val rhs = rhsExprs(index)
       val branches: Vector[Vector[(Int, Double)]] = rhs.terms.map { prod =>
         {
-          val liebnitz = (0 until (prod.indices.size)).map { j =>
+          val liebnitz = Vector.tabulate(prod.indices.size) { j =>
             val rest        = prod.indices.take(j) ++ prod.indices.drop(j + 1)
             val denominator = prod.negIndices.map(finalVec(_)).product
             val coeff =
@@ -1234,7 +1228,7 @@ class ExprCalc(
             gradient(j, decay - 1, depth - 1).map {
               case (j, w) => j -> (w * coeff * decay)
             }
-          }.toVector
+          }
           vecSum(liebnitz)
         }
       }

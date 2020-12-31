@@ -32,7 +32,7 @@ object WeightVect {
   def randomVec(length: Int, damp: Double = 0.0) = {
     val rnd = new Random
     val raw =
-      ((0 until length) map (_ => damp + (1 - damp) * rnd.nextDouble())).toVector
+      Vector.tabulate(length)(_ => damp + (1 - damp) * rnd.nextDouble())).toVector
     val total = raw.sum
     raw map (_ * (1 / total))
   }

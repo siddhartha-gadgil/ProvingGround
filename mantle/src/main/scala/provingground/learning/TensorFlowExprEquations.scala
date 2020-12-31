@@ -104,8 +104,7 @@ class TensorFlowExprVarEquations(
     initVariables: Vector[Expression] = Vector() // values that can evolve
 ) extends ExprEquations(initMap, equationSet, params, initVariables) {
   val tf = Ops.create(graph)
-  val xs = (0 until (numVars)).toVector
-    .map(j => tf.withName(s"x$j").variable(tf.constant(0f)))
+  val xs = Vector.tabulate(numVars)(j => tf.withName(s"x$j").variable(tf.constant(0f)))
   val ps: Vector[Operand[TFloat32]] = xs.map(
     x => tf.math.sigmoid(x)
   )
