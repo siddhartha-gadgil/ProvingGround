@@ -1270,8 +1270,8 @@ object HoTTBot {
       (ul) =>
         (lem) =>
           Future {
-            val exclude = avoidLemmas(decay, cutoff)(ul.contents)
-            logger.info(s"excluded lemmas:\n${exclude.mkString("\n")}")
+            // val exclude = avoidLemmas(decay, cutoff)(ul.contents)
+            // logger.info(s"excluded lemmas:\n${exclude.mkString("\n")}")
             val l =
               for {
                 (tp, pfOpt, p) <- lem.lemmas
