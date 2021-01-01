@@ -8,6 +8,10 @@ import scala.collection.parallel._
 import shapeless._
 import TermRandomVars._, NodeCoeffs._
 import ParMapState._
+import DE.{finalProb, initProb}
+import provingground.learning.GeneratorNode._
+
+import scala.collection.parallel.immutable.ParVector
 
 trait RecParDistEq {
   val nodeCoeffSeq: NodeCoeffSeq[ParMapState, Double]
@@ -197,5 +201,191 @@ class ParDistEq(
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
-  ): (ParMap[Y, Double], ParSet[EquationNode]) = ???
+  ): (ParMap[Y, Double], ParSet[EquationNode]) =
+    if (epsilon > 1 || halted)
+      (ParMap.empty[Y, Double], ParSet.empty[EquationNode])
+    else
+      generatorNode match {
+        case Init(input) =>
+          val initDist = initState.value(input)
+          val eqs = initDist.keySet.map { x =>
+            EquationNode(finalProb(x, input), coeff * initProb(x, input))
+          }
+          (initDist, eqs)
+        case Atom(value, output) => (ParMap(value -> 1.0), ParSet.empty)
+        case provingground.learning.GeneratorNode.Map(f, input, output) =>
+          val (dist, eqs) = varDist(initState, maxDepth, halted)(input, epsilon)
+          val meqs = dist.keySet.map { (x) =>
+            EquationNode(
+              finalProb(f(x), output),
+              coeff * finalProb(x, input)
+            )
+          }
+          (mapMap(dist, f), eqs union (meqs))
+        case MapOpt(f, input, output) =>
+          val (dist, eqs) = varDist(initState, maxDepth, halted)(input, epsilon)
+          val meqs = dist.keySet.flatMap { (x) =>
+            f(x).map(
+              y =>
+                EquationNode(
+                  finalProb(y, output),
+                  coeff * finalProb(x, input)
+                )
+            )
+          }
+          (mapMapOpt(dist, f), eqs union (meqs))
+        case zm: ZipMap[x1, x2, Y] =>
+          import zm._
+          val (dist1, eqs1) =
+            varDist(initState, maxDepth.map(_ - 1), halted)(input1, epsilon)
+          val (dist2, eqs2) =
+            varDist(initState, maxDepth.map(_ - 1), halted)(input2, epsilon)
+          val triples = dist1
+            .zip(dist2)
+            .map { case ((x1, p1), (x2, p2)) => ((x1, x2, f(x1, x2)), p1 * p2) }
+            .filter(_._2 > epsilon)
+          val meqs = triples
+            .map {
+              case ((x1, x2, y), _) =>
+                EquationNode(
+                  finalProb(y, output),
+                  coeff * finalProb(x1, input1) * finalProb(x2, input2)
+                )
+            }
+            .to(ParSet)
+          val tripleMap =
+            triples.map { case ((_, _, y), p) => (y, p) }.to(ParMap)
+          (tripleMap, eqs1 union eqs2 union meqs)
+        case zm: ZipMapOpt[x1, x2, Y] =>
+          import zm._
+          val (dist1, eqs1) =
+            varDist(initState, maxDepth.map(_ - 1), halted)(input1, epsilon)
+          val (dist2, eqs2) =
+            varDist(initState, maxDepth.map(_ - 1), halted)(input2, epsilon)
+          val triples = dist1
+            .zip(dist2)
+            .flatMap {
+              case ((x1, p1), (x2, p2)) =>
+                f(x1, x2).map(y => ((x1, x2, y), p1 * p2))
+            }
+            .filter(_._2 > epsilon)
+          val meqs = triples
+            .map {
+              case ((x1, x2, y), _) =>
+                EquationNode(
+                  finalProb(y, output),
+                  coeff * finalProb(x1, input1) * finalProb(x2, input2)
+                )
+            }
+            .to(ParSet)
+          val tripleMap =
+            triples.map { case ((_, _, y), p) => (y, p) }.to(ParMap)
+          (tripleMap, eqs1 union eqs2 union meqs)
+        case fpm : FiberProductMap[x1, x2, z, Y] => 
+            import fpm._
+            val (d1, d1E) = varDist(initState, maxDepth.map(_ - 1), halted)(baseInput, epsilon)
+            val byBase = d1.groupBy(xp => quot(xp._1))
+            val baseWeights = byBase.mapValues(_.values.sum)
+            ???
+        case zfm: ZipFlatMap[x1, x2, Y] =>
+          import zfm._
+          val (baseDist, baseEqs) =
+            varDist(initState, maxDepth.map(_ - 1), halted)(baseInput, epsilon)
+          val fibers = baseDist.to(ParVector).map {
+            case (x1, p1) =>
+              val (dist2, eqs2) = varDist(
+                initState,
+                maxDepth.map(_ - 1),
+                halted
+              )(fiberVar(x1), epsilon / p1)
+              (
+                dist2.map { case (x2, p2) => ((x1, x2, f(x1, x2)), p1 * p2) },
+                eqs2
+              )
+          }
+          val triples  = fibers.flatMap(_._1)
+          val fiberEqs = fibers.flatMap(_._2).to(ParSet)
+          val fibEqs = triples
+            .map {
+              case ((x1, x2, y), _) =>
+                EquationNode(
+                  finalProb(y, output),
+                  coeff * finalProb(x1, baseInput) * finalProb(x2, fiberVar(x1))
+                )
+            }
+            .to(ParSet)
+          val tripleMap =
+            triples.map { case ((_, _, y), p) => (y, p) }.to(ParMap)
+          (tripleMap, baseEqs union fibEqs union fiberEqs)
+        case fm: FlatMap[x, Y] =>
+          import fm._
+          val (baseDist, baseEqs) =
+            varDist(initState, maxDepth.map(_ - 1), halted)(baseInput, epsilon)
+          val fibers = baseDist.to(ParVector).map {
+            case (x1, p1) =>
+              val (dist2, eqs2) = nodeDist(
+                initState,
+                maxDepth.map(_ - 1),
+                halted
+              )(fiberNode(x1), epsilon / p1, coeff)
+              (
+                dist2.map { case (x2, p2) => ((x1, x2), p1 * p2) },
+                eqs2
+              )
+          }
+          val pairs    = fibers.flatMap(_._1)
+          val fiberEqs = fibers.flatMap(_._2).to(ParSet)
+          val fibEqs = pairs
+            .map {
+              case ((x1, x2), _) =>
+                EquationNode(
+                  finalProb(x2, output),
+                  coeff * finalProb(x1, baseInput) * finalProb(
+                    x2,
+                    fiberNode(x1).output
+                  )
+                )
+            }
+            .to(ParSet)
+          val pairMap =
+            pairs.map { case ((x1, x2), p) => (x2, p) }.to(ParMap)
+          (pairMap, baseEqs union fibEqs union fiberEqs)
+        case fm: FlatMapOpt[x, Y] =>
+          import fm._
+          val (baseDist, baseEqs) =
+            varDist(initState, maxDepth.map(_ - 1), halted)(baseInput, epsilon)
+          val fibers = baseDist.to(ParVector).flatMap {
+            case (x1, p1) =>
+              fiberNodeOpt(x1).map { node =>
+                val (dist2, eqs2) = nodeDist(
+                  initState,
+                  maxDepth.map(_ - 1),
+                  halted
+                )(node, epsilon / p1, coeff)
+                (
+                  dist2.map { case (x2, p2) => ((x1, x2), p1 * p2, node) },
+                  eqs2
+                )
+              }
+          }
+          val pairs    = fibers.flatMap(_._1)
+          val fiberEqs = fibers.flatMap(_._2).to(ParSet)
+          val fibEqs = pairs
+            .map {
+              case ((x1, x2), _, node) =>
+                EquationNode(
+                  finalProb(x2, output),
+                  coeff * finalProb(x1, baseInput) * finalProb(
+                    x2,
+                    node.output
+                  )
+                )
+            }
+            .to(ParSet)
+          val pairMap =
+            pairs.map { case ((x1, x2), p, _) => (x2, p) }.to(ParMap)
+          (pairMap, baseEqs union fibEqs union fiberEqs)
+        case tc:  ThenCondition[o, Y]               => ???
+        case Island(output, islandOutput, initMap, export, finalMap) => ???
+      }
 }

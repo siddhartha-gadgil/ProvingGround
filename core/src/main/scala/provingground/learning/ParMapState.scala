@@ -167,6 +167,12 @@ object ParMapState {
       if (total > 0) m.mapValues(_ / total) else ParMap.empty[Y, Double]
   }
 
+  def mapMap[Y, Z](m: ParMap[Y, Double], f: Y => Z) : ParMap[Z, Double] =
+    makeMap(m.to(ParVector).map{case (y, p) => f(y) -> p})
+
+  def mapMapOpt[Y, Z](m: ParMap[Y, Double], f: Y => Option[Z]) : ParMap[Z, Double] =
+    normalize(makeMap(m.to(ParVector).flatMap{case (y, p) => f(y).map(_ -> p)}))
+
   case object ParEnterIsle extends ((Term, ParMapState) => ParMapState) {
     def apply(x: HoTT.Term, state: ParMapState): ParMapState = state.inIsle(x)
   }
