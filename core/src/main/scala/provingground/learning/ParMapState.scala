@@ -120,7 +120,7 @@ case class ParMapState(
     ) -> x
   }
 
-  def inIsle(x: Term) : ParMapState = 
+  def inIsle(x: Term): ParMapState =
     ParMapState(
       termDist.collect {
         case (l: LambdaLike[u, v], w) if l.variable.typ == x.typ =>
@@ -148,34 +148,49 @@ object ParMapState {
   def makeMap[T](vec: ParVector[(T, Double)]): ParMap[T, Double] =
     vec.groupBy(_._1).mapValues(_.map(_._2).sum).to(ParMap)
 
-  case class ParAddVar(typ: Typ[Term]) extends (ParMapState => (Double => (ParMapState, Term))){
-      def apply(state: ParMapState): Double => (ParMapState, HoTT.Term) = (wt: Double) => state.addVar(typ, wt)
+  case class ParAddVar(typ: Typ[Term])
+      extends (ParMapState => (Double => (ParMapState, Term))) {
+    def apply(state: ParMapState): Double => (ParMapState, HoTT.Term) =
+      (wt: Double) => state.addVar(typ, wt)
 
-      override def toString(): String = s"ParAddVar($typ)"
+    override def toString(): String = s"ParAddVar($typ)"
   }
 
-  case object ParEnterIsle extends ((Term, ParMapState) => ParMapState){
-      def apply(x: HoTT.Term, state: ParMapState): ParMapState = state.inIsle(x)
+  def add[Y](m1: ParMap[Y, Double], m2: ParMap[Y, Double]) : ParMap[Y,Double] =
+    m1.keySet
+      .union(m2.keySet)
+      .map(k => k -> (m1.getOrElse(k, 0.0) + m2.getOrElse(k, 0.0)))
+      .to(ParMap)
+
+  def normalize[Y](m: ParMap[Y, Double]) : ParMap[Y, Double] = {
+      val total = m.values.sum
+      if (total > 0) m.mapValues(_ / total) else ParMap.empty[Y, Double]
+  }
+
+  case object ParEnterIsle extends ((Term, ParMapState) => ParMapState) {
+    def apply(x: HoTT.Term, state: ParMapState): ParMapState = state.inIsle(x)
   }
 
   case class ParGenNodes(tg: TermGenParams)
-    extends TermGeneratorNodes[ParMapState](
-      { case (fn, arg) => applyFunc(fn.func, arg) },
-      { case (fn, arg) => Unify.appln(fn.func, arg) },
-      ParAddVar(_),
-      GetVar,
-      ParEnterIsle,
-      tg.solver
-    )
+      extends TermGeneratorNodes[ParMapState](
+        { case (fn, arg) => applyFunc(fn.func, arg) },
+        { case (fn, arg) => Unify.appln(fn.func, arg) },
+        ParAddVar(_),
+        GetVar,
+        ParEnterIsle,
+        tg.solver
+      )
 
-  def parGenNodes(tg: TermGenParams) = if (tg.solver == TypSolver.coreSolver) ParBaseNodes else ParGenNodes(tg)
+  def parGenNodes(tg: TermGenParams) =
+    if (tg.solver == TypSolver.coreSolver) ParBaseNodes else ParGenNodes(tg)
 
-  case object ParBaseNodes extends TermGeneratorNodes[ParMapState](
-      { case (fn, arg) => applyFunc(fn.func, arg) },
-      { case (fn, arg) => Unify.appln(fn.func, arg) },
-      ParAddVar(_),
-      GetVar,
-      ParEnterIsle,
-      TypSolver.coreSolver
-    )
+  case object ParBaseNodes
+      extends TermGeneratorNodes[ParMapState](
+        { case (fn, arg) => applyFunc(fn.func, arg) },
+        { case (fn, arg) => Unify.appln(fn.func, arg) },
+        ParAddVar(_),
+        GetVar,
+        ParEnterIsle,
+        TypSolver.coreSolver
+      )
 }
