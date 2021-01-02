@@ -12,6 +12,8 @@ import DE.{finalProb, initProb}
 import provingground.learning.GeneratorNode._
 
 import scala.collection.parallel.immutable.ParVector
+import scala.math.Ordering.Double.TotalOrdering
+import spire.syntax.group
 
 trait RecParDistEq {
   val nodeCoeffSeq: NodeCoeffSeq[ParMapState, Double]
@@ -243,7 +245,7 @@ class ParDistEq(
           val triples = dist1
             .zip(dist2)
             .map { case ((x1, p1), (x2, p2)) => ((x1, x2, f(x1, x2)), p1 * p2) }
-            .filter(_._2 > epsilon)
+            .filter(_._2 > epsilon).to(ParVector)
           val meqs = triples
             .map {
               case ((x1, x2, y), _) =>
@@ -254,7 +256,7 @@ class ParDistEq(
             }
             .to(ParSet)
           val tripleMap =
-            triples.map { case ((_, _, y), p) => (y, p) }.to(ParMap)
+            makeMap(triples.map { case ((_, _, y), p) => (y, p) })
           (tripleMap, eqs1 union eqs2 union meqs)
         case zm: ZipMapOpt[x1, x2, Y] =>
           import zm._
@@ -268,7 +270,7 @@ class ParDistEq(
               case ((x1, p1), (x2, p2)) =>
                 f(x1, x2).map(y => ((x1, x2, y), p1 * p2))
             }
-            .filter(_._2 > epsilon)
+            .filter(_._2 > epsilon).to(ParVector)
           val meqs = triples
             .map {
               case ((x1, x2, y), _) =>
@@ -279,14 +281,42 @@ class ParDistEq(
             }
             .to(ParSet)
           val tripleMap =
-            triples.map { case ((_, _, y), p) => (y, p) }.to(ParMap)
+            makeMap(triples.map { case ((_, _, y), p) => (y, p) })
           (tripleMap, eqs1 union eqs2 union meqs)
-        case fpm : FiberProductMap[x1, x2, z, Y] => 
-            import fpm._
-            val (d1, d1E) = varDist(initState, maxDepth.map(_ - 1), halted)(baseInput, epsilon)
-            val byBase = d1.groupBy(xp => quot(xp._1))
-            val baseWeights = byBase.mapValues(_.values.sum)
-            ???
+        case fpm: FiberProductMap[x1, x2, z, Y] =>
+          import fpm._
+          val (d1, baseEqs) =
+            varDist(initState, maxDepth.map(_ - 1), halted)(baseInput, epsilon)
+          val byBase         = d1.groupBy(xp => quot(xp._1))
+          val baseMaxWeights = byBase.mapValues(_.values.max)
+          val groups = baseMaxWeights.map {
+            case (z, p) =>
+              z -> varDist(initState, maxDepth.map(_ - 1), halted)(
+                fiberVar(z),
+                epsilon / p
+              )
+          }
+          val fiberEqs = groups.flatMap(_._2._2).to(ParSet)
+          val triples = d1
+            .flatMap {
+              case (x1, p1) =>
+                groups(quot(x1))._1.map {
+                  case (x2, p2) => ((x1, x2, f(x1, x2)), p1 * p1)
+                }
+            }
+            .filter(_._2 > epsilon).to(ParVector)
+          val fibEqs = triples
+            .map {
+              case ((x1, x2, y), _) =>
+                EquationNode(
+                  finalProb(y, output),
+                  coeff * finalProb(x1, baseInput) * finalProb(x2, fiberVar(quot(x1)))
+                )
+            }
+            .to(ParSet)
+          val tripleMap =
+            makeMap(triples.map { case ((_, _, y), p) => (y, p) })
+          (tripleMap, baseEqs union fibEqs union fiberEqs)
         case zfm: ZipFlatMap[x1, x2, Y] =>
           import zfm._
           val (baseDist, baseEqs) =
@@ -315,7 +345,7 @@ class ParDistEq(
             }
             .to(ParSet)
           val tripleMap =
-            triples.map { case ((_, _, y), p) => (y, p) }.to(ParMap)
+            makeMap(triples.map { case ((_, _, y), p) => (y, p) })
           (tripleMap, baseEqs union fibEqs union fiberEqs)
         case fm: FlatMap[x, Y] =>
           import fm._
@@ -385,7 +415,7 @@ class ParDistEq(
           val pairMap =
             pairs.map { case ((x1, x2), p, _) => (x2, p) }.to(ParMap)
           (pairMap, baseEqs union fibEqs union fiberEqs)
-        case tc:  ThenCondition[o, Y]               => ???
+        case tc: ThenCondition[o, Y]                                 => ???
         case Island(output, islandOutput, initMap, export, finalMap) => ???
       }
 }
