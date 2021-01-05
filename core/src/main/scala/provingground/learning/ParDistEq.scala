@@ -336,11 +336,12 @@ class ParDistEq(
                 // pprint.log(x1)
                 val cutoff = epsilon / p1
                 // pprint.log(cutoff)
-                groups(quot(x1))._1.map {
+                groups(quot(x1))._1.flatMap {
                   case (x2, p2) if p2 > cutoff =>
                     // pprint.log(x2)
                     // pprint.log(f(x1, x2))
-                   ((x1, x2, f(x1, x2)), p1 * p2)
+                   Some((x1, x2, f(x1, x2)), p1 * p2)
+                   case _ => None
                 }
             }.to(ParVector)
           val fibEqs = triples
