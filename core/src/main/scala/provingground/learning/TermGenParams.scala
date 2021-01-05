@@ -163,7 +163,7 @@ abstract class TermNodeCoeffSeq[State](
 
   import NodeCoeffs.purge
 
-  val termNodes: NodeCoeffs[State, Double, HNil, Term] =
+  lazy val termNodes: NodeCoeffs[State, Double, HNil, Term] =
     purge(
       (Init(Terms)                        -> termInit) ::
         (applnNode                        -> appW) ::
@@ -177,7 +177,7 @@ abstract class TermNodeCoeffSeq[State](
         Terms.target[State, Double, Term]
     )
 
-  val typNodes: NodeCoeffs[State, Double, HNil, Typ[Term]] =
+  lazy val typNodes: NodeCoeffs[State, Double, HNil, Typ[Term]] =
     purge(
       (Init(Typs)                               -> typInit) ::
         (typApplnNode                           -> appW) ::
@@ -190,31 +190,31 @@ abstract class TermNodeCoeffSeq[State](
         Typs.target[State, Double, Typ[Term]]
     )
 
-  val inducNodes: NodeCoeffs[State, Double, HNil, ExstInducDefn] =
+  lazy val inducNodes: NodeCoeffs[State, Double, HNil, ExstInducDefn] =
     (Init(InducDefns) -> 1.0) ::
       InducDefns.target[State, Double, ExstInducDefn]
 
-  val inducDomainNodes
+  lazy val inducDomainNodes
       : NodeCoeffs[State, Double, ExstInducDefn :: HNil, Term] =
     (domainForDefnNodeFamily -> 1.0) ::
       DomForInduc.target[State, Double, Term]
 
-  val goalNodes: NodeCoeffs[State, Double, HNil, Typ[Term]] = (Init(
+  lazy val goalNodes: NodeCoeffs[State, Double, HNil, Typ[Term]] = (Init(
     Goals
   ) -> 1.0) :: Goals
     .target[State, Double, Typ[Term]]
 
-  val isleDomainsNode: NodeCoeffs[State, Double, HNil, Typ[
+  lazy val isleDomainsNode: NodeCoeffs[State, Double, HNil, Typ[
     Term
   ]] = (GeneratorNode
     .Map(Idty[Typ[Term]](), Typs, IsleDomains) -> 1.0) :: IsleDomains
     .target[State, Double, Typ[Term]]
 
-  val funcForCodNodes: NodeCoeffs[State, Double, Typ[Term] :: HNil, Term] =
+  lazy val funcForCodNodes: NodeCoeffs[State, Double, Typ[Term] :: HNil, Term] =
     (codomainNodeFamily -> 1.0) ::
       FuncForCod.target[State, Double, Term]
 
-  val funcNodes: NodeCoeffs[State, Double, HNil, ExstFunc] =
+  lazy val funcNodes: NodeCoeffs[State, Double, HNil, ExstFunc] =
     purge(
       (Init(Funcs)                                -> termInit) ::
         ((applnNode.|(funcSort, Funcs))           -> appW) ::
@@ -227,7 +227,7 @@ abstract class TermNodeCoeffSeq[State](
         Funcs.target[State, Double, ExstFunc]
     )
 
-  val typFamilyNodes: NodeCoeffs[State, Double, HNil, ExstFunc] =
+  lazy val typFamilyNodes: NodeCoeffs[State, Double, HNil, ExstFunc] =
     purge(
       (Init(TypFamilies)                                     -> termInit) ::
         (typFamilyApplnNode                                  -> appW) ::
@@ -240,7 +240,7 @@ abstract class TermNodeCoeffSeq[State](
         TypFamilies.target[State, Double, ExstFunc]
     )
 
-  val termsByTypNodes: NodeCoeffs[State, Double, Typ[Term] :: HNil, Term] =
+  lazy val termsByTypNodes: NodeCoeffs[State, Double, Typ[Term] :: HNil, Term] =
     purge(
       (TermsWithTyp.init            -> (termInit * (1 - goalWeight - typAsCodW - targetInducW - solverW))) ::
         (wtN(applnNode)             -> appW) ::
@@ -257,18 +257,18 @@ abstract class TermNodeCoeffSeq[State](
         TermsWithTyp.target[State, Double, Term]
     )
 
-  val typOrFmlyNodes: NodeCoeffs[State, Double, HNil, Term] =
+  lazy val typOrFmlyNodes: NodeCoeffs[State, Double, HNil, Term] =
     (TypsAndFamilies.fromTyp        -> typVsFamily) ::
       (TypsAndFamilies.fromFamilies -> (1.0 - typVsFamily)) ::
       TypsAndFamilies.target[State, Double, Term]
 
-  val targTypNodes: NodeCoeffs[State, Double, HNil, Term] =
+  lazy val targTypNodes: NodeCoeffs[State, Double, HNil, Term] =
     (TargetTyps.fromGoal     -> goalWeight) ::
       (TargetTyps.fromTyp    -> (1.0 - goalWeight - negTargetW)) ::
       (TargetTyps.fromNegTyp -> negTargetW) ::
       TargetTyps.target[State, Double, Term]
 
-  val funcWithDomNodes
+  lazy val funcWithDomNodes
       : NodeCoeffs[State, Double, Typ[Term] :: HNil, ExstFunc] =
     purge(
       (FuncsWithDomain.init         -> termInit) ::
@@ -279,7 +279,7 @@ abstract class TermNodeCoeffSeq[State](
         FuncsWithDomain.target[State, Double, ExstFunc]
     )
 
-  val nodeCoeffSeq: NodeCoeffSeq[State, Double] =
+  lazy val nodeCoeffSeq: NodeCoeffSeq[State, Double] =
     funcWithDomNodes +: targTypNodes +: goalNodes +: isleDomainsNode +: inducDomainNodes +: inducNodes +: funcForCodNodes +:
       termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[State, Double]()

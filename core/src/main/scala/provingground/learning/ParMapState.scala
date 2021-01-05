@@ -73,8 +73,8 @@ case class ParMapState(
       fullArg: Dom
   ): ParMap[T, Double] =
     (randomVarFmly, fullArg) match {
-      case (TermsWithTyp, typ :: HNil)    => termWithTypDist(typ).to(ParMap)
-      case (FuncsWithDomain, dom :: HNil) => funcWithDomDist(dom).to(ParMap)
+      case (TermsWithTyp, typ :: HNil)    => termWithTypDist.getOrElse(typ, ParMap.empty).to(ParMap)
+      case (FuncsWithDomain, dom :: HNil) => funcWithDomDist.getOrElse(dom, ParMap.empty).to(ParMap)
       case (FuncForCod, cod :: HNil) =>
         val base = termDist.flatMap {
           case (x, w) => Unify.targetCodomain(x, cod).map(_ -> w)
