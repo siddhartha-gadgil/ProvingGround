@@ -105,7 +105,7 @@ trait RecParDistEq {
             )
           // pprint.log(pa._1)
           // pprint.log(pb._1)
-          (add(pa._1.mapValues(_ * p).to(ParMap), pb._1), pa._2 union pb._2)
+          (add(pa._1.mapValues(_ * p).to(ParMap), pb._1), parUnion(pa._2, pb._2))
       }
 
   def varFamilyDistFunc[RDom <: HList, Y](
@@ -168,7 +168,7 @@ trait RecParDistEq {
             rv
           )
           val (b, eqb) = pb
-          (add(a, b), eqa union eqb)
+          (add(a, b), parUnion(eqa, eqb))
       }
 
   def varDist[Y](
@@ -229,7 +229,7 @@ trait RecParDistEq {
         initState.inds,
         initState.goalDist,
         initState.context
-    ), teqs union(tpeqs))
+    ), parUnion( teqs ,(tpeqs)))
     }
 }
 
@@ -270,7 +270,7 @@ class ParDistEq(
               coeff * finalProb(x, input)
             )
           }
-          (mapMap(dist, f), eqs union (meqs))
+          (mapMap(dist, f), parUnion(eqs, meqs))
         case MapOpt(f, input, output) =>
           val (dist, eqs) = varDist(initState, maxDepth, halted)(input, epsilon)
           val meqs = dist.keySet.flatMap { (x) =>
@@ -282,7 +282,7 @@ class ParDistEq(
                 )
             )
           }
-          (mapMapOpt(dist, f), eqs union (meqs))
+          (mapMapOpt(dist, f), parUnion(eqs, meqs))
         case zm: ZipMap[x1, x2, Y] =>
           import zm._
           val (dist1, eqs1) =
@@ -308,7 +308,7 @@ class ParDistEq(
           val tripleMap =
             makeMap(triples.map { case ((_, _, y), p) => (y, p) })
             // pprint.log(tripleMap)
-          (tripleMap, eqs1 union eqs2 union meqs)
+          (tripleMap, parUnion(eqs1, parUnion(eqs2, meqs)))
         case zm: ZipMapOpt[x1, x2, Y] =>
           import zm._
           val (dist1, eqs1) =
@@ -333,7 +333,7 @@ class ParDistEq(
             .to(ParSet)
           val tripleMap =
             makeMap(triples.map { case ((_, _, y), p) => (y, p) })
-          (tripleMap, eqs1 union eqs2 union meqs)
+          (tripleMap, parUnion(eqs1, parUnion( eqs2, meqs)))
         case fpm: FiberProductMap[x1, x2, z, Y] =>
           import fpm._
           val (d1, baseEqs) =
@@ -378,7 +378,7 @@ class ParDistEq(
             .to(ParSet)
           val tripleMap =
             makeMap(triples.map { case ((_, _, y), p) => (y, p) })
-          (tripleMap, baseEqs union fibEqs union fiberEqs)
+          (tripleMap, parUnion(baseEqs, parUnion(fibEqs, fiberEqs)))
         case zfm: ZipFlatMap[x1, x2, Y] =>
           import zfm._
           val (baseDist, baseEqs) =
@@ -408,7 +408,7 @@ class ParDistEq(
             .to(ParSet)
           val tripleMap =
             makeMap(triples.map { case ((_, _, y), p) => (y, p) })
-          (tripleMap, baseEqs union fibEqs union fiberEqs)
+          (tripleMap, parUnion(baseEqs, parUnion(fibEqs, fiberEqs)))
         case fm: FlatMap[x, Y] =>
           import fm._
           val (baseDist, baseEqs) =
@@ -441,7 +441,7 @@ class ParDistEq(
             .to(ParSet)
           val pairMap =
             pairs.map { case ((x1, x2), p) => (x2, p) }.to(ParMap)
-          (pairMap, baseEqs union fibEqs union fiberEqs)
+          (pairMap, parUnion(baseEqs, parUnion(fibEqs, fiberEqs)))
         case fm: FlatMapOpt[x, Y] =>
           import fm._
           val (baseDist, baseEqs) =
@@ -476,7 +476,7 @@ class ParDistEq(
             .to(ParSet)
           val pairMap =
             pairs.map { case ((x1, x2), p, _) => (x2, p) }.to(ParMap)
-          (pairMap, baseEqs union fibEqs union fiberEqs)
+          (pairMap, parUnion(baseEqs, parUnion(fibEqs, fiberEqs)))
         case tc: ThenCondition[o, Y]                                 => 
             import tc._
             val base  = nodeDist(initState, maxDepth, halted)(gen, epsilon, coeff)
@@ -501,7 +501,7 @@ class ParDistEq(
                             finalProb(x, tc.output)
                           )
                       )
-                    (condDist, eqs union(ceqs union(evEqs)))
+                    (condDist, parUnion(eqs, parUnion(ceqs, evEqs)))
                 case res : Restrict[u, Y] => 
                     val (dist, eqs) = base
                     val condDist = mapMapOpt(dist, res.optMap)
@@ -521,7 +521,7 @@ class ParDistEq(
                             finalProb(x, tc.output)
                           )
                       ) 
-                    (condDist, eqs union(ceqs union(evEqs)))
+                    (condDist, parUnion(eqs, parUnion(ceqs, evEqs)))
             }
         case isle: Island[Y, ParMapState, o, b] =>
             import isle._
@@ -556,6 +556,6 @@ class ParDistEq(
                         rhs
                       )
                     }
-            (mapMap(dist, export(boat, _)), isleEqs union bridgeEqs union isleIn)
+            (mapMap(dist, export(boat, _)), parUnion(isleEqs, parUnion(bridgeEqs, isleIn)))
       }
 }

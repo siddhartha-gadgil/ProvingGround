@@ -194,6 +194,9 @@ object ParMapState {
   def purge[Y](m: ParMap[Y, Double], cutoff: Double) =
     normalize(m.filter(_._2 > cutoff))
 
+  def parUnion(a1: ParSet[EquationNode], a2: ParSet[EquationNode]) = {
+    a1 union a2
+  }
   case object ParEnterIsle extends ((Term, ParMapState) => ParMapState) {
     def apply(x: HoTT.Term, state: ParMapState): ParMapState = state.inIsle(x)
   }
@@ -278,6 +281,7 @@ class ParDistEqMemo {
     }
 
   var nodesComputed: ParVector[(GeneratorNode[_], Double)] = ParVector()
+  var varsComputed: ParVector[(RandomVar[_], Double)] = ParVector()
 
   def getNode[Y](
       initState: ParMapState,
@@ -303,6 +307,7 @@ class ParDistEqMemo {
       computation: => (ParMap[Y, Double], ParSet[EquationNode])
   ): (ParMap[Y, Double], ParSet[EquationNode]) =     
     lookupVar(initState, randomVar, epsilon).getOrElse{
+      varsComputed = varsComputed :+ (randomVar -> epsilon)
       val baseResult = computation
       val result = (normalize(baseResult._1), baseResult._2)
       varDists.update((initState, randomVar), (epsilon, ExstParMap(result._1), result._2))
