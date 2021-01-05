@@ -242,7 +242,7 @@ abstract class TermNodeCoeffSeq[State](
 
   lazy val termsByTypNodes: NodeCoeffs[State, Double, Typ[Term] :: HNil, Term] =
     purge(
-      (TermsWithTyp.init            -> (termInit * (1 - goalWeight - typAsCodW - targetInducW - solverW))) ::
+      (TermsWithTyp.init            -> (termInit * (1 - goalWeight))) ::
         (wtN(applnNode)             -> appW) ::
         (wtN(unifApplnNode)         -> unAppW) ::
         (wtN(applnByArgNode)        -> argAppW) ::

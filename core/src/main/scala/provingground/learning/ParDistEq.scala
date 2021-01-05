@@ -50,6 +50,9 @@ trait RecParDistEq {
       case f: GeneratorNodeFamily.Pi[Dom, Y] =>
         val coeff =
           Coeff.get(f.nodes(arg))
+        // pprint.log(arg)
+        // pprint.log(f.nodes(arg))
+        // pprint.log(epsilon)
         nodeDist(initState, maxDepth, halted)(f.nodes(arg), epsilon, coeff)
       case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
         f.nodesOpt(arg)
@@ -232,8 +235,8 @@ class ParDistEq(
           val eqs = initDist.keySet.map { x =>
             EquationNode(finalProb(x, input), coeff * initProb(x, input))
           }
-          pprint.log(input)
-          pprint.log(initDist)
+          // pprint.log(input)
+          // pprint.log(initDist)
           (initDist, eqs)
         case Atom(value, output) => (ParMap(value -> 1.0), ParSet.empty)
         case provingground.learning.GeneratorNode.Map(f, input, output) =>
@@ -316,16 +319,16 @@ class ParDistEq(
           val baseMaxWeights = byBase.mapValues(_.values.max)
           val groups = baseMaxWeights.map {
             case (z, p) =>
-              pprint.log(fiberVar(z))
-              pprint.log(epsilon / p)
+              // pprint.log(fiberVar(z))
+              // pprint.log(epsilon / p)
               val result = varDist(initState, maxDepth.map(_ - 1), halted)(
                 fiberVar(z),
                 epsilon / p
               )
-              pprint.log(result)
+              // pprint.log(result)
               z -> result
           }
-          pprint.log(groups.mapValues(_._1))
+          // pprint.log(groups.mapValues(_._1))
           val fiberEqs = groups.flatMap(_._2._2).to(ParSet)
           val triples = d1
             .flatMap {
@@ -335,8 +338,8 @@ class ParDistEq(
                 // pprint.log(cutoff)
                 groups(quot(x1))._1.map {
                   case (x2, p2) if p2 > cutoff =>
-                    pprint.log(x2)
-                    pprint.log(f(x1, x2))
+                    // pprint.log(x2)
+                    // pprint.log(f(x1, x2))
                    ((x1, x2, f(x1, x2)), p1 * p2)
                 }
             }.to(ParVector)
