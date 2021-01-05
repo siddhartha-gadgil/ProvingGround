@@ -21,7 +21,9 @@ import provingground.learning.Sort.Restrict
 trait RecParDistEq {
   val nodeCoeffSeq: NodeCoeffSeq[ParMapState, Double]
 
-  def nodeDist[Y](
+  val memo: ParDistEqMemo
+
+  def nodeDistCalc[Y](
       initState: ParMapState,
       maxDepth: Option[Int],
       halted: => Boolean
@@ -30,6 +32,17 @@ trait RecParDistEq {
       epsilon: Double,
       coeff: Expression
   ): (ParMap[Y, Double], ParSet[EquationNode])
+
+  def nodeDist[Y](
+      initState: ParMapState,
+      maxDepth: Option[Int],
+      halted: => Boolean
+  )(
+      generatorNode: GeneratorNode[Y],
+      epsilon: Double,
+      coeff: Expression
+  ): (ParMap[Y, Double], ParSet[EquationNode]) = 
+    memo.getNode(initState, generatorNode, epsilon, nodeDistCalc(initState, maxDepth, halted)(generatorNode, epsilon, coeff))
 
   def nodeFamilyDistFunc[Dom <: HList, Y](
       initState: ParMapState,
@@ -165,6 +178,15 @@ trait RecParDistEq {
   )(
       randomVar: RandomVar[Y],
       epsilon: Double
+  ) = memo.getVar(initState, randomVar, epsilon, varDistCalc(initState, maxDepth, halted)(randomVar, epsilon))
+
+  def varDistCalc[Y](
+      initState: ParMapState,
+      maxDepth: Option[Int],
+      halted: => Boolean
+  )(
+      randomVar: RandomVar[Y],
+      epsilon: Double
   ): (ParMap[Y, Double], ParSet[EquationNode]) =
     if (epsilon > 1 || halted)
       (ParMap.empty[Y, Double], ParSet.empty[EquationNode])
@@ -213,11 +235,12 @@ trait RecParDistEq {
 
 class ParDistEq(
     nodeCoeffSeqParam: NodeCoeffSeq[ParMapState, Double],
-    varWeight: Double = 0.3
+    varWeight: Double = 0.3,
+    val memo : ParDistEqMemo = new ParDistEqMemo
 ) extends RecParDistEq {
   val nodeCoeffSeq: NodeCoeffSeq[ParMapState, Double] = nodeCoeffSeqParam
 
-  def nodeDist[Y](
+  def nodeDistCalc[Y](
       initState: ParMapState,
       maxDepth: Option[Int],
       halted: => Boolean

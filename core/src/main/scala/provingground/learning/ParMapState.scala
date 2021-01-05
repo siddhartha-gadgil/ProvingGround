@@ -73,8 +73,10 @@ case class ParMapState(
       fullArg: Dom
   ): ParMap[T, Double] =
     (randomVarFmly, fullArg) match {
-      case (TermsWithTyp, typ :: HNil)    => termWithTypDist.getOrElse(typ, ParMap.empty).to(ParMap)
-      case (FuncsWithDomain, dom :: HNil) => funcWithDomDist.getOrElse(dom, ParMap.empty).to(ParMap)
+      case (TermsWithTyp, typ :: HNil) =>
+        termWithTypDist.getOrElse(typ, ParMap.empty).to(ParMap)
+      case (FuncsWithDomain, dom :: HNil) =>
+        funcWithDomDist.getOrElse(dom, ParMap.empty).to(ParMap)
       case (FuncForCod, cod :: HNil) =>
         val base = termDist.flatMap {
           case (x, w) => Unify.targetCodomain(x, cod).map(_ -> w)
@@ -218,7 +220,8 @@ object ParMapState {
         TypSolver.coreSolver
       )
 
-  def parNodeSeq(tg: TermGenParams) : TermNodeCoeffSeq[ParMapState] = TermNodeCoeffSeq.fromParams(tg, parGenNodes(tg))
+  def parNodeSeq(tg: TermGenParams): TermNodeCoeffSeq[ParMapState] =
+    TermNodeCoeffSeq.fromParams(tg, parGenNodes(tg))
 }
 
 trait ExstParMap {
@@ -244,10 +247,56 @@ import cats.Eval, scala.collection.mutable
 class ParDistEqMemo {
   val varDists: mutable.Map[
     (ParMapState, RandomVar[_]),
-    (Double, ExstParMap, Set[EquationNode])
+    (Double, ExstParMap, ParSet[EquationNode])
   ] = mutable.Map()
+
   val nodeDists: mutable.Map[
     (ParMapState, GeneratorNode[_]),
-    (Double, ExstParMap, Set[EquationNode])
+    (Double, ExstParMap, ParSet[EquationNode])
   ] = mutable.Map()
+
+  def lookupNode[Y](
+      initState: ParMapState,
+      node: GeneratorNode[Y],
+      epsilon: Double
+  ): Option[(ParMap[Y, Double], ParSet[EquationNode])] =
+    nodeDists.get((initState, node)).filter(_._1 < epsilon).map {
+      case (_, exst, eqs) =>
+        // pprint.log(s"used memoized map for $node with cutoff $epsilon")
+        (purge(exst.cast[Y], epsilon), eqs)
+    }
+
+  def lookupVar[Y](
+      initState: ParMapState,
+      randomVar: RandomVar[Y],
+      epsilon: Double
+  ): Option[(ParMap[Y, Double], ParSet[EquationNode])] =
+    varDists.get((initState, randomVar)).filter(_._1 < epsilon).map {
+      case (_, exst, eqs) =>
+        (purge(exst.cast[Y], epsilon), eqs)
+    }
+
+  def getNode[Y](
+      initState: ParMapState,
+      node: GeneratorNode[Y],
+      epsilon: Double,
+      computation: => (ParMap[Y, Double], ParSet[EquationNode])
+  ): (ParMap[Y, Double], ParSet[EquationNode]) =
+    lookupNode(initState, node, epsilon).getOrElse {
+      val result = computation
+      nodeDists.update(
+        (initState, node),
+        (epsilon, ExstParMap(result._1), result._2)
+      )
+      result
+    }
+
+  def getVar[Y](
+      initState: ParMapState,
+      randomVar: RandomVar[Y],
+      epsilon: Double,
+      computation: => (ParMap[Y, Double], ParSet[EquationNode])
+  ): (ParMap[Y, Double], ParSet[EquationNode]) =
+    lookupVar(initState, randomVar, epsilon).getOrElse(computation)
+
 }
