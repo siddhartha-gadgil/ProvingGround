@@ -296,7 +296,12 @@ class ParDistEqMemo {
       randomVar: RandomVar[Y],
       epsilon: Double,
       computation: => (ParMap[Y, Double], ParSet[EquationNode])
-  ): (ParMap[Y, Double], ParSet[EquationNode]) =
-    lookupVar(initState, randomVar, epsilon).getOrElse(computation)
+  ): (ParMap[Y, Double], ParSet[EquationNode]) = {
+    
+    lookupVar(initState, randomVar, epsilon).getOrElse{
+      val result = computation
+      varDists.update((initState, randomVar), (epsilon, ExstParMap(result._1), result._2))
+    result}
+  }
 
 }
