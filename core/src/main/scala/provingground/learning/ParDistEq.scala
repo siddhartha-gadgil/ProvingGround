@@ -190,11 +190,24 @@ trait RecParDistEq {
         }
       result
     }
+
+  def nextStateEqs(initState: ParMapState, cutoff: Double, maxDepth: Option[Int] = None, halted : => Boolean = false) : (ParMapState, ParSet[EquationNode]) = 
+    {   val (newTerms, teqs) = varDist(initState, maxDepth, halted)(Terms, cutoff)
+        val (newTyps, tpeqs) = varDist(initState, maxDepth, halted)(Typs, cutoff)
+        (ParMapState(
+        newTerms,
+        newTyps,
+        initState.vars,
+        initState.inds,
+        initState.goalDist,
+        initState.context
+    ), teqs union(tpeqs))
+    }
 }
 
 class ParDistEq(
     nodeCoeffSeqParam: NodeCoeffSeq[ParMapState, Double],
-    varWeight: Double
+    varWeight: Double = 0.3
 ) extends RecParDistEq {
   val nodeCoeffSeq: NodeCoeffSeq[ParMapState, Double] = nodeCoeffSeqParam
 

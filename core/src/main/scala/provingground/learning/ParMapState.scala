@@ -145,6 +145,16 @@ case class ParMapState(
 }
 
 object ParMapState {
+  def fromTermState(ts: TermState) =
+    ParMapState(
+      ts.terms.toParMap,
+      ts.typs.toParMap,
+      ts.vars,
+      ts.inds.toParMap,
+      ts.goals.toParMap,
+      ts.context
+    )
+
   def makeMap[T](vec: ParVector[(T, Double)]): ParMap[T, Double] =
     vec.groupBy(_._1).mapValues(_.map(_._2).sum).to(ParMap)
 
@@ -156,22 +166,30 @@ object ParMapState {
     override def toString(): String = s"ParAddVar($typ)"
   }
 
-  def add[Y](m1: ParMap[Y, Double], m2: ParMap[Y, Double]) : ParMap[Y,Double] =
+  def add[Y](m1: ParMap[Y, Double], m2: ParMap[Y, Double]): ParMap[Y, Double] =
     m1.keySet
       .union(m2.keySet)
       .map(k => k -> (m1.getOrElse(k, 0.0) + m2.getOrElse(k, 0.0)))
       .to(ParMap)
 
-  def normalize[Y](m: ParMap[Y, Double]) : ParMap[Y, Double] = {
-      val total = m.values.sum
-      if (total > 0) m.mapValues(_ / total) else ParMap.empty[Y, Double]
+  def normalize[Y](m: ParMap[Y, Double]): ParMap[Y, Double] = {
+    val total = m.values.sum
+    if (total > 0) m.mapValues(_ / total) else ParMap.empty[Y, Double]
   }
 
-  def mapMap[Y, Z](m: ParMap[Y, Double], f: Y => Z) : ParMap[Z, Double] =
-    makeMap(m.to(ParVector).map{case (y, p) => f(y) -> p})
+  def mapMap[Y, Z](m: ParMap[Y, Double], f: Y => Z): ParMap[Z, Double] =
+    makeMap(m.to(ParVector).map { case (y, p) => f(y) -> p })
 
-  def mapMapOpt[Y, Z](m: ParMap[Y, Double], f: Y => Option[Z]) : ParMap[Z, Double] =
-    normalize(makeMap(m.to(ParVector).flatMap{case (y, p) => f(y).map(_ -> p)}))
+  def mapMapOpt[Y, Z](
+      m: ParMap[Y, Double],
+      f: Y => Option[Z]
+  ): ParMap[Z, Double] =
+    normalize(
+      makeMap(m.to(ParVector).flatMap { case (y, p) => f(y).map(_ -> p) })
+    )
+
+  def purge[Y](m: ParMap[Y, Double], cutoff: Double) =
+    normalize(m.filter(_._2 > cutoff))
 
   case object ParEnterIsle extends ((Term, ParMapState) => ParMapState) {
     def apply(x: HoTT.Term, state: ParMapState): ParMapState = state.inIsle(x)
@@ -199,4 +217,35 @@ object ParMapState {
         ParEnterIsle,
         TypSolver.coreSolver
       )
+}
+
+trait ExstParMap {
+  type Elem
+
+  val value: ParMap[Elem, Double]
+
+  def cast[X]: ParMap[X, Double] = value.map {
+    case (x, p) => (x.asInstanceOf[X], p)
+  }
+}
+
+object ExstParMap {
+  def apply[X](m: ParMap[X, Double]) = new ExstParMap {
+    type Elem = X
+
+    val value: ParMap[X, Double] = m
+  }
+}
+
+import cats.Eval, scala.collection.mutable
+
+class ParDistEqMemo {
+  val varDists: mutable.Map[
+    (ParMapState, RandomVar[_]),
+    (Double, ExstParMap, Set[EquationNode])
+  ] = mutable.Map()
+  val nodeDists: mutable.Map[
+    (ParMapState, GeneratorNode[_]),
+    (Double, ExstParMap, Set[EquationNode])
+  ] = mutable.Map()
 }
