@@ -8,6 +8,7 @@ import shapeless._, HList._
 import TermRandomVars._, TermGeneratorNodes._
 import scala.collection.parallel.immutable.ParVector
 import ParMapState._
+import scala.collection.mutable.ArrayBuffer
 
 case class ParMapState(
     termDist: ParMap[Term, Double],
@@ -276,6 +277,8 @@ class ParDistEqMemo {
         (purge(exst.cast[Y], epsilon), eqs)
     }
 
+  var nodesComputed: ParVector[(GeneratorNode[_], Double)] = ParVector()
+
   def getNode[Y](
       initState: ParMapState,
       node: GeneratorNode[Y],
@@ -283,7 +286,9 @@ class ParDistEqMemo {
       computation: => (ParMap[Y, Double], ParSet[EquationNode])
   ): (ParMap[Y, Double], ParSet[EquationNode]) =
     lookupNode(initState, node, epsilon).getOrElse {
-      val result = computation
+      nodesComputed = nodesComputed :+ (node -> epsilon)
+      val baseResult = computation
+      val result = (normalize(baseResult._1), baseResult._2)
       nodeDists.update(
         (initState, node),
         (epsilon, ExstParMap(result._1), result._2)
@@ -296,12 +301,12 @@ class ParDistEqMemo {
       randomVar: RandomVar[Y],
       epsilon: Double,
       computation: => (ParMap[Y, Double], ParSet[EquationNode])
-  ): (ParMap[Y, Double], ParSet[EquationNode]) = {
-    
+  ): (ParMap[Y, Double], ParSet[EquationNode]) =     
     lookupVar(initState, randomVar, epsilon).getOrElse{
-      val result = computation
+      val baseResult = computation
+      val result = (normalize(baseResult._1), baseResult._2)
       varDists.update((initState, randomVar), (epsilon, ExstParMap(result._1), result._2))
-    result}
+    result
   }
 
 }
