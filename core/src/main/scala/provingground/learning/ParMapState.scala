@@ -217,6 +217,8 @@ object ParMapState {
         ParEnterIsle,
         TypSolver.coreSolver
       )
+
+  def parNodeSeq(tg: TermGenParams) : TermNodeCoeffSeq[ParMapState] = TermNodeCoeffSeq.fromParams(tg, parGenNodes(tg))
 }
 
 trait ExstParMap {
