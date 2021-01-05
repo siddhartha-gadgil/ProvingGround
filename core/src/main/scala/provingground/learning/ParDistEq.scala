@@ -87,6 +87,8 @@ trait RecParDistEq {
             nodeCoeffFamilyDist(initState, maxDepth, halted)(bc.tail, epsilon)(
               arg
             )
+          // pprint.log(pa._1)
+          // pprint.log(pb._1)
           (add(pa._1.mapValues(_ * p).to(ParMap), pb._1), pa._2 union pb._2)
       }
 
@@ -104,6 +106,7 @@ trait RecParDistEq {
       nodeCoeffSeq
         .find(randomVarFmly)
         .map { nc =>
+          // pprint.log(nc)
           nodeCoeffFamilyDist(initState, maxDepth, halted)(nc, epsilon)(
             arg
           )
@@ -229,6 +232,8 @@ class ParDistEq(
           val eqs = initDist.keySet.map { x =>
             EquationNode(finalProb(x, input), coeff * initProb(x, input))
           }
+          pprint.log(input)
+          pprint.log(initDist)
           (initDist, eqs)
         case Atom(value, output) => (ParMap(value -> 1.0), ParSet.empty)
         case provingground.learning.GeneratorNode.Map(f, input, output) =>
@@ -256,12 +261,15 @@ class ParDistEq(
           import zm._
           val (dist1, eqs1) =
             varDist(initState, maxDepth.map(_ - 1), halted)(input1, epsilon)
+          // pprint.log(dist1)
           val (dist2, eqs2) =
             varDist(initState, maxDepth.map(_ - 1), halted)(input2, epsilon)
+          // pprint.log(dist2)
           val triples = dist1
             .zip(dist2)
             .map { case ((x1, p1), (x2, p2)) => ((x1, x2, f(x1, x2)), p1 * p2) }
             .filter(_._2 > epsilon).to(ParVector)
+          // pprint.log(triples)
           val meqs = triples
             .map {
               case ((x1, x2, y), _) =>
@@ -273,6 +281,7 @@ class ParDistEq(
             .to(ParSet)
           val tripleMap =
             makeMap(triples.map { case ((_, _, y), p) => (y, p) })
+            // pprint.log(tripleMap)
           (tripleMap, eqs1 union eqs2 union meqs)
         case zm: ZipMapOpt[x1, x2, Y] =>
           import zm._
@@ -307,18 +316,28 @@ class ParDistEq(
           val baseMaxWeights = byBase.mapValues(_.values.max)
           val groups = baseMaxWeights.map {
             case (z, p) =>
-              z -> varDist(initState, maxDepth.map(_ - 1), halted)(
+              pprint.log(fiberVar(z))
+              pprint.log(epsilon / p)
+              val result = varDist(initState, maxDepth.map(_ - 1), halted)(
                 fiberVar(z),
                 epsilon / p
               )
+              pprint.log(result)
+              z -> result
           }
+          pprint.log(groups.mapValues(_._1))
           val fiberEqs = groups.flatMap(_._2._2).to(ParSet)
           val triples = d1
             .flatMap {
               case (x1, p1) =>
+                // pprint.log(x1)
                 val cutoff = epsilon / p1
+                // pprint.log(cutoff)
                 groups(quot(x1))._1.map {
-                  case (x2, p2) if p2 > cutoff => ((x1, x2, f(x1, x2)), p1 * p2)
+                  case (x2, p2) if p2 > cutoff =>
+                    pprint.log(x2)
+                    pprint.log(f(x1, x2))
+                   ((x1, x2, f(x1, x2)), p1 * p2)
                 }
             }.to(ParVector)
           val fibEqs = triples
