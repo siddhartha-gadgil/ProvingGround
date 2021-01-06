@@ -21,6 +21,24 @@ object CompactJson {
     Array(d._1, d._2.length.toByte) ++ d._2.flatMap {
       case (b, n) => b +: intToBytes(n)
     }
+
+    // head description and the rest
+  def headDesc(bs: Array[Byte]) : (Desc, Array[Byte]) = {
+    val tp = bs(0)
+    val l = bs(1)
+    val (data, tail) = bs.drop(2).splitAt(5 * l)
+    val descData = data.grouped(5).map{
+        case gp => (gp.head, BigInt(gp.tail).toInt)
+    }.to(Array)
+    ((tp, descData), tail)
+  }
+
+  @annotation.tailrec
+  def allDescs(bs: Array[Byte], accum: Array[Desc]): Array[Desc] = 
+    if (bs.isEmpty) accum else {
+        val (head, tail) = headDesc(bs)
+        allDescs(tail, accum :+ head)
+    }
 }
 
 class CompactJson(
@@ -39,13 +57,13 @@ class CompactJson(
       }
       .toByte
 
-  var compactValues: ParVector[Desc] = ParVector()
+  var descriptions: ParVector[Desc] = ParVector()
 
   var descMap: ParMap[Desc, Int] = ParMap()
 
   def appendDesc(desc: Desc): Int = {
-    compactValues = compactValues :+ desc
-    val index = compactValues.size - 1
+    descriptions = descriptions :+ desc
+    val index = descriptions.size - 1
     descMap = descMap.updated(desc, index)
     index
   }
@@ -86,7 +104,7 @@ class CompactJson(
         throw new IllegalArgumentException("obtained null json value")
     }
 
-  def getValue(index: Int): ujson.Value = postMap(descValue(compactValues(index)))
+  def getValue(index: Int): ujson.Value = postMap(descValue(descriptions(index)))
 
   def descValue(desc: Desc): ujson.Value = {
     desc match {
