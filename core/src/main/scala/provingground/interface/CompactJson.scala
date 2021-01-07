@@ -8,7 +8,6 @@ import ujson.Obj
 import ujson.Arr
 import ujson.Num
 import ujson.Bool
-import upickle.implicits.key
 
 object CompactJson {
   type Desc = (Byte, Array[(Byte, Int)])
@@ -90,8 +89,8 @@ object CompactJson {
 }
 
 class CompactJson(
-    initKeys: Iterable[String],
-    initDesc: Iterable[Desc],
+    initKeys: Iterable[String] = Seq(),
+    initDesc: Iterable[Desc] = Seq(),
     preMap: ujson.Value => ujson.Value = identity,
     postMap: ujson.Value => ujson.Value = identity
 ) {
@@ -120,7 +119,7 @@ class CompactJson(
     index
   }
 
-  def getIndex(js: ujson.Value, knownNew: Boolean): (Int, Boolean) = {
+  def getIndex(js: ujson.Value, knownNew: Boolean = false): (Int, Boolean) = {
     val (desc, b) = getDesc(js, knownNew)
     if (knownNew || b) (appendDesc(desc), true)
     else
@@ -146,10 +145,12 @@ class CompactJson(
         val someNew = dataFat.exists(_._2._2)
         val data    = dataFat.map { case (b, (n, _)) => (b, n) }.toArray
         ((3.toByte, data), someNew)
-      case Num(value) => ((2, Array(0.toByte -> value.toInt)), false)
+      case Num(value) => 
+        assert(value == value.toInt, s"packing non-integral doubles like $value not enabled")
+        ((2, Array(0.toByte -> value.toInt)), false)
       case b: Bool =>
-        if (b.value) ((0.toByte, Array()), false)
-        else ((1.toByte, Array()), false) // type 0 is "true" and 1 is "false"
+        if (b.value) ((1.toByte, Array()), false)
+        else ((0.toByte, Array()), false) // type 0 is "true" and 1 is "false"
       case ujson.Null =>
         throw new IllegalArgumentException("obtained null json value")
     }
