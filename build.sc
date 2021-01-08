@@ -119,7 +119,7 @@ val jvmLibs = List(
   ivy"com.atlassian.commonmark:commonmark:0.13.1",
   ivy"org.apache.logging.log4j:log4j-core:2.13.0",
   ivy"org.platanios::tensorflow:0.5.1-SNAPSHOT;classifier=linux-cpu-x86_64",
-  ivy"org.scalameta::mdoc:2.1.1",
+  ivy"org.scalameta::mdoc:2.2.13",
   ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r"
 )
 
@@ -196,7 +196,7 @@ val mantleLibs = List(
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.13.0",
   ivy"org.platanios::tensorflow:0.5.1-SNAPSHOT;classifier=linux-cpu-x86_64",
-  ivy"org.scalameta::mdoc:2.1.1",
+  ivy"org.scalameta::mdoc:2.2.13",
   ivy"com.lihaoyi::os-lib:0.7.0",
   ivy"org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r",
   ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta7",
