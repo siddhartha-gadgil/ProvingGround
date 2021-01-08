@@ -79,7 +79,7 @@ object TermGenParams {
     typAsCodW = 0,
     targetInducW = 0,
     varWeight = 0.3,
-    goalWeight = 0.7,
+    goalWeight = 0,
     typVsFamily = 0.5,
     negTargetW = 0,
     solverW = 0
@@ -99,7 +99,7 @@ case class TermGenParamsNodes(tg: TermGenParams)
       tg.solver
     )
 
-object TermNodeCoeffSeq{
+object TermNodeCoeffSeq {
   def fromParams[State](tg: TermGenParams, gen: TermGeneratorNodes[State]) = {
     import tg._
     new TermNodeCoeffSeq[State](
@@ -114,8 +114,8 @@ object TermNodeCoeffSeq{
       sigmaW,
       recDefW,
       inducDefW,
-      typVsFamily,
-      typVsFamily,
+      typAsCodW,
+      targetInducW,
       varWeight,
       goalWeight,
       typVsFamily,
@@ -123,7 +123,7 @@ object TermNodeCoeffSeq{
       solverW,
       contraW,
       solver
-    ){
+    ) {
       val Gen: TermGeneratorNodes[State] = gen
     }
   }
@@ -152,7 +152,7 @@ abstract class TermNodeCoeffSeq[State](
 ) {
   val Gen: TermGeneratorNodes[State]
 
-    import Gen._, GeneratorNode._,
+  import Gen._, GeneratorNode._,
   TermRandomVars.{withTypNode => wtN, funcWithDomTermNode => fdtN}
 
   val termInit
@@ -162,6 +162,8 @@ abstract class TermNodeCoeffSeq[State](
       : Double = 1.0 - appW - unAppW - piW - sigmaW - typFromFamilyW - recDefW - inducDefW
 
   import NodeCoeffs.purge
+  
+  pprint.log(termsByTypW)
 
   lazy val termNodes: NodeCoeffs[State, Double, HNil, Term] =
     purge(
@@ -356,7 +358,6 @@ case class TermGenParams(
       "solver-weight"           -> solverW,
       "contradiction-weight"    -> contraW
     )
-
 
   lazy val monixFD: MonixFiniteDistribution[TermState] =
     MonixFiniteDistribution(nodeCoeffSeq, varWeight)
