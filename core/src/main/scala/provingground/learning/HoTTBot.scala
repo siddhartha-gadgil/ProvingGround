@@ -1688,6 +1688,37 @@ object HoTTBot {
     MicroBot(response, name = Some("local prover equations"))
   }
 
+  def parGenUnAppEquations(
+      cutoff: Double,
+      maxTime: FiniteDuration
+  ): MicroHoTTBoTT[TangentBaseCompleted.type, GeneratedEquationNodes, Collated[
+    TangentBaseState
+  ] :: TangentLemmas :: Set[Term] :: HNil] = {
+    val response
+        : Collated[TangentBaseState] :: TangentLemmas :: Set[Term] :: HNil => TangentBaseCompleted.type => Future[
+          GeneratedEquationNodes
+        ] = {
+      case tbss :: tl :: terms :: HNil =>
+        (_) => {
+          val eqsFut = Future.sequence(tbss.contents.toSet.map {
+              (tb: TangentBaseState) =>
+                Future{
+                  val baseState = ParMapState.fromTermState(tb.ts)
+                  val tangentState = ParMapState(tl.fd.toParMap, ParMap())
+                  val tg = TermGenParams.zero.copy(appW = 0.5)
+                  val ns = ParMapState.parNodeSeq(tg)
+                  val tpde = new ParTangentDistEq(ns.nodeCoeffSeq, baseState)
+                  val (_, eqs) = tpde.varDist(tangentState, Some(1), false)(TermRandomVars.Terms, cutoff)
+                  eqs
+                }
+            })
+            .map(_.flatten)
+          eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet, false))
+        }
+    }
+    MicroBot(response, name = Some("local prover equations"))
+  }
+
   def cappedBaseState(
       lemmaMix: Double,
       cutoffScale: Double = 1.0,
