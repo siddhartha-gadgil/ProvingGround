@@ -1688,6 +1688,39 @@ object HoTTBot {
     MicroBot(response, name = Some("local prover equations"))
   }
 
+  def parGenUnAppEquations(
+      cutoff: Double,
+      maxTime: FiniteDuration
+  ): MicroHoTTBoTT[TangentBaseCompleted.type, GeneratedEquationNodes, Collated[
+    TangentBaseState
+  ] :: TangentLemmas :: Set[Term] :: HNil] = {
+    val response
+        : Collated[TangentBaseState] :: TangentLemmas :: Set[Term] :: HNil => TangentBaseCompleted.type => Future[
+          GeneratedEquationNodes
+        ] = {
+      case tbss :: tl :: terms :: HNil =>
+        (_) => {
+          val eqsFut = Future.sequence(tbss.contents.toSet.map {
+              (tb: TangentBaseState) =>
+                Future{
+                  val limit = System.currentTimeMillis() + maxTime.toMillis
+                  def halted() = System.currentTimeMillis() > limit
+                  val baseState = ParMapState.fromTermState(tb.ts)
+                  val tangentState = ParMapState(tl.fd.toParMap, ParMap())
+                  val tg = TermGenParams.zero.copy(appW = 0.2, unAppW = 0.3)
+                  val ns = ParMapState.parNodeSeq(tg)
+                  val tpde = new ParTangentDistEq(ns.nodeCoeffSeq, baseState)
+                  val (_, eqs) = tpde.varDist(tangentState, Some(1), halted())(TermRandomVars.Terms, cutoff)
+                  eqs
+                }
+            })
+            .map(_.flatten)
+          eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet, false))
+        }
+    }
+    MicroBot(response, name = Some("parallel generation equations"))
+  }
+
   def cappedBaseState(
       lemmaMix: Double,
       cutoffScale: Double = 1.0,
