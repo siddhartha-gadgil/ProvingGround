@@ -1703,12 +1703,14 @@ object HoTTBot {
           val eqsFut = Future.sequence(tbss.contents.toSet.map {
               (tb: TangentBaseState) =>
                 Future{
+                  val limit = System.currentTimeMillis() + maxTime.toMillis
+                  def halted() = System.currentTimeMillis() > limit
                   val baseState = ParMapState.fromTermState(tb.ts)
                   val tangentState = ParMapState(tl.fd.toParMap, ParMap())
-                  val tg = TermGenParams.zero.copy(appW = 0.5)
+                  val tg = TermGenParams.zero.copy(appW = 0.2, unAppW = 0.3)
                   val ns = ParMapState.parNodeSeq(tg)
                   val tpde = new ParTangentDistEq(ns.nodeCoeffSeq, baseState)
-                  val (_, eqs) = tpde.varDist(tangentState, Some(1), false)(TermRandomVars.Terms, cutoff)
+                  val (_, eqs) = tpde.varDist(tangentState, Some(1), halted())(TermRandomVars.Terms, cutoff)
                   eqs
                 }
             })
@@ -1716,7 +1718,7 @@ object HoTTBot {
           eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet, false))
         }
     }
-    MicroBot(response, name = Some("local prover equations"))
+    MicroBot(response, name = Some("parallel generation equations"))
   }
 
   def cappedBaseState(
