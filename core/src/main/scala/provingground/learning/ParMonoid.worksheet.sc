@@ -16,38 +16,6 @@ val lemPf = thms.find(_._1 == lem).map(_._3).get._1
 println(lemPf)
 val tpde = new ParTangentDistEq(ns.nodeCoeffSeq, nextState) 
 val tangentState = ParMapState(ParMap(lemPf -> 1.0), ParMap())
-// val (tangNextState, teqs) = tpde.nextStateEqs(tangent, math.pow(10, -5))
-// val tThms = tangNextState.termDist.keySet.map(_.typ).intersect(nextState.typDist.keySet)
-// tThms.size
-// import TermRandomVars._
-// println(tpde.baseDist(Funcs, 0.01))
-// val node = ns.Gen.unifApplnNode
-// node.input1
-// node.input2
-// val (unD, _) = tpde.nodeDist(tangent, None, false)(node, math.pow(10, -4), Expression.Coeff(node))
-// val (ttD, _) = tpde.varDist(tangent, None, false)(TermRandomVars.Terms, math.pow(10, -4))
-// println(unD)
-// val (d2, _) =
-//             tpde.varDist(tangent, None, false)(node.input2, math.pow(10, -4))
-// val bd = tpde.baseDist(node.input1, math.pow(10, -4))
-// val triples1 = bd
-//             .zip(d2)
-//             .flatMap {
-//               case ((x1, p1), (x2, p2)) =>
-//                 node.f(x1, x2).map(y => ((x1, x2, y), p1 * p2))
-//             }
-// println(dist1.toParMap.keySet.map(_.typ).to(Vector))
-// val sym = dist1.support.find(_.typ == a ~>: (b ~>: (eqM(a)(b) ->: eqM(b)(a)))).get
-// println(node.f(ExstFunc.opt(sym).get, lem1Pf))
-// val symm = ExstFunc.opt(sym).get
-// bd(ExstFunc.opt(sym).get)
-// val fatTriples = bd
-//             .zip(d2)
-//             .map {
-//               case ((x1, p1), (x2, p2)) =>
-//                 ((x1, x2, node.f(x1, x2)), p1 * p2)
-//             }
-// fatTriples.filter(_._1._1 == symm)
-// bd.filter(_._1 == symm)
-// bd.zip(d2).filter(_._1._1 == symm)
-// bd.zip(d2).map(_._1)
+val (tangNextState, teqs) = tpde.nextStateEqs(tangentState, math.pow(10, -4))
+val tThms = tangNextState.termDist.keySet.map(_.typ).intersect(nextState.typDist.keySet)
+tThms.contains(eqM(l)(r))

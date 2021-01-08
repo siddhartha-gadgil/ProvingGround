@@ -167,7 +167,7 @@ class ParTangentDistEq(
               z -> result
           }
           val fiberEqs = groups2.flatMap(_._2._2).to(ParSet)
-          val triples2 = d1
+          val triples2 = d2
             .flatMap {
               case (x1, p1) =>
                 val cutoff = epsilon / p1
