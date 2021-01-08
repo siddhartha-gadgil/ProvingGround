@@ -1710,8 +1710,9 @@ object HoTTBot {
                   val tg = TermGenParams.zero.copy(appW = 0.2, unAppW = 0.3)
                   val ns = ParMapState.parNodeSeq(tg)
                   val tpde = new ParTangentDistEq(ns.nodeCoeffSeq, baseState)
-                  val (_, eqs) = tpde.varDist(tangentState, Some(1), halted())(TermRandomVars.Terms, cutoff)
-                  eqs
+                  val (terms, eqs) = tpde.varDist(tangentState, Some(1), halted())(TermRandomVars.Terms, cutoff)
+                  val formalTypEqs = terms.keySet.map(_.typ).flatMap(DE.formalTypEquations(_))
+                  eqs union(formalTypEqs)
                 }
             })
             .map(_.flatten)
