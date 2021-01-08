@@ -1711,6 +1711,7 @@ object HoTTBot {
                   val ns = ParMapState.parNodeSeq(tg)
                   val tpde = new ParTangentDistEq(ns.nodeCoeffSeq, baseState)
                   val (terms, eqs) = tpde.varDist(tangentState, Some(1), false)(TermRandomVars.Terms, cutoff)
+                  Utils.logger.info(s"Obtained ${terms.size} terms and ${eqs.size} equations")
                   val formalTypEqs = terms.keySet.map(_.typ).flatMap(DE.formalTypEquations(_))
                   eqs union(formalTypEqs)
                 }
