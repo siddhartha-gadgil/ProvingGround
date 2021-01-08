@@ -161,7 +161,7 @@ object CzSlOly {
     //   3,
     //   Some(math.pow(10, -11))
     // ),
-    lpUnAppEquations(
+    parGenUnAppEquations(
       math.pow(10, -6),
       12.minutes
     ),
