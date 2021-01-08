@@ -17,6 +17,8 @@ class DerivedEquations(
 ) {
   def finalProb[X](a: X, rv: RandomVar[X]): Expression = FinalVal(Elem(a, rv))
 
+  def initProb[Y](y: Y, rv: RandomVar[Y]): Expression = InitialVal(Elem(y, rv))
+
   def conditionedProb[O, Y](
       a: O,
       input: RandomVar[O],
@@ -435,7 +437,7 @@ class DerivedEquations(
           .map(_.mapVars(InIsle.variableMap(boat, isle)))
         (isleIn
           .union(isleEqs)
-          .union(initInIsle) + bridgeEq) union formalEquations(lt.dom, ctx) union(outerEqs)
+          .union(initInIsle) + bridgeEq) union formalEquations(lt.dom, ctx) union (outerEqs)
       case pd: PiDefn[u, v] =>
         val coeff = Coeff(tg.piNode)
         val boat  = pd.variable

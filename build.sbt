@@ -104,7 +104,7 @@ lazy val jvmSettings = Seq(
     // Last stable release
     // "org.scalanlp" %% "breeze" % "0.13.2",
     "com.atlassian.commonmark" % "commonmark"               % "0.13.1",
-    "org.scalameta"            %% "mdoc"                    % "2.1.1",
+    "org.scalameta"            %% "mdoc"                    % "2.2.13",
     "org.platanios"            %% "tensorflow"              % "0.5.1-SNAPSHOT" classifier "linux-cpu-x86_64",
     "org.tensorflow"           % "tensorflow-core-platform" % "0.2.0",
     "org.tensorflow"           % "tensorflow-framework"     % "0.2.0",

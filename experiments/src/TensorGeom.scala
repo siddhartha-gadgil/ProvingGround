@@ -8,7 +8,7 @@ import org.platanios.tensorflow.api.implicits.helpers._
 class TensorGeom(p: Float = 0.5.toFloat, N: Int = 10) {
   lazy val q: Output[Float] = Tensor(1.0.toFloat - p)
 
-  lazy val prob = (0 until N).toVector.map { (j) =>
+  lazy val prob = Vector.tabulate(N) { (j) =>
     tf.variable[Float](s"p$j", Shape(1, 1), tf.ZerosInitializer)
   }
 
