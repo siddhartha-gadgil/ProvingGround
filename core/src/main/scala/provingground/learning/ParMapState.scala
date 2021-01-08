@@ -260,21 +260,22 @@ import cats.Eval, scala.collection.mutable
 
 class ParDistEqMemo {
   val varDists: mutable.Map[
-    (ParMapState, RandomVar[_]),
+    (ParMapState, RandomVar[_], Option[Int]),
     (Double, ExstParMap, ParSet[EquationNode])
   ] = mutable.Map()
 
   val nodeDists: mutable.Map[
-    (ParMapState, GeneratorNode[_]),
+    (ParMapState, GeneratorNode[_], Option[Int]),
     (Double, ExstParMap, ParSet[EquationNode])
   ] = mutable.Map()
 
   def lookupNode[Y](
       initState: ParMapState,
       node: GeneratorNode[Y],
-      epsilon: Double
+      epsilon: Double,
+      maxDepth: Option[Int]
   ): Option[(ParMap[Y, Double], ParSet[EquationNode])] =
-    nodeDists.get((initState, node)).filter(_._1 < epsilon).map {
+    nodeDists.get((initState, node, maxDepth)).filter(_._1 < epsilon).map {
       case (_, exst, eqs) =>
         // pprint.log(s"used memoized map for $node with cutoff $epsilon")
         (purge(exst.cast[Y], epsilon), eqs)
@@ -283,9 +284,10 @@ class ParDistEqMemo {
   def lookupVar[Y](
       initState: ParMapState,
       randomVar: RandomVar[Y],
-      epsilon: Double
+      epsilon: Double,
+      maxDepth: Option[Int]
   ): Option[(ParMap[Y, Double], ParSet[EquationNode])] =
-    varDists.get((initState, randomVar)).filter(_._1 < epsilon).map {
+    varDists.get((initState, randomVar, maxDepth)).filter(_._1 < epsilon).map {
       case (_, exst, eqs) =>
         (purge(exst.cast[Y], epsilon), eqs)
     }
@@ -297,14 +299,15 @@ class ParDistEqMemo {
       initState: ParMapState,
       node: GeneratorNode[Y],
       epsilon: Double,
+      maxDepth: Option[Int],
       computation: => (ParMap[Y, Double], ParSet[EquationNode])
   ): (ParMap[Y, Double], ParSet[EquationNode]) =
-    lookupNode(initState, node, epsilon).getOrElse {
+    lookupNode(initState, node, epsilon, maxDepth).getOrElse {
       nodesComputed = nodesComputed :+ (node -> epsilon)
       val baseResult = computation
       val result = (normalize(baseResult._1), baseResult._2)
       nodeDists.update(
-        (initState, node),
+        (initState, node, maxDepth),
         (epsilon, ExstParMap(result._1), result._2)
       )
       result
@@ -314,13 +317,14 @@ class ParDistEqMemo {
       initState: ParMapState,
       randomVar: RandomVar[Y],
       epsilon: Double,
+      maxDepth: Option[Int],
       computation: => (ParMap[Y, Double], ParSet[EquationNode])
   ): (ParMap[Y, Double], ParSet[EquationNode]) =     
-    lookupVar(initState, randomVar, epsilon).getOrElse{
+    lookupVar(initState, randomVar, epsilon, maxDepth).getOrElse{
       varsComputed = varsComputed :+ (randomVar -> epsilon)
       val baseResult = computation
       val result = (normalize(baseResult._1), baseResult._2)
-      varDists.update((initState, randomVar), (epsilon, ExstParMap(result._1), result._2))
+      varDists.update((initState, randomVar, maxDepth), (epsilon, ExstParMap(result._1), result._2))
     result
   }
 

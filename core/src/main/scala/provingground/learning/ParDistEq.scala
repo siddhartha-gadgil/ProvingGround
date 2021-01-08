@@ -46,6 +46,7 @@ trait RecParDistEq {
       initState,
       generatorNode,
       epsilon,
+      maxDepth,
       nodeDistCalc(initState, maxDepth, halted)(generatorNode, epsilon, coeff)
     )
 
@@ -191,6 +192,7 @@ trait RecParDistEq {
       initState,
       randomVar,
       epsilon,
+      maxDepth,
       varDistCalc(initState, maxDepth, halted)(randomVar, epsilon)
     )
 

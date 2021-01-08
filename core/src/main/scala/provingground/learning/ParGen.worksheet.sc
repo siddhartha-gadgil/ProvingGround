@@ -20,7 +20,6 @@ val (ts1, _) = tpde.nextStateEqs(ParMapState(ParMap(f -> 1.0), ParMap()), 0.0001
 println(ts1.termDist.keys.to(Vector))
 ts1.termDist.keySet.contains(g(a))
 ts1.termDist.keySet.contains(f(g(a)))
-val tpde2 = new ParTangentDistEq(ns.nodeCoeffSeq, state)
-val (ts2, _) = tpde2.nextStateEqs(ParMapState(ParMap(f -> 1.0), ParMap()), 0.0001, maxDepth = Some(3))
+val (ts2, _) = tpde.nextStateEqs(ParMapState(ParMap(f -> 1.0), ParMap()), 0.0001, maxDepth = Some(3))
 println(ts2.termDist.keys.to(Vector))
 ts2.termDist.size
