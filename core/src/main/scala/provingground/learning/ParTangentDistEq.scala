@@ -75,14 +75,16 @@ class ParTangentDistEq(
             varDist(tangentState, maxDepth.map(_ - 1), halted)(input1, epsilon)
           val (dist2, eqs2) =
             varDist(tangentState, maxDepth.map(_ - 1), halted)(input2, epsilon)
-          val triples1 = baseDist(input1, epsilon)
-            .zip(dist2)
-            .map { case ((x1, p1), (x2, p2)) => ((x1, x2, f(x1, x2)), p1 * p2) }
-            .filter(_._2 > epsilon).to(ParVector)
-          val triples2 = dist1
-            .zip(baseDist(input2, epsilon))
-            .map { case ((x1, p1), (x2, p2)) => ((x1, x2, f(x1, x2)), p1 * p2) }
-            .filter(_._2 > epsilon).to(ParVector)
+          val triples1 = (for {
+              (x1, p1) <- baseDist(input1, epsilon)
+              (x2, p2) <- dist2
+              if p1 * p2 >= epsilon
+            } yield ((x1, x2, f(x1, x2)), p1 * p2)).to(ParVector)
+          val triples2 = (for {
+              (x1, p1) <- dist1
+              (x2, p2) <- baseDist(input2, epsilon)
+              if p1 * p2 >= epsilon
+            } yield ((x1, x2, f(x1, x2)), p1 * p2)).to(ParVector)
           val triples = triples1 ++ triples2
           val meqs = triples
             .map {
@@ -102,20 +104,19 @@ class ParTangentDistEq(
             varDist(tangentState, maxDepth.map(_ - 1), halted)(input1, epsilon)
           val (dist2, eqs2) =
             varDist(tangentState, maxDepth.map(_ - 1), halted)(input2, epsilon)
-          val triples1 = dist1
-            .zip(dist2)
-            .flatMap {
-              case ((x1, p1), (x2, p2)) =>
-                f(x1, x2).map(y => ((x1, x2, y), p1 * p2))
-            }
-            .filter(_._2 > epsilon).to(ParVector)
-          val triples2 = dist1
-                .zip(dist2)
-                .flatMap {
-                case ((x1, p1), (x2, p2)) =>
-                    f(x1, x2).map(y => ((x1, x2, y), p1 * p2))
-                }
-                .filter(_._2 > epsilon).to(ParVector)
+          val triples1 = 
+          (for {
+              (x1, p1) <- baseDist(input1, epsilon)
+              (x2, p2) <- dist2
+              if p1 * p2 >= epsilon
+              y <- f(x1, x2)
+            } yield ((x1, x2, y) , p1 * p2)).to(ParVector)
+          val triples2 = (for {
+              (x1, p1) <- dist1
+              (x2, p2) <- baseDist(input2, epsilon)
+              if p1 * p2 >= epsilon
+              y <- f(x1, x2)
+            } yield ((x1, x2, y) , p1 * p2)).to(ParVector)
           val triples = triples1 ++ triples2
           val meqs = triples
             .map {

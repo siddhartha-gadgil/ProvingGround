@@ -44,6 +44,16 @@ case class ParMapState(
     }, totalMap)
   }
 
+  lazy val thmsWithProofs = {
+    val base     = termDist.groupBy(_._1.typ: Typ[Term]).to(ParMap)
+    val proved = base.keySet
+    for {
+      (tp, p) <- typDist
+      proofs <- base.get(tp)
+      best = proofs.maxBy(_._2)
+    } yield (tp, p, best)
+  }
+
   lazy val funcWithDomDist = {
     val base     = funcDist.groupBy(_._1.dom: Typ[Term]).to(ParMap)
     val totalMap = base.mapValues(_.values.sum)

@@ -41,8 +41,13 @@ trait RecParDistEq {
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
-  ): (ParMap[Y, Double], ParSet[EquationNode]) = 
-    memo.getNode(initState, generatorNode, epsilon, nodeDistCalc(initState, maxDepth, halted)(generatorNode, epsilon, coeff))
+  ): (ParMap[Y, Double], ParSet[EquationNode]) =
+    memo.getNode(
+      initState,
+      generatorNode,
+      epsilon,
+      nodeDistCalc(initState, maxDepth, halted)(generatorNode, epsilon, coeff)
+    )
 
   def nodeFamilyDistFunc[Dom <: HList, Y](
       initState: ParMapState,
@@ -105,7 +110,10 @@ trait RecParDistEq {
             )
           // pprint.log(pa._1)
           // pprint.log(pb._1)
-          (add(pa._1.mapValues(_ * p).to(ParMap), pb._1), parUnion(pa._2, pb._2))
+          (
+            add(pa._1.mapValues(_ * p).to(ParMap), pb._1),
+            parUnion(pa._2, pb._2)
+          )
       }
 
   def varFamilyDistFunc[RDom <: HList, Y](
@@ -178,7 +186,13 @@ trait RecParDistEq {
   )(
       randomVar: RandomVar[Y],
       epsilon: Double
-  ) = memo.getVar(initState, randomVar, epsilon, varDistCalc(initState, maxDepth, halted)(randomVar, epsilon))
+  ) =
+    memo.getVar(
+      initState,
+      randomVar,
+      epsilon,
+      varDistCalc(initState, maxDepth, halted)(randomVar, epsilon)
+    )
 
   def varDistCalc[Y](
       initState: ParMapState,
@@ -219,24 +233,32 @@ trait RecParDistEq {
       result
     }
 
-  def nextStateEqs(initState: ParMapState, cutoff: Double, maxDepth: Option[Int] = None, halted : => Boolean = false) : (ParMapState, ParSet[EquationNode]) = 
-    {   val (newTerms, teqs) = varDist(initState, maxDepth, halted)(Terms, cutoff)
-        val (newTyps, tpeqs) = varDist(initState, maxDepth, halted)(Typs, cutoff)
-        (ParMapState(
+  def nextStateEqs(
+      initState: ParMapState,
+      cutoff: Double,
+      maxDepth: Option[Int] = None,
+      halted: => Boolean = false
+  ): (ParMapState, ParSet[EquationNode]) = {
+    val (newTerms, teqs) = varDist(initState, maxDepth, halted)(Terms, cutoff)
+    val (newTyps, tpeqs) = varDist(initState, maxDepth, halted)(Typs, cutoff)
+    (
+      ParMapState(
         newTerms,
         newTyps,
         initState.vars,
         initState.inds,
         initState.goalDist,
         initState.context
-    ), parUnion( teqs ,(tpeqs)))
-    }
+      ),
+      parUnion(teqs, (tpeqs))
+    )
+  }
 }
 
 class ParDistEq(
     nodeCoeffSeqParam: NodeCoeffSeq[ParMapState, Double],
     varWeight: Double = 0.3,
-    val memo : ParDistEqMemo = new ParDistEqMemo
+    val memo: ParDistEqMemo = new ParDistEqMemo
 ) extends RecParDistEq {
   val nodeCoeffSeq: NodeCoeffSeq[ParMapState, Double] = nodeCoeffSeqParam
 
@@ -287,15 +309,14 @@ class ParDistEq(
           import zm._
           val (dist1, eqs1) =
             varDist(initState, maxDepth.map(_ - 1), halted)(input1, epsilon)
-          // pprint.log(dist1)
           val (dist2, eqs2) =
             varDist(initState, maxDepth.map(_ - 1), halted)(input2, epsilon)
-          // pprint.log(dist2)
-          val triples = dist1
-            .zip(dist2)
-            .map { case ((x1, p1), (x2, p2)) => ((x1, x2, f(x1, x2)), p1 * p2) }
-            .filter(_._2 > epsilon).to(ParVector)
-          // pprint.log(triples)
+          val triples =
+            (for {
+              (x1, p1) <- dist1
+              (x2, p2) <- dist2
+              if p1 * p2 >= epsilon
+            } yield ((x1, x2, f(x1, x2)), p1 * p2)).to(ParVector)
           val meqs = triples
             .map {
               case ((x1, x2, y), _) =>
@@ -307,7 +328,7 @@ class ParDistEq(
             .to(ParSet)
           val tripleMap =
             makeMap(triples.map { case ((_, _, y), p) => (y, p) })
-            // pprint.log(tripleMap)
+          // pprint.log(tripleMap)
           (tripleMap, parUnion(eqs1, parUnion(eqs2, meqs)))
         case zm: ZipMapOpt[x1, x2, Y] =>
           import zm._
@@ -315,13 +336,12 @@ class ParDistEq(
             varDist(initState, maxDepth.map(_ - 1), halted)(input1, epsilon)
           val (dist2, eqs2) =
             varDist(initState, maxDepth.map(_ - 1), halted)(input2, epsilon)
-          val triples = dist1
-            .zip(dist2)
-            .flatMap {
-              case ((x1, p1), (x2, p2)) =>
-                f(x1, x2).map(y => ((x1, x2, y), p1 * p2))
-            }
-            .filter(_._2 > epsilon).to(ParVector)
+          val triples = (for {
+              (x1, p1) <- dist1
+              (x2, p2) <- dist2
+              if p1 * p2 >= epsilon
+              y <- f(x1, x2)
+            } yield ((x1, x2, y) , p1 * p2)).to(ParVector)
           val meqs = triples
             .map {
               case ((x1, x2, y), _) =>
@@ -333,7 +353,7 @@ class ParDistEq(
             .to(ParSet)
           val tripleMap =
             makeMap(triples.map { case ((_, _, y), p) => (y, p) })
-          (tripleMap, parUnion(eqs1, parUnion( eqs2, meqs)))
+          (tripleMap, parUnion(eqs1, parUnion(eqs2, meqs)))
         case fpm: FiberProductMap[x1, x2, z, Y] =>
           import fpm._
           val (d1, baseEqs) =
@@ -363,16 +383,20 @@ class ParDistEq(
                   case (x2, p2) if p2 > cutoff =>
                     // pprint.log(x2)
                     // pprint.log(f(x1, x2))
-                   Some((x1, x2, f(x1, x2)), p1 * p2)
-                   case _ => None
+                    Some((x1, x2, f(x1, x2)), p1 * p2)
+                  case _ => None
                 }
-            }.to(ParVector)
+            }
+            .to(ParVector)
           val fibEqs = triples
             .map {
               case ((x1, x2, y), _) =>
                 EquationNode(
                   finalProb(y, output),
-                  coeff * finalProb(x1, baseInput) * finalProb(x2, fiberVar(quot(x1)))
+                  coeff * finalProb(x1, baseInput) * finalProb(
+                    x2,
+                    fiberVar(quot(x1))
+                  )
                 )
             }
             .to(ParSet)
@@ -477,85 +501,91 @@ class ParDistEq(
           val pairMap =
             pairs.map { case ((x1, x2), p, _) => (x2, p) }.to(ParMap)
           (pairMap, parUnion(baseEqs, parUnion(fibEqs, fiberEqs)))
-        case tc: ThenCondition[o, Y]                                 => 
-            import tc._
-            val base  = nodeDist(initState, maxDepth, halted)(gen, epsilon, coeff)
-            val event = Event(tc.gen.output, tc.condition)
-            val finEv = FinalVal(event)
-            import Sort._
-            condition match {
-                case _ : All[_] => base
-                case c : Filter[_] => 
-                    val (dist, eqs) = base
-                    val condDist = normalize(dist.filter{case (x, _) => c.pred(x)})
-                    val ceqs = condDist.keySet.map { x =>
-                      EquationNode(
-                        finalProb(x, tc.output),
-                        finalProb(x, tc.gen.output) / finEv
-                      )
-                    }
-                    val evEqs = condDist.keySet.map(
-                        x =>
-                          EquationNode(
-                            finEv,
-                            finalProb(x, tc.output)
-                          )
-                      )
-                    (condDist, parUnion(eqs, parUnion(ceqs, evEqs)))
-                case res : Restrict[u, Y] => 
-                    val (dist, eqs) = base
-                    val condDist = mapMapOpt(dist, res.optMap)
-                    val ceqs = for {
-                      x <- dist.keySet
-                      y <- res.optMap(x)
-                    } yield
-                      EquationNode(
-                        finalProb(y, tc.output),
-                        finalProb(x, tc.gen.output) / finEv
-                      )
-                      val evEqs: ParSet[EquationNode] =
-                      condDist.keySet.map(
-                        x =>
-                          EquationNode(
-                            finEv,
-                            finalProb(x, tc.output)
-                          )
-                      ) 
-                    (condDist, parUnion(eqs, parUnion(ceqs, evEqs)))
-            }
-        case isle: Island[Y, ParMapState, o, b] =>
-            import isle._
-            val (isleInit, boat) = initMap(initState)(varWeight)                                   // initial condition for island, boat to row back
-            val isleOut          = varDist(isleInit, maxDepth.map(_ - 1),halted)(islandOutput(boat), epsilon) //result for the island
-            val (dist, eqs) = isleOut
-            val isleEqs =
-                    eqs.map(_.mapVars(InIsle.variableMap(boat, isle)))
-            val bridgeEqs = dist.keySet.map { x =>
+        case tc: ThenCondition[o, Y] =>
+          import tc._
+          val base  = nodeDist(initState, maxDepth, halted)(gen, epsilon, coeff)
+          val event = Event(tc.gen.output, tc.condition)
+          val finEv = FinalVal(event)
+          import Sort._
+          condition match {
+            case _: All[_] => base
+            case c: Filter[_] =>
+              val (dist, eqs) = base
+              val condDist    = normalize(dist.filter { case (x, _) => c.pred(x) })
+              val ceqs = condDist.keySet.map { x =>
+                EquationNode(
+                  finalProb(x, tc.output),
+                  finalProb(x, tc.gen.output) / finEv
+                )
+              }
+              val evEqs = condDist.keySet.map(
+                x =>
+                  EquationNode(
+                    finEv,
+                    finalProb(x, tc.output)
+                  )
+              )
+              (condDist, parUnion(eqs, parUnion(ceqs, evEqs)))
+            case res: Restrict[u, Y] =>
+              val (dist, eqs) = base
+              val condDist    = mapMapOpt(dist, res.optMap)
+              val ceqs = for {
+                x <- dist.keySet
+                y <- res.optMap(x)
+              } yield
+                EquationNode(
+                  finalProb(y, tc.output),
+                  finalProb(x, tc.gen.output) / finEv
+                )
+              val evEqs: ParSet[EquationNode] =
+                condDist.keySet.map(
+                  x =>
                     EquationNode(
-                      finalProb(export(boat, x), isle.output),
-                      coeff * FinalVal(
-                        InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)
-                      )
+                      finEv,
+                      finalProb(x, tc.output)
                     )
-                  }
-            val initVarElems = eqs
-                    .flatMap { (eq) =>
-                      Expression.varVals(eq.rhs)
-                    }
-                    .collect {
-                      case InitialVal(Elem(el, rv)) => Elem(el, rv)
-                    }
-            val isleIn: ParSet[EquationNode] =
-                    initVarElems.map { el =>
-                    val rhs =
-                        if (boat == el.element)
-                          (IsleScale(boat) * -1) + Literal(1)
-                        else IsleScale(boat) * InitialVal(el)
-                      EquationNode(
-                        InitialVal(InIsle(el, boat, isle)),
-                        rhs
-                      )
-                    }
-            (mapMap(dist, export(boat, _)), parUnion(isleEqs, parUnion(bridgeEqs, isleIn)))
+                )
+              (condDist, parUnion(eqs, parUnion(ceqs, evEqs)))
+          }
+        case isle: Island[Y, ParMapState, o, b] =>
+          import isle._
+          val (isleInit, boat) = initMap(initState)(varWeight) // initial condition for island, boat to row back
+          val isleOut = varDist(isleInit, maxDepth.map(_ - 1), halted)(
+            islandOutput(boat),
+            epsilon
+          ) //result for the island
+          val (dist, eqs) = isleOut
+          val isleEqs =
+            eqs.map(_.mapVars(InIsle.variableMap(boat, isle)))
+          val bridgeEqs = dist.keySet.map { x =>
+            EquationNode(
+              finalProb(export(boat, x), isle.output),
+              coeff * FinalVal(
+                InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)
+              )
+            )
+          }
+          val initVarElems = eqs
+            .flatMap { (eq) =>
+              Expression.varVals(eq.rhs)
+            }
+            .collect {
+              case InitialVal(Elem(el, rv)) => Elem(el, rv)
+            }
+          val isleIn: ParSet[EquationNode] =
+            initVarElems.map { el =>
+              val rhs =
+                if (boat == el.element)
+                  (IsleScale(boat) * -1) + Literal(1)
+                else IsleScale(boat) * InitialVal(el)
+              EquationNode(
+                InitialVal(InIsle(el, boat, isle)),
+                rhs
+              )
+            }
+          (
+            mapMap(dist, export(boat, _)),
+            parUnion(isleEqs, parUnion(bridgeEqs, isleIn))
+          )
       }
 }
