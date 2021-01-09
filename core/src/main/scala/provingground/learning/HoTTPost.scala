@@ -435,7 +435,7 @@ object HoTTPost {
             val expEv = ExpressionEval.fromInitEqs(
               init.ts,
               Equation.group(eqs union alleqs),
-              tg,
+              tg.coeffVal(_),
               tg.varWeight
             )
             FinalState(expEv.finalTermState())

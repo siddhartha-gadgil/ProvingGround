@@ -25,7 +25,7 @@ object TensorFlowExprEquations {
   ) = {
     new TensorFlowExprVarEquations(
       ExpressionEval
-        .initMap(ExpressionEval.eqAtoms(equationSet), params, params.varWeight,  initState),
+        .initMap(ExpressionEval.eqAtoms(equationSet), params.coeffVal(_), params.varWeight,  initState),
       equationSet,
       params,
       graph,
@@ -66,7 +66,7 @@ object TensorFlowExprEquations {
       val evolver =
         new TensorFlowFatExprEquations(
           ExpressionEval
-            .initMap(ExpressionEval.eqAtoms(equationSet), params, params.varWeight, initState),
+            .initMap(ExpressionEval.eqAtoms(equationSet), params.coeffVal(_), params.varWeight, initState),
           equationSet,
           params,
           graph
@@ -84,7 +84,7 @@ object TensorFlowExprEquations {
       val evolver =
         new TensorFlowExprEquations(
           ExpressionEval
-            .initMap(ExpressionEval.eqAtoms(equationSet), params, params.varWeight, initState),
+            .initMap(ExpressionEval.eqAtoms(equationSet), params.coeffVal(_), params.varWeight, initState),
           equationSet,
           params,
           graph
@@ -342,7 +342,7 @@ class TensorFlowFatExprEquations(
     params: TermGenParams,
     graph: Graph,
     initVariables: Vector[Expression] = Vector() // values that can evolve
-) extends FatExprEquations(initMap, equationSet, params, initVariables) {
+) extends FatExprEquations(initMap, equationSet, params.coeffVal(_), initVariables) {
   val tf   = Ops.create(graph)
   val xVec = tf.variable(tf.constant(Array.fill(numVars)(0f)))
   val pVec = tf.math.sigmoid(xVec)
