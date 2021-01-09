@@ -102,7 +102,7 @@ object ExpressionEval {
       initialState: TermState
   ): Option[Double] =
     exp match {
-      case cf @ Coeff(_) => cf.get(tg.nodeCoeffSeq)
+      case cf @ Coeff(_) => cf.get(tg.nodeCoeffSeq) // FIXME should have the nodeCoeffSeq as a parameter
       case InitialVal(elem: Elem[y]) =>
         import elem._
         val base = initialState.elemVal(element, randomVar)
@@ -121,7 +121,7 @@ object ExpressionEval {
     */
   def initMap(
       atoms: Set[Expression],
-      tg: TermGenParams,
+      tg: TermGenParams, // FIXME should have the nodeCoeffSeq as a parameter
       initialState: TermState
   ): Map[Expression, Double] = {
     val atomVec = atoms.toVector.par
