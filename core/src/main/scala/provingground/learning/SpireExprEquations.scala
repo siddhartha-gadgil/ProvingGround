@@ -18,7 +18,7 @@ class SpireExprEquations(
     equationSet: Set[Equation],
     params: TermGenParams,
     initVariables: Vector[Expression] = Vector() // values that can evolve
-) extends ExprEquations(initMap, equationSet, params, initVariables) {
+) extends ExprEquations(initMap, equationSet, params.coeffVal(_), initVariables) {
   import SpireExprEquations._
 
   // val numVars = size + initVariables.size

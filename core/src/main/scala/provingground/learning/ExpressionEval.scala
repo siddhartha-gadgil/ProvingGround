@@ -98,11 +98,12 @@ object ExpressionEval {
     */
   def initVal(
       exp: Expression,
-      tg: TermGenParams,
+      cv: Coeff[_] => Option[Double],
+      varWeight: Double,
       initialState: TermState
   ): Option[Double] =
     exp match {
-      case cf @ Coeff(_) => cf.get(tg.nodeCoeffSeq)
+      case cf @ Coeff(_) => cv(cf)
       case InitialVal(elem: Elem[y]) =>
         import elem._
         val base = initialState.elemVal(element, randomVar)
@@ -110,9 +111,9 @@ object ExpressionEval {
         if (base > 0) Some(base)
         else if (randomVar == Goals) Some(0.5) // just a quick-fix
         else if (isIsleVar(elem))
-          Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
-        else Some(0)                              // else throw new Exception(s"no initial value for $elem")
-      case IsleScale(_) => Some((1.0 - tg.varWeight))
+          Some(varWeight / (1 - varWeight)) // for the case of variables in islands
+        else Some(0)                        // else throw new Exception(s"no initial value for $elem")
+      case IsleScale(_) => Some((1.0 - varWeight))
       case _            => None
     }
 
@@ -121,12 +122,15 @@ object ExpressionEval {
     */
   def initMap(
       atoms: Set[Expression],
-      tg: TermGenParams,
+      coeffval: TermGenParams,
+      varWeight: Double,
       initialState: TermState
   ): Map[Expression, Double] = {
     val atomVec = atoms.toVector.par
     Utils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
-    val valueVec = atomVec.map(exp => initVal(exp, tg, initialState))
+    val valueVec = atomVec.map(
+      exp => initVal(exp, coeffval.coeffVal(_), varWeight, initialState)
+    )
     Utils.logger.debug("Computed initial values")
     val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
       case (Some(x), n) if x > 0 => (atomVec(n), x)
@@ -141,7 +145,8 @@ object ExpressionEval {
 
   def initMapTask(
       atoms: Set[Expression],
-      tg: TermGenParams,
+      coeffval: TermGenParams,
+      varWeight: Double,
       initialState: TermState
   ): Task[Map[Expression, Double]] = {
     val atomVec = atoms.toVector
@@ -152,7 +157,17 @@ object ExpressionEval {
     )
     val valueVecTask =
       Task.parSequence(
-        atomVec.map(exp => Task(initVal(exp, tg, initialState)))
+        atomVec.map(
+          exp =>
+            Task(
+              initVal(
+                exp,
+                coeffval.coeffVal(_),
+                varWeight,
+                initialState
+              )
+            )
+        )
       )
     valueVecTask.map { valueVec =>
       Utils.logger.debug("Computed initial values")
@@ -311,7 +326,7 @@ object ExpressionEval {
     * @param initialState initial state
     * @param finalState final state
     * @param equationsS equations
-    * @param tgS term-generator parameters
+    * @param coeffvalS term-generator parameters
     * @param maxRatioS maximum ratio for stabilization
     * @param scaleS scale for gradient flow
     * @param smoothS smoothing for gradient flow
@@ -324,7 +339,8 @@ object ExpressionEval {
       initialState: TermState,
       finalState: TermState,
       equationsS: Set[Equation],
-      tgS: TermGenParams,
+      coeffvalS: TermGenParams,
+      varWeightS: Double,
       maxRatioS: Double = 1.01,
       scaleS: Double = 1.0,
       smoothS: Option[Double] = None,
@@ -333,10 +349,16 @@ object ExpressionEval {
       maxTimeS: Option[Long] = None
   ) =
     new ExpressionEval {
-      val init                                         = initMap(eqAtoms(equationsS), tgS, initialState)
+      val init = initMap(
+        eqAtoms(equationsS),
+        coeffvalS,
+        varWeightS,
+        initialState
+      )
       val finalTyps                                    = finalState.typs
       val equations                                    = equationsS
-      val tg                                           = tgS
+      val coeffval                                     = coeffvalS
+      val varWeight: Double                            = varWeightS
       val maxRatio                                     = maxRatioS
       val scale                                        = scaleS
       val coeffsAsVars: Boolean                        = false
@@ -353,7 +375,7 @@ object ExpressionEval {
     *
     * @param initialState initial state
     * @param equationsS equations
-    * @param tgS term-generator parameters
+    * @param coeffvalS term-generator parameters
     * @param maxRatioS maximum ratio for stabilization
     * @param scaleS scale for gradient flow
     * @param smoothS smoothing for gradient flow
@@ -365,7 +387,8 @@ object ExpressionEval {
   def fromInitEqs(
       initialState: TermState,
       equationsS: Set[Equation],
-      tgS: TermGenParams,
+      coeffvalS: TermGenParams,
+      varWeightS: Double,
       maxRatioS: Double = 1.01,
       scaleS: Double = 1.0,
       smoothS: Option[Double] = None,
@@ -375,9 +398,15 @@ object ExpressionEval {
       previousMapS: Option[Map[Expression, Double]] = None
   ): ExpressionEval =
     new ExpressionEval with GenerateTyps {
-      val init                                         = initMap(eqAtoms(equationsS), tgS, initialState)
+      val init = initMap(
+        eqAtoms(equationsS),
+        coeffvalS,
+        varWeightS,
+        initialState
+      )
       val equations                                    = equationsS
-      val tg                                           = tgS
+      val coeffval                                     = coeffvalS
+      val varWeight: Double                            = varWeightS
       val maxRatio                                     = maxRatioS
       val scale                                        = scaleS
       val coeffsAsVars: Boolean                        = false
@@ -394,7 +423,7 @@ object ExpressionEval {
     *
     * @param initialState initial state
     * @param equationsS equations
-    * @param tgS term-generator parameters
+    * @param coeffvalS term-generator parameters
     * @param maxRatioS maximum ratio for stabilization
     * @param scaleS scale for gradient flow
     * @param smoothS smoothing for gradient flow
@@ -406,7 +435,8 @@ object ExpressionEval {
   def fromInitEqsTask(
       initialState: TermState,
       equationsS: Set[Equation],
-      tgS: TermGenParams,
+      coeffvalS: TermGenParams,
+      varWeightS: Double,
       maxRatioS: Double = 1.01,
       scaleS: Double = 1.0,
       smoothS: Option[Double] = None,
@@ -415,12 +445,13 @@ object ExpressionEval {
       maxTimeS: Option[Long] = None,
       previousMapS: Option[Map[Expression, Double]] = None
   ): Task[ExpressionEval] =
-    initMapTask(eqAtoms(equationsS), tgS, initialState).map(
+    initMapTask(eqAtoms(equationsS), coeffvalS, varWeightS, initialState).map(
       initM =>
         new ExpressionEval with GenerateTyps {
           val init                                         = initM
           val equations                                    = equationsS
-          val tg                                           = tgS
+          val coeffval                                     = coeffvalS
+          val varWeight: Double                            = varWeightS
           val maxRatio                                     = maxRatioS
           val scale                                        = scaleS
           val coeffsAsVars: Boolean                        = false
@@ -457,7 +488,8 @@ object ExpressionEval {
         initNew: Map[Expression, Double] = self.init,
         finalTypsNew: => FD[Typ[Term]] = self.finalTyps,
         equationsNew: Set[Equation] = self.equations,
-        tgNew: TermGenParams = self.tg,
+        coeffvalNew: TermGenParams = self.coeffval,
+        varWeightNew: Double,
         coeffsAsVarsNew: Boolean = self.coeffsAsVars,
         maxRatioNew: Double = self.maxRatio,
         scaleNew: Double = self.scale,
@@ -468,7 +500,8 @@ object ExpressionEval {
     ): ExpressionEval = new ExpressionEval with GenerateTyps {
       val init                                         = initNew
       val equations                                    = equationsNew
-      val tg                                           = tgNew
+      val coeffval                                     = coeffvalNew
+      val varWeight: Double                            = varWeightNew
       val coeffsAsVars                                 = coeffsAsVarsNew
       val maxRatio                                     = maxRatioNew
       val scale                                        = scaleNew
@@ -494,7 +527,8 @@ object ExpressionEval {
         val proofWeights: Map[HoTT.Typ[HoTT.Term], Double] = pm
         val init                                           = self.init
         val equations                                      = self.equations
-        val tg                                             = self.tg
+        val coeffval                                       = self.coeffval
+        val varWeight: Double                              = self.varWeight
         val coeffsAsVars                                   = self.coeffsAsVars
         val maxRatio                                       = self.maxRatio
         val scale                                          = self.scale
@@ -627,12 +661,11 @@ case class ProdExpr(
     val posLiebnitz = Vector.tabulate(numeratorTerms.size) { j =>
       j -> (numeratorTerms.take(j) ++ numeratorTerms.drop(j + 1)).product * constant * denominator
     }
-    val negLiebnitz = Vector.tabulate(denominatorTerms.size)
-      { j =>
-        j -> -(denominatorTerms.take(j) ++ denominatorTerms.drop(j + 1)).product / (denominatorTerms(
-          j
-        ) * denominatorTerms(j)) * constant * numerator
-      }
+    val negLiebnitz = Vector.tabulate(denominatorTerms.size) { j =>
+      j -> -(denominatorTerms.take(j) ++ denominatorTerms.drop(j + 1)).product / (denominatorTerms(
+        j
+      ) * denominatorTerms(j)) * constant * numerator
+    }
     ExprCalc.vecSum(Vector(posLiebnitz, negLiebnitz))
   }
 
@@ -792,7 +825,7 @@ object ExprEquations {
 class ExprEquations(
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
-    params: TermGenParams,
+    params: Coeff[_] => Option[Double],
     initVariables: Vector[Expression] = Vector()
 ) {
   import ExprEquations._, ExprCalc.vecSum
@@ -842,7 +875,8 @@ class ExprEquations(
         exp match {
           case cf @ Coeff(_) =>
             ProdExpr(
-              cf.get(params.nodeCoeffSeq).getOrElse(0),
+              params(cf)
+                .getOrElse(0),
               Vector(),
               Vector()
             )
@@ -959,7 +993,12 @@ class FatExprEquations(
     equationSet: Set[Equation],
     params: TermGenParams,
     initVariables: Vector[Expression] = Vector()
-) extends ExprEquations(initMap, equationSet, params, initVariables) {
+) extends ExprEquations(
+      initMap,
+      equationSet,
+      params.coeffVal(_),
+      initVariables
+    ) {
 
   lazy val (bilinearTerms, bilienarQuotient, linearTerms, complexTerms) = {
     val bilMatrix =
@@ -1023,7 +1062,7 @@ class ExprCalc(
     ev: ExpressionEval,
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
-    params: TermGenParams
+    params: Coeff[_] => Option[Double]
 ) extends ExprEquations(initMap, equationSet, params, Vector()) {
   import SumExpr._, ev._, ExprCalc._
   lazy val startingMap = {
@@ -1544,7 +1583,8 @@ trait ExpressionEval { self =>
   val init: Map[Expression, Double]
   val finalTyps: FD[Typ[Term]]
   val equations: Set[Equation]
-  val tg: TermGenParams
+  val coeffval: TermGenParams
+  val varWeight: Double
   val coeffsAsVars: Boolean
   val maxRatio: Double
   val scale: Double
@@ -1565,7 +1605,8 @@ trait ExpressionEval { self =>
       val init                                         = (0.5 *: self.init) + (0.5 *: that.init)
       lazy val finalTyps                               = self.finalTyps
       val equations                                    = Equation.merge(self.equations, that.equations)
-      val tg                                           = self.tg
+      val coeffval                                     = self.coeffval
+      val varWeight: Double                            = self.varWeight
       val coeffsAsVars                                 = self.coeffsAsVars
       val maxRatio                                     = self.maxRatio
       val scale                                        = self.scale
@@ -1583,7 +1624,8 @@ trait ExpressionEval { self =>
       initNew: Map[Expression, Double] = self.init,
       finalTypsNew: => FD[Typ[Term]] = self.finalTyps,
       equationsNew: Set[Equation] = self.equations,
-      tgNew: TermGenParams = self.tg,
+      coeffvalNew: TermGenParams = self.coeffval,
+      varWeightNew: Double = self.varWeight,
       coeffsAsVarsNew: Boolean = self.coeffsAsVars,
       maxRatioNew: Double = self.maxRatio,
       scaleNew: Double = self.scale,
@@ -1595,7 +1637,8 @@ trait ExpressionEval { self =>
     val init: Map[Expression, Double]                = initNew
     lazy val finalTyps: FD[Typ[Term]]                = finalTypsNew
     val equations: Set[Equation]                     = equationsNew
-    val tg: TermGenParams                            = tgNew
+    val coeffval: TermGenParams                      = coeffvalNew
+    val varWeight: Double                            = varWeightNew
     val coeffsAsVars: Boolean                        = coeffsAsVarsNew
     val maxRatio: Double                             = maxRatioNew
     val scale: Double                                = scaleNew
@@ -1614,8 +1657,9 @@ trait ExpressionEval { self =>
   def generateTyps: ExpressionEval = new ExpressionEval with GenerateTyps {
     val init                                         = self.init
     val equations                                    = self.equations
-    val tg                                           = self.tg
+    val coeffval                                     = self.coeffval
     val coeffsAsVars                                 = self.coeffsAsVars
+    val varWeight: Double                            = self.varWeight
     val maxRatio                                     = self.maxRatio
     val scale                                        = self.scale
     val smoothing: Option[Double]                    = self.smoothing
@@ -1632,8 +1676,9 @@ trait ExpressionEval { self =>
     val init                                         = self.init
     val finalTyps: FD[HoTT.Typ[HoTT.Term]]           = self.finalTyps
     val equations                                    = self.equations
-    val tg                                           = self.tg
+    val coeffval                                     = self.coeffval
     val coeffsAsVars                                 = self.coeffsAsVars
+    val varWeight: Double                            = self.varWeight
     val maxRatio                                     = self.maxRatio
     val scale                                        = self.scale
     val smoothing: Option[Double]                    = self.smoothing
@@ -1651,9 +1696,9 @@ trait ExpressionEval { self =>
   // equations
   //   .map(_.lhs)
   //   .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
-  // val init: Map[Expression, Double] = initMap(eqAtoms(equations), tg, initialState)
+  // val init: Map[Expression, Double] = initMap(eqAtoms(equations), coeffval, initialState)
 
-  lazy val exprCalc = new ExprCalc(this, init, equations, tg)
+  lazy val exprCalc = new ExprCalc(this, init, equations, coeffval.coeffVal(_))
 
   /**
     * The final distributions, obtained from the initial one by finding an almost solution.
@@ -1914,7 +1959,8 @@ trait ExpressionEval { self =>
     new ExpressionEval with GenerateTyps {
       val init                                         = newInit
       val equations                                    = eqs
-      val tg                                           = self.tg
+      val coeffval                                     = self.coeffval
+      val varWeight: Double                            = self.varWeight
       val coeffsAsVars                                 = self.coeffsAsVars
       val maxRatio                                     = self.maxRatio
       val scale                                        = self.scale
@@ -1995,16 +2041,6 @@ trait ExpressionEval { self =>
       .flatMap(eq => Set(eq.lhs, eq.rhs))
       .flatMap(exp => Expression.coefficients(exp))
       .toVector
-
-  lazy val coeffVariance: Expression =
-    Sum(
-      Utils
-        .partition[Coeff[_]](coefficients, {
-          case (c1, c2) => c1.sameFamily(c2, tg.nodeCoeffSeq)
-        })
-        .map(v => Expression.variance(v))
-    )
-  // .fold[Expression](Literal(0))(Sum(_, _))
 
   lazy val vars = if (coeffsAsVars) valueVars ++ coefficients else valueVars
 

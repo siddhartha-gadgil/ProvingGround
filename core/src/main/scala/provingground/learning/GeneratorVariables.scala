@@ -540,6 +540,9 @@ object Expression {
     def get[State, V](seq: NodeCoeffSeq[State, V]): Option[V] =
       seq.find(expand).flatMap(getFromCoeffs)
 
+    def getOpt[V](seq: NodeCoeffSeq[_, V]): Option[V] =
+      seq.find(expand).flatMap(getFromCoeffs)
+
     def sameFamilyFromCoeffs[State, V, RDom <: HList, YY](
         that: Coeff[YY],
         nodeCoeffs: NodeCoeffs[State, V, RDom, Y]

@@ -201,7 +201,8 @@ object HoTTBot {
     val expEv = ExpressionEval.fromInitEqs(
       tautGen,
       equationsS = eqs,
-      tgS = tg,
+      coeffvalS = tg,
+      varWeightS = tg.varWeight,
       maxRatioS = maxRatio,
       maxTimeS = maxTime
     )
@@ -812,6 +813,7 @@ object HoTTBot {
               lp.initState,
               groupedEqns,
               tgOpt.getOrElse(lp.tg),
+              tgOpt.getOrElse(lp.tg).varWeight,
               lp.maxRatio,
               lp.scale,
               lp.smoothing,
@@ -1317,6 +1319,7 @@ object HoTTBot {
       initialState,
       groupedSet,
       tg,
+      tg.varWeight,
       maxRatio,
       scale,
       smooth,
@@ -1359,6 +1362,7 @@ object HoTTBot {
         initialState,
         groupedSet,
         tg,
+        tg.varWeight,
         maxRatio,
         scale,
         smooth,
@@ -2138,6 +2142,7 @@ object HoTTBot {
                 baseState.copy(terms = tdist),
                 Equation.group(baseEqs),
                 lp.tg,
+                lp.tg.varWeight,
                 lp.maxRatio,
                 lp.scale,
                 lp.smoothing,
