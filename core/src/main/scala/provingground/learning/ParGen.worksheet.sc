@@ -1,4 +1,5 @@
-import provingground._, learning._, interface._, HoTT._
+import provingground.learning.Expression.FinalVal
+import provingground._, learning._, interface._, HoTT._ 
 import collection.parallel._, immutable.ParVector
 val A = Type.sym
 val a = A.sym
@@ -20,6 +21,12 @@ val (ts1, _) = tpde.nextStateEqs(ParMapState(ParMap(f -> 1.0), ParMap()), 0.0001
 println(ts1.termDist.keys.to(Vector))
 ts1.termDist.keySet.contains(g(a))
 ts1.termDist.keySet.contains(f(g(a)))
-val (ts2, _) = tpde.nextStateEqs(ParMapState(ParMap(f -> 1.0), ParMap()), 0.0001, maxDepth = Some(3))
+val (ts2, eq2) = tpde.nextStateEqs(ParMapState(ParMap(f -> 1.0), ParMap()), 0.0001, maxDepth = Some(3))
 println(ts2.termDist.keys.to(Vector))
 ts2.termDist.size
+import GeneratorVariables._, TermRandomVars._
+val exp = FinalVal(Elem(f(a), Terms))
+val tb = EquationNode.traceBack(eq2.to(Set), exp, 10)
+println(tb._1.mkString("\n"))
+tb._1.size 
+tb._1(1)
