@@ -164,7 +164,7 @@ object CzSlOly {
     eqnsToExpEv(
       Some(
         TermGenParams.zero
-          .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)
+          .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05).coeffVal(_)
       )
     ),
     eqnUpdate,

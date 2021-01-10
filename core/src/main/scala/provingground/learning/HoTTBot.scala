@@ -787,7 +787,7 @@ object HoTTBot {
       name = Some("update equations")
     )
 
-  def eqnsToExpEv(tgOpt: Option[TermGenParams] = None): MicroHoTTBoTT[
+  def eqnsToExpEv(cvOpt: Option[Expression.Coeff[_] => Option[Double]] = None): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
     Set[EquationNode] :: QueryProver :: ExpressionEval :: HNil
@@ -812,8 +812,8 @@ object HoTTBot {
             ExpressionEval.fromInitEqs(
               lp.initState,
               groupedEqns,
-              tgOpt.getOrElse(lp.tg).coeffVal(_),
-              tgOpt.getOrElse(lp.tg).varWeight,
+              cvOpt.getOrElse(lp.tg.coeffVal(_)),
+              lp.tg.varWeight,
               lp.maxRatio,
               lp.scale,
               lp.smoothing,

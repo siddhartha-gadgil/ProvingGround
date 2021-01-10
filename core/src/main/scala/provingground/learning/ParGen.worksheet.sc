@@ -1,3 +1,4 @@
+import provingground.learning.ParMapState.ParGenNodes
 import provingground._, learning._, interface._, HoTT._
 import collection.parallel._, immutable.ParVector
 val A = Type.sym
@@ -26,3 +27,7 @@ println(ts2.termDist.keys.to(Vector))
 ts2.termDist.size
 val (ts3, _) = tpde.nextStateEqs(ParMapState(ParMap(f -> 0.5, g -> 0.5), ParMap()), 0.0001)
 println(ts3.termDist.keys.to(Vector))
+val tn1 = TermNodeCoeffSeq.fromParams(tg, ParGenNodes(tg))
+val tn2 = TermNodeCoeffSeq.fromParams(tg, ParGenNodes(tg))
+tn1.nodeCoeffSeq == tn2.nodeCoeffSeq
+// the above shows that we must take a fixed ParGenNodes, namely ParGenNodes, even if we have a solver.
