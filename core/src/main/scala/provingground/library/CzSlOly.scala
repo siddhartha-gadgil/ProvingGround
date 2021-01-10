@@ -167,9 +167,9 @@ object CzSlOly {
     ),
     // cappedForkedTangentEquations,
     eqnsToExpEv(
-      Some(
+      Some(ParMapState.coeffVal(
         TermGenParams.zero
-          .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05).coeffVal(_)
+          .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05))
       )
     ),
     eqnUpdate,
