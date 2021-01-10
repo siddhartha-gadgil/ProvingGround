@@ -225,7 +225,7 @@ object ParMapState {
     if (tg.solver == TypSolver.coreSolver) ParBaseNodes else ParGenNodes(tg)
 
   def coeffVal(tg: TermGenParams) : Expression.Coeff[_] => Option[Double] =
-    cf => cf.getOpt(ParMapState.parNodeSeq(tg).nodeCoeffSeq)
+    cf => cf.getOpt(ParMapState.parNodeSeq(tg).nodeCoeffSeq).orElse(tg.coeffVal(cf))
 
   case object ParBaseNodes
       extends TermGeneratorNodes[ParMapState](
