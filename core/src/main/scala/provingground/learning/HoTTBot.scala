@@ -201,7 +201,8 @@ object HoTTBot {
     val expEv = ExpressionEval.fromInitEqs(
       tautGen,
       equationsS = eqs,
-      tgS = tg,
+      coeffvalS = tg.coeffVal(_),
+      varWeightS = tg.varWeight,
       maxRatioS = maxRatio,
       maxTimeS = maxTime
     )
@@ -786,7 +787,7 @@ object HoTTBot {
       name = Some("update equations")
     )
 
-  def eqnsToExpEv(tgOpt: Option[TermGenParams] = None): MicroHoTTBoTT[
+  def eqnsToExpEv(cvOpt: Option[Expression.Coeff[_] => Option[Double]] = None): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
     Set[EquationNode] :: QueryProver :: ExpressionEval :: HNil
@@ -811,7 +812,8 @@ object HoTTBot {
             ExpressionEval.fromInitEqs(
               lp.initState,
               groupedEqns,
-              tgOpt.getOrElse(lp.tg),
+              cvOpt.getOrElse(lp.tg.coeffVal(_)),
+              lp.tg.varWeight,
               lp.maxRatio,
               lp.scale,
               lp.smoothing,
@@ -1316,7 +1318,8 @@ object HoTTBot {
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
       groupedSet,
-      tg,
+      tg.coeffVal(_),
+      tg.varWeight,
       maxRatio,
       scale,
       smooth,
@@ -1358,7 +1361,8 @@ object HoTTBot {
       expEv <- ExpressionEval.fromInitEqsTask(
         initialState,
         groupedSet,
-        tg,
+        tg.coeffVal(_),
+        tg.varWeight,
         maxRatio,
         scale,
         smooth,
@@ -2138,7 +2142,8 @@ object HoTTBot {
               val expEv = ExpressionEval.fromInitEqs(
                 baseState.copy(terms = tdist),
                 Equation.group(baseEqs),
-                lp.tg,
+                lp.tg.coeffVal(_),
+                lp.tg.varWeight,
                 lp.maxRatio,
                 lp.scale,
                 lp.smoothing,

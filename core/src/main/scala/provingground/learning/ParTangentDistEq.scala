@@ -28,6 +28,8 @@ class ParTangentDistEq(
 
   def baseDist[Y](rv: RandomVar[Y], cutoff: Double): ParMap[Y,Double] = purge(baseState.value(rv), cutoff)
 
+  def tangentDist[Y](tangentState: ParMapState, rv: RandomVar[Y], cutoff: Double): ParMap[Y,Double] = purge(tangentState.value(rv), cutoff)
+
   def nodeDistCalc[Y](
       tangentState: ParMapState,
       maxDepth: Option[Int],
@@ -42,7 +44,7 @@ class ParTangentDistEq(
     else
       generatorNode match {
         case Init(input) =>
-          val initDist = tangentState.value(input)
+          val initDist = baseDist(input, epsilon)
           val eqs = initDist.keySet.map { x =>
             EquationNode(finalProb(x, input), coeff * initProb(x, input))
           }
@@ -76,13 +78,13 @@ class ParTangentDistEq(
           val (dist2, eqs2) =
             varDist(tangentState, maxDepth.map(_ - 1), halted)(input2, epsilon)
           val triples1 = (for {
-              (x1, p1) <- baseDist(input1, epsilon)
+              (x1, p1) <- tangentDist(tangentState, input1, epsilon)
               (x2, p2) <- dist2
               if p1 * p2 >= epsilon
             } yield ((x1, x2, f(x1, x2)), p1 * p2)).to(ParVector)
           val triples2 = (for {
               (x1, p1) <- dist1
-              (x2, p2) <- baseDist(input2, epsilon)
+              (x2, p2) <- tangentDist(tangentState, input2, epsilon)
               if p1 * p2 >= epsilon
             } yield ((x1, x2, f(x1, x2)), p1 * p2)).to(ParVector)
           val triples = triples1 ++ triples2
@@ -106,14 +108,14 @@ class ParTangentDistEq(
             varDist(tangentState, maxDepth.map(_ - 1), halted)(input2, epsilon)
           val triples1 = 
           (for {
-              (x1, p1) <- baseDist(input1, epsilon)
+              (x1, p1) <- tangentDist(tangentState, input1, epsilon)
               (x2, p2) <- dist2
               if p1 * p2 >= epsilon
               y <- f(x1, x2)
             } yield ((x1, x2, y) , p1 * p2)).to(ParVector)
           val triples2 = (for {
               (x1, p1) <- dist1
-              (x2, p2) <- baseDist(input2, epsilon)
+              (x2, p2) <- tangentDist(tangentState, input2, epsilon)
               if p1 * p2 >= epsilon
               y <- f(x1, x2)
             } yield ((x1, x2, y) , p1 * p2)).to(ParVector)
@@ -138,7 +140,7 @@ class ParTangentDistEq(
           val baseMaxWeights1 = byBase1.mapValues(_.values.max)
           val groups1 = baseMaxWeights1.map {
             case (z, p) =>
-              val result = baseDist(
+              val result = tangentDist(tangentState, 
                 fiberVar(z),
                 epsilon / p
               )
@@ -155,7 +157,7 @@ class ParTangentDistEq(
                 }
             }.to(ParVector)
           val d2 =
-            baseDist(baseInput, epsilon)
+            tangentDist(tangentState, baseInput, epsilon)
           val byBase2         = d2.groupBy(xp => quot(xp._1))
           val baseMaxWeights2 = byBase2.mapValues(_.values.max)
           val groups2 = baseMaxWeights2.map {
@@ -196,14 +198,14 @@ class ParTangentDistEq(
             varDist(tangentState, maxDepth.map(_ - 1), halted)(baseInput, epsilon)
           val fibers1 = baseDist1.to(ParVector).map {
             case (x1, p1) =>
-              val dist2 = baseDist(fiberVar(x1), epsilon / p1)
+              val dist2 = tangentDist(tangentState, fiberVar(x1), epsilon / p1)
               (
                 dist2.map { case (x2, p2) => ((x1, x2, f(x1, x2)), p1 * p2) }
               )
           }
           val triples1  = fibers1.flatten
           val baseDist2 =
-            baseDist(baseInput, epsilon)
+            tangentDist(tangentState, baseInput, epsilon)
           val fibers2 = baseDist2.to(ParVector).map {
             case (x1, p1) =>
               val (dist2, eqs2) = varDist(
@@ -237,14 +239,14 @@ class ParTangentDistEq(
             varDist(tangentState, maxDepth.map(_ - 1), halted)(baseInput, epsilon)
           val fibers1 = baseDist1.to(ParVector).map {
             case (x1, p1) =>
-              val dist2 = baseDist(fiberNode(x1).output, epsilon / p1)
+              val dist2 = tangentDist(tangentState, fiberNode(x1).output, epsilon / p1)
               (
                 dist2.map { case (x2, p2) => ((x1, x2), p1 * p2) }
               )
           }
           val pairs1    = fibers1.flatten
           val baseDist2 =
-            baseDist(baseInput, epsilon)
+            tangentDist(tangentState, baseInput, epsilon)
           val fibers2 = baseDist1.to(ParVector).map {
             case (x1, p1) =>
               val (dist2, eqs2) = nodeDist(
@@ -282,7 +284,7 @@ class ParTangentDistEq(
           val fibers1 = baseDist1.to(ParVector).flatMap {
             case (x1, p1) =>
               fiberNodeOpt(x1).map { node =>
-                val dist2 = baseDist(node.output, epsilon / p1)
+                val dist2 = tangentDist(tangentState, node.output, epsilon / p1)
                 (
                   dist2.map { case (x2, p2) => ((x1, x2), p1 * p2, node) }
                 )
@@ -290,7 +292,7 @@ class ParTangentDistEq(
           }
           val pairs1    = fibers1.flatten
           val baseDist2 =
-            baseDist(baseInput, epsilon)
+            tangentDist(tangentState, baseInput, epsilon)
           val fibers2 = baseDist2.to(ParVector).flatMap {
             case (x1, p1) =>
               fiberNodeOpt(x1).map { node =>

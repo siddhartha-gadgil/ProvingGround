@@ -334,6 +334,8 @@ case class TermGenParams(
       TermGeneratorNodes.Base
     else TermGenParamsNodes(this)
 
+  def coeffVal(cf: Expression.Coeff[_]) = cf.getOpt(nodeCoeffSeq)
+
   val toJson: ujson.Value =
     ujson.Obj(
       "application"             -> appW,
