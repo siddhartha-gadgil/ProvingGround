@@ -162,7 +162,7 @@ object CzSlOly {
     //   Some(math.pow(10, -11))
     // ),
     parGenUnAppEquations(
-      math.pow(10, -20),
+      math.pow(10, -12),
       12.minutes
     ),
     // cappedForkedTangentEquations,
