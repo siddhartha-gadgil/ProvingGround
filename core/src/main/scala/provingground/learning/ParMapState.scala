@@ -193,6 +193,9 @@ object ParMapState {
   def mapMap[Y, Z](m: ParMap[Y, Double], f: Y => Z): ParMap[Z, Double] =
     makeMap(m.to(ParVector).map { case (y, p) => f(y) -> p })
 
+  def addToMap[X](m: scala.collection.mutable.Map[X, Double], x: X, a: Double) : Unit =
+    m.update(x, a + m.getOrElse(x, 0.0))
+
   def mapMapOpt[Y, Z](
       m: ParMap[Y, Double],
       f: Y => Option[Z]
