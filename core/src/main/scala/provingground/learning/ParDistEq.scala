@@ -334,16 +334,20 @@ class ParDistEq(
           (tripleMap, parUnion(eqs1, parUnion(eqs2, meqs)))
         case zm: ZipMapOpt[x1, x2, Y] =>
           import zm._
+          pprint.log(s"ZipMapOpt node: $zm")
           val (dist1, eqs1) =
             varDist(initState, maxDepth.map(_ - 1), halted)(input1, epsilon)
+          pprint.log(s"distribution size: ${dist1.size}")
           val (dist2, eqs2) =
             varDist(initState, maxDepth.map(_ - 1), halted)(input2, epsilon)
+          pprint.log(s"distribution size: ${dist2.size}")
           val triples = (for {
               (x1, p1) <- dist1
               (x2, p2) <- dist2
               if p1 * p2 >= epsilon
               y <- f(x1, x2)
             } yield ((x1, x2, y) , p1 * p2)).to(ParVector)
+          pprint.log(s"Obtained ${triples.size} triples")
           val meqs = triples
             .map {
               case ((x1, x2, y), _) =>
