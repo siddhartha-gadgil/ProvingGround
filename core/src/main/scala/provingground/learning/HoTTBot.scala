@@ -787,7 +787,9 @@ object HoTTBot {
       name = Some("update equations")
     )
 
-  def eqnsToExpEv(cvOpt: Option[Expression.Coeff[_] => Option[Double]] = None): MicroHoTTBoTT[
+  def eqnsToExpEv(
+      cvOpt: Option[Expression.Coeff[_] => Option[Double]] = None
+  ): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
     Set[EquationNode] :: QueryProver :: ExpressionEval :: HNil
@@ -1704,20 +1706,34 @@ object HoTTBot {
         ] = {
       case tbss :: tl :: terms :: HNil =>
         (_) => {
-          val eqsFut = Future.sequence(tbss.contents.toSet.map {
-              (tb: TangentBaseState) =>
-                Future{
-                  val limit = System.currentTimeMillis() + maxTime.toMillis
-                  def halted() = System.currentTimeMillis() > limit
-                  val baseState = ParMapState.fromTermState(tb.ts)
-                  val tangentState = ParMapState(tl.fd.toParMap, ParMap())
-                  val tg = TermGenParams.zero.copy(appW = 0.2, unAppW = 0.3)
-                  val ns = ParMapState.parNodeSeq(tg)
-                  val tpde = new ParTangentDistEq(ns.nodeCoeffSeq, baseState)
-                  val (terms, eqs) = tpde.varDist(tangentState, Some(1), halted())(TermRandomVars.Terms, cutoff)
-                  val formalTypEqs = terms.keySet.map(_.typ).flatMap(DE.formalTypEquations(_))
-                  eqs union(formalTypEqs)
-                }
+          val eqsFut = Future
+            .sequence(tbss.contents.toSet.map { (tb: TangentBaseState) =>
+              Future {
+                val limit        = System.currentTimeMillis() + maxTime.toMillis
+                def halted()     = System.currentTimeMillis() > limit
+                val baseState    = ParMapState.fromTermState(tb.ts)
+                val tangentState = ParMapState(tl.fd.toParMap, ParMap())
+                import ParMapState.{normalize, add}
+                val state = ParMapState(
+                  normalize(add(baseState.termDist, tangentState.termDist)),
+                  baseState.typDist,
+                  baseState.vars,
+                  baseState.inds,
+                  baseState.goalDist,
+                  baseState.context
+                )
+                val tg   = TermGenParams.zero.copy(appW = 0.2, unAppW = 0.3)
+                val ns   = ParMapState.parNodeSeq(tg)
+                val pde = new ParDistEq(ns.nodeCoeffSeq)
+                val (terms, eqs) = pde.varDist(
+                  state,
+                  Some(1),
+                  halted()
+                )(TermRandomVars.Terms, cutoff)
+                val formalTypEqs =
+                  terms.keySet.map(_.typ).flatMap(DE.formalTypEquations(_))
+                eqs union (formalTypEqs)
+              }
             })
             .map(_.flatten)
           eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet, false))
