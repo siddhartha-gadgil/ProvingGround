@@ -17,6 +17,8 @@ import spire.syntax.group
 import provingground.learning.Sort.All
 import provingground.learning.Sort.Filter
 import provingground.learning.Sort.Restrict
+import scala.collection.parallel.mutable.ParArray
+import scala.collection.mutable.ArrayBuffer
 
 trait RecParDistEq {
   val nodeCoeffSeq: NodeCoeffSeq[ParMapState, Double]
@@ -341,25 +343,49 @@ class ParDistEq(
           val (dist2, eqs2) =
             varDist(initState, maxDepth.map(_ - 1), halted)(input2, epsilon)
           pprint.log(s"distribution size: ${dist2.size}")
-          val triples = (for {
-              (x1, p1) <- dist1
-              (x2, p2) <- dist2
-              if p1 * p2 >= epsilon
-              y <- f(x1, x2)
-            } yield ((x1, x2, y) , p1 * p2)).to(ParVector)
+          val tripleBuffer = ArrayBuffer[((x1, x2, Y), Double)]()
+          val eqBuffer     = mutable.ParSet[EquationNode]()
+          dist1.foreach {
+            case (x1, p1) =>
+              dist2.foreach {
+                case (x2, p2) =>
+                  if (p1 * p2 >= epsilon) {
+                    f(x1, x2).foreach { y =>
+                      tripleBuffer.append((x1, x2, y) -> (p1 * p2))
+                      val eqn = EquationNode(
+                        finalProb(y, output),
+                        coeff * finalProb(x1, input1) * finalProb(x2, input2)
+                      )
+                      eqBuffer.addOne(elem = eqn)
+                      if (tripleBuffer.size % 1000 == 0)
+                        pprint.log(s"created ${tripleBuffer.size} triples")
+
+                    }
+                  }
+              }
+          }
+          // val triples = (for {
+          //     (x1, p1) <- dist1
+          //     (x2, p2) <- dist2
+          //     if p1 * p2 >= epsilon
+          //     y <- f(x1, x2)
+          //   } yield ((x1, x2, y) , p1 * p2)).to(ParVector)
+          val triples = tripleBuffer.to(ParVector)
           pprint.log(s"Obtained ${triples.size} triples")
-          val meqs = triples
-            .map {
-              case ((x1, x2, y), _) =>
-                EquationNode(
-                  finalProb(y, output),
-                  coeff * finalProb(x1, input1) * finalProb(x2, input2)
-                )
-            }
-            .to(ParSet)
+          // val meqs = triples
+          //   .map {
+          //     case ((x1, x2, y), _) =>
+          //       EquationNode(
+          //         finalProb(y, output),
+          //         coeff * finalProb(x1, input1) * finalProb(x2, input2)
+          //       )
+          //   }
+          //   .to(ParSet)
+          pprint.log(s"Obtained ${eqBuffer.size} equations")
           val tripleMap =
             makeMap(triples.map { case ((_, _, y), p) => (y, p) })
-          (tripleMap, parUnion(eqs1, parUnion(eqs2, meqs)))
+          pprint.log(s"ready to post ${tripleMap.size}")
+          (tripleMap, parUnion(eqs1, parUnion(eqs2, eqBuffer)))
         case fpm: FiberProductMap[x1, x2, z, Y] =>
           import fpm._
           val (d1, baseEqs) =
