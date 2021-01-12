@@ -1722,7 +1722,7 @@ object HoTTBot {
                   baseState.goalDist,
                   baseState.context
                 )
-                val tg   = TermGenParams.zero.copy(appW = 0.2, unAppW = 0.3)
+                val tg   = TermGenParams.zero.copy(unAppW = 0.3)
                 val ns   = ParMapState.parNodeSeq(tg)
                 val pde = new ParDistEq(ns.nodeCoeffSeq)
                 val (terms, eqs) = pde.varDist(
