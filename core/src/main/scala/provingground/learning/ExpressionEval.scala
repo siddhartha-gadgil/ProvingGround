@@ -637,15 +637,15 @@ case class ProdExpr(
       if (y == 0) 1.0
       else {
         val rec = 1.0 / y
-        if (rec.isNaN() && !y.isNaN)
-          Utils.logger.error(s"the reciprocal of $y is not a number")
+        if ((rec.isNaN() || rec.isInfinite()) && !y.isNaN)
+          Utils.logger.error(s"the reciprocal of $y is not a number or is infinite")
         rec
       }
     })
     val result = subTerms.product * constant
-    if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN())
+    if ((result.isNaN() || result.isInfinite()) && !subTerms.exists(_.isNaN()) && !constant.isNaN())
       Utils.logger.error(
-        s"the product of $subTerms  and constant $constant is not a number"
+        s"the product of $subTerms  and constant $constant is not a number or is infinite in $this"
       )
     if (result.isNaN()) 0 else result
   }
@@ -676,8 +676,8 @@ case class ProdExpr(
         if (y == 0) 1.0
         else {
           val rec = 1.0 / y
-          if (rec.isNaN() && !y.isNaN)
-            Utils.logger.error(s"the reciprocal of $y is not a number")
+          if ((rec.isNaN() || rec.isInfinite()) && !y.isNaN)
+            Utils.logger.error(s"the reciprocal of $y is not a number or is infinite")
           rec
         }
     })
@@ -895,7 +895,7 @@ class ExprEquations(
 
   def simplify(exp: Expression): SumExpr =
     SumExpr(
-      Expression.sumTerms(exp).map(getProd(_))
+      Expression.sumTerms(exp).map(getProd(_)).filterNot(_.constant == 0)
     )
 
   lazy val rhsExprs: Vector[SumExpr] =
