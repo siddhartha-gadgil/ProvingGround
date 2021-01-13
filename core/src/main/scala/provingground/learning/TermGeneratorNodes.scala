@@ -429,6 +429,29 @@ object TermGeneratorNodes {
 
     override def toString(): String = s"TargetInducFuncs($target)"
   }
+
+  case class SolverTyp(solver: TypSolver)
+      extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]) {
+    def apply(
+        v1: HoTT.Typ[HoTT.Term] :: HNil
+    ): Option[GeneratorNode[HoTT.Term]] = {
+      val typ = v1.head
+      solver(typ)
+        .map(Atom(_, termsWithTyp(typ)))
+    }
+
+    override def toString(): String = "SolverTyp"
+  }
+
+  case class SolverNode(solver: TypSolver){
+    /**
+    * nodes for invoking (external) solvers for special types.
+    */
+  val node: GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term] =
+    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+      SolverTyp(solver)
+    }, TermsWithTyp)
+  }
 }
 
 /**
@@ -836,26 +859,26 @@ class TermGeneratorNodes[InitState](
       FuncsWithDomain
     )
 
-  case object SolverTyp
-      extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]) {
-    def apply(
-        v1: HoTT.Typ[HoTT.Term] :: HNil
-    ): Option[GeneratorNode[HoTT.Term]] = {
-      val typ = v1.head
-      solver(typ)
-        .map(Atom(_, termsWithTyp(typ)))
-    }
+  // case object SolverTyp
+  //     extends (Typ[Term] :: HNil => Option[GeneratorNode[Term]]) {
+  //   def apply(
+  //       v1: HoTT.Typ[HoTT.Term] :: HNil
+  //   ): Option[GeneratorNode[HoTT.Term]] = {
+  //     val typ = v1.head
+  //     solver(typ)
+  //       .map(Atom(_, termsWithTyp(typ)))
+  //   }
 
-    override def toString(): String = "SolverTyp"
-  }
+  //   override def toString(): String = "SolverTyp"
+  // }
 
-  /**
-    * nodes for invoking (external) solvers for special types.
-    */
-  val solveFamily: GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term] =
-    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
-      SolverTyp
-    }, TermsWithTyp)
+  // /**
+  //   * nodes for invoking (external) solvers for special types.
+  //   */
+  // val solveFamily: GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term] =
+  //   GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+  //     SolverTyp
+  //   }, TermsWithTyp)
 
   /**
     * island to generate Pi-Types by taking variables with specified domain, similar to [[lambdaIsle]]
