@@ -204,6 +204,17 @@ object TypedPostResponse {
       }.andThen(_ => logger.info(s"completed callback '${message}' for type ${pw.tag} with input hash ${content.hashCode()}"))
       task
     }
+
+    def triggerWith[R](implicit rw: Postable[R, W, ID], pq: LocalQueryable[P, W, ID]) : Callback[R, W, P :: V :: HNil,ID] = 
+      {implicit val lpv : LocalQueryable[P:: V :: HNil, W, ID] = LocalQueryable.hconsQueryable(implicitly, implicitly)
+        Callback[R, W, P :: V :: HNil, ID](
+        (w) => {
+          case p :: v :: HNil =>
+            _ : R =>
+              update(w)(v)(p)
+        }
+      )
+      }
   }
 
   object Callback{
@@ -257,7 +268,7 @@ object TypedPostResponse {
       task
     }
 
-    def triggerWith[R](implicit rw: Postable[R, W, ID], pq: LocalQueryable[P, W, ID]) = 
+    def triggerWith[R](implicit rw: Postable[R, W, ID], pq: LocalQueryable[P, W, ID]) : MicroBot[R,Q,W,P :: V :: HNil,ID] = 
       {implicit val lpv : LocalQueryable[P:: V :: HNil, W, ID] = LocalQueryable.hconsQueryable(implicitly, implicitly)
         MicroBot[R, Q, W, P :: V :: HNil, ID](
         {

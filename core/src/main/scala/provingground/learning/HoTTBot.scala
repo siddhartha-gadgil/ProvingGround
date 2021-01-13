@@ -755,6 +755,15 @@ object HoTTBot {
         }
     )
 
+  lazy val chompEqnUpdate: TypedPostResponse[ChompResult, HoTTPostWeb, ID] =
+    Callback.simple(
+      (web: HoTTPostWeb) =>
+        (cr: ChompResult) => {
+          val neqs = cr.eqns.map(TermData.isleNormalize(_))
+          web.addEqns(neqs)
+        }
+    )
+
   lazy val eqnUpdate: Callback[GeneratedEquationNodes, HoTTPostWeb, Unit, ID] =
     Callback.simple(
       (web: HoTTPostWeb) =>
@@ -1722,8 +1731,8 @@ object HoTTBot {
                   baseState.goalDist,
                   baseState.context
                 )
-                val tg   = TermGenParams.zero.copy(unAppW = 0.3)
-                val ns   = ParMapState.parNodeSeq(tg)
+                val tg  = TermGenParams.zero.copy(unAppW = 0.3)
+                val ns  = ParMapState.parNodeSeq(tg)
                 val pde = new ParDistEq(ns.nodeCoeffSeq)
                 val (terms, eqs) = pde.varDist(
                   state,
@@ -2736,9 +2745,11 @@ object HoTTBot {
     MicroBot(response, subContext, name = Some("attempting goal"))
   }
 
-    def goalAttemptEqs(
+  def goalAttemptEqs(
       varWeight: Double
-  ): MicroBot[SeekGoal, Option[Either[FailedToProve, Proved]], HoTTPostWeb, QueryProver :: Set[
+  ): MicroBot[SeekGoal, Option[
+    GeneratedEquationNodes :: Either[FailedToProve, Proved] :: HNil
+  ], HoTTPostWeb, QueryProver :: Set[
     HoTT.Term
   ] :: GatherMapPost[Decided] :: HNil, ID] = {
     // check whether the provers context is an initial segment of the context of the goal
@@ -2755,7 +2766,9 @@ object HoTTBot {
 
     val response
         : QueryProver :: Set[Term] :: GatherMapPost[Decided] :: HNil => SeekGoal => Future[
-          Option[Either[FailedToProve, Proved]]
+          Option[
+            GeneratedEquationNodes :: Either[FailedToProve, Proved] :: HNil
+          ]
         ] = {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
         // pprint.log(qp)
@@ -2772,28 +2785,33 @@ object HoTTBot {
             withVars
               .varDistEqs(TermRandomVars.termsWithTyp(goal.goal))
               .runToFuture
-              .map { case (fd, eqs) =>
-                val geqs = GeneratedEquationNodes(eqs)
-                Some({if (fd.pmf.isEmpty)                  
-                    Left(
-                      FailedToProve(
-                        goal.goal,
-                        goal.context,
-                        goal.forConsequences
+              .map {
+                case (fd, eqs) =>
+                  val geqs = GeneratedEquationNodes(eqs)
+                  Some(geqs :: {
+                    if (fd.pmf.isEmpty)
+                      Left(
+                        FailedToProve(
+                          goal.goal,
+                          goal.context,
+                          goal.forConsequences
+                        )
                       )
-                    )
-                 
-                else {
-                  val best = fd.pmf.maxBy(_.weight)
-                  Right(Proved(goal.goal, Some(best.elem), goal.context))
-                }})
+                    else {
+                      val best = fd.pmf.maxBy(_.weight)
+                      Right(Proved(goal.goal, Some(best.elem), goal.context))
+                    }
+                  } :: HNil)
               }
           } else Future.successful(None)
     }
 
-    MicroBot(response, subContext, name = Some("attempting goal"))
+    MicroBot(
+      response,
+      subContext,
+      name = Some("attempting goal with equations")
+    )
   }
-
 
   def decided(web: HoTTPostWeb): Future[Set[HoTTMessages.Decided]] =
     implicitly[Queryable[GatherMapPost[Decided], HoTTPostWeb]]
