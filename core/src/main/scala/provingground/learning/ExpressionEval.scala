@@ -1115,7 +1115,7 @@ class ExprCalc(
       support: Set[Int],
       exponent: Double
   ): Map[Int, Double] = {
-    support
+    val base =  support
       .map { j =>
         val exp = rhsExprs(j)
         val y   = exp.evaluate(m) // the new value
@@ -1133,6 +1133,8 @@ class ExprCalc(
       }
       .filter(_._2 > 0)
       .toMap ++ constantMap
+      val scale = m.values.sum / base.values.sum
+      base.map {case (n, x) => (n, x* scale)}
   }
 
   def proofData(typ: Typ[Term]): Vector[(Int, Equation)] =
@@ -1376,7 +1378,9 @@ class ExprCalc(
     } else {
       if (steps % 100 == 2) Utils.logger.debug(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
-      val newVec    = nextVec(initVec, exponent)
+      val newBaseVec    = nextVec(initVec, exponent)
+      val scale = initVec.sum / newBaseVec.sum
+      val newVec = newBaseVec.map(_ * scale)
       if (normalizedBounded(initVec.seq, newVec.seq))
         newVec
       else {
@@ -1409,7 +1413,9 @@ class ExprCalc(
             .count(_ > 0)}"
         )
       val startTime = System.currentTimeMillis()
-      val newVec    = simpleNextVec(initVec.par)
+      val newBaseVec    = simpleNextVec(initVec.par)
+      val scale = initVec.sum / newBaseVec.sum
+      val newVec = newBaseVec.map(_ * scale)
       val check = (0 until (initVec.size)).forall(
         n => (initVec(n) != 0) || (newVec(n) == 0)
       )
