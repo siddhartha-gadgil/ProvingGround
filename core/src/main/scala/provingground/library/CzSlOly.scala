@@ -159,7 +159,7 @@ object CzSlOly {
       math.pow(10, -3),
       120.minutes,
       3,
-      Some(math.pow(10, -11))
+      Some(math.pow(10, -10))
     ),
     eqnsToExpEv(
       Some(
