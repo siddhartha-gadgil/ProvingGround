@@ -162,7 +162,7 @@ abstract class TermNodeCoeffSeq[State](
       : Double = 1.0 - appW - unAppW - piW - sigmaW - typFromFamilyW - recDefW - inducDefW
 
   import NodeCoeffs.purge
-  
+
   lazy val termNodes: NodeCoeffs[State, Double, HNil, Term] =
     purge(
       (Init(Terms)                        -> termInit) ::
@@ -252,7 +252,7 @@ abstract class TermNodeCoeffSeq[State](
         (incl2TypNodeFamily         -> (termInit * goalWeight + lmW) / 2) ::
         (typAsCodNodeFamily         -> typAsCodW) ::
         (targetInducNodeFamily      -> targetInducW) ::
-        (solveFamily                -> solverW) ::
+        (SolverNode(solver).node    -> solverW) ::
         (typViaZeroFamily           -> contraW) ::
         TermsWithTyp.target[State, Double, Term]
     )
@@ -330,9 +330,9 @@ case class TermGenParams(
     ) { tg =>
 
   val Gen: TermGeneratorNodes[TermState] =
-    if (varWeight == 0.3 && solver == TypSolver.coreSolver)
+    // if (varWeight == 0.3 && solver == TypSolver.coreSolver)
       TermGeneratorNodes.Base
-    else TermGenParamsNodes(this)
+    // else TermGenParamsNodes(this)
 
   def coeffVal(cf: Expression.Coeff[_]) = cf.getOpt(nodeCoeffSeq)
 
