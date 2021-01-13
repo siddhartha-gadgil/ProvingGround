@@ -1379,7 +1379,12 @@ class ExprCalc(
       if (steps % 100 == 2) Utils.logger.debug(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newBaseVec    = nextVec(initVec, exponent)
-      val scale = initVec.sum / newBaseVec.sum
+      // val initSum = math.max(initVec.sum, 1.0) 
+      val currSum = newBaseVec.sum
+      val scale = size.toDouble / currSum
+      // Utils.logger.info(initSum.toString())
+      // Utils.logger.info(currSum.toString)
+      // Utils.logger.info(scale.toString())
       val newVec = newBaseVec.map(_ * scale)
       if (normalizedBounded(initVec.seq, newVec.seq))
         newVec
@@ -1414,7 +1419,7 @@ class ExprCalc(
         )
       val startTime = System.currentTimeMillis()
       val newBaseVec    = simpleNextVec(initVec.par)
-      val scale = initVec.sum / newBaseVec.sum
+      val scale = size.toDouble / newBaseVec.sum
       val newVec = newBaseVec.map(_ * scale)
       val check = (0 until (initVec.size)).forall(
         n => (initVec(n) != 0) || (newVec(n) == 0)
