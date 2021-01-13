@@ -199,11 +199,14 @@ object Unify {
       freeVars: Vector[Term] = Vector()
   ): Option[Term] =
     unify(func.typ, codomain, (t) => freeVars.contains(t))
-      .map { unifMap =>
-        val value  = multisub(func, unifMap)
-        val exVars = extraVars(freeVars, unifMap)
-        polyLambda(exVars.reverse.toList, value)
-      }
+      .flatMap(
+        unifMap =>
+          Try {
+            val value  = multisub(func, unifMap)
+            val exVars = extraVars(freeVars, unifMap)
+            polyLambda(exVars.reverse.toList, value)
+          }.toOption
+      )
       .orElse {
         func match {
           case fn: FuncLike[u, v] =>
@@ -218,21 +221,24 @@ object Unify {
                 case pd: PiDefn[a, b] =>
                   unify(fn.dom, pd.domain, (t) => freeVars.contains(t))
                     .flatMap { unifMap =>
-                      val variable = multisub(pd.variable, unifMap)
-                      val value : Term    = multisub(pd.value, unifMap)
-                      val exVars   = extraVars(freeVars, unifMap)
+                      val variable    = multisub(pd.variable, unifMap)
+                      val value: Term = multisub(pd.value, unifMap)
+                      val exVars      = extraVars(freeVars, unifMap)
                       val target =
-                        Try(value.replace(variable, l.variable)).fold({ err =>
-                          pprint.log(func)
-                          pprint.log(codomain)
-                          pprint.log(freeVars)
-                          pprint.log(pd)
-                          pprint.log(unifMap)
-                          pprint.log(value)
-                          pprint.log(variable)
-                          pprint.log(l.variable)
-                          throw err
-                        }, identity(_))
+                        Try(value.replace(variable, l.variable)).fold(
+                          { err =>
+                            pprint.log(func)
+                            pprint.log(codomain)
+                            pprint.log(freeVars)
+                            pprint.log(pd)
+                            pprint.log(unifMap)
+                            pprint.log(value)
+                            pprint.log(variable)
+                            pprint.log(l.variable)
+                            throw err
+                          },
+                          identity(_)
+                        )
                       targetCodomain(value, target, exVars).map { t =>
                         lambda(variable)(t)
                       }
