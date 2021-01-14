@@ -9,21 +9,21 @@ import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r`
 
 val scalaV = "2.13.3"
 
-val ammV = "2.2.0"
+val ammV = "2.3.8"
 
 val commonLibs = List(
   ivy"org.scala-lang.modules::scala-parser-combinators::1.1.2",
-  ivy"org.scala-lang.modules::scala-xml:1.2.0",
+  ivy"org.scala-lang.modules::scala-xml:1.3.0",
   ivy"org.typelevel::spire::0.17.0",
   ivy"com.lihaoyi::fansi::0.2.9",
-  ivy"com.lihaoyi::upickle::1.2.0",
+  ivy"com.lihaoyi::upickle::1.2.2",
   ivy"com.lihaoyi::fastparse::2.3.0",
   ivy"com.chuusai::shapeless::2.4.0-M1",
   ivy"org.typelevel::cats-core::2.2.0",
   ivy"io.monix::monix::3.2.2",
   ivy"com.lihaoyi::pprint::0.6.0",
   ivy"com.outr::scribe::2.8.6",
-  ivy"org.scala-lang.modules::scala-parallel-collections:0.2.0",
+  ivy"org.scala-lang.modules::scala-parallel-collections:1.0.0",
   ivy"com.lihaoyi::sourcecode::0.2.1" //,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
