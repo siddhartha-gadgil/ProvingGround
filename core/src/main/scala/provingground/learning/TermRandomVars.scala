@@ -647,6 +647,13 @@ object TermRandomVars {
     genvars.exists(v => varDepends(t)(v))
   }
 
+  def equationNodeDepends(t: Term)(eq: EquationNode): Boolean = {
+    import Expression.varVals
+    val genvars = varVals(eq.lhs).map(_.variable) union varVals(eq.lhs)
+      .map(_.variable)
+    genvars.exists(v => varDepends(t)(v))
+  }
+
   import scala.collection.immutable.Map
   val randomVarStrings: Vector[(RandomVar[_], String, String)] =
     Vector(
