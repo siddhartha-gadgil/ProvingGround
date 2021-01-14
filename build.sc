@@ -22,7 +22,8 @@ val commonLibs = List(
   ivy"org.typelevel::cats-core::2.3.1",
   ivy"io.monix::monix::3.3.0",
   ivy"com.lihaoyi::pprint::0.6.0",
-  ivy"com.outr::scribe::2.8.6",
+  ivy"com.outr::scribe::3.1.9",
+  ivy"org.scala-lang:scala-reflect:2.13.4",
   ivy"org.scala-lang.modules::scala-parallel-collections:1.0.0",
   ivy"com.lihaoyi::sourcecode::0.2.1" //,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
