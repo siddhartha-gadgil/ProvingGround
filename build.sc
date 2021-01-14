@@ -5,7 +5,7 @@ import mill.scalalib.scalafmt._
 import define.{Sources, Task}
 // import ammonite.ops._
 import os._
-import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r`
+import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r`
 
 val scalaV = "2.13.3"
 
@@ -19,8 +19,8 @@ val commonLibs = List(
   ivy"com.lihaoyi::upickle::1.2.2",
   ivy"com.lihaoyi::fastparse::2.3.0",
   ivy"com.chuusai::shapeless::2.4.0-M1",
-  ivy"org.typelevel::cats-core::2.2.0",
-  ivy"io.monix::monix::3.2.2",
+  ivy"org.typelevel::cats-core::2.3.1",
+  ivy"io.monix::monix::3.3.0",
   ivy"com.lihaoyi::pprint::0.6.0",
   ivy"com.outr::scribe::2.8.6",
   ivy"org.scala-lang.modules::scala-parallel-collections:1.0.0",
@@ -97,13 +97,13 @@ repl.pprinter() = {
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule {
-  def scalaJSVersion = "1.2.0"
+  def scalaJSVersion = "1.3.0"
 }
 
 val jvmLibs = List(
   ivy"com.lihaoyi:::ammonite:$ammV",
-  ivy"com.lihaoyi::cask:0.7.3",
-  ivy"org.scalameta::scalameta:4.2.3",
+  ivy"com.lihaoyi::cask:0.7.8",
+  ivy"org.scalameta::scalameta:4.4.5",
   ivy"com.github.nscala-time::nscala-time:2.22.0",
   ivy"org.reactivemongo::reactivemongo:0.20.2",
   ivy"com.typesafe.akka::akka-actor:2.6.1",
@@ -115,12 +115,12 @@ val jvmLibs = List(
   ivy"com.typesafe.akka::akka-http-spray-json:10.1.11",
   ivy"org.slf4j:slf4j-api:1.7.30",
   ivy"org.slf4j:slf4j-simple:1.7.30",
-  ivy"com.github.scopt::scopt:4.0.0-RC2",
+  ivy"com.github.scopt::scopt:4.0.0",
   ivy"com.atlassian.commonmark:commonmark:0.13.1",
   ivy"org.apache.logging.log4j:log4j-core:2.13.0",
   ivy"org.platanios::tensorflow:0.5.1-SNAPSHOT;classifier=linux-cpu-x86_64",
-  ivy"org.scalameta::mdoc:2.2.13",
-  ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r"
+  ivy"org.scalameta::mdoc:2.2.14",
+  ivy"org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r"
 )
 
 trait JvmModule extends CommonModule {
@@ -161,7 +161,7 @@ object core extends Module {
   }
 
   object js extends CommonJSModule with SbtModule {
-    override def scalaJSVersion = "1.2.0"
+    override def scalaJSVersion = "1.3.0"
     override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }
@@ -198,7 +198,7 @@ val mantleLibs = List(
   ivy"org.platanios::tensorflow:0.5.1-SNAPSHOT;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:2.2.13",
   ivy"com.lihaoyi::os-lib:0.7.0",
-  ivy"org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r",
+  ivy"org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r",
   ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta7",
   ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta7",
   ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
