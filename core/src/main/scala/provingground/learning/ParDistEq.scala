@@ -257,6 +257,11 @@ trait RecParDistEq {
   }
 }
 
+object ParDistEq{
+  def fromParams(tg: TermGenParams, varWeight: Double = 0.3) = 
+    new ParDistEq(ParMapState.parNodeSeq(tg).nodeCoeffSeq, varWeight)
+}
+
 class ParDistEq(
     nodeCoeffSeqParam: NodeCoeffSeq[ParMapState, Double],
     varWeight: Double = 0.3,
