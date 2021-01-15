@@ -634,6 +634,7 @@ object TermRandomVars {
   def varDepends(t: Term)(v: Variable[_]): Boolean =
     v match {
       case Elem(element: Term, randomVar) => element.dependsOn(t)
+      case Elem(fn: ExstFunc, _)          => fn.func.dependsOn(t)
       case Elem(element, randomVar)       => false
       case Event(base, sort)              => false
       case InIsle(isleVar, boat, isle)    => varDepends(t)(isleVar)
@@ -643,6 +644,13 @@ object TermRandomVars {
   def equationDepends(t: Term)(eq: Equation): Boolean = {
     import Expression.varVals
     val genvars = varVals(eq.lhs).map(_.variable) union varVals(eq.lhs)
+      .map(_.variable)
+    genvars.exists(v => varDepends(t)(v))
+  }
+
+  def equationNodeDepends(t: Term)(eq: EquationNode): Boolean = {
+    import Expression.varVals
+    val genvars = varVals(eq.lhs).map(_.variable) union varVals(eq.rhs)
       .map(_.variable)
     genvars.exists(v => varDepends(t)(v))
   }

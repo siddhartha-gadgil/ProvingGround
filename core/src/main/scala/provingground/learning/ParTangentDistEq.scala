@@ -18,6 +18,10 @@ import provingground.learning.Sort.All
 import provingground.learning.Sort.Filter
 import provingground.learning.Sort.Restrict
 
+object ParTangentDistEq{
+  def fromParams(baseState: ParMapState, tg: TermGenParams, varWeight: Double = 0.3) = 
+    new ParTangentDistEq(ParMapState.parNodeSeq(tg).nodeCoeffSeq, baseState, varWeight)
+}
 class ParTangentDistEq(
     nodeCoeffSeqParam: NodeCoeffSeq[ParMapState, Double],
     baseState: ParMapState,

@@ -50,7 +50,7 @@ lazy val commonSettings = baseSettings ++ Seq(
       case Some((2, major)) if major <= 12 =>
         Seq()
       case _ =>
-        Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0")
+        Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.0")
     }
   },
   scalacOptions in Compile ++= Seq(
