@@ -199,14 +199,61 @@ object Unify {
       freeVars: Vector[Term] = Vector()
   ): Option[Term] =
     unify(func.typ, codomain, (t) => freeVars.contains(t))
-      .flatMap(
-        unifMap =>
-          Try {
-            val value  = multisub(func, unifMap)
-            val exVars = extraVars(freeVars, unifMap)
-            polyLambda(exVars.reverse.toList, value)
-          }.toOption
-      )
+      .flatMap { unifMap =>
+        Try {
+          val value  = multisub(func, unifMap)
+          val exVars = extraVars(freeVars, unifMap)
+          polyLambda(exVars.reverse.toList, value)
+        }.toOption
+      }
+      .orElse {
+        func match {
+          case fn: FuncLike[u, v] =>
+            val l = funcToLambda(fn)
+            targetCodomain(l.value, codomain, freeVars :+ l.variable)
+              .orElse(Try {
+                codomain match {
+                  case pd: PiDefn[a, b] if pd.domain == fn.dom =>
+                    val target = pd.value.replace(pd.variable, l.variable)
+                    targetCodomain(l.value, target, freeVars).map { t =>
+                      lambda(l.variable)(t)
+                    }
+                  case pd: PiDefn[a, b] =>
+                    unify(fn.dom, pd.domain, (t) => freeVars.contains(t))
+                      .flatMap { unifMap =>
+                        val variable    = multisub(pd.variable, unifMap)
+                        val value: Term = multisub(pd.value, unifMap)
+                        val exVars      = extraVars(freeVars, unifMap)
+                        val target =
+                          value.replace(variable, l.variable)
+                        targetCodomain(value, target, exVars).map { t =>
+                          lambda(variable)(t)
+                        }
+                      }
+
+                  case _ =>
+                    None
+                }
+              }.toOption.flatten)
+          case _ => None
+        }
+      }
+
+  /**
+    * Given a function and a target type, optionally returns a function with eventual codomain the given type;
+    * this is done by attempting to unify, filling in parameters where they are determined and returing lambdas if all parameters work.
+    */
+  def targetCodomainStrict(
+      func: Term,
+      codomain: Term,
+      freeVars: Vector[Term] = Vector()
+  ): Option[Term] =
+    unify(func.typ, codomain, (t) => freeVars.contains(t))
+      .map { unifMap =>
+        val value  = multisub(func, unifMap)
+        val exVars = extraVars(freeVars, unifMap)
+        polyLambda(exVars.reverse.toList, value)
+      }
       .orElse {
         func match {
           case fn: FuncLike[u, v] =>
