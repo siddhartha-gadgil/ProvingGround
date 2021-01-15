@@ -2787,7 +2787,9 @@ object HoTTBot {
               .runToFuture
               .map {
                 case (fd, eqs) =>
-                  val geqs = GeneratedEquationNodes(eqs)
+                  val initTerms = withVars.initState.terms.support union(withVars.initState.typs.support.map(x => x : Term))
+                  val expEqs = EquationExporter.export(eqs, initTerms, newVars)
+                  val geqs = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
                     if (fd.pmf.isEmpty)
                       Left(
