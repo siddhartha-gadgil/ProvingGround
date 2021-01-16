@@ -30,7 +30,6 @@ object ChompSession {
        |Also parallel chomping, proving via zero, using inclusions and projections,
        |better reporting of status. 
        |After debugging, everything generated was proved but there was an error in reporting.
-       |Hoepfully we get a fully correct run.
        |""".stripMargin
   )
 
@@ -130,7 +129,6 @@ object ChompSessionEq {
        |Also parallel chomping, proving via zero, using inclusions and projections,
        |better reporting of status. 
        |After debugging, everything generated was proved but there was an error in reporting.
-       |Hoepfully we get a fully correct run.
        |""".stripMargin
   )
 

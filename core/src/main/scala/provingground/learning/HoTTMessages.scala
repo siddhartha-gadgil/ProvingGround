@@ -289,7 +289,7 @@ object HoTTMessages {
     * @param eqns equations contributed as a by-product
     */
   case class ChompResult(
-      successes: Vector[StrategicProvers.Successes],
+      successes: StrategicProvers.Successes,
       failures: Vector[Typ[Term]],
       eqns: Set[EquationNode]
   )
