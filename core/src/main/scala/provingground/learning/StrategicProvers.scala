@@ -139,13 +139,13 @@ object StrategicProvers {
   def goalChomper(
       lp: LocalProver,
       typs: Vector[Typ[Term]],
-      accumSucc: Vector[Successes] = Vector(),
+      accumSucc: Successes = Vector(),
       accumEqs: Set[EquationNode] = Set(),
       accumTerms: Set[Term] = Set(),
       scale: Double = 2,
       maxSteps: Int = 100
   ): Task[
-    (Vector[Successes], Set[EquationNode], Set[Term], Vector[Typ[Term]])
+    (Successes, Set[EquationNode], Set[Term], Vector[Typ[Term]])
   ] =
     typs match {
       case Vector() => Task.now((accumSucc, accumEqs, accumTerms, Vector()))
@@ -155,7 +155,7 @@ object StrategicProvers {
             if (ss.isEmpty)
               Task.now(
                 (
-                  accumSucc :+ ss,
+                  accumSucc ++ ss,
                   accumEqs union eqs,
                   accumTerms union terms,
                   typ +: ys
@@ -167,7 +167,7 @@ object StrategicProvers {
               goalChomper(
                 lp,
                 ys,
-                accumSucc :+ ss,
+                accumSucc ++ ss,
                 accumEqs union eqs,
                 accumTerms union terms,
                 scale,
@@ -180,7 +180,7 @@ object StrategicProvers {
   def liberalChomper(
       lp: LocalProver,
       typs: Vector[Typ[Term]],
-      accumSucc: Vector[Successes] = Vector(),
+      accumSucc: Successes = Vector(),
       accumFail: Vector[Typ[Term]] = Vector(),
       accumEqs: Set[EquationNode] = Set(),
       accumTerms: Set[Term] = Set(),
@@ -188,7 +188,7 @@ object StrategicProvers {
       maxSteps: Int = 100
   ): Task[
     (
-        Vector[Successes],
+        Successes,
         Vector[Typ[Term]], // failures
         Set[EquationNode],
         Set[Term]
@@ -226,7 +226,7 @@ object StrategicProvers {
               liberalChomper(
                 lp,
                 ys,
-                accumSucc :+ ss,
+                accumSucc ++ ss,
                 accumFail,
                 accumEqs union eqs,
                 accumTerms union terms,
@@ -241,13 +241,13 @@ object StrategicProvers {
       lp: LocalProver,
       typGroups: Vector[Vector[Typ[Term]]],
       concurrency: Int = Utils.threadNum,
-      accumSucc: Vector[Successes] = Vector(),
+      accumSucc: Successes = Vector(),
       accumFail: Vector[Typ[Term]] = Vector(),
       accumEqs: Set[EquationNode] = Set(),
       accumTerms: Set[Term] = Set()
   ): Task[
     (
-        Vector[Successes],
+        Successes,
         Vector[Typ[Term]], // failures
         Set[EquationNode],
         Set[Term]
@@ -281,7 +281,7 @@ object StrategicProvers {
               lp,
               ys,
               concurrency,
-              accumSucc,
+              accumSucc ++ ss,
               accumFail ++ failures,
               accumEqs union eqs,
               accumTerms union terms
@@ -292,13 +292,13 @@ object StrategicProvers {
   def targetChomper(
       lp: LocalProver,
       typs: Vector[Typ[Term]],
-      accumSucc: Vector[Successes] = Vector(),
+      accumSucc: Successes = Vector(),
       accumFail: Vector[Typ[Term]] = Vector(),
       accumEqs: Set[EquationNode] = Set(),
       accumTerms: Set[Term] = Set()
   ): Task[
     (
-        Vector[Successes],
+        Successes,
         Vector[Typ[Term]], // failures
         Set[EquationNode],
         Set[Term]
@@ -337,7 +337,7 @@ object StrategicProvers {
                 targetChomper(
                   lp,
                   ys,
-                  accumSucc :+ ss,
+                  accumSucc ++ ss,
                   accumFail,
                   accumEqs union eqs,
                   accumTerms union terms
