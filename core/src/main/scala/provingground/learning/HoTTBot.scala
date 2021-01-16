@@ -2791,6 +2791,11 @@ object HoTTBot {
                   val expEqs = EquationExporter.export(eqs, initTerms, newVars)
                   val geqs = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
+                    Utils.logger.info(
+                      s"""|Failed for ${TermRandomVars.termsWithTyp(goal.goal)}
+                          |initial state: ${withVars.initState}
+                          |cutoff: ${withVars.cutoff}
+                          |parameters : ${withVars.tg}""".stripMargin)
                     if (fd.pmf.isEmpty)
                       Left(
                         FailedToProve(
