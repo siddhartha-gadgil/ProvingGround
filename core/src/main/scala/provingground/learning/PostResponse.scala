@@ -80,6 +80,12 @@ class SimpleSession[W, ID](
 ) {
       def running: Boolean = true
 
+      val startedResponses: ArrayBuffer[(ID, PostResponse[W, ID])] = ArrayBuffer()
+
+      val completedResponses: ArrayBuffer[(ID, PostResponse[W, ID])] = ArrayBuffer()
+
+      def remainingResponses = startedResponses.filterNot(x => completedResponses.contains(x)).toVector
+
 
   /**
     * recursively posting and running (as side-effects) offspring tasks, this posts the head but 
@@ -113,8 +119,9 @@ class SimpleSession[W, ID](
     * @param pw postability
     */
   def respond[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = if (running) {
-    responses.foreach(
+    responses.foreach{
       response =>
+        startedResponses.append((postID, response))
         PostResponse.postResponse(web, content, postID, response).map {
           v =>
             v.map {
@@ -122,8 +129,10 @@ class SimpleSession[W, ID](
                logs.foreach{fn => fn(pd).foreach(_ => ())}
                 respond(pd.content, pd.id)(pd.pw)
             }
-        }
-    ) 
+        }.andThen(
+          (_) => completedResponses.append((postID, response))
+        )
+      }
   }
 
   /**
