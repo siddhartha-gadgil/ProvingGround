@@ -65,10 +65,10 @@ object PostResponse {
     flip.map(_.flatten)
   }
 
-  def capResponse[P, W, ID](unit: P)(implicit pw : Postable[P, W, ID], ph: PostHistory[W, ID]) : W => Unit = {
+  def capResponse[P, W, ID](unit: P)(implicit pw : Postable[P, W, ID], ph: PostHistory[W, ID]) : W => Future[PostData[P, W, ID]] = {
     web => 
       val apex = ph.apexPosts(web).map(_.id).toSet
-      pw.post(unit, web, apex)
+      pw.post(unit, web, apex).map{id => PostData(unit, id)}
   }
 
 }
@@ -84,7 +84,7 @@ class SimpleSession[W, ID](
     val web: W,
     var responses: Vector[PostResponse[W, ID]],
     logs: Vector[PostData[_, W, ID] => Future[Unit]],
-    val completionResponse: Option[W => Unit]
+    val completionResponse: Option[W => Future[PostData[_, W, ID]]]
 ) {
       def running: Boolean = true
 
@@ -140,7 +140,11 @@ class SimpleSession[W, ID](
         }.andThen{
           (_) => completedResponses.append((postID, response))
           Utils.logger.info(s"global remaining responses: ${remainingResponses.size}")
-          if (remainingResponses.isEmpty) completionResponse.foreach(resp => resp(web))
+          if (remainingResponses.isEmpty) {
+            completionResponse.foreach(
+              resp => resp(web).map{case pd: PostData[u, W, ID] => respond(pd.content, pd.id)(pd.pw)}
+              )
+          }
         }
       }
   }

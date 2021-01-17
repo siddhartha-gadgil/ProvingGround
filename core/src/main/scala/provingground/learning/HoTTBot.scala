@@ -2939,7 +2939,7 @@ import HoTTBot._
 class HoTTWebSession(
     initialWeb: HoTTPostWeb = new HoTTPostWeb(),
     bots: Vector[HoTTBot] = HoTTWebSession.initBots,
-    completionResponse: Option[HoTTPostWeb => Unit]
+    completionResponse: Option[HoTTPostWeb => Future[PostData[_, HoTTPostWeb, ID]]]
 ) extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       bots,
@@ -2970,7 +2970,7 @@ object HoTTWebSession {
   def launch(
       state: WebState[HoTTPostWeb, (Int, Int)],
       bots: Vector[HoTTBot] = initBots,
-      completion: Option[HoTTPostWeb => Unit] = Some(
+      completion: Option[HoTTPostWeb => Future[PostData[_, HoTTPostWeb, (Int, Int)]]] = Some(
         PostResponse.capResponse(HoTTMessages.Cap)
       )
   ) = {
