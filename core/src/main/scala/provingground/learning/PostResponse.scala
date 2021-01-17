@@ -129,9 +129,10 @@ class SimpleSession[W, ID](
                logs.foreach{fn => fn(pd).foreach(_ => ())}
                 respond(pd.content, pd.id)(pd.pw)
             }
-        }.andThen(
+        }.andThen{
           (_) => completedResponses.append((postID, response))
-        )
+          Utils.logger.info(s"global remaining responses: ${remainingResponses.size}")
+        }
       }
   }
 
