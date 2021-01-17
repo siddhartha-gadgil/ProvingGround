@@ -204,5 +204,5 @@ object ChompSessionEq {
     } yield ws9
 
   lazy val sessF: Future[HoTTWebSession] =
-    wsF.map(ws => HoTTWebSession.launch(ws, bots))
+    wsF.map(ws => HoTTWebSession.launch(ws, bots, Some(PostResponse.capResponse(HoTTMessages.Cap))))
 }

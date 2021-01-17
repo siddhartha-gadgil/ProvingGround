@@ -2894,13 +2894,15 @@ import HoTTBot._
 // May want to avoid inheritance
 class HoTTWebSession(
     initialWeb: HoTTPostWeb = new HoTTPostWeb(),
-    bots: Vector[HoTTBot] = HoTTWebSession.initBots
+    bots: Vector[HoTTBot] = HoTTWebSession.initBots,
+    completionResponse : Option[HoTTPostWeb => Unit]
 ) extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       bots,
       Vector(
         // scribeLog(_)
-      )
+      ),
+      completionResponse
     ) {
   override def running = initialWeb.running
 
@@ -2923,9 +2925,10 @@ object HoTTWebSession {
 
   def launch(
       state: WebState[HoTTPostWeb, (Int, Int)],
-      bots: Vector[HoTTBot] = initBots
+      bots: Vector[HoTTBot] = initBots,
+      completion: Option[HoTTPostWeb => Unit] = Some(PostResponse.capResponse(HoTTMessages.Cap))
   ) = {
-    val session = new HoTTWebSession(state.web, bots)
+    val session = new HoTTWebSession(state.web, bots, completion)
     state.apexPosts.foreach {
       case pd: PostData[x, HoTTPostWeb, (Int, Int)] =>
         session.respond(pd.content, pd.id)(pd.pw)

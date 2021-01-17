@@ -105,7 +105,8 @@ class HoTTPostWeb {
       PostBuffer.build[EquationsCompleted.type, ID]() ::
       PostBuffer.build[TangentBaseCompleted.type, ID]() ::
       PostBuffer.build[TautologyInitState, ID]() ::
-      PostBuffer.build[ConsiderInductiveTypes, ID]() :: HNil
+      PostBuffer.build[ConsiderInductiveTypes, ID]() :: 
+      PostBuffer.build[Cap.type, ID]() :: HNil
 
   def snapShot: WebState[HoTTPostWeb, HoTTPostWeb.ID] =
     HoTTPostWeb.history.snapShot(this)
@@ -125,7 +126,7 @@ object HoTTPostWeb {
 
   val polyImpl2 = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer2)
 
-  implicit val (b39 :: b38 :: b37 :: b36 :: b35 :: b34 :: b33 :: b32 :: b31 :: b30 :: b29 :: b28 :: b27 ::
+  implicit val (b40 :: b39 :: b38 :: b37 :: b36 :: b35 :: b34 :: b33 :: b32 :: b31 :: b30 :: b29 :: b28 :: b27 ::
     b26 :: b25 :: b24 :: b23 :: HNil) = polyImpl2
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =
