@@ -42,6 +42,7 @@ object PostResponse {
         // logger.info(s"triggered response with type ${r.pw.tag}")
         Some(r.asInstanceOf[TypedPostResponse[Q, W, ID]])}
       else None
+    case _ => None
   }
 
   /**
@@ -64,6 +65,12 @@ object PostResponse {
     flip.map(_.flatten)
   }
 
+  def capResponse[P, W, ID](unit: P)(implicit pw : Postable[P, W, ID], ph: PostHistory[W, ID]) : W => Unit = {
+    web => 
+      val apex = ph.apexPosts(web).map(_.id).toSet
+      pw.post(unit, web, apex)
+  }
+
 }
 
 /**
@@ -77,6 +84,7 @@ class SimpleSession[W, ID](
     val web: W,
     var responses: Vector[PostResponse[W, ID]],
     logs: Vector[PostData[_, W, ID] => Future[Unit]],
+    val completionResponse: Option[W => Unit]
 ) {
       def running: Boolean = true
 
@@ -132,6 +140,7 @@ class SimpleSession[W, ID](
         }.andThen{
           (_) => completedResponses.append((postID, response))
           Utils.logger.info(s"global remaining responses: ${remainingResponses.size}")
+          if (remainingResponses.isEmpty) completionResponse.foreach(resp => resp(web))
         }
       }
   }
@@ -406,6 +415,26 @@ object TypedPostResponse {
 )
         task
       }
+
+      def triggerWith[R](implicit rw: Postable[R, W, ID], pq: LocalQueryable[P, W, ID]) = 
+      {implicit val lpv : LocalQueryable[P:: V :: HNil, W, ID] = LocalQueryable.hconsQueryable(implicitly, implicitly)
+        MiniBot[R, Q, W, P :: V :: HNil, ID](
+        {
+          case p :: v :: HNil =>
+            _ : R =>
+              responses(v)(p)
+        }
+      )
+      }
+
+    def triggerMap[R](transform: R => P)(implicit rw: Postable[R, W, ID]) = 
+      MiniBot[R, Q, W, V :: HNil, ID](
+        {
+          case  v :: HNil =>
+            r : R =>
+              responses(v)(transform(r))
+        }
+      )
   }
 
   /**

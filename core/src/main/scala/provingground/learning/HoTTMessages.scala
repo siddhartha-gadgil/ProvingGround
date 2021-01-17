@@ -20,6 +20,7 @@ import scala.collection.parallel.immutable._
   * Some types like `LocalProver`, `ExpressionEval`, `TermGenParams` etc can be posted in their raw form.
   */
 object HoTTMessages {
+  case object Cap
 
   /**
     * goals to seek, through whatever means,

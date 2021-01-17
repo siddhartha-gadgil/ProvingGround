@@ -187,7 +187,8 @@ object ChompSessionEq {
     reportProved,
     reportContradicted,
     topLevelRelevantGoalsBot[FailedToProve](true),
-    topLevelRelevantGoalsBot[Proved](true)
+    topLevelRelevantGoalsBot[Proved](true),
+    repostGoals()
   )
 
   lazy val wsF =
@@ -204,5 +205,5 @@ object ChompSessionEq {
     } yield ws9
 
   lazy val sessF: Future[HoTTWebSession] =
-    wsF.map(ws => HoTTWebSession.launch(ws, bots))
+    wsF.map(ws => HoTTWebSession.launch(ws, bots, Some(PostResponse.capResponse(HoTTMessages.Cap))))
 }
