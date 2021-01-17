@@ -187,7 +187,8 @@ object ChompSessionEq {
     reportProved,
     reportContradicted,
     topLevelRelevantGoalsBot[FailedToProve](true),
-    topLevelRelevantGoalsBot[Proved](true)
+    topLevelRelevantGoalsBot[Proved](true),
+    repostGoals()
   )
 
   lazy val wsF =

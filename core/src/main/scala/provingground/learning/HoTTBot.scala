@@ -2787,12 +2787,13 @@ object HoTTBot {
               .runToFuture
               .map {
                 case (fd, eqs) =>
-                  val initTerms = withVars.initState.terms.support union(withVars.initState.typs.support.map(x => x : Term))
+                  val initTerms = withVars.initState.terms.support union (withVars.initState.typs.support
+                    .map(x => x: Term))
                   val expEqs = EquationExporter.export(eqs, initTerms, newVars)
-                  val geqs = GeneratedEquationNodes(expEqs)
+                  val geqs   = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
-                    Utils.logger.info(
-                      s"""|Failed for ${TermRandomVars.termsWithTyp(goal.goal)}
+                    Utils.logger.info(s"""|Failed for ${TermRandomVars
+                                           .termsWithTyp(goal.goal)}
                           |initial state: ${withVars.initState}
                           |cutoff: ${withVars.cutoff}
                           |parameters : ${withVars.tg}""".stripMargin)
@@ -2869,6 +2870,49 @@ object HoTTBot {
     Callback(response, name = Some("remaining top level goals"))
   }
 
+  def repost[P](
+      implicit pw: Postable[P, HoTTPostWeb, ID]
+  ): MicroHoTTBoTT[Cap.type, P, P] = {
+    MicroBot((p: P) => (_) => Future(p))
+  }
+
+  def repostGoals(
+      context: Context = Context.Empty
+  ): MicroBot[
+    Cap.type,
+    LocalProver :: FinalState :: ChompResult :: HNil,
+    HoTTPostWeb,
+    Collated[LocalProver] :: GatherMapPost[
+      Decided
+    ] :: GatherPost[
+      SeekGoal
+    ] :: Set[Term] :: Collated[FinalState] :: HNil,
+    ID
+  ] = {
+    val response: Collated[LocalProver] :: GatherMapPost[Decided] :: GatherPost[
+      SeekGoal
+    ] :: Set[Term] :: Collated[FinalState] :: HNil => Cap.type => Future[
+      LocalProver :: FinalState :: ChompResult :: HNil
+    ] = {
+      case clp :: gdec :: gsg :: terms :: cfs :: _ =>
+        (_) =>
+          Future {
+            val topLevel = gsg.contents.filter(
+              goal => goal.forConsequences.isEmpty && goal.context == context
+            )
+            val dec       = gdec.contents
+            val remaining = topLevel.filter(x => x.relevantGiven(terms, dec))
+            clp.contents.head :: cfs.contents.head :: ChompResult(
+              Vector(),
+              remaining.toVector.map(_.goal),
+              Set()
+            ) :: HNil
+          }
+    }
+
+    MicroBot(response)
+  }
+
   // def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
   //   Future {
   //     translation.FansiShow.fansiPrint.log(post.pw.tag)
@@ -2895,7 +2939,7 @@ import HoTTBot._
 class HoTTWebSession(
     initialWeb: HoTTPostWeb = new HoTTPostWeb(),
     bots: Vector[HoTTBot] = HoTTWebSession.initBots,
-    completionResponse : Option[HoTTPostWeb => Unit]
+    completionResponse: Option[HoTTPostWeb => Unit]
 ) extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       bots,
@@ -2926,7 +2970,9 @@ object HoTTWebSession {
   def launch(
       state: WebState[HoTTPostWeb, (Int, Int)],
       bots: Vector[HoTTBot] = initBots,
-      completion: Option[HoTTPostWeb => Unit] = Some(PostResponse.capResponse(HoTTMessages.Cap))
+      completion: Option[HoTTPostWeb => Unit] = Some(
+        PostResponse.capResponse(HoTTMessages.Cap)
+      )
   ) = {
     val session = new HoTTWebSession(state.web, bots, completion)
     state.apexPosts.foreach {
