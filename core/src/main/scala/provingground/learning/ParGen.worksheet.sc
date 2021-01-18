@@ -29,3 +29,9 @@ val (ts3, _) = tpde.nextStateEqs(ParMapState(ParMap(f -> 0.5, g -> 0.5), ParMap(
 println(ts3.termDist.keys.to(Vector))
 val coeffs = teq.flatMap(e => Expression.atoms(e.rhs)).collect{case cf : Coeff[_] => cf}.toVector
 val cvs = coeffs.map(ParMapState.coeffVal(tg))
+import TypSolver._
+val solverA = LookupSolver(Set(a))
+val tgs = TermGenParams.zero.copy(termsByTypW = 0.1, solver = solverA, solverW = 0.3)
+val pdes = ParDistEq.fromParams(tgs)
+val (ssl, _) = pdes.nextStateEqs(ParMapState(ParMap(), ParMap(A -> 1.0)), 0.0001)
+ssl.termDist
