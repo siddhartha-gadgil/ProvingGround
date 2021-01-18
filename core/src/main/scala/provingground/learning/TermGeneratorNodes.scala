@@ -470,7 +470,7 @@ class TermGeneratorNodes[InitState](
     addVar: Typ[Term] => InitState => Double => (InitState, Term),
     getVar: Typ[Term] => Term,
     inIsle: (Term, InitState) => InitState,
-    solver: TypSolver = TypSolver.coreSolver
+    // solver: TypSolver = TypSolver.coreSolver
 ) {
 
   /**

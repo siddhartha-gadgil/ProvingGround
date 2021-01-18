@@ -218,7 +218,7 @@ object ParMapState {
         ParAddVar(_),
         GetVar,
         ParEnterIsle,
-        tg.solver
+        // tg.solver
       )
 
   def parGenNodes(tg: TermGenParams): TermGeneratorNodes[ParMapState] =
@@ -236,7 +236,7 @@ object ParMapState {
         ParAddVar(_),
         GetVar,
         ParEnterIsle,
-        TypSolver.coreSolver
+        // TypSolver.coreSolver
       )
 
   def parNodeSeq(tg: TermGenParams): TermNodeCoeffSeq[ParMapState] =

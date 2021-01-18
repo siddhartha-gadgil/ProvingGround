@@ -96,7 +96,7 @@ case class TermGenParamsNodes(tg: TermGenParams)
       AddVar(_),
       GetVar,
       EnterIsle,
-      tg.solver
+      // tg.solver
     )
 
 object TermNodeCoeffSeq {
@@ -148,7 +148,7 @@ abstract class TermNodeCoeffSeq[State](
     negTargetW: Double = 0,
     solverW: Double = 0,
     contraW: Double = 0,
-    solver: TypSolver = TypSolver.coreSolver
+    solver: TypSolver //= TypSolver.coreSolver
 ) {
   val Gen: TermGeneratorNodes[State]
 

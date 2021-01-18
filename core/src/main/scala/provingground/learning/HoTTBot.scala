@@ -923,6 +923,40 @@ object HoTTBot {
     MicroBot(response, name = Some("concurrent chomp"))
   }
 
+  def finalStateToParallelChomp(
+      solverWeight: Double = 0.05,
+      concurrency: Int = Utils.threadNum
+  ): MicroBot[
+    FinalState,
+    ChompResult,
+    HoTTPostWeb,
+    Set[HoTT.Term] :: QueryProver :: HNil,
+    ID
+  ] = {
+    val response: (Set[Term] :: QueryProver :: HNil) => FinalState => Future[
+      ChompResult
+    ] = {
+      case (terms :: qp :: HNil) => {
+        case fs =>
+          val unknowns = fs.ts.orderedUnknowns
+          val lp       = qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight))
+          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknown groups")
+          Future {
+            val (s, fl, eqs, _) = StrategicProvers
+              .parChomper(
+                unknowns,
+                ParMapState.fromTermState(lp.initState),
+                lp.tg,
+                lp.cutoff,
+                accumTerms = terms
+              )
+            ChompResult(s, fl, eqs)
+          }
+      }
+    }
+    MicroBot(response, name = Some("concurrent chomp"))
+  }
+
   def finalStateToLiberalChomp(solverWeight: Double = 0.05): MicroBot[
     FinalState,
     ChompResult,
@@ -2745,6 +2779,85 @@ object HoTTBot {
     MicroBot(response, subContext, name = Some("attempting goal"))
   }
 
+  def parGoalAttemptEqs(
+      varWeight: Double
+  ): MicroBot[SeekGoal, Option[
+    GeneratedEquationNodes :: Either[FailedToProve, Proved] :: HNil
+  ], HoTTPostWeb, QueryProver :: Set[
+    HoTT.Term
+  ] :: GatherMapPost[Decided] :: HNil, ID] = {
+    // check whether the provers context is an initial segment of the context of the goal
+    val subContext: SeekGoal => QueryProver :: Set[Term] :: GatherMapPost[
+      Decided
+    ] :: HNil => Boolean =
+      (goal) => {
+        case (qp: QueryProver) :: terms :: _ :: HNil => {
+          val lpVars   = qp.lp.initState.context.variables
+          val goalVars = goal.context.variables
+          lpVars == goalVars.take(lpVars.size)
+        }
+      }
+
+    val response
+        : QueryProver :: Set[Term] :: GatherMapPost[Decided] :: HNil => SeekGoal => Future[
+          Option[
+            GeneratedEquationNodes :: Either[FailedToProve, Proved] :: HNil
+          ]
+        ] = {
+      case (qp: QueryProver) :: terms :: gp :: HNil =>
+        // pprint.log(qp)
+        goal =>
+          if (goal.relevantGiven(terms, gp.contents)) {
+            val lpVars   = qp.lp.initState.context.variables
+            val goalVars = goal.context.variables
+            val newVars  = goalVars.drop(lpVars.size)
+            val withVars = newVars.foldLeft(qp.lp) {
+              case (lp: LocalProver, x: Term) =>
+                lp.addVar(x, varWeight)
+            }
+            Utils.logger.info(s"initial state ${withVars.initState}")
+            val pde = ParDistEq.fromParams(qp.lp.tg, qp.lp.tg.varWeight)
+            Future {
+              val (fd, eqs) = pde.varDist(
+                ParMapState.fromTermState(withVars.initState),
+                withVars.genMaxDepth,
+                withVars.halted()
+              )(TermRandomVars.termsWithTyp(goal.goal), withVars.cutoff)
+              val initTerms = withVars.initState.terms.support union (withVars.initState.typs.support
+                .map(x => x: Term))
+              val expEqs =
+                EquationExporter.export(eqs.to(Set), initTerms, newVars)
+              val geqs = GeneratedEquationNodes(expEqs)
+              Some(geqs :: {
+                Utils.logger.info(s"""|Failed for ${TermRandomVars
+                                       .termsWithTyp(goal.goal)}
+                          |initial state: ${withVars.initState}
+                          |cutoff: ${withVars.cutoff}
+                          |parameters : ${withVars.tg}""".stripMargin)
+                if (fd.isEmpty)
+                  Left(
+                    FailedToProve(
+                      goal.goal,
+                      goal.context,
+                      goal.forConsequences
+                    )
+                  )
+                else {
+                  val best = fd.maxBy(_._2)._1
+                  Right(Proved(goal.goal, Some(best), goal.context))
+                }
+              } :: HNil)
+            }
+          } else Future.successful(None)
+    }
+
+    MicroBot(
+      response,
+      subContext,
+      name = Some("attempting goal with equations")
+    )
+  }
+
   def goalAttemptEqs(
       varWeight: Double
   ): MicroBot[SeekGoal, Option[
@@ -2876,30 +2989,39 @@ object HoTTBot {
     MicroBot((p: P) => (_) => Future(p))
   }
 
-  def repostGoals(lp: LocalProver,
-      context: Context = Context.Empty
-  ): MicroBot[
+  def repostGoals(lp: LocalProver, context: Context = Context.Empty): MicroBot[
     Cap.type,
     LocalProver :: FinalState :: ChompResult :: HNil,
     HoTTPostWeb,
-     ChompResult :: GatherPost[
+    ChompResult :: GatherPost[
       Proved
-    ]  :: GatherPost[FinalState] :: HNil,
+    ] :: GatherPost[FinalState] :: HNil,
     ID
   ] = {
     val response: ChompResult :: GatherPost[
       Proved
-    ]  :: GatherPost[FinalState] :: HNil => Cap.type => Future[
+    ] :: GatherPost[FinalState] :: HNil => Cap.type => Future[
       LocalProver :: FinalState :: ChompResult :: HNil
     ] = {
-      case cr :: gprvd ::  cfs :: _ =>
+      case cr :: gprvd :: cfs :: _ =>
         (_) =>
-          val newProofs = gprvd.contents.filter{pr => pr.context == context && cr.failures.contains(pr.statement)}.toVector
-          Utils.logger.info(s"New top-level proofs obtained: ${newProofs.mkString("\n", "\n", "\n")}")
+          val newProofs = gprvd.contents.filter { pr =>
+            pr.context == context && cr.failures.contains(pr.statement)
+          }.toVector
+          Utils.logger.info(
+            s"New top-level proofs obtained: ${newProofs.mkString("\n", "\n", "\n")}"
+          )
           val fs = cfs.contents.head
           Future {
             lp :: fs :: ChompResult(
-              cr.successes ++ newProofs.map(pr => (pr.statement, 0.0, pr.proofOpt.getOrElse("proved" :: pr.statement))),
+              cr.successes ++ newProofs.map(
+                pr =>
+                  (
+                    pr.statement,
+                    0.0,
+                    pr.proofOpt.getOrElse("proved" :: pr.statement)
+                  )
+              ),
               cr.failures.filterNot(newProofs.map(_.statement).contains(_)),
               Set()
             ) :: HNil
@@ -2935,7 +3057,9 @@ import HoTTBot._
 class HoTTWebSession(
     initialWeb: HoTTPostWeb = new HoTTPostWeb(),
     bots: Vector[HoTTBot] = HoTTWebSession.initBots,
-    completionResponse: Option[HoTTPostWeb => Future[PostData[_, HoTTPostWeb, ID]]]
+    completionResponse: Option[
+      HoTTPostWeb => Future[PostData[_, HoTTPostWeb, ID]]
+    ]
 ) extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       bots,
@@ -2966,7 +3090,9 @@ object HoTTWebSession {
   def launch(
       state: WebState[HoTTPostWeb, (Int, Int)],
       bots: Vector[HoTTBot] = initBots,
-      completion: Option[HoTTPostWeb => Future[PostData[_, HoTTPostWeb, (Int, Int)]]] = Some(
+      completion: Option[
+        HoTTPostWeb => Future[PostData[_, HoTTPostWeb, (Int, Int)]]
+      ] = Some(
         PostResponse.capResponse(HoTTMessages.Cap)
       )
   ) = {
