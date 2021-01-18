@@ -2876,35 +2876,39 @@ object HoTTBot {
     MicroBot((p: P) => (_) => Future(p))
   }
 
-  def repostGoals(
-      context: Context = Context.Empty
-  ): MicroBot[
+  def repostGoals(lp: LocalProver, context: Context = Context.Empty): MicroBot[
     Cap.type,
-    LocalProver :: FinalState :: ChompResult :: HNil,
+    LocalProver :: ChompResult :: HNil,
     HoTTPostWeb,
-    Collated[LocalProver] :: GatherMapPost[
-      Decided
-    ] :: GatherPost[
-      SeekGoal
-    ] :: Set[Term] :: Collated[FinalState] :: HNil,
+    ChompResult :: GatherPost[
+      Proved
+    ] :: HNil,
     ID
   ] = {
-    val response: Collated[LocalProver] :: GatherMapPost[Decided] :: GatherPost[
-      SeekGoal
-    ] :: Set[Term] :: Collated[FinalState] :: HNil => Cap.type => Future[
-      LocalProver :: FinalState :: ChompResult :: HNil
+    val response: ChompResult :: GatherPost[
+      Proved
+    ] :: HNil => Cap.type => Future[
+      LocalProver :: ChompResult :: HNil
     ] = {
-      case clp :: gdec :: gsg :: terms :: cfs :: _ =>
+      case cr :: gprvd :: _ =>
         (_) =>
+          val newProofs = gprvd.contents.filter { pr =>
+            pr.context == context && cr.failures.contains(pr.statement)
+          }.toVector
+          Utils.logger.info(
+            s"New top-level proofs obtained: ${newProofs.mkString("\n", "\n", "\n")}"
+          )
           Future {
-            val topLevel = gsg.contents.filter(
-              goal => goal.forConsequences.isEmpty && goal.context == context
-            )
-            val dec       = gdec.contents
-            val remaining = topLevel.filter(x => x.relevantGiven(terms, dec))
-            clp.contents.head :: cfs.contents.head :: ChompResult(
-              Vector(),
-              remaining.toVector.map(_.goal),
+            lp :: ChompResult(
+              cr.successes ++ newProofs.map(
+                pr =>
+                  (
+                    pr.statement,
+                    0.0,
+                    pr.proofOpt.getOrElse("proved" :: pr.statement)
+                  )
+              ),
+              cr.failures.filterNot(newProofs.map(_.statement).contains(_)),
               Set()
             ) :: HNil
           }
@@ -2939,7 +2943,9 @@ import HoTTBot._
 class HoTTWebSession(
     initialWeb: HoTTPostWeb = new HoTTPostWeb(),
     bots: Vector[HoTTBot] = HoTTWebSession.initBots,
-    completionResponse: Option[HoTTPostWeb => Future[PostData[_, HoTTPostWeb, ID]]]
+    completionResponse: Option[
+      HoTTPostWeb => Future[PostData[_, HoTTPostWeb, ID]]
+    ]
 ) extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       bots,
@@ -2970,7 +2976,9 @@ object HoTTWebSession {
   def launch(
       state: WebState[HoTTPostWeb, (Int, Int)],
       bots: Vector[HoTTBot] = initBots,
-      completion: Option[HoTTPostWeb => Future[PostData[_, HoTTPostWeb, (Int, Int)]]] = Some(
+      completion: Option[
+        HoTTPostWeb => Future[PostData[_, HoTTPostWeb, (Int, Int)]]
+      ] = Some(
         PostResponse.capResponse(HoTTMessages.Cap)
       )
   ) = {
