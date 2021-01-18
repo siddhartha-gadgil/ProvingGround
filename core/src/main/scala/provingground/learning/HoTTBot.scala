@@ -2876,38 +2876,30 @@ object HoTTBot {
     MicroBot((p: P) => (_) => Future(p))
   }
 
-  def repostGoals(lp: LocalProver, context: Context = Context.Empty): MicroBot[
+  def repostGoals(lp: LocalProver,
+      context: Context = Context.Empty
+  ): MicroBot[
     Cap.type,
-    LocalProver :: ChompResult :: HNil,
+    LocalProver :: FinalState :: ChompResult :: HNil,
     HoTTPostWeb,
-    ChompResult :: GatherPost[
+     ChompResult :: GatherPost[
       Proved
-    ] :: HNil,
+    ]  :: Collated[FinalState] :: HNil,
     ID
   ] = {
     val response: ChompResult :: GatherPost[
       Proved
-    ] :: HNil => Cap.type => Future[
-      LocalProver :: ChompResult :: HNil
+    ]  :: Collated[FinalState] :: HNil => Cap.type => Future[
+      LocalProver :: FinalState :: ChompResult :: HNil
     ] = {
-      case cr :: gprvd :: _ =>
+      case cr :: gprvd ::  cfs :: _ =>
         (_) =>
-          val newProofs = gprvd.contents.filter { pr =>
-            pr.context == context && cr.failures.contains(pr.statement)
-          }.toVector
-          Utils.logger.info(
-            s"New top-level proofs obtained: ${newProofs.mkString("\n", "\n", "\n")}"
-          )
+          val newProofs = gprvd.contents.filter{pr => pr.context == context && cr.failures.contains(pr.statement)}.toVector
+          Utils.logger.info(s"New top-level proofs obtained: ${newProofs.mkString("\n", "\n", "\n")}")
+          val fs = cfs.contents.head
           Future {
-            lp :: ChompResult(
-              cr.successes ++ newProofs.map(
-                pr =>
-                  (
-                    pr.statement,
-                    0.0,
-                    pr.proofOpt.getOrElse("proved" :: pr.statement)
-                  )
-              ),
+            lp :: fs :: ChompResult(
+              cr.successes ++ newProofs.map(pr => (pr.statement, 0.0, pr.proofOpt.getOrElse("proved" :: pr.statement))),
               cr.failures.filterNot(newProofs.map(_.statement).contains(_)),
               Set()
             ) :: HNil
@@ -2943,9 +2935,7 @@ import HoTTBot._
 class HoTTWebSession(
     initialWeb: HoTTPostWeb = new HoTTPostWeb(),
     bots: Vector[HoTTBot] = HoTTWebSession.initBots,
-    completionResponse: Option[
-      HoTTPostWeb => Future[PostData[_, HoTTPostWeb, ID]]
-    ]
+    completionResponse: Option[HoTTPostWeb => Future[PostData[_, HoTTPostWeb, ID]]]
 ) extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       bots,
@@ -2976,9 +2966,7 @@ object HoTTWebSession {
   def launch(
       state: WebState[HoTTPostWeb, (Int, Int)],
       bots: Vector[HoTTBot] = initBots,
-      completion: Option[
-        HoTTPostWeb => Future[PostData[_, HoTTPostWeb, (Int, Int)]]
-      ] = Some(
+      completion: Option[HoTTPostWeb => Future[PostData[_, HoTTPostWeb, (Int, Int)]]] = Some(
         PostResponse.capResponse(HoTTMessages.Cap)
       )
   ) = {
