@@ -2884,12 +2884,12 @@ object HoTTBot {
     HoTTPostWeb,
      ChompResult :: GatherPost[
       Proved
-    ]  :: Collated[FinalState] :: HNil,
+    ]  :: GatherPost[FinalState] :: HNil,
     ID
   ] = {
     val response: ChompResult :: GatherPost[
       Proved
-    ]  :: Collated[FinalState] :: HNil => Cap.type => Future[
+    ]  :: GatherPost[FinalState] :: HNil => Cap.type => Future[
       LocalProver :: FinalState :: ChompResult :: HNil
     ] = {
       case cr :: gprvd ::  cfs :: _ =>
