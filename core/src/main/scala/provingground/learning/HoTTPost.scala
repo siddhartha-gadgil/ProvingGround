@@ -217,6 +217,8 @@ object HoTTPost {
 
       def redirects(web: HoTTPost): Map[ID, Set[ID]] = Map()
 
+      override def postTags(web: HoTTPost): Vector[(reflect.runtime.universe.TypeTag[_], ID, Option[Set[ID]])] = ???
+
     }
 
   def allPostFullData(
