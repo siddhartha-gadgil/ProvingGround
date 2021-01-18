@@ -19,13 +19,17 @@ trait GlobalPost[P, ID] {
 /**
   * A buffer for storing posts, extending `GlobalPost` which supplies an ID
   */
-trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
+abstract class PostBuffer[P, ID](implicit val tag: TypeTag[P])
+    extends GlobalPost[P, ID] { self =>
   val buffer: ArrayBuffer[(P, ID, Set[ID])] = ArrayBuffer()
+
+  val indexBuffer: ArrayBuffer[(ID, Set[ID])] = ArrayBuffer()
 
   def post(content: P, prev: Set[ID]): Future[ID] = {
     val idT = postGlobal(content)
     idT.map { id =>
       buffer += ((content, id, prev))
+      indexBuffer += ((id, prev))
       id
     }
   }
@@ -33,6 +37,7 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   def postAt(content: P, id: ID, prev: Set[ID]): Future[Unit] =
     Future {
       buffer.append((content, id, prev))
+      indexBuffer.append((id, prev))
     }
 
   def find[W](index: ID)(
@@ -51,6 +56,9 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   ): Vector[(PostData[P, W, ID], ID, Set[ID])] =
     buffer.map { case (p, id, preds) => (PostData(p, id), id, preds) }.toVector
 
+  def tagData: Vector[(TypeTag[_], ID, Option[Set[ID]])] = indexBuffer.toVector.map {
+    case (id, prev) => (tag, id, Some(prev))
+  }
 }
 
 @deprecated("using HoTTPostWeb", "soon")
@@ -112,7 +120,9 @@ object ErasablePostBuffer {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] = {
         val idF = buffer(web).post(content, pred)
         idF.map { id =>
-          logger.info(s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, hash : ${content.hashCode()}")
+          logger.info(
+            s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, hash : ${content.hashCode()}"
+          )
           logger.debug(
             s"Full post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}"
           )
@@ -130,7 +140,10 @@ object ErasablePostBuffer {
     }
   }
 
-  def build[P, ID](frgtThisOpt: Option[Boolean] = None, bufferStore: Int = 1)(implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
+  def build[P: TypeTag, ID](
+      frgtThisOpt: Option[Boolean] = None,
+      bufferStore: Int = 1
+  )(implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
     new ErasablePostBuffer[P, ID] {
       var forgetThisOpt: Option[Boolean] = frgtThisOpt
 
@@ -141,14 +154,18 @@ object ErasablePostBuffer {
 
 }
 
-trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
-  var forgetThisOpt : Option[Boolean]
+abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
+    extends GlobalPost[P, ID] { self =>
+  var forgetThisOpt: Option[Boolean]
 
-  def forgetPosts: Boolean = forgetThisOpt.getOrElse(ErasablePostBuffer.forgetDefault)
+  def forgetPosts: Boolean =
+    forgetThisOpt.getOrElse(ErasablePostBuffer.forgetDefault)
 
   val bufferMemory: Int
 
   val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
+
+  val indexBuffer: ArrayBuffer[(ID, Set[ID])] = ArrayBuffer()
 
   def redirects: Map[ID, Set[ID]] =
     buffer.collect { case (None, id, preds) => id -> preds }.toMap
@@ -159,11 +176,12 @@ trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
       if (forgetPosts) buffer += ((None, id, prev))
       else {
         buffer += ((Some(content), id, prev))
-        if (ErasablePostBuffer.eraseOld && buffer.size > bufferMemory) (0 until(buffer.size - bufferMemory)).foreach{
-          j =>
+        indexBuffer += ((id, prev))
+        if (ErasablePostBuffer.eraseOld && buffer.size > bufferMemory)
+          (0 until (buffer.size - bufferMemory)).foreach { j =>
             val (index, prev) = (buffer(j)._2, buffer(j)._3)
             buffer.update(j, (None, index, prev))
-        }
+          }
       }
       id
     }
@@ -195,6 +213,9 @@ trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
         pOpt.map(p => (PostData[P, W, ID](p, id), id, preds))
     }.toVector
 
+  def tagData: Vector[(TypeTag[_], ID, Option[Set[ID]])] = indexBuffer.toVector.map {
+    case (id, prev) => (tag, id, Some(prev))
+  }
 }
 
 @deprecated("using HoTTPostWeb", "soon")
@@ -218,12 +239,14 @@ object PostBuffer {
     * @param globalPost the supplier of the ID
     * @return buffer storing posts
     */
-  def apply[P, ID](globalPost: => (P => Future[ID])): PostBuffer[P, ID] =
+  def apply[P: TypeTag, ID](
+      globalPost: => (P => Future[ID])
+  ): PostBuffer[P, ID] =
     new PostBuffer[P, ID] {
       def postGlobal(content: P): Future[ID] = globalPost(content)
     }
 
-  def build[P, ID]()(implicit gp: GlobalID[ID]): PostBuffer[P, ID] =
+  def build[P: TypeTag, ID]()(implicit gp: GlobalID[ID]): PostBuffer[P, ID] =
     new PostBuffer[P, ID] {
       def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
     }

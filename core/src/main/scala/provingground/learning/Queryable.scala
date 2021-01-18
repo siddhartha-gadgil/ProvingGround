@@ -112,6 +112,13 @@ case class AnswerFromPost[P, U, W, ID](func: P => U)(
     else None
 }
 
+  case class LatestTagged[Q, W, ID]()(implicit val tag: TypeTag[Q], h: PostHistory[W, ID]) extends LocalQueryable[Q, W, ID]{
+    def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] = 
+    Future{
+      h.latestTagged(web, id).toVector
+    }
+  }
+
 /**
   * Queries answered by taking the latest out of possibly many choices of posts to be looked up and transformed.
   *

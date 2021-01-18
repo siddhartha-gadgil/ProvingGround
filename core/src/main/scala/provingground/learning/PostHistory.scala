@@ -28,10 +28,7 @@ trait PostHistory[W, ID] {
 
   def snapShot(web: W): WebState[W, ID] = WebState(web, apexPosts(web))
 
-  def postTags(web: W): Vector[(TypeTag[_], ID, Option[Set[ID]])] =
-    allPosts(web).map { pd: PostData[_, W, ID] =>
-      (pd.pw.tag: TypeTag[_], pd.id, findPost(web, pd.id).map(_._2))
-    }.toVector
+  def postTags(web: W): Vector[(TypeTag[_], ID, Option[Set[ID]])]
 
   def history(web: W, id: ID): LazyList[PostData[_, W, ID]] = {
     val next: (
@@ -77,6 +74,14 @@ trait PostHistory[W, ID] {
       )
       .getOrElse(Set())
 
+  def latestTagged[Q](
+    web: W,
+    id: ID
+  )(implicit tag: TypeTag[Q]) : Set[Q] = 
+      PostHistory.latestTaggedID(id, postTags(web), redirects(web)).flatMap{
+        id => findPost(web, id)
+      }.map(_._1.content.asInstanceOf[Q])
+
   def previousAnswers[Q](
       web: W,
       id: ID
@@ -98,11 +103,30 @@ trait PostHistory[W, ID] {
 }
 
 object PostHistory {
+  def latestTaggedID[Q, ID](
+      id: ID,
+      data: Vector[(TypeTag[_], ID, Option[Set[ID]])],
+      redirects: Map[ID, Set[ID]]
+  )(implicit tag: TypeTag[Q]): Set[ID] =
+    data
+      .find(_._1.tpe =:= tag.tpe)
+      .map(x => Set(x._2))
+      .orElse(
+        redirects
+          .get(id)
+          .map(ids => ids.flatMap(rid => latestTaggedID(rid, data, redirects)))
+      )
+      .getOrElse(Set())
   case class Empty[W, ID]() extends PostHistory[W, ID] {
     def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] =
       None
     def allPosts(web: W): View[PostData[_, W, ID]] = Seq().view
-    def redirects(web: W): Map[ID, Set[ID]]                   = Map()
+    def redirects(web: W): Map[ID, Set[ID]]        = Map()
+
+    def postTags(
+        web: W
+    ): Vector[(reflect.runtime.universe.TypeTag[_], ID, Option[Set[ID]])] =
+      Vector()
   }
 
   case class Or[W, ID](first: PostHistory[W, ID], second: PostHistory[W, ID])
@@ -113,6 +137,11 @@ object PostHistory {
       first.allPosts(web) ++ second.allPosts(web)
     def redirects(web: W): Map[ID, Set[ID]] =
       first.redirects(web) ++ second.redirects(web)
+
+    def postTags(
+        web: W
+    ): Vector[(reflect.runtime.universe.TypeTag[_], ID, Option[Set[ID]])] =
+      first.postTags(web) ++ second.postTags(web)
   }
 
   def get[W, B, ID](buffer: W => B)(
@@ -160,6 +189,10 @@ object HistoryGetter {
           def allPosts(web: W): View[PostData[_, W, ID]] =
             buffer(web).bufferData.view
           def redirects(web: W): Map[ID, Set[ID]] = Map()
+
+          def postTags(web: W): Vector[
+            (reflect.runtime.universe.TypeTag[_], ID, Option[Set[ID]])
+          ] = buffer(web).tagData
         }
     }
 
@@ -178,6 +211,10 @@ object HistoryGetter {
           def allPosts(web: W): View[PostData[_, W, ID]] =
             buffer(web).bufferData.view
           def redirects(web: W): Map[ID, Set[ID]] = buffer(web).redirects
+
+          def postTags(web: W): Vector[
+            (reflect.runtime.universe.TypeTag[_], ID, Option[Set[ID]])
+          ] = buffer(web).tagData
         }
     }
 
@@ -190,9 +227,13 @@ object HistoryGetter {
           def findPost(
               web: W,
               index: ID
-          ): Option[(PostData[_, W, ID], Set[ID])]                  = None
+          ): Option[(PostData[_, W, ID], Set[ID])]       = None
           def allPosts(web: W): View[PostData[_, W, ID]] = Seq().view
-          def redirects(web: W): Map[ID, Set[ID]]                   = Map()
+          def redirects(web: W): Map[ID, Set[ID]]        = Map()
+
+          def postTags(web: W): Vector[
+            (reflect.runtime.universe.TypeTag[_], ID, Option[Set[ID]])
+          ] = Vector()
         }
     }
 }
