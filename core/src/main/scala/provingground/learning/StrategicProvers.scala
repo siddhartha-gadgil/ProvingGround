@@ -19,6 +19,8 @@ import monix.tail.Iterant
 
 import collection.mutable.ArrayBuffer
 import scala.util.Success
+import scala.collection.parallel._
+import provingground.learning.TypSolver.LookupSolver
 
 object StrategicProvers {
   type Successes =
@@ -112,6 +114,46 @@ object StrategicProvers {
       if (sr._1.nonEmpty) Task.now(sr)
       else seekTyp(lp, negate(typ), terms).map(nsr => SeekResult.or(sr, nsr))
     }
+
+  def parSeekTyp(
+      typ: Typ[Term],
+      initState: ParMapState,
+      tg: TermGenParams,
+      cutoff: Double,
+      terms: Set[Term]
+  ): SeekResult = {
+    val tgSolve =
+      if (tg.solverW == 0) tg
+      else {
+        val solverL = tg.solver.||(LookupSolver(terms))
+        tg.copy(solver = solverL)
+      }
+    val pde = ParDistEq.fromParams(tgSolve)
+    val (dist, eqs) = pde.varDist(initState, None, false)(
+      TermRandomVars.termsWithTyp(typ),
+      cutoff
+    )
+    if (dist.isEmpty) (Vector(), eqs.to(Set), Set())
+    else {
+      val best = dist.maxBy(_._2)
+      (Vector((typ, best._2, best._1)), eqs.to(Set), dist.keySet.to(Set))
+    }
+  }
+
+  def parSolveTyp(
+      typ: Typ[Term],
+      initState: ParMapState,
+      tg: TermGenParams,
+      cutoff: Double,
+      terms: Set[Term]
+  ): SeekResult = {
+    val sr = parSeekTyp(typ, initState, tg, cutoff, terms)
+    if (sr._1.nonEmpty) sr 
+    else {
+      val nsr = parSeekTyp(typ, initState, tg, cutoff, terms)
+      SeekResult.or(sr, nsr)
+    }
+  }
 
   val successes: ArrayBuffer[Successes] = ArrayBuffer()
 
@@ -237,6 +279,56 @@ object StrategicProvers {
         }
     }
 
+  def parChomper(typs: Vector[Typ[Term]],
+      initState: ParMapState,
+      tg: TermGenParams,
+      cutoff: Double,
+      accumSucc: Successes = Vector(),
+      accumFail: Vector[Typ[Term]] = Vector(),
+      accumEqs: Set[EquationNode] = Set(),
+      accumTerms: Set[Term] = Set(),
+      ) : (
+        Successes,
+        Vector[Typ[Term]], // failures
+        Set[EquationNode],
+        Set[Term]
+    ) = 
+      typs match {
+        case Vector() => (accumSucc, accumFail, accumEqs, accumTerms)
+        case typ +: ys =>
+          val (ss, eqs, terms) = parSolveTyp(typ, initState, tg, cutoff, accumTerms)
+          if (ss.isEmpty) {
+            Utils.logger.info(s"failed to prove $typ")
+            parChomper(
+              ys,
+              initState,
+              tg,
+              cutoff,
+              accumSucc,
+              accumFail :+ typ,
+              accumEqs union eqs,
+              accumTerms union(terms)
+            )
+          }
+          else 
+          { 
+            ss.foreach(
+                s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
+              )
+              Utils.logger.info(s"goals remaining ${ys.size}")
+            parChomper(
+              ys,
+              initState,
+              tg,
+              cutoff,
+              accumSucc ++ ss,
+              accumFail,
+              accumEqs union eqs,
+              accumTerms union(terms)
+            )
+          }
+      }
+
   def concurrentTargetChomper(
       lp: LocalProver,
       typGroups: Vector[Vector[Typ[Term]]],
@@ -257,7 +349,9 @@ object StrategicProvers {
       case Vector() =>
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typGroup +: ys =>
-        Utils.logger.info(s"seeking result for group ${typGroup.mkString(" ; ")}")
+        Utils.logger.info(
+          s"seeking result for group ${typGroup.mkString(" ; ")}"
+        )
         val resultGroup =
           typGroup.map { typ =>
             solveTyp(lp, typ, accumTerms)
@@ -273,7 +367,8 @@ object StrategicProvers {
         result.flatMap {
           case ((ss, eqs, terms), failures) =>
             Utils.logger.info(s"proved ${ss.size} results")
-            if (failures.nonEmpty) Utils.logger.info(s"failed to prove ${failures.mkString("\n")}")
+            if (failures.nonEmpty)
+              Utils.logger.info(s"failed to prove ${failures.mkString("\n")}")
             Utils.logger.info(s"remaining ${ys.size} groups to prove/disprove")
             equationNodes = equationNodes union (eqs)
             termSet = termSet union (terms)
