@@ -63,7 +63,7 @@ object Queryable {
           predicate: GatherPost[P] => Boolean
       ): Future[GatherPost[P]] =
         Future(
-          GatherPost(ph.allPosts(web).flatMap(_.getOpt[P]).toSet)
+          GatherPost(ph.allTagged[P](web)(pw.tag).flatMap(_.getOpt[P]).toSet)
         )
     }
 

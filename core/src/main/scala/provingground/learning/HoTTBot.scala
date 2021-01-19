@@ -3028,7 +3028,7 @@ object HoTTBot {
           }
     }
 
-    MicroBot(response)
+    MicroBot(response, name = Some("reposting goals"))
   }
 
   // def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =

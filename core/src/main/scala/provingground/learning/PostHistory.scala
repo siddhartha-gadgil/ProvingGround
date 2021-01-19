@@ -30,6 +30,13 @@ trait PostHistory[W, ID] {
 
   def postTags(web: W): Vector[(TypeTag[_], ID, Option[Set[ID]])]
 
+  def allTagged[Q](
+      web: W
+  )(implicit tag: TypeTag[Q]) =
+    postTags(web).toSet.filter(_._1.tpe =:= tag.tpe).flatMap {
+      case (_, id, _) => findPost(web, id).map(_._1)
+    }
+
   def history(web: W, id: ID): LazyList[PostData[_, W, ID]] = {
     val next: (
         (Set[PostData[_, W, ID]], Set[ID])
@@ -75,12 +82,15 @@ trait PostHistory[W, ID] {
       .getOrElse(Set())
 
   def latestTagged[Q](
-    web: W,
-    id: ID
-  )(implicit tag: TypeTag[Q]) : Set[Q] = 
-      PostHistory.latestTaggedID(id, postTags(web), redirects(web)).flatMap{
-        id => findPost(web, id)
-      }.map(_._1.content.asInstanceOf[Q])
+      web: W,
+      id: ID
+  )(implicit tag: TypeTag[Q]): Set[Q] =
+    PostHistory
+      .latestTaggedID(id, postTags(web), redirects(web))
+      .flatMap { id =>
+        findPost(web, id)
+      }
+      .map(_._1.content.asInstanceOf[Q])
 
   def previousAnswers[Q](
       web: W,

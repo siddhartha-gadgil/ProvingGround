@@ -3,7 +3,7 @@ package provingground.learning
 import monix.execution.Scheduler.Implicits.global
 import shapeless._
 import scala.concurrent.Future
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable, mutable.ArrayBuffer
 import scala.util._
 import scala.reflect.runtime.universe._
 import provingground._, Utils.logger
@@ -25,11 +25,14 @@ abstract class PostBuffer[P, ID](implicit val tag: TypeTag[P])
 
   val indexBuffer: ArrayBuffer[(ID, Set[ID])] = ArrayBuffer()
 
+  val indexMap: mutable.Map[ID, Int] = mutable.Map()
+
   def post(content: P, prev: Set[ID]): Future[ID] = {
     val idT = postGlobal(content)
     idT.map { id =>
       buffer += ((content, id, prev))
       indexBuffer += ((id, prev))
+      indexMap.update(id, indexBuffer.size - 1)
       id
     }
   }
@@ -38,13 +41,19 @@ abstract class PostBuffer[P, ID](implicit val tag: TypeTag[P])
     Future {
       buffer.append((content, id, prev))
       indexBuffer.append((id, prev))
+      indexMap.update(id, indexBuffer.size - 1)
     }
 
   def find[W](index: ID)(
       implicit pw: Postable[P, W, ID]
-  ): Option[(PostData[P, W, ID], Set[ID])] = buffer.find(_._2 == index).map {
-    case (p, _, preds) => (PostData[P, W, ID](p, index), preds)
-  }
+  ): Option[(PostData[P, W, ID], Set[ID])] =
+    indexMap.get(index).map { n =>
+      val (p, _, preds) = buffer(n)
+      (PostData[P, W, ID](p, index), preds)
+    }
+  // buffer.find(_._2 == index).map {
+  //   case (p, _, preds) => (PostData[P, W, ID](p, index), preds)
+  // }
 
   def bufferData[W](
       implicit pw: Postable[P, W, ID]
@@ -56,9 +65,10 @@ abstract class PostBuffer[P, ID](implicit val tag: TypeTag[P])
   ): Vector[(PostData[P, W, ID], ID, Set[ID])] =
     buffer.map { case (p, id, preds) => (PostData(p, id), id, preds) }.toVector
 
-  def tagData: Vector[(TypeTag[_], ID, Option[Set[ID]])] = indexBuffer.toVector.map {
-    case (id, prev) => (tag, id, Some(prev))
-  }
+  def tagData: Vector[(TypeTag[_], ID, Option[Set[ID]])] =
+    indexBuffer.toVector.map {
+      case (id, prev) => (tag, id, Some(prev))
+    }
 }
 
 @deprecated("using HoTTPostWeb", "soon")
@@ -167,6 +177,8 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
 
   val indexBuffer: ArrayBuffer[(ID, Set[ID])] = ArrayBuffer()
 
+  val indexMap: mutable.Map[ID, Int] = mutable.Map()
+
   def redirects: Map[ID, Set[ID]] =
     buffer.collect { case (None, id, preds) => id -> preds }.toMap
 
@@ -177,6 +189,7 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
       else {
         buffer += ((Some(content), id, prev))
         indexBuffer += ((id, prev))
+        indexMap.update(id, indexBuffer.size - 1)
         if (ErasablePostBuffer.eraseOld && buffer.size > bufferMemory)
           (0 until (buffer.size - bufferMemory)).foreach { j =>
             val (index, prev) = (buffer(j)._2, buffer(j)._3)
@@ -190,10 +203,14 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
   def find[W](
       index: ID
   )(implicit pw: Postable[P, W, ID]): Option[(PostData[P, W, ID], Set[ID])] =
-    buffer.find(_._2 == index).flatMap {
-      case (pOpt, _, preds) =>
-        pOpt.map(p => (PostData[P, W, ID](p, index), preds))
+    indexMap.get(index).flatMap { n =>
+      val (pOpt, _, preds) = buffer(n)
+      pOpt.map(p => (PostData[P, W, ID](p, index), preds))
     }
+  // buffer.find(_._2 == index).flatMap {
+  //   case (pOpt, _, preds) =>
+  //     pOpt.map(p => (PostData[P, W, ID](p, index), preds))
+  // }
 
   def skipDeletedStep(index: ID): Option[Set[ID]] =
     buffer.find(pd => pd._1.isEmpty && pd._2 == index).map(_._3)
@@ -213,9 +230,10 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
         pOpt.map(p => (PostData[P, W, ID](p, id), id, preds))
     }.toVector
 
-  def tagData: Vector[(TypeTag[_], ID, Option[Set[ID]])] = indexBuffer.toVector.map {
-    case (id, prev) => (tag, id, Some(prev))
-  }
+  def tagData: Vector[(TypeTag[_], ID, Option[Set[ID]])] =
+    indexBuffer.toVector.map {
+      case (id, prev) => (tag, id, Some(prev))
+    }
 }
 
 @deprecated("using HoTTPostWeb", "soon")
