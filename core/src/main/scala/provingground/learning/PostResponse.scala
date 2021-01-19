@@ -142,7 +142,10 @@ class SimpleSession[W, ID](
           Utils.logger.debug(s"global remaining responses: ${remainingResponses.size}")
           if (remainingResponses.isEmpty) {
             completionResponse.foreach(
-              resp => resp(web).map{case pd: PostData[u, W, ID] => respond(pd.content, pd.id)(pd.pw)}
+              resp => 
+                resp(web).map{case pd: PostData[u, W, ID] => 
+                respond(pd.content, pd.id)(pd.pw)
+              }
               )
           }
         }
