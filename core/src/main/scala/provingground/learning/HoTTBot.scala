@@ -3092,9 +3092,7 @@ object HoTTWebSession {
       bots: Vector[HoTTBot] = initBots,
       completion: Option[
         HoTTPostWeb => Future[PostData[_, HoTTPostWeb, (Int, Int)]]
-      ] = Some(
-        PostResponse.capResponse(HoTTMessages.Cap)
-      )
+      ] = None
   ) = {
     val session = new HoTTWebSession(state.web, bots, completion)
     state.apexPosts.foreach {

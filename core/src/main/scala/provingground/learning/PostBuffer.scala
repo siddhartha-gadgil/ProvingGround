@@ -179,6 +179,8 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
 
   val indexMap: mutable.Map[ID, Int] = mutable.Map()
 
+  val erased : mutable.Set[ID] = mutable.Set()
+
   def redirects: Map[ID, Set[ID]] =
     buffer.collect { case (None, id, preds) => id -> preds }.toMap
 
@@ -194,6 +196,7 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
           (0 until (buffer.size - bufferMemory)).foreach { j =>
             val (index, prev) = (buffer(j)._2, buffer(j)._3)
             buffer.update(j, (None, index, prev))
+            erased.add(index)
           }
       }
       id
@@ -203,10 +206,17 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
   def find[W](
       index: ID
   )(implicit pw: Postable[P, W, ID]): Option[(PostData[P, W, ID], Set[ID])] =
-    indexMap.get(index).flatMap { n =>
+    {
+      // Utils.logger.info(indexMap.toString())
+      // Utils.logger.info(index.toString)
+      // Utils.logger.info(tag.tpe.toString)
+      indexMap.get(index).flatMap { n =>
       val (pOpt, _, preds) = buffer(n)
+      // Utils.logger.info(n.toString())
+      // Utils.logger.info(pOpt.toString())
       pOpt.map(p => (PostData[P, W, ID](p, index), preds))
     }
+  }
   // buffer.find(_._2 == index).flatMap {
   //   case (pOpt, _, preds) =>
   //     pOpt.map(p => (PostData[P, W, ID](p, index), preds))
@@ -231,7 +241,7 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
     }.toVector
 
   def tagData: Vector[(TypeTag[_], ID, Option[Set[ID]])] =
-    indexBuffer.toVector.map {
+    indexBuffer.toVector.filterNot(el => erased.contains(el._1)) .map {
       case (id, prev) => (tag, id, Some(prev))
     }
 }
