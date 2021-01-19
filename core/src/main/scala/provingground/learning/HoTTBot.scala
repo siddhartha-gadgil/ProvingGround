@@ -2983,7 +2983,7 @@ object HoTTBot {
     Callback(response, name = Some("remaining top level goals"))
   }
 
-  def repost[P](
+  def repost[P : TypeTag](
       implicit pw: Postable[P, HoTTPostWeb, ID]
   ): MicroHoTTBoTT[Cap.type, P, P] = {
     MicroBot((p: P) => (_) => Future(p))
