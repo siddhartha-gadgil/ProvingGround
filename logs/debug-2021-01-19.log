@@ -302,3 +302,492 @@ TangentBaseCompleted, hash: -1666923435[0m
 [0m2021.01.19 07:08:59:478 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:142[0m - global remaining responses: 3[0m
 [0m2021.01.19 07:09:01:479 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:142[0m - global remaining responses: 2[0m
 [0m2021.01.19 07:09:03:481 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:142[0m - global remaining responses: 1[0m
+[0m2021.01.19 07:27:05:286 [main      ] [[34mINFO [0m] [32mprovingground.interface.CzSlRun.CzSlRun:22[0m - This is a Bot based run for the Czech-Slovak olympiand problem identified by Achal, who proved this with manual choice.
+This problem involves showing the left and right identity coincide given a bunch of axioms. We can only use forward reasoning
+since there are no models.
+
+There is a little domain knowledge in the tuning, with tautologies specified (to not be used as lemmas) 
+and "base states" given based on what is used together. But this is largely a robust choice of parameters.
+Much of the work has been in ensuring that all the hot code is parallelized.
+[0m
+[0m2021.01.19 07:27:05:330 [main      ] [[34mINFO [0m] [32mprovingground.interface.CzSlRun.CzSlRun:31[0m - Number of threads: 8[0m
+[0m2021.01.19 07:27:05:332 [main      ] [[34mINFO [0m] [32mprovingground.interface.CzSlRun.CzSlRun:33[0m - JAVA_OPTS: -Xms2G -Xmx40G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints[0m
+[0m2021.01.19 07:27:05:334 [main      ] [[34mINFO [0m] [32mprovingground.interface.CzSlRun.CzSlRun:35[0m - JAVA_HOME: /usr/lib/jvm/java-8-oracle[0m
+[0m2021.01.19 07:27:06:657 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TautologyInitState], id: (1,920274034), content:
+TautologyInitState(TermState([trans : 0.14285714285714285, refl : 0.14285714285714285, n : 0.14285714285714285, sym : 0.14285714285714285, mul : 0.14285714285714285, m : 0.14285714285714285, ((mul) (m)) (n) : 0.14285714285714285],[M : 1.0],Vector(),[],[],{})), hash: 920274034[0m
+[0m2021.01.19 07:27:06:680 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.SpecialInitState], id: (2,-460986993), content:
+SpecialInitState(TermState([trans : 0.9, sym : 0.1],[M : 1.0],Vector(),[],[],{}),0.001,0.5,0.05,Some(TermGenParams(0.0,0.4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.0,0.5,0.0,0.0,0.0,<function1>)),Some(2)), hash: -460986993[0m
+[0m2021.01.19 07:27:06:684 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.SpecialInitState], id: (3,1076500542), content:
+SpecialInitState(TermState([right-multiply : 0.2, m : 0.2, n : 0.2, left-multiply : 0.2, ((mul) (m)) (n) : 0.2],[M : 1.0],Vector(),[],[],{}),0.001,0.5,0.5,Some(TermGenParams(0.3,0.3,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.0,0.5,0.0,0.0,0.0,<function1>)),Some(2)), hash: 1076500542[0m
+[0m2021.01.19 07:27:06:686 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.LocalProver], id: (4,-555667942), content:
+LocalProver(TermState([m : 0.08333333333333333, refl : 0.08333333333333333, mul : 0.08333333333333333, sym : 0.08333333333333333, left-multiply : 0.08333333333333333, right-multiply : 0.08333333333333333, ass2 : 0.08333333333333333, trans : 0.08333333333333333, n : 0.08333333333333333, ((mul) (m)) (n) : 0.08333333333333333, ass1 : 0.08333333333333333, eqM : 0.08333333333333333],[M : 1.0],Vector(),[],[((eqM) (((mul) (m)) (n))) (((mul) (n)) (m)) : 1.0],{}),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.0,0.5,0.0,0.0,0.0,<function1>),1.0E-5,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0,Some(1800000)), hash: -555667942[0m
+[0m2021.01.19 07:27:06:695 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response 'f343e0d7' of type TypeTag[provingground.learning.ExpressionEval] to post of type TypeTag[provingground.learning.LocalProver] with input hash -555667942[0m
+[0m2021.01.19 07:28:09:379 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (5,879672438), hash : 879672438[0m
+[0m2021.01.19 07:28:09:385 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response 'f343e0d7' of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.LocalProver] with input hash -555667942[0m
+[0m2021.01.19 07:28:09:396 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:223[0m - triggered callback '4f5ea355' for type TypeTag[provingground.learning.ExpressionEval] with input hash 879672438[0m
+[0m2021.01.19 07:28:12:674 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:227[0m - completed callback '4f5ea355' for type TypeTag[provingground.learning.ExpressionEval] with input hash 879672438[0m
+[0m2021.01.19 07:28:12:675 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response '9b5368f2' of type TypeTag[provingground.learning.HoTTMessages.FinalState] to post of type TypeTag[provingground.learning.ExpressionEval] with input hash 879672438[0m
+[0m2021.01.19 07:28:12:677 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.expEvToFinalState:568[0m - computing final state[0m
+[0m2021.01.19 07:28:14:755 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (6,-1055913045), hash : -1055913045[0m
+[0m2021.01.19 07:28:14:757 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response '9b5368f2' of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval] with input hash 879672438[0m
+[0m2021.01.19 07:28:14:761 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:223[0m - triggered callback 'update terms' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1055913045[0m
+[0m2021.01.19 07:28:17:222 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.updateTerms:368[0m - Obtained 56732 formal equations[0m
+[0m2021.01.19 07:28:17:659 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:227[0m - completed callback 'update terms' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1055913045[0m
+[0m2021.01.19 07:28:17:660 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:223[0m - triggered callback 'report proofs' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1055913045[0m
+[0m2021.01.19 07:28:18:535 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:423[0m - Results: 5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 5.4242237130754486E-5; statement weight 4.73541494284175E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 1.401995811072539E-4; statement weight 4.319882986946083E-7
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 5.015906278108847E-6; statement weight 4.7105165222034655E-7
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.2453761968356924E-7; statement weight 4.299081327568297E-9
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 1.401995811072539E-4; statement weight 2.6219050899234546E-7[0m
+[0m2021.01.19 07:28:18:538 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:227[0m - completed callback 'report proofs' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1055913045[0m
+[0m2021.01.19 07:28:18:539 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response 'final state to filtered lemmas' of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to post of type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1055913045[0m
+[0m2021.01.19 07:28:21:228 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:266[0m - avoiding 242 types as tautologies and generators.[0m
+[0m2021.01.19 07:28:21:407 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (7,981332736), hash : 981332736[0m
+[0m2021.01.19 07:28:21:409 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response 'final state to filtered lemmas' of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1055913045[0m
+[0m2021.01.19 07:28:21:410 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response '2056a09c' of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.HoTTMessages.BaseMixinLemmas :: shapeless.HNil] to post of type TypeTag[provingground.learning.HoTTMessages.Lemmas] with input hash 981332736[0m
+[0m2021.01.19 07:28:21:437 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.UsedLemmas], id: (8,1843133404), hash : 1843133404[0m
+[0m2021.01.19 07:28:21:438 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentLemmas], id: (9,-1878635548), hash : -1878635548[0m
+[0m2021.01.19 07:28:21:438 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (10,2129286743), hash : 2129286743[0m
+[0m2021.01.19 07:28:21:439 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response '2056a09c' of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.HoTTMessages.BaseMixinLemmas :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.Lemmas] with input hash 981332736[0m
+[0m2021.01.19 07:28:21:441 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:545[0m - triggered (multiple) responses 'base state from special initial state' of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas] with input hash 2129286743[0m
+[0m2021.01.19 07:28:21:448 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.taskNest:551[0m - launching 1 branches[0m
+[0m2021.01.19 07:28:21:452 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:1548[0m - previous special init states are 2[0m
+[0m2021.01.19 07:28:21:455 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.baseStateTask:1390[0m - Computing base state[0m
+[0m2021.01.19 07:28:21:459 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.baseStateTask:1390[0m - Computing base state[0m
+[0m2021.01.19 07:28:21:460 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.taskNest:556[0m - launching 2 responses  of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]  to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas] in branch[0m
+[0m2021.01.19 07:28:21:972 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.groupSetTask:1397[0m - Created vector of equations[0m
+[0m2021.01.19 07:28:22:052 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.groupSetTask:1397[0m - Created vector of equations[0m
+[0m2021.01.19 07:28:24:694 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (11,1009353394), hash : 1009353394[0m
+[0m2021.01.19 07:28:24:695 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.newPostsData:561[0m - remaining 1 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas][0m
+[0m2021.01.19 07:28:24:772 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (12,213759496), hash : 213759496[0m
+[0m2021.01.19 07:28:24:772 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.newPostsData:561[0m - remaining 0 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas][0m
+[0m2021.01.19 07:28:24:778 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.taskNest:574[0m - completed (multiple) responses 'base state from special initial state' of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas] with input hash 2129286743[0m
+[0m2021.01.19 07:28:24:780 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (13,-1666923435), content:
+TangentBaseCompleted, hash: -1666923435[0m
+[0m2021.01.19 07:28:24:788 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response 'unified equations' of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to post of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type] with input hash -1666923435[0m
+[0m2021.01.19 07:28:30:332 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (14,1111107420), hash : 1111107420[0m
+[0m2021.01.19 07:28:30:336 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response 'unified equations' of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to posts of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type] with input hash -1666923435[0m
+[0m2021.01.19 07:28:30:337 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response '3bb5149e' of type TypeTag[provingground.learning.ExpressionEval] to post of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] with input hash 1111107420[0m
+[0m2021.01.19 07:28:30:340 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:223[0m - triggered callback 'update equations' for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] with input hash 1111107420[0m
+[0m2021.01.19 07:28:30:387 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:227[0m - completed callback 'update equations' for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] with input hash 1111107420[0m
+[0m2021.01.19 07:28:31:904 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (15,2087923240), hash : 2087923240[0m
+[0m2021.01.19 07:28:31:908 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response '3bb5149e' of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] with input hash 1111107420[0m
+[0m2021.01.19 07:28:31:911 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response '9b5368f2' of type TypeTag[provingground.learning.HoTTMessages.FinalState] to post of type TypeTag[provingground.learning.ExpressionEval] with input hash 2087923240[0m
+[0m2021.01.19 07:28:31:914 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.expEvToFinalState:568[0m - computing final state[0m
+[0m2021.01.19 07:28:34:122 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (16,-1832623742), hash : -1832623742[0m
+[0m2021.01.19 07:28:34:123 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response '9b5368f2' of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval] with input hash 2087923240[0m
+[0m2021.01.19 07:28:34:124 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response 'final state to filtered lemmas' of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to post of type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1832623742[0m
+[0m2021.01.19 07:28:34:125 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:223[0m - triggered callback 'update terms' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1832623742[0m
+[0m2021.01.19 07:28:34:125 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:223[0m - triggered callback 'report proofs (simple)' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1832623742[0m
+[0m2021.01.19 07:28:34:126 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:223[0m - triggered callback 'report proofs (simple)' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1832623742[0m
+[0m2021.01.19 07:28:34:644 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:466[0m - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.05992617996789983; statement weight 3.464919179184244E-5
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$elcagq :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$elcagq)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 4.3542096627250704E-7; statement weight 2.74954559959039E-8
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.005827738631273511; statement weight 3.105638396295679E-9
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.0022394991767920474; statement weight 8.518853817447088E-12[0m
+[0m2021.01.19 07:28:34:645 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:227[0m - completed callback 'report proofs (simple)' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1832623742[0m
+[0m2021.01.19 07:28:34:677 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:466[0m - Results: 5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 4.822276264039242E-5; statement weight 2.25018423045377E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 1.254886899260823E-4; statement weight 1.7635748707320688E-7
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 7.391879946562223E-6; statement weight 1.9166698787287851E-7
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.0098252798726247E-7; statement weight 1.502153537632662E-9
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 1.254886899260823E-4; statement weight 1.0803959137118255E-7[0m
+[0m2021.01.19 07:28:34:677 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:227[0m - completed callback 'report proofs (simple)' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1832623742[0m
+[0m2021.01.19 07:28:37:907 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.updateTerms:368[0m - Obtained 103602 formal equations[0m
+[0m2021.01.19 07:28:38:610 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:227[0m - completed callback 'update terms' for type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1832623742[0m
+[0m2021.01.19 07:28:41:537 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:266[0m - avoiding 242 types as tautologies and generators.[0m
+[0m2021.01.19 07:28:41:972 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (17,412361588), hash : 412361588[0m
+[0m2021.01.19 07:28:41:973 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response 'final state to filtered lemmas' of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState] with input hash -1832623742[0m
+[0m2021.01.19 07:28:41:974 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response '2056a09c' of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.HoTTMessages.BaseMixinLemmas :: shapeless.HNil] to post of type TypeTag[provingground.learning.HoTTMessages.Lemmas] with input hash 412361588[0m
+[0m2021.01.19 07:28:42:037 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.UsedLemmas], id: (18,251429894), hash : 251429894[0m
+[0m2021.01.19 07:28:42:040 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentLemmas], id: (19,1599474203), hash : 1599474203[0m
+[0m2021.01.19 07:28:42:042 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (20,1191484094), hash : 1191484094[0m
+[0m2021.01.19 07:28:42:044 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response '2056a09c' of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.HoTTMessages.BaseMixinLemmas :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.Lemmas] with input hash 412361588[0m
+[0m2021.01.19 07:28:42:049 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:545[0m - triggered (multiple) responses 'base state from special initial state' of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas] with input hash 1191484094[0m
+[0m2021.01.19 07:28:42:055 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.taskNest:551[0m - launching 1 branches[0m
+[0m2021.01.19 07:28:42:055 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:1548[0m - previous special init states are 2[0m
+[0m2021.01.19 07:28:42:056 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.baseStateTask:1390[0m - Computing base state[0m
+[0m2021.01.19 07:28:42:057 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.baseStateTask:1390[0m - Computing base state[0m
+[0m2021.01.19 07:28:42:057 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.taskNest:556[0m - launching 2 responses  of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]  to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas] in branch[0m
+[0m2021.01.19 07:28:48:203 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.groupSetTask:1397[0m - Created vector of equations[0m
+[0m2021.01.19 07:28:48:868 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.groupSetTask:1397[0m - Created vector of equations[0m
+[0m2021.01.19 07:28:51:389 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (21,-2079512223), hash : -2079512223[0m
+[0m2021.01.19 07:28:51:392 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.newPostsData:561[0m - remaining 1 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas][0m
+[0m2021.01.19 07:28:51:828 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:133[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (22,-2064177300), hash : -2064177300[0m
+[0m2021.01.19 07:28:51:829 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.newPostsData:561[0m - remaining 0 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas][0m
+[0m2021.01.19 07:28:51:830 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.taskNest:574[0m - completed (multiple) responses 'base state from special initial state' of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas] with input hash 1191484094[0m
+[0m2021.01.19 07:28:51:834 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (23,-1666923435), content:
+TangentBaseCompleted, hash: -1666923435[0m
+[0m2021.01.19 07:28:51:835 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:275[0m - triggered response 'unified equations' of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to post of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type] with input hash -1666923435[0m
+[0m2021.01.19 07:28:52:631 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:289[0m - completed response 'unified equations' of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to posts of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type] with input hash -1666923435[0m
+[0m2021.01.19 07:28:52:640 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (24,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:648 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (25,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:653 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (26,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:658 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (27,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:664 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (28,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:671 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (29,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:678 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (30,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:686 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (31,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:694 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (32,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:703 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (33,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:712 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (34,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:722 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (35,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:732 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (36,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:743 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (37,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:754 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (38,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:766 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (39,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:779 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (40,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:792 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (41,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:807 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (42,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:822 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (43,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:839 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (44,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:856 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (45,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:875 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (46,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:895 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (47,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:916 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (48,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:938 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (49,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:962 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (50,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:52:987 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (51,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:014 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (52,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:041 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (53,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:070 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (54,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:099 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (55,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:131 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (56,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:163 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (57,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:198 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (58,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:234 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (59,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:305 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (60,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:360 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (61,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:408 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (62,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:453 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (63,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:497 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (64,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:543 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (65,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:591 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (66,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:641 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (67,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:692 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (68,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:746 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (69,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:802 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (70,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:859 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (71,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:919 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (72,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:53:981 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (73,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:045 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (74,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:111 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (75,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:179 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (76,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:250 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (77,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:323 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (78,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:399 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (79,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:476 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (80,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:557 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (81,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:639 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (82,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:725 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (83,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:813 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (84,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:903 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (85,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:54:996 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (86,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:092 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (87,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:190 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (88,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:290 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (89,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:394 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (90,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:500 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (91,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:609 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (92,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:722 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (93,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:837 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (94,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:55:955 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (95,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:56:076 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (96,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:56:200 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (97,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:56:327 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (98,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:56:457 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (99,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:56:591 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (100,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:56:727 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (101,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:56:867 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (102,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:57:011 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (103,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:57:157 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (104,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:57:307 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (105,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:57:460 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (106,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:57:616 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (107,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:57:777 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (108,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:57:940 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (109,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:58:108 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (110,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:58:279 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (111,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:58:453 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (112,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:58:631 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (113,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:58:813 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (114,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:58:999 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (115,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:59:188 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (116,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:59:381 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (117,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:59:578 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (118,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:59:779 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (119,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:28:59:984 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (120,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:00:192 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (121,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:00:405 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (122,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:00:621 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (123,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:00:842 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (124,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:01:067 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (125,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:01:296 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (126,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:01:530 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (127,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:01:767 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (128,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:02:009 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (129,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:02:255 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (130,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:02:505 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (131,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:02:760 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (132,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:03:019 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (133,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:03:283 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (134,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:03:552 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (135,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:03:825 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (136,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:04:103 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (137,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:04:385 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (138,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:04:673 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (139,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:04:965 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (140,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:05:262 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (141,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:05:564 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (142,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:05:871 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (143,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:06:183 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (144,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:06:500 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (145,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:06:821 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (146,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:07:149 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (147,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:07:481 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (148,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:07:819 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (149,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:08:161 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (150,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:08:510 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (151,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:08:863 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (152,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:09:222 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (153,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:09:586 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (154,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:09:956 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (155,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:10:331 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (156,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:10:712 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (157,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:11:098 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (158,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:11:490 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (159,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:11:888 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (160,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:12:292 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (161,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:12:701 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (162,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:13:117 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (163,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:13:542 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (164,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:13:965 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (165,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:14:395 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (166,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:14:830 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (167,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:15:271 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (168,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:15:718 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (169,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:16:172 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (170,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:16:631 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (171,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:17:096 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (172,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:17:567 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (173,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:18:044 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (174,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:18:527 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (175,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:19:017 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (176,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:19:512 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (177,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:20:014 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (178,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:20:522 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (179,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:21:037 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (180,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:21:557 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (181,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:22:085 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (182,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:22:619 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (183,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:23:159 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (184,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:23:705 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (185,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:24:258 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (186,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:24:818 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (187,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:25:385 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (188,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:25:959 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (189,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:26:539 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (190,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:27:125 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (191,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:27:718 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (192,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:28:329 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (193,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:28:948 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (194,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:29:561 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (195,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:30:182 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (196,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:30:809 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (197,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:31:444 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (198,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:32:086 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (199,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:32:734 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (200,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:33:390 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (201,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:34:053 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (202,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:34:723 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (203,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:35:401 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (204,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:36:086 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (205,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:36:779 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (206,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:37:478 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (207,67506), content:
+Cap, hash: 67506[0m
+[0m2021.01.19 07:29:38:185 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:307[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Cap.type], id: (208,67506), content:
+Cap, hash: 67506[0m
