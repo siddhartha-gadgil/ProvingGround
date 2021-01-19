@@ -150,7 +150,7 @@ object StrategicProvers {
     val sr = parSeekTyp(typ, initState, tg, cutoff, terms)
     if (sr._1.nonEmpty) sr 
     else {
-      val nsr = parSeekTyp(typ, initState, tg, cutoff, terms)
+      val nsr = parSeekTyp(negate(typ), initState, tg, cutoff, terms)
       SeekResult.or(sr, nsr)
     }
   }
@@ -298,7 +298,7 @@ object StrategicProvers {
         case typ +: ys =>
           val (ss, eqs, terms) = parSolveTyp(typ, initState, tg, cutoff, accumTerms)
           if (ss.isEmpty) {
-            Utils.logger.info(s"failed to prove $typ")
+            Utils.logger.info(s"failed to prove $typ and ${negate(typ)}")
             parChomper(
               ys,
               initState,
