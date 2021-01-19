@@ -156,9 +156,11 @@ trait FallBackLookups {
     */
   implicit def lookupLatest[Q, W, ID](
       implicit qw: Postable[Q, W, ID],
-      ph: PostHistory[W, ID]
+      ph: PostHistory[W, ID],
+      tag: TypeTag[Q]
   ): LocalQueryable[Q, W, ID] =
-    LatestAnswer(Vector(AnswerFromPost[Q, Q, W, ID](identity)))
+    LatestTagged[Q, W, ID]()
+    // LatestAnswer(Vector(AnswerFromPost[Q, Q, W, ID](identity)))
 
   /**
     * Lookup for the wrapped type `SomePost`, which returns all posts independent of relative position in history.
