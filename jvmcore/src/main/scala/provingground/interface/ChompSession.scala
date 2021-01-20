@@ -189,7 +189,8 @@ object ChompSessionEq {
     topLevelRelevantGoalsBot[FailedToProve](true),
     topLevelRelevantGoalsBot[Proved](true),
     repostGoals(LocalProver(ts, tg).sharpen(10)),
-    goalsAfterChomp
+    goalsAfterChomp,
+    exportProof
   )
 
   lazy val wsF =
