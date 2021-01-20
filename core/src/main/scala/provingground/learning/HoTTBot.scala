@@ -2899,7 +2899,7 @@ object HoTTBot {
             tOpt =>
               if (tOpt.nonEmpty)
                 Future.successful(
-                  Some(Right(Proved(goal.goal, tOpt, goal.context)))
+                  Some(GeneratedEquationNodes(Set()) :: Right(Proved(goal.goal, tOpt, goal.context)) :: HNil)
                 )
               else if (goal.relevantGiven(terms, gp.contents)) {
                 val lpVars   = qp.lp.initState.context.variables
