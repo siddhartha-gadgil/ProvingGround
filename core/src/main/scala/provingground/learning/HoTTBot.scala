@@ -2905,12 +2905,12 @@ object HoTTBot {
                   val expEqs = EquationExporter.export(eqs, initTerms, newVars)
                   val geqs   = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
-                    Utils.logger.info(s"""|Failed for ${TermRandomVars
-                                           .termsWithTyp(goal.goal)}
-                          |initial state: ${withVars.initState}
-                          |cutoff: ${withVars.cutoff}
-                          |parameters : ${withVars.tg}""".stripMargin)
-                    if (fd.pmf.isEmpty)
+                    if (fd.pmf.isEmpty) {
+                      Utils.logger.info(s"""|Failed for 
+                                            |${TermRandomVars.termsWithTyp(goal.goal)}
+                                             |initial state: ${withVars.initState}
+                                             |cutoff: ${withVars.cutoff}
+                                             |parameters : ${withVars.tg}""".stripMargin)
                       Left(
                         FailedToProve(
                           goal.goal,
@@ -2918,7 +2918,7 @@ object HoTTBot {
                           goal.forConsequences
                         )
                       )
-                    else {
+                    } else {
                       val best = fd.pmf.maxBy(_.weight)
                       Right(Proved(goal.goal, Some(best.elem), goal.context))
                     }
@@ -2983,7 +2983,7 @@ object HoTTBot {
     Callback(response, name = Some("remaining top level goals"))
   }
 
-  def repost[P : TypeTag](
+  def repost[P: TypeTag](
       implicit pw: Postable[P, HoTTPostWeb, ID]
   ): MicroHoTTBoTT[Cap.type, P, P] = {
     MicroBot((p: P) => (_) => Future(p))
