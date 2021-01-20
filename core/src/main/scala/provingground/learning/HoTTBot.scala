@@ -2895,48 +2895,58 @@ object HoTTBot {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
         // pprint.log(qp)
         goal =>
-          if (goal.relevantGiven(terms, gp.contents)) {
-            val lpVars   = qp.lp.initState.context.variables
-            val goalVars = goal.context.variables
-            val newVars  = goalVars.drop(lpVars.size)
-            val withVars = newVars.foldLeft(qp.lp) {
-              case (lp: LocalProver, x: Term) =>
-                lp.addVar(x, varWeight)
-            }
-            Utils.logger.info(s"initial state ${withVars.initState}")
-            withVars
-              .varDistEqs(TermRandomVars.termsWithTyp(goal.goal))
-              .runToFuture
-              .map {
-                case (fd, eqs) =>
-                  val initTerms = withVars.initState.terms.support union (withVars.initState.typs.support
-                    .map(x => x: Term))
-                  val expEqs = EquationExporter.export(eqs, initTerms, newVars)
-                  val geqs   = GeneratedEquationNodes(expEqs)
-                  Some(geqs :: {
-                    if (fd.pmf.isEmpty) {
-                      Utils.logger.info(
-                        s"""|Failed for 
+          Future(terms.find(_.typ == goal.goal)).flatMap(
+            tOpt =>
+              if (tOpt.nonEmpty)
+                Future.successful(
+                  Some(Right(Proved(goal.goal, tOpt, goal.context)))
+                )
+              else if (goal.relevantGiven(terms, gp.contents)) {
+                val lpVars   = qp.lp.initState.context.variables
+                val goalVars = goal.context.variables
+                val newVars  = goalVars.drop(lpVars.size)
+                val withVars = newVars.foldLeft(qp.lp) {
+                  case (lp: LocalProver, x: Term) =>
+                    lp.addVar(x, varWeight)
+                }
+                Utils.logger.info(s"initial state ${withVars.initState}")
+                withVars
+                  .varDistEqs(TermRandomVars.termsWithTyp(goal.goal))
+                  .runToFuture
+                  .map {
+                    case (fd, eqs) =>
+                      val initTerms = withVars.initState.terms.support union (withVars.initState.typs.support
+                        .map(x => x: Term))
+                      val expEqs =
+                        EquationExporter.export(eqs, initTerms, newVars)
+                      val geqs = GeneratedEquationNodes(expEqs)
+                      Some(geqs :: {
+                        if (fd.pmf.isEmpty) {
+                          Utils.logger.info(
+                            s"""|Failed for 
                                             |${TermRandomVars
-                             .termsWithTyp(goal.goal)}
+                                 .termsWithTyp(goal.goal)}
                                              |initial state: ${withVars.initState}
                                              |cutoff: ${withVars.cutoff}
                                              |parameters : ${withVars.tg}""".stripMargin
-                      )
-                      Left(
-                        FailedToProve(
-                          goal.goal,
-                          goal.context,
-                          goal.forConsequences
-                        )
-                      )
-                    } else {
-                      val best = fd.pmf.maxBy(_.weight)
-                      Right(Proved(goal.goal, Some(best.elem), goal.context))
-                    }
-                  } :: HNil)
-              }
-          } else Future.successful(None)
+                          )
+                          Left(
+                            FailedToProve(
+                              goal.goal,
+                              goal.context,
+                              goal.forConsequences
+                            )
+                          )
+                        } else {
+                          val best = fd.pmf.maxBy(_.weight)
+                          Right(
+                            Proved(goal.goal, Some(best.elem), goal.context)
+                          )
+                        }
+                      } :: HNil)
+                  }
+              } else Future.successful(None)
+          )
     }
 
     MicroBot(
