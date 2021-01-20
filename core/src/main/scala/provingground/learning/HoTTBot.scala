@@ -2745,35 +2745,44 @@ object HoTTBot {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
         // pprint.log(qp)
         goal =>
-          if (goal.relevantGiven(terms, gp.contents)) {
-            val lpVars   = qp.lp.initState.context.variables
-            val goalVars = goal.context.variables
-            val newVars  = goalVars.drop(lpVars.size)
-            val withVars = newVars.foldLeft(qp.lp) {
-              case (lp: LocalProver, x: Term) =>
-                lp.addVar(x, varWeight)
-            }
-            Utils.logger.info(s"initial state ${withVars.initState}")
-            withVars
-              .varDist(TermRandomVars.termsWithTyp(goal.goal))
-              .runToFuture
-              .map { fd =>
-                if (fd.pmf.isEmpty)
-                  Some(
-                    Left(
-                      FailedToProve(
-                        goal.goal,
-                        goal.context,
-                        goal.forConsequences
-                      )
-                    )
-                  )
-                else {
-                  val best = fd.pmf.maxBy(_.weight)
-                  Some(Right(Proved(goal.goal, Some(best.elem), goal.context)))
+          Future(terms.find(_.typ == goal.goal)).flatMap(
+            tOpt =>
+              if (tOpt.nonEmpty)
+                Future.successful(
+                  Some(Right(Proved(goal.goal, tOpt, goal.context)))
+                )
+              else if (goal.relevantGiven(terms, gp.contents)) {
+                val lpVars   = qp.lp.initState.context.variables
+                val goalVars = goal.context.variables
+                val newVars  = goalVars.drop(lpVars.size)
+                val withVars = newVars.foldLeft(qp.lp) {
+                  case (lp: LocalProver, x: Term) =>
+                    lp.addVar(x, varWeight)
                 }
-              }
-          } else Future.successful(None)
+                Utils.logger.info(s"initial state ${withVars.initState}")
+                withVars
+                  .varDist(TermRandomVars.termsWithTyp(goal.goal))
+                  .runToFuture
+                  .map { fd =>
+                    if (fd.pmf.isEmpty)
+                      Some(
+                        Left(
+                          FailedToProve(
+                            goal.goal,
+                            goal.context,
+                            goal.forConsequences
+                          )
+                        )
+                      )
+                    else {
+                      val best = fd.pmf.maxBy(_.weight)
+                      Some(
+                        Right(Proved(goal.goal, Some(best.elem), goal.context))
+                      )
+                    }
+                  }
+              } else Future.successful(None)
+          )
     }
 
     MicroBot(response, subContext, name = Some("attempting goal"))
@@ -2906,11 +2915,14 @@ object HoTTBot {
                   val geqs   = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
                     if (fd.pmf.isEmpty) {
-                      Utils.logger.info(s"""|Failed for 
-                                            |${TermRandomVars.termsWithTyp(goal.goal)}
+                      Utils.logger.info(
+                        s"""|Failed for 
+                                            |${TermRandomVars
+                             .termsWithTyp(goal.goal)}
                                              |initial state: ${withVars.initState}
                                              |cutoff: ${withVars.cutoff}
-                                             |parameters : ${withVars.tg}""".stripMargin)
+                                             |parameters : ${withVars.tg}""".stripMargin
+                      )
                       Left(
                         FailedToProve(
                           goal.goal,
