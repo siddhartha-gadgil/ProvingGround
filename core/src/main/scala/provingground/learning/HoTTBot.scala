@@ -1098,7 +1098,7 @@ object HoTTBot {
           Future {
             derivedProofs(gprop.contents, gdec.contents union terms.map { t =>
               Proved(t.typ, Some(t), Context.Empty)
-            }).map(Decided.asEither(_)).toVector
+            }).toVector.distinctBy(pf => (pf.statement, pf.context)).map(Decided.asEither(_))
           }
     }
 
