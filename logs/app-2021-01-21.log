@@ -1981,4 +1981,313 @@ SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰
 SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
 SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
 [0m2021.01.21 05:35:15:593 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1773536869[0m
-[0m2021.01.21 05:35:16:269 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with 
+[0m2021.01.21 05:35:16:269 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1773536869[0m
+[0m2021.01.21 05:35:16:494 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))) by Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Zero)))))) , (((Unit) , (Star)))))) in context {}[0m
+[0m2021.01.21 05:35:16:945 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1773536869[0m
+[0m2021.01.21 05:37:30:057 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1773536869[0m
+[0m2021.01.21 05:39:52:286 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 05:39:52:286 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 05:39:52:287 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 1134561850[0m
+[0m2021.01.21 05:39:52:964 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 1134561850[0m
+[0m2021.01.21 05:39:53:190 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b)))) by Some(((($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (Zero)))))) , (((Unit) , (Star))))) in context {Given $aixusdfa : (𝒰 _0) → (𝒰 _0)}[0m
+[0m2021.01.21 05:39:53:642 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 1134561850[0m
+[0m2021.01.21 05:42:06:687 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 1134561850[0m
+[0m2021.01.21 05:42:09:020 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:317[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (175,928664001), content:
+Proved(((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))),Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Unit)))))))))) , (((Unit) , (Star)))))),{}), hash: 928664001[0m
+[0m2021.01.21 05:42:09:021 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2106327859[0m
+[0m2021.01.21 05:42:09:021 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:405[0m - triggered (multiple) responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:42:09:021 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:42:09:021 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:42:09:021 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:42:09:021 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:278[0m - triggered response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to post of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:42:09:251 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:44:34:500 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 05:44:34:500 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 05:44:34:500 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:44:35:191 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:44:35:421 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))) by Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Unit)))))))))) , (((Unit) , (Star)))))) in context {}[0m
+[0m2021.01.21 05:44:35:882 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:46:49:003 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 928664001[0m
+[0m2021.01.21 05:49:11:243 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 05:49:11:244 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 05:49:11:244 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2106327859[0m
+[0m2021.01.21 05:49:11:936 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2106327859[0m
+[0m2021.01.21 05:49:12:167 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b)))) by Some(((($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (Unit)))))))))) , (((Unit) , (Star))))) in context {Given $aixusdfa : (𝒰 _0) → (𝒰 _0)}[0m
+[0m2021.01.21 05:49:12:629 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2106327859[0m
+[0m2021.01.21 05:51:25:651 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2106327859[0m
+[0m2021.01.21 05:51:27:966 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:317[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (176,2053954701), content:
+Proved(((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))),Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Unit)))))))) , (((Unit) , (Star)))))),{}), hash: 2053954701[0m
+[0m2021.01.21 05:51:27:966 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 407723338[0m
+[0m2021.01.21 05:51:27:966 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:405[0m - triggered (multiple) responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:51:27:967 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:51:27:967 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:51:27:967 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:51:27:967 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:278[0m - triggered response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to post of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:51:28:202 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:53:53:552 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 05:53:53:552 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 05:53:53:552 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:53:54:258 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:53:54:494 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))) by Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Unit)))))))) , (((Unit) , (Star)))))) in context {}[0m
+[0m2021.01.21 05:53:54:965 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:56:08:164 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 2053954701[0m
+[0m2021.01.21 05:58:30:436 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 05:58:30:436 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 05:58:30:436 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 407723338[0m
+[0m2021.01.21 05:58:31:144 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 407723338[0m
+[0m2021.01.21 05:58:31:381 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b)))) by Some(((($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (Unit)))))))) , (((Unit) , (Star))))) in context {Given $aixusdfa : (𝒰 _0) → (𝒰 _0)}[0m
+[0m2021.01.21 05:58:31:918 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 407723338[0m
+[0m2021.01.21 06:00:45:010 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 407723338[0m
+[0m2021.01.21 06:00:47:376 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:317[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (177,-31600917), content:
+Proved(((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))),Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Unit)))) , (((Unit) , (Star)))))),{}), hash: -31600917[0m
+[0m2021.01.21 06:00:47:377 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -462524239[0m
+[0m2021.01.21 06:00:47:377 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:405[0m - triggered (multiple) responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:00:47:377 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:00:47:377 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:00:47:377 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:00:47:377 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:278[0m - triggered response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to post of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:00:47:618 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:03:13:114 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 06:03:13:114 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 06:03:13:114 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:03:13:837 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:03:14:078 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))) by Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Unit)))) , (((Unit) , (Star)))))) in context {}[0m
+[0m2021.01.21 06:03:14:560 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:05:27:795 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -31600917[0m
+[0m2021.01.21 06:07:50:137 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 06:07:50:137 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 06:07:50:137 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -462524239[0m
+[0m2021.01.21 06:07:50:862 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -462524239[0m
+[0m2021.01.21 06:07:51:173 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b)))) by Some(((($aixusdfa) (($aixusdfa) (($aixusdfa) (Unit)))) , (((Unit) , (Star))))) in context {Given $aixusdfa : (𝒰 _0) → (𝒰 _0)}[0m
+[0m2021.01.21 06:07:51:656 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -462524239[0m
+[0m2021.01.21 06:10:04:764 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -462524239[0m
+[0m2021.01.21 06:10:07:180 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:317[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (178,-1574327621), content:
+Proved(((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))),Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Unit))))) , (((Unit) , (Star)))))),{}), hash: -1574327621[0m
+[0m2021.01.21 06:10:07:180 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 856736987[0m
+[0m2021.01.21 06:10:07:180 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:405[0m - triggered (multiple) responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:10:07:180 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:10:07:180 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:10:07:180 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:10:07:180 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:278[0m - triggered response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to post of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:10:07:426 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:12:33:063 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 06:12:33:063 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 06:12:33:064 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:12:33:801 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:12:34:047 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))) by Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Unit))))) , (((Unit) , (Star)))))) in context {}[0m
+[0m2021.01.21 06:12:34:539 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:14:47:830 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1574327621[0m
+[0m2021.01.21 06:17:10:213 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 06:17:10:213 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 06:17:10:213 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 856736987[0m
+[0m2021.01.21 06:17:11:061 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 856736987[0m
+[0m2021.01.21 06:17:11:308 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b)))) by Some(((($aixusdfa) (($aixusdfa) (($aixusdfa) (($aixusdfa) (Unit))))) , (((Unit) , (Star))))) in context {Given $aixusdfa : (𝒰 _0) → (𝒰 _0)}[0m
+[0m2021.01.21 06:17:11:801 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 856736987[0m
+[0m2021.01.21 06:19:24:925 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 856736987[0m
+[0m2021.01.21 06:19:27:392 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:317[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (179,-1150926812), content:
+Proved(((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))),Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) (Zero))) , (((Unit) , (Star)))))),{}), hash: -1150926812[0m
+[0m2021.01.21 06:19:27:393 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 603902422[0m
+[0m2021.01.21 06:19:27:393 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:405[0m - triggered (multiple) responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:19:27:393 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:19:27:393 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:19:27:393 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:19:27:393 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:278[0m - triggered response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to post of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:19:27:644 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:21:53:373 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 06:21:53:374 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 06:21:53:374 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:21:54:127 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:21:54:378 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))) by Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) (Zero))) , (((Unit) , (Star)))))) in context {}[0m
+[0m2021.01.21 06:21:54:880 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:24:08:153 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -1150926812[0m
+[0m2021.01.21 06:26:30:590 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 06:26:30:590 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 06:26:30:590 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 603902422[0m
+[0m2021.01.21 06:26:31:455 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 603902422[0m
+[0m2021.01.21 06:26:31:706 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b)))) by Some(((($aixusdfa) (($aixusdfa) (Zero))) , (((Unit) , (Star))))) in context {Given $aixusdfa : (𝒰 _0) → (𝒰 _0)}[0m
+[0m2021.01.21 06:26:32:210 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 603902422[0m
+[0m2021.01.21 06:28:45:316 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 603902422[0m
+[0m2021.01.21 06:28:47:835 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostBuffer.post:317[0m - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (180,231274897), content:
+Proved(((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))),Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Zero))))))))))) , (((Unit) , (Star)))))),{}), hash: 231274897[0m
+[0m2021.01.21 06:28:47:835 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash -893944332[0m
+[0m2021.01.21 06:28:47:835 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:405[0m - triggered (multiple) responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:28:47:835 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:28:47:835 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:28:47:835 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:226[0m - triggered callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:28:47:835 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.post:278[0m - triggered response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to post of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:28:48:091 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:292[0m - completed response 'export proof from context' of type TypeTag[Option[provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:31:14:069 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 06:31:14:069 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) , ((𝒰 _0) → (Zero))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@a) → (`@b)))) → (𝒰 _0),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) → (𝒰 _0),{},Vector())[0m
+[0m2021.01.21 06:31:14:069 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'remaining top level goals' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:31:14:838 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'report proved' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:31:15:094 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.reportProved:331[0m - Proved ((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (∑((`@b :  𝒰 _0) ↦ (`@b))))) by Some((`$aixusdfa :  (𝒰 _0) → (𝒰 _0)) ↦ ((((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) ((`$aixusdfa) (Zero))))))))))) , (((Unit) , (Star)))))) in context {}[0m
+[0m2021.01.21 06:31:15:607 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:230[0m - completed callback 'c0b3114b' for type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:33:28:879 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.PostResponse.applyOrElse:421[0m - completed all responses 'deduced results' of type TypeTag[Either[provingground.learning.HoTTMessages.Contradicted,provingground.learning.HoTTMessages.Proved]] to posts of type TypeTag[provingground.learning.HoTTMessages.Proved] with input hash 231274897[0m
+[0m2021.01.21 06:35:51:434 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2998[0m - remaining top level goals: 14[0m
+[0m2021.01.21 06:35:51:434 [scala-e...] [[34mINFO [0m] [32mprovingground.learning.HoTTBot.response:2999[0m - SeekGoal((((𝒰 _0) → (𝒰 _0)) , (PlusTyp((`$mhhrtod : 𝒰 _0 ) ~> ((`$mhhrtod) → (Zero)),(𝒰 _0) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (∑((`@a :  𝒰 _0) ↦ (`@a))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , ((`$mhhrsqf : 𝒰 _0 ) ~> ((`$mhhrsqf) → (Zero)))),{},Vector())
+SeekGoal(((𝒰 _0) , ((((𝒰 _0) → (𝒰 _0)) , ((`$mhhruhd : 𝒰 _0 ) ~> ((`$mhhruhd) → (Zero)))))),{},Vector())
+SeekGoal((((𝒰 _0) → (𝒰 _0)) , (((𝒰 _0) , ((`$mhhrvgb : 𝒰 _0 ) ~> ((`$mhhrvgb) → (Zero)))))),{},Vector())
+SeekGoal(((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) → ((`@a : 𝒰 _0 ) ~> (`@a)),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> (((`@a) , (𝒰 _0)))) , (∑((``@a :  𝒰 _0) ↦ ((``@a) → (Zero))))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → (((∑((`@a :  𝒰 _0) ↦ (`@a))) , (𝒰 _0))),{},Vector())
+SeekGoal((𝒰 _0) → (((𝒰 _0) → (𝒰 _0)) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal(((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (∑((`@b :  𝒰 _0) ↦ (`@b)))),{},Vector())
+SeekGoal((((`@a : 𝒰 _0 ) ~> ((`@b : 𝒰 _0 ) ~> ((`@b) → (`@a)))) , ((𝒰 _0) → 
