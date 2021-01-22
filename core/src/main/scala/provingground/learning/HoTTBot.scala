@@ -2816,7 +2816,13 @@ object HoTTBot {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
         // pprint.log(qp)
         goal =>
-          if (goal.relevantGiven(terms, gp.contents)) {
+        Future(terms.find(_.typ == goal.goal)).flatMap(
+            tOpt =>
+              if (tOpt.nonEmpty)
+                Future.successful(
+                  Some(GeneratedEquationNodes(Set()) :: Right(Proved(goal.goal, tOpt, goal.context)) :: HNil)
+                )
+              else if (goal.relevantGiven(terms, gp.contents)) {
             val lpVars   = qp.lp.initState.context.variables
             val goalVars = goal.context.variables
             val newVars  = goalVars.drop(lpVars.size)
@@ -2858,6 +2864,7 @@ object HoTTBot {
               } :: HNil)
             }
           } else Future.successful(None)
+        )
     }
 
     MicroBot(
