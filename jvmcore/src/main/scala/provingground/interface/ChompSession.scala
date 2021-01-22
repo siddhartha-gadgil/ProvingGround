@@ -292,7 +292,9 @@ object ParChompSessionEq {
     reportContradicted,
     topLevelRelevantGoalsBot[FailedToProve](true),
     topLevelRelevantGoalsBot[Proved](true),
-    repostGoals(LocalProver(ts, tg).sharpen(10))
+    repostGoals(LocalProver(ts, tg).sharpen(10)),
+    goalsAfterChomp,
+    exportProof
   )
 
   lazy val wsF =
