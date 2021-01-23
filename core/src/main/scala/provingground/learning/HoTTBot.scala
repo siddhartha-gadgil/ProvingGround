@@ -990,7 +990,7 @@ object HoTTBot {
       numFailures: Int = 10
   ): HoTTCallBack[ChompResult, FinalState] = {
     val response: HoTTPostWeb => FinalState => ChompResult => Future[Unit] =
-      (_) =>
+      (web) =>
         (fs) =>
           (cr) =>
             Future {
@@ -1002,6 +1002,7 @@ object HoTTBot {
               Utils.logger.info(s"number of failures: ${cr.failures.size}")
               Utils.logger.info(s"""top ${numFailures} failures: ${cr.failures
                 .mkString(", ")}""")
+              if (topFails.isEmpty) web.halt()
             }
     Callback(response, name = Some("chomp report"))
   }
