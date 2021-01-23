@@ -987,6 +987,7 @@ object HoTTBot {
   }
 
   def chompReport(
+      haltIfComplete: Boolean = true,
       numFailures: Int = 10
   ): HoTTCallBack[ChompResult, FinalState] = {
     val response: HoTTPostWeb => FinalState => ChompResult => Future[Unit] =
@@ -1002,7 +1003,7 @@ object HoTTBot {
               Utils.logger.info(s"number of failures: ${cr.failures.size}")
               Utils.logger.info(s"""top ${numFailures} failures: ${cr.failures
                 .mkString(", ")}""")
-              if (topFails.isEmpty) web.halt()
+              if (haltIfComplete && topFails.isEmpty) web.halt()
             }
     Callback(response, name = Some("chomp report"))
   }
@@ -3072,22 +3073,24 @@ object HoTTBot {
             cr.failures.filterNot(newProofs.map(_.statement).contains(_))
           // if (failures.isEmpty) Future(None)
           // else
-            Future{
-              val fs = cfs.contents.head
-              Utils.logger.info(s"reposting because of failures: ${failures.mkString("; ")}")
-              lp :: fs :: ChompResult(
-                cr.successes ++ newProofs.map(
-                  pr =>
-                    (
-                      pr.statement,
-                      0.0,
-                      pr.proofOpt.getOrElse("proved" :: pr.statement)
-                    )
-                ),
-                failures,
-                Set()
-              ) :: HNil
-            }
+          Future {
+            val fs = cfs.contents.head
+            Utils.logger.info(
+              s"reposting because of failures: ${failures.mkString("; ")}"
+            )
+            lp :: fs :: ChompResult(
+              cr.successes ++ newProofs.map(
+                pr =>
+                  (
+                    pr.statement,
+                    0.0,
+                    pr.proofOpt.getOrElse("proved" :: pr.statement)
+                  )
+              ),
+              failures,
+              Set()
+            ) :: HNil
+          }
     }
 
     MicroBot(response, name = Some("reposting goals"))
