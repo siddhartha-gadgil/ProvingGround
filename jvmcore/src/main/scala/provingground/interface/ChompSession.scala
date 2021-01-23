@@ -304,7 +304,7 @@ object ParChompSessionEq {
       ws3 <- ws2.act(expnEqnUpdate)
       ws4 <- ws3.act(expFS)
       ws5 <- ws4.postLast(lp)
-      ws6 <- ws5.act(finalStateToParallelChomp().triggerWith[LocalProver])
+      ws6 <- ws5.act(finalStateToParallelChomp(cutoffScales = List(10, 1)).triggerWith[LocalProver])
       ws7 <- ws6.act(chompReport())
       ws8 <- ws7.act(chompEqnUpdate)
       ws9 <- ws8.act(goalsAfterChomp)

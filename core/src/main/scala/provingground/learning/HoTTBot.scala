@@ -925,7 +925,7 @@ object HoTTBot {
 
   def finalStateToParallelChomp(
       solverWeight: Double = 0.05,
-      concurrency: Int = Utils.threadNum
+      cutoffScales: List[Double] = List(1)
   ): MicroBot[
     FinalState,
     ChompResult,
@@ -947,7 +947,7 @@ object HoTTBot {
                 unknowns,
                 ParMapState.fromTermState(lp.initState),
                 lp.tg,
-                lp.cutoff,
+                cutoffScales.map(_ * lp.cutoff),
                 accumTerms = terms
               )
             ChompResult(s, fl, eqs)

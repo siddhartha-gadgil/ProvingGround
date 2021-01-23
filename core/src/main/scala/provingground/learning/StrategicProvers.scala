@@ -21,6 +21,7 @@ import collection.mutable.ArrayBuffer
 import scala.util.Success
 import scala.collection.parallel._
 import provingground.learning.TypSolver.LookupSolver
+import scala.collection.immutable.Nil
 
 object StrategicProvers {
   type Successes =
@@ -33,6 +34,8 @@ object StrategicProvers {
   )
 
   object SeekResult {
+    val empty: SeekResult = (Vector(), Set(), Set())
+
     def or(a: SeekResult, b: SeekResult) = (
       a._1 ++ b._1,
       a._2 union b._2,
@@ -148,11 +151,28 @@ object StrategicProvers {
       terms: Set[Term]
   ): SeekResult = {
     val sr = parSeekTyp(typ, initState, tg, cutoff, terms)
-    if (sr._1.nonEmpty) sr 
+    if (sr._1.nonEmpty) sr
     else {
       val nsr = parSeekTyp(negate(typ), initState, tg, cutoff, terms)
       SeekResult.or(sr, nsr)
     }
+  }
+
+  def polySolveTyp(
+      typ: Typ[Term],
+      initState: ParMapState,
+      tg: TermGenParams,
+      cutoffs: List[Double],
+      terms: Set[Term]
+  ): SeekResult = cutoffs match {
+    case head :: next =>
+      val sr = parSolveTyp(typ, initState, tg, head, terms)
+      if (sr._1.nonEmpty) sr
+      else {
+        val nsr = polySolveTyp(negate(typ), initState, tg, next, terms)
+        SeekResult.or(sr, nsr)
+      }
+    case Nil => SeekResult.empty
   }
 
   val successes: ArrayBuffer[Successes] = ArrayBuffer()
@@ -279,55 +299,55 @@ object StrategicProvers {
         }
     }
 
-  def parChomper(typs: Vector[Typ[Term]],
+  def parChomper(
+      typs: Vector[Typ[Term]],
       initState: ParMapState,
       tg: TermGenParams,
-      cutoff: Double,
+      cutoffs: List[Double],
       accumSucc: Successes = Vector(),
       accumFail: Vector[Typ[Term]] = Vector(),
       accumEqs: Set[EquationNode] = Set(),
-      accumTerms: Set[Term] = Set(),
-      ) : (
-        Successes,
-        Vector[Typ[Term]], // failures
-        Set[EquationNode],
-        Set[Term]
-    ) = 
-      typs match {
-        case Vector() => (accumSucc, accumFail, accumEqs, accumTerms)
-        case typ +: ys =>
-          val (ss, eqs, terms) = parSolveTyp(typ, initState, tg, cutoff, accumTerms)
-          if (ss.isEmpty) {
-            Utils.logger.info(s"failed to prove $typ and ${negate(typ)}")
-            parChomper(
-              ys,
-              initState,
-              tg,
-              cutoff,
-              accumSucc,
-              accumFail :+ typ,
-              accumEqs union eqs,
-              accumTerms union(terms)
-            )
-          }
-          else 
-          { 
-            ss.foreach(
-                s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
-              )
-              Utils.logger.info(s"goals remaining ${ys.size}")
-            parChomper(
-              ys,
-              initState,
-              tg,
-              cutoff,
-              accumSucc ++ ss,
-              accumFail,
-              accumEqs union eqs,
-              accumTerms union(terms)
-            )
-          }
-      }
+      accumTerms: Set[Term] = Set()
+  ): (
+      Successes,
+      Vector[Typ[Term]], // failures
+      Set[EquationNode],
+      Set[Term]
+  ) =
+    typs match {
+      case Vector() => (accumSucc, accumFail, accumEqs, accumTerms)
+      case typ +: ys =>
+        val (ss, eqs, terms) =
+          polySolveTyp(typ, initState, tg, cutoffs, accumTerms)
+        if (ss.isEmpty) {
+          Utils.logger.info(s"failed to prove $typ and ${negate(typ)}")
+          parChomper(
+            ys,
+            initState,
+            tg,
+            cutoffs,
+            accumSucc,
+            accumFail :+ typ,
+            accumEqs union eqs,
+            accumTerms union (terms)
+          )
+        } else {
+          ss.foreach(
+            s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
+          )
+          Utils.logger.info(s"goals remaining ${ys.size}")
+          parChomper(
+            ys,
+            initState,
+            tg,
+            cutoffs,
+            accumSucc ++ ss,
+            accumFail,
+            accumEqs union eqs,
+            accumTerms union (terms)
+          )
+        }
+    }
 
   def concurrentTargetChomper(
       lp: LocalProver,
