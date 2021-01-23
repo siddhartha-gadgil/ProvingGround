@@ -3048,7 +3048,7 @@ object HoTTBot {
 
   def repostGoals(lp: LocalProver, context: Context = Context.Empty): MicroBot[
     Cap.type,
-    Option[LocalProver :: FinalState :: ChompResult :: HNil],
+    LocalProver :: FinalState :: ChompResult :: HNil,
     HoTTPostWeb,
     ChompResult :: GatherPost[
       Proved
@@ -3058,7 +3058,7 @@ object HoTTBot {
     val response: ChompResult :: GatherPost[
       Proved
     ] :: GatherPost[FinalState] :: HNil => Cap.type => Future[
-      Option[LocalProver :: FinalState :: ChompResult :: HNil]
+      LocalProver :: FinalState :: ChompResult :: HNil
     ] = {
       case cr :: gprvd :: cfs :: _ =>
         (_) =>
@@ -3070,9 +3070,9 @@ object HoTTBot {
           )
           val failures =
             cr.failures.filterNot(newProofs.map(_.statement).contains(_))
-          if (failures.isEmpty) Future(None)
-          else
-            Future(Some {
+          // if (failures.isEmpty) Future(None)
+          // else
+            Future{
               val fs = cfs.contents.head
               Utils.logger.info(s"reposting because of failures: ${failures.mkString("; ")}")
               lp :: fs :: ChompResult(
@@ -3087,7 +3087,7 @@ object HoTTBot {
                 failures,
                 Set()
               ) :: HNil
-            })
+            }
     }
 
     MicroBot(response, name = Some("reposting goals"))
