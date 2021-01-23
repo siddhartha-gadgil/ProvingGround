@@ -1098,7 +1098,9 @@ object HoTTBot {
           Future {
             derivedProofs(gprop.contents, gdec.contents union terms.map { t =>
               Proved(t.typ, Some(t), Context.Empty)
-            }).toVector.distinctBy(pf => (pf.statement, pf.context)).map(Decided.asEither(_))
+            }).toVector
+              .distinctBy(pf => (pf.statement, pf.context))
+              .map(Decided.asEither(_))
           }
     }
 
@@ -2788,6 +2790,23 @@ object HoTTBot {
     MicroBot(response, subContext, name = Some("attempting goal"))
   }
 
+  lazy val goalLookup
+      : MicroHoTTBoTT[SeekGoal, Either[FailedToProve, Proved], Set[Term]] =
+    MicroBot(
+      terms =>
+        sg =>
+          Future(
+            terms
+              .find(_.typ == sg.goal)
+              .map(
+                pf => Right(Proved(sg.goal, Some(pf), sg.context))
+              )
+              .getOrElse(
+                Left(FailedToProve(sg.goal, sg.context, sg.forConsequences))
+              )
+          )
+    )
+
   def parGoalAttemptEqs(
       varWeight: Double
   ): MicroBot[SeekGoal, Option[
@@ -2816,55 +2835,59 @@ object HoTTBot {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
         // pprint.log(qp)
         goal =>
-        Future(terms.find(_.typ == goal.goal)).flatMap(
+          Future(terms.find(_.typ == goal.goal)).flatMap(
             tOpt =>
               if (tOpt.nonEmpty)
                 Future.successful(
-                  Some(GeneratedEquationNodes(Set()) :: Right(Proved(goal.goal, tOpt, goal.context)) :: HNil)
+                  Some(
+                    GeneratedEquationNodes(Set()) :: Right(
+                      Proved(goal.goal, tOpt, goal.context)
+                    ) :: HNil
+                  )
                 )
               else if (goal.relevantGiven(terms, gp.contents)) {
-            val lpVars   = qp.lp.initState.context.variables
-            val goalVars = goal.context.variables
-            val newVars  = goalVars.drop(lpVars.size)
-            val withVars = newVars.foldLeft(qp.lp) {
-              case (lp: LocalProver, x: Term) =>
-                lp.addVar(x, varWeight)
-            }
-            Utils.logger.info(s"initial state ${withVars.initState}")
-            val pde = ParDistEq.fromParams(qp.lp.tg, qp.lp.tg.varWeight)
-            Future {
-              val (fd, eqs) = pde.varDist(
-                ParMapState.fromTermState(withVars.initState),
-                withVars.genMaxDepth,
-                withVars.halted()
-              )(TermRandomVars.termsWithTyp(goal.goal), withVars.cutoff)
-              val initTerms = withVars.initState.terms.support union (withVars.initState.typs.support
-                .map(x => x: Term))
-              val expEqs =
-                EquationExporter.export(eqs.to(Set), initTerms, newVars)
-              val geqs = GeneratedEquationNodes(expEqs)
-              Some(geqs :: {
-                Utils.logger.info(s"""|Failed for ${TermRandomVars
-                                       .termsWithTyp(goal.goal)}
+                val lpVars   = qp.lp.initState.context.variables
+                val goalVars = goal.context.variables
+                val newVars  = goalVars.drop(lpVars.size)
+                val withVars = newVars.foldLeft(qp.lp) {
+                  case (lp: LocalProver, x: Term) =>
+                    lp.addVar(x, varWeight)
+                }
+                Utils.logger.info(s"initial state ${withVars.initState}")
+                val pde = ParDistEq.fromParams(qp.lp.tg, qp.lp.tg.varWeight)
+                Future {
+                  val (fd, eqs) = pde.varDist(
+                    ParMapState.fromTermState(withVars.initState),
+                    withVars.genMaxDepth,
+                    withVars.halted()
+                  )(TermRandomVars.termsWithTyp(goal.goal), withVars.cutoff)
+                  val initTerms = withVars.initState.terms.support union (withVars.initState.typs.support
+                    .map(x => x: Term))
+                  val expEqs =
+                    EquationExporter.export(eqs.to(Set), initTerms, newVars)
+                  val geqs = GeneratedEquationNodes(expEqs)
+                  Some(geqs :: {
+                    Utils.logger.info(s"""|Failed for ${TermRandomVars
+                                           .termsWithTyp(goal.goal)}
                           |initial state: ${withVars.initState}
                           |cutoff: ${withVars.cutoff}
                           |parameters : ${withVars.tg}""".stripMargin)
-                if (fd.isEmpty)
-                  Left(
-                    FailedToProve(
-                      goal.goal,
-                      goal.context,
-                      goal.forConsequences
-                    )
-                  )
-                else {
-                  val best = fd.maxBy(_._2)._1
-                  Right(Proved(goal.goal, Some(best), goal.context))
+                    if (fd.isEmpty)
+                      Left(
+                        FailedToProve(
+                          goal.goal,
+                          goal.context,
+                          goal.forConsequences
+                        )
+                      )
+                    else {
+                      val best = fd.maxBy(_._2)._1
+                      Right(Proved(goal.goal, Some(best), goal.context))
+                    }
+                  } :: HNil)
                 }
-              } :: HNil)
-            }
-          } else Future.successful(None)
-        )
+              } else Future.successful(None)
+          )
     }
 
     MicroBot(
@@ -2906,7 +2929,11 @@ object HoTTBot {
             tOpt =>
               if (tOpt.nonEmpty)
                 Future.successful(
-                  Some(GeneratedEquationNodes(Set()) :: Right(Proved(goal.goal, tOpt, goal.context)) :: HNil)
+                  Some(
+                    GeneratedEquationNodes(Set()) :: Right(
+                      Proved(goal.goal, tOpt, goal.context)
+                    ) :: HNil
+                  )
                 )
               else if (goal.relevantGiven(terms, gp.contents)) {
                 val lpVars   = qp.lp.initState.context.variables
@@ -3020,7 +3047,7 @@ object HoTTBot {
 
   def repostGoals(lp: LocalProver, context: Context = Context.Empty): MicroBot[
     Cap.type,
-    LocalProver :: FinalState :: ChompResult :: HNil,
+    Option[LocalProver :: FinalState :: ChompResult :: HNil],
     HoTTPostWeb,
     ChompResult :: GatherPost[
       Proved
@@ -3030,7 +3057,7 @@ object HoTTBot {
     val response: ChompResult :: GatherPost[
       Proved
     ] :: GatherPost[FinalState] :: HNil => Cap.type => Future[
-      LocalProver :: FinalState :: ChompResult :: HNil
+      Option[LocalProver :: FinalState :: ChompResult :: HNil]
     ] = {
       case cr :: gprvd :: cfs :: _ =>
         (_) =>
@@ -3040,21 +3067,26 @@ object HoTTBot {
           Utils.logger.info(
             s"New top-level proofs obtained: ${newProofs.mkString("\n", "\n", "\n")}"
           )
-          val fs = cfs.contents.head
-          Future {
-            lp :: fs :: ChompResult(
-              cr.successes ++ newProofs.map(
-                pr =>
-                  (
-                    pr.statement,
-                    0.0,
-                    pr.proofOpt.getOrElse("proved" :: pr.statement)
-                  )
-              ),
-              cr.failures.filterNot(newProofs.map(_.statement).contains(_)),
-              Set()
-            ) :: HNil
-          }
+          val failures =
+            cr.failures.filterNot(newProofs.map(_.statement).contains(_))
+          if (failures.isEmpty) Future(None)
+          else
+            Future(Some {
+              val fs = cfs.contents.head
+              Utils.logger.info(s"reposting because of failures: ${failures.mkString("; ")}")
+              lp :: fs :: ChompResult(
+                cr.successes ++ newProofs.map(
+                  pr =>
+                    (
+                      pr.statement,
+                      0.0,
+                      pr.proofOpt.getOrElse("proved" :: pr.statement)
+                    )
+                ),
+                failures,
+                Set()
+              ) :: HNil
+            })
     }
 
     MicroBot(response, name = Some("reposting goals"))
