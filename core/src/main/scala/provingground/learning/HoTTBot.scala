@@ -2623,6 +2623,7 @@ object HoTTBot {
       (sk: SeekGoal) =>
         sk.goal match {
           case PiDefn(variable: Term, value: Typ[u]) =>
+            logger.info(s"putting pi definition ${sk.goal} in context")
             val newSeek = SeekGoal(
               value,
               sk.context.addVariable(variable),
@@ -2636,8 +2637,10 @@ object HoTTBot {
               variable,
               true
             )
+            logger.info("returning pi-defn in context")
             Some(pfLambda :: newSeek :: HNil)
           case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
+            logger.info(s"putting function type ${sk.goal} in context")
             val x = dom.Var
             val newSeek = SeekGoal(
               codom,
@@ -2652,9 +2655,12 @@ object HoTTBot {
               x,
               false
             )
+            logger.info("returning function type in context")
             Some(pfLambda :: newSeek :: HNil)
-          case _ => None
-        }
+          case _ =>
+            logger.info(s"cannot put goal ${sk.goal} in context") 
+            None
+        }, name = Some("goal in context")
     )
 
   val exportProof
