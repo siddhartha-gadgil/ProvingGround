@@ -288,9 +288,14 @@ object TypedPostResponse {
                   idNewFuture.map(idNew => PostData.get(newPost, idNew)(dg))}
             })
         }
-      val task = taskNest.flatMap(st => Future.sequence(st)).andThen(_ =>
-              logger.info(s"completed response '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
-)
+      val task = taskNest.flatMap(st => Future.sequence(st))
+      .andThen(
+        st => st.fold(fa => {logger.error(s"completed response '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()} with error;")
+                fa.printStackTrace()
+              logger.error(s"${fa.getMessage()}\n${fa.getStackTrace().toVector.mkString("\n")}")},
+          fb => logger.info(s"completed response '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}; " + 
+                s"output ${fb.map(_.content.hashCode())}")))
+              
       task
     }
 
@@ -417,8 +422,10 @@ object TypedPostResponse {
                     )}
               })
           }
-        val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten)).andThen(_ =>
-                logger.info(s"completed all responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
+        val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten))
+        .andThen(st =>
+                logger.info(s"completed all responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}" + 
+                s"output ${st.fold(fa => fa.getMessage, fb => fb.map(_.content.hashCode()))}")
 )
         task
       }
@@ -492,8 +499,9 @@ object TypedPostResponse {
                   )
                   newPostsData})
                   }
-          }.andThen(_ => 
-          logger.info(s"completed (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
+          }.andThen(st => 
+          logger.info(s"completed (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}" +
+          s"output ${st.fold(fa => fa.getMessage, fb => fb.map(_.content.hashCode()))}")
           )
         taskNest
       }
