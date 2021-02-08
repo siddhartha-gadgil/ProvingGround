@@ -457,7 +457,7 @@ object HoTTMessages {
       val t          = conclusion.Var
       val contraOpt = ExstFunc.opt {
         import Fold._
-        x :-> t :-> negateContra(statement)(x)(t)
+        x :-> (t :-> negateContra(statement)(x)(t))
       }
       Contradicts(statement, conclusion, contraOpt, context)
     }

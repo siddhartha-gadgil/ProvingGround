@@ -706,7 +706,7 @@ object HoTTBot {
                   val y = newGoal.Var
                   val transform = {
                     import Fold._
-                    y :-> (x :-> vacuous(pd.fibers(x))(
+                    y :~> (x :~> vacuous(pd.fibers(x))(
                       negateContra(pd.domain)(x)(y)
                     ))
                   }
