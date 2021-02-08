@@ -70,7 +70,7 @@ object InductionSession {
   val goal = hypothesis ->: conclusion
 
   val bots: Vector[HoTTBot] = Vector(
-    goalAttempt(0.3),
+    parGoalAttemptEqs(0.3),
     negateGoal.triggerMap[FailedToProve](_.seek),
     skolemBot.triggerMap[FailedToProve](_.seek),
     viaZeroBot.triggerMap[FailedToProve](_.seek),
