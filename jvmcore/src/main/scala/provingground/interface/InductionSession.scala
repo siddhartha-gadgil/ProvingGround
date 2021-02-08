@@ -69,9 +69,9 @@ object InductionSession {
 
   val bots: Vector[HoTTBot] = Vector(
     goalAttempt(0.3),
-    negateGoal.triggerMap[FailedToProve](_.seek),
+    // negateGoal.triggerMap[FailedToProve](_.seek),
     skolemBot.triggerMap[FailedToProve](_.seek),
-    viaZeroBot.triggerMap[FailedToProve](_.seek),
+    // viaZeroBot.triggerMap[FailedToProve](_.seek),
     productBackward.triggerMap[FailedToProve](_.seek),
     coproductBackward.triggerMap[FailedToProve](_.seek),
     goalInContext.triggerMap[FailedToProve](_.seek),
