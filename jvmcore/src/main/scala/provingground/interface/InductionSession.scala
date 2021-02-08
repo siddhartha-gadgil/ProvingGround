@@ -6,6 +6,7 @@ import HoTTBot._
 import scala.util._, Properties.envOrNone
 import Utils._
 import scala.concurrent._
+import provingground.scalahott.NatRing
 
 object InductionSession {
   Utils.logger = {
@@ -55,7 +56,8 @@ object InductionSession {
   val terms = FiniteDistribution.unif[Term](
     reflTerm(A),
     transTerm(A),
-    f(zero)
+    f(zero),
+    NatRing.zero
   )
   val typs = FiniteDistribution.unif[Typ[Term]](NatTyp, A)
   val ts   = TermState(terms, typs)
@@ -69,9 +71,9 @@ object InductionSession {
 
   val bots: Vector[HoTTBot] = Vector(
     goalAttempt(0.3),
-    // negateGoal.triggerMap[FailedToProve](_.seek),
+    negateGoal.triggerMap[FailedToProve](_.seek),
     skolemBot.triggerMap[FailedToProve](_.seek),
-    // viaZeroBot.triggerMap[FailedToProve](_.seek),
+    viaZeroBot.triggerMap[FailedToProve](_.seek),
     productBackward.triggerMap[FailedToProve](_.seek),
     coproductBackward.triggerMap[FailedToProve](_.seek),
     goalInContext.triggerMap[FailedToProve](_.seek),
