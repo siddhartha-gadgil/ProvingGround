@@ -2621,6 +2621,7 @@ object HoTTBot {
       : SimpleBot[SeekGoal, Option[ProofLambda :: SeekGoal :: HNil]] =
     MicroBot.simple(
       (sk: SeekGoal) =>
+        {Utils.logger.info(s"matching for context for $sk")
         sk.goal match {
           case PiDefn(variable: Term, value: Typ[u]) =>
             logger.info(s"putting pi definition ${sk.goal} in context")
@@ -2660,7 +2661,7 @@ object HoTTBot {
           case _ =>
             logger.info(s"cannot put goal ${sk.goal} in context") 
             None
-        }, name = Some("goal in context")
+        }}, name = Some("goal in context")
     )
 
   val exportProof
