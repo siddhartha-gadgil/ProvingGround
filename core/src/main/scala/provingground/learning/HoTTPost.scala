@@ -251,9 +251,9 @@ object HoTTPost {
       def get(
           web: HoTTPost,
           predicate: HoTTPostData => Boolean
-      ): Future[HoTTPostData] = Future {
+      ): Future[HoTTPostData] = web.global.counterVar.read().map {counter => 
         HoTTPostData(
-          web.global.counter,
+          counter,
           allPostFullData(web).map {
             case (pd, id, ids) => (pd, id, ids.flatMap(skipDeleted(web, _)))
           }

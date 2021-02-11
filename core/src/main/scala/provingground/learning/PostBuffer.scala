@@ -8,6 +8,8 @@ import scala.util._
 import scala.reflect.runtime.universe._
 import provingground._, Utils.logger
 import ujson.Value
+import monix.eval._
+import monix.execution.AsyncVar
 
 /**
   * Allows posting any content, typically just returns an ID to be used by something else.
@@ -507,7 +509,9 @@ trait GlobalID[ID] {
   */
 class CounterGlobalID(log: Any => Unit = (_) => ())
     extends GlobalID[(Int, Int)] {
-  var counter: Int = 0
+  // var counter: Int = 0
+
+  val counterVar = AsyncVar(0)
 
   /**
     * post arbitrary content
@@ -515,10 +519,10 @@ class CounterGlobalID(log: Any => Unit = (_) => ())
     * @param content content of some type
     * @return ID, consisting of an index and a hashCode
     */
-  def postGlobal[P](content: P): Future[(Int, Int)] = {
+  def postGlobal[P](content: P): Future[(Int, Int)] = counterVar.take().map{counter =>
     val index = counter
-    counter += 1
     log(content)
-    Future((counter, content.hashCode()))
+    counterVar.put(counter + 1)
+    (counter, content.hashCode())
   }
 }
