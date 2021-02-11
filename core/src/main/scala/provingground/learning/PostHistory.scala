@@ -119,14 +119,34 @@ object PostHistory {
       redirects: Map[ID, Set[ID]]
   )(implicit tag: TypeTag[Q]): Set[ID] =
     data
-      .find(_._1.tpe =:= tag.tpe)
-      .map(x => Set(x._2))
+      .find(_._2 == id)
+      .map {
+        case (tt, _, predOpt) =>
+          if (tt.tpe =:= tag.tpe) Set(id)
+          else
+            predOpt
+              .map(
+                preds =>
+                  preds.flatMap(pid => latestTaggedID(pid, data, redirects))
+              )
+              .getOrElse(Set.empty[ID])
+      }
       .orElse(
         redirects
           .get(id)
           .map(ids => ids.flatMap(rid => latestTaggedID(rid, data, redirects)))
       )
       .getOrElse(Set())
+
+  // data
+  //   .find(_._1.tpe =:= tag.tpe)
+  //   .map(x => Set(x._2))
+  //   .orElse(
+  //     redirects
+  //       .get(id)
+  //       .map(ids => ids.flatMap(rid => latestTaggedID(rid, data, redirects)))
+  //   )
+  //   .getOrElse(Set())
   case class Empty[W, ID]() extends PostHistory[W, ID] {
     def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] =
       None
