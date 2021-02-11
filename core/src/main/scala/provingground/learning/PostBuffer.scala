@@ -27,16 +27,22 @@ abstract class PostBuffer[P, ID](implicit val tag: TypeTag[P])
 
   val indexBuffer: ArrayBuffer[(ID, Set[ID])] = ArrayBuffer()
 
+  val sizeVar = AsyncVar(0)
+
   val indexMap: mutable.Map[ID, Int] = mutable.Map()
 
-  def post(content: P, prev: Set[ID]): Future[ID] = {
-    val idT = postGlobal(content)
-    idT.map { id =>
-      buffer += ((content, id, prev))
-      indexBuffer += ((id, prev))
-      indexMap.update(id, indexBuffer.size - 1)
-      id
-    }
+  def post(content: P, prev: Set[ID]): Future[ID] = sizeVar.take().flatMap {
+    size =>
+      assert(size == buffer.size, s"buffer size ${buffer.size}, expected $size")
+      assert(size == indexBuffer.size, s"index-buffer size ${indexBuffer.size}, expected $size")
+      val idT = postGlobal(content)
+      idT.map { id =>
+        buffer += ((content, id, prev))
+        indexBuffer += ((id, prev))
+        indexMap.update(id, size)
+        sizeVar.put(size + 1)
+        id
+      }
   }
 
   def postAt(content: P, id: ID, prev: Set[ID]): Future[Unit] =
@@ -177,29 +183,32 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
 
   val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
 
+  val sizeVar = AsyncVar(0)
+
   val indexBuffer: ArrayBuffer[(ID, Set[ID])] = ArrayBuffer()
 
   val indexMap: mutable.Map[ID, Int] = mutable.Map()
 
-  val erased : mutable.Set[ID] = mutable.Set()
+  val erased: mutable.Set[ID] = mutable.Set()
 
   def redirects: Map[ID, Set[ID]] =
     buffer.collect { case (None, id, preds) => id -> preds }.toMap
 
-  def post(content: P, prev: Set[ID]): Future[ID] = {
+  def post(content: P, prev: Set[ID]): Future[ID] = sizeVar.take().flatMap{size =>
     val idT = postGlobal(content)
     idT.map { id =>
       if (forgetPosts) buffer += ((None, id, prev))
       else {
         buffer += ((Some(content), id, prev))
         indexBuffer += ((id, prev))
-        indexMap.update(id, indexBuffer.size - 1)
+        indexMap.update(id, size)
         if (ErasablePostBuffer.eraseOld && buffer.size > bufferMemory)
           (0 until (buffer.size - bufferMemory)).foreach { j =>
             val (index, prev) = (buffer(j)._2, buffer(j)._3)
             buffer.update(j, (None, index, prev))
             erased.add(index)
           }
+        sizeVar.put(size + 1)
       }
       id
     }
@@ -207,12 +216,11 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
 
   def find[W](
       index: ID
-  )(implicit pw: Postable[P, W, ID]): Option[(PostData[P, W, ID], Set[ID])] =
-    {
-      // Utils.logger.info(indexMap.toString())
-      // Utils.logger.info(index.toString)
-      // Utils.logger.info(tag.tpe.toString)
-      indexMap.get(index).flatMap { n =>
+  )(implicit pw: Postable[P, W, ID]): Option[(PostData[P, W, ID], Set[ID])] = {
+    // Utils.logger.info(indexMap.toString())
+    // Utils.logger.info(index.toString)
+    // Utils.logger.info(tag.tpe.toString)
+    indexMap.get(index).flatMap { n =>
       val (pOpt, _, preds) = buffer(n)
       // Utils.logger.info(n.toString())
       // Utils.logger.info(pOpt.toString())
@@ -243,7 +251,7 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
     }.toVector
 
   def tagData: Vector[(TypeTag[_], ID, Option[Set[ID]])] =
-    indexBuffer.toVector.filterNot(el => erased.contains(el._1)) .map {
+    indexBuffer.toVector.filterNot(el => erased.contains(el._1)).map {
       case (id, prev) => (tag, id, Some(prev))
     }
 }
@@ -519,10 +527,11 @@ class CounterGlobalID(log: Any => Unit = (_) => ())
     * @param content content of some type
     * @return ID, consisting of an index and a hashCode
     */
-  def postGlobal[P](content: P): Future[(Int, Int)] = counterVar.take().map{counter =>
-    val index = counter
-    log(content)
-    counterVar.put(counter + 1)
-    (counter, content.hashCode())
+  def postGlobal[P](content: P): Future[(Int, Int)] = counterVar.take().map {
+    counter =>
+      val index = counter
+      log(content)
+      counterVar.put(counter + 1)
+      (counter, content.hashCode())
   }
 }
