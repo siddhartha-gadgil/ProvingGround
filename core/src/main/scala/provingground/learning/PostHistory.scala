@@ -119,7 +119,7 @@ object PostHistory {
       redirects: Map[ID, Set[ID]]
   )(implicit tag: TypeTag[Q]): Set[ID] =
     data
-      .find(_._1.tpe =:= tag.tpe)
+      .find(d => d._1.tpe =:= tag.tpe && d._2 == id)
       .map(x => Set(x._2))
       .orElse(
         redirects

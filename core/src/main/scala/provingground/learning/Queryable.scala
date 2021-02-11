@@ -84,7 +84,9 @@ object Queryable {
           predicate: View[P] => Boolean
       ): Future[View[P]] =
         Future {
-          ph.allPosts(web).filter(_.pw.tag.tpe =:=  pw.tag.tpe).map { _.asInstanceOf[P] }
+          ph.allPosts(web).filter(_.pw.tag.tpe =:= pw.tag.tpe).map {
+            _.asInstanceOf[P]
+          }
         }
     }
 
@@ -108,16 +110,19 @@ case class AnswerFromPost[P, U, W, ID](func: P => U)(
     implicit pw: Postable[P, W, ID]
 ) {
   def fromPost[Q](data: PostData[Q, W, ID]): Option[U] =
-    if (pw.tag.tpe =:=  data.pw.tag.tpe) Some(func(data.content.asInstanceOf[P]))
+    if (pw.tag.tpe =:= data.pw.tag.tpe) Some(func(data.content.asInstanceOf[P]))
     else None
 }
 
-  case class LatestTagged[Q, W, ID]()(implicit val tag: TypeTag[Q], h: PostHistory[W, ID]) extends LocalQueryable[Q, W, ID]{
-    def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] = 
-    Future{
+case class LatestTagged[Q, W, ID]()(
+    implicit val tag: TypeTag[Q],
+    h: PostHistory[W, ID]
+) extends LocalQueryable[Q, W, ID] {
+  def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] =
+    Future {
       h.latestTagged(web, id).toVector
     }
-  }
+}
 
 /**
   * Queries answered by taking the latest out of possibly many choices of posts to be looked up and transformed.
@@ -160,7 +165,7 @@ trait FallBackLookups {
       tag: TypeTag[Q]
   ): LocalQueryable[Q, W, ID] =
     LatestTagged[Q, W, ID]()
-    // LatestAnswer(Vector(AnswerFromPost[Q, Q, W, ID](identity)))
+  // LatestAnswer(Vector(AnswerFromPost[Q, Q, W, ID](identity)))
 
   /**
     * Lookup for the wrapped type `SomePost`, which returns all posts independent of relative position in history.
@@ -181,7 +186,7 @@ trait FallBackLookups {
       ): Future[Vector[SomePost[P]]] =
         Future {
           ph.allPosts(web)
-            .filter(_.pw.tag.tpe =:=  pw.tag.tpe)
+            .filter(_.pw.tag.tpe =:= pw.tag.tpe)
             .map { post =>
               SomePost(post.content.asInstanceOf[P])
             }
@@ -285,21 +290,27 @@ object LocalQueryable extends FallBackLookups {
   implicit def previousQuery[P, W, ID](
       implicit ph: PostHistory[W, ID],
       pw: Postable[P, W, ID]
-  ): LocalQueryable[PreviousPosts[P], W, ID] = 
-    new LocalQueryable[PreviousPosts[P], W, ID]{
-      def getAt(web: W, id: ID, predicate: PreviousPosts[P] => Boolean): Future[Vector[PreviousPosts[P]]] = 
+  ): LocalQueryable[PreviousPosts[P], W, ID] =
+    new LocalQueryable[PreviousPosts[P], W, ID] {
+      def getAt(
+          web: W,
+          id: ID,
+          predicate: PreviousPosts[P] => Boolean
+      ): Future[Vector[PreviousPosts[P]]] =
         Future(Vector(PreviousPosts(ph.previousAnswers[P](web, id))))
     }
 
-  implicit def collatedQuery[P, W, ID](
-    implicit pq : LocalQueryable[P, W, ID]) = 
-      new LocalQueryable[Collated[P], W, ID] {
-        def getAt(web: W, id: ID, predicate: Collated[P] => Boolean): Future[Vector[Collated[P]]] = {
-          val all = pq.getAt(web, id, (x: P) => predicate(Collated(Vector(x))))
-          all.map(v => Vector(Collated(v)))
-        }
+  implicit def collatedQuery[P, W, ID](implicit pq: LocalQueryable[P, W, ID]) =
+    new LocalQueryable[Collated[P], W, ID] {
+      def getAt(
+          web: W,
+          id: ID,
+          predicate: Collated[P] => Boolean
+      ): Future[Vector[Collated[P]]] = {
+        val all = pq.getAt(web, id, (x: P) => predicate(Collated(Vector(x))))
+        all.map(v => Vector(Collated(v)))
       }
-  
+    }
 
   /**
     * query a conjunction of two queryable types
@@ -499,8 +510,8 @@ object BuildQuery {
             def headFunc(data: PostData[_, W, ID]): Option[Q] =
               if (data.pw.tag.tpe =:= tag.tpe) {
                 // pprint.log(tag)
-                answer(data.content.asInstanceOf[P])}
-              else {
+                answer(data.content.asInstanceOf[P])
+              } else {
                 // pprint.log(tag)
                 // pprint.log(data.pw.tag)
                 // pprint.log(data.pw.tag == tag)
@@ -515,8 +526,7 @@ object BuildQuery {
                 // pprint.log(tag)
                 // println(data.pw.tag.tpe =:= tag.tpe)
                 modifier(data.content.asInstanceOf[P])
-              }
-              else {
+              } else {
                 // pprint.log(tag)
                 // pprint.log(data.pw.tag)
                 // pprint.log(data.pw.tag.tpe == tag.tpe)
