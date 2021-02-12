@@ -141,9 +141,9 @@ object ErasablePostBuffer {
           logger.info(
             s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, hash : ${content.hashCode()}"
           )
-          logger.debug(
-            s"Full post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}"
-          )
+          // logger.debug(
+          //   s"Full post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}"
+          // )
           id
         }
       }
