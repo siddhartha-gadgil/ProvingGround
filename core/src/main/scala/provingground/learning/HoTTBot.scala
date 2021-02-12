@@ -2318,13 +2318,15 @@ object HoTTBot {
     )
   }
 
-  lazy val inductionBackward
+  def inductionBackward(maxDepth: Option[Int] = None)
       : MicroHoTTBoTT[SeekGoal, Option[FromAll], GatherPost[ExstInducDefn]] = {
     val response
         : GatherPost[ExstInducDefn] => SeekGoal => Future[Option[FromAll]] =
       gpInd =>
         sg =>
-          Future {
+          Future (
+            if (maxDepth.map(sz => sg.forConsequences.size <= sz).getOrElse(true))
+            {
             import TermGeneratorNodes.targetInducFuncs
             val funcs =
               gpInd.contents.flatMap(ind => targetInducFuncs(ind, sg.goal))
@@ -2332,7 +2334,9 @@ object HoTTBot {
               fn => FromAll.get(fn, sg.goal, sg.forConsequences, sg.context)
             )
             fromAlls.headOption
-          }
+          } else {
+            Utils.logger.info(s"did not resolve $sg as it has ${sg.forConsequences.size} consequences")
+            None})
     MicroBot(response, name = Some("induction resolved"))
   }
 

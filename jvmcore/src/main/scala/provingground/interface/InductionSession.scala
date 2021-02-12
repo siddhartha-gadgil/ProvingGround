@@ -78,7 +78,7 @@ object InductionSession {
     coproductBackward.triggerMap[FailedToProve](_.seek),
     goalInContext.triggerMap[FailedToProve](_.seek),
     exportProof,
-    inductionBackward.triggerMap[FailedToProve](_.seek),
+    inductionBackward(Some(1)).triggerMap[FailedToProve](_.seek),
     instanceToGoal,
     instancesFromLP,
     deducedResults,
