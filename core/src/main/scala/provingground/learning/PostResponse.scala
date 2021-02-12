@@ -664,12 +664,21 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
   def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID], dg: DataGetter[P, W, ID]) : Future[WebState[W, ID]] = 
     pw.post(content, web ,predecessors).map{id => WebState(web, PostData.get(content, id) +: apexPosts )} 
 
-  def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = 
-    Future.sequence(apexPosts.flatMap{pd =>
+  def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = {
+    logger.info(s"apex posts ${apexPosts.map(_.id)}")
+    Future.sequence(
+      apexPosts.flatMap{pd =>
       pd.getOpt[P].map{content => (pd, content, pd.id)}
     }.map{
-      case (pd, content, id) => bot.post(web, content, id).map{w => if (w.isEmpty) Vector(pd) else w}
-    }).map{vv => WebState(web, vv.flatten ++ apexPosts.filter(_.getOpt[P].isEmpty))} 
+      case (pd, content, id) => 
+        logger.info(s"acting on post $id with hash ${content.hashCode()}")
+        bot.post(web, content, id).map{w => if (w.isEmpty || w.forall(_.content == ())) Vector(pd) else w}
+    }).map{
+      vv => WebState(
+        web, 
+        vv.flatten ++ 
+        apexPosts.filter(_.getOpt[P].isEmpty))} 
+    }
 
   def postApex[P](content: P)(implicit pw: Postable[P, W, ID]) : Future[WebState[W,ID]] = 
     Future.sequence(apexPosts.map(pd => post(content, Set(pd.id)))).map{
