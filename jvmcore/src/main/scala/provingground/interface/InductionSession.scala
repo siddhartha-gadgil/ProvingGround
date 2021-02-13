@@ -57,7 +57,8 @@ object InductionSession {
     reflTerm(A),
     transTerm(A),
     f(zero),
-    NatRing.zero
+    NatRing.zero,
+    Star
   )
   val typs = FiniteDistribution.unif[Typ[Term]](NatTyp, A)
   val ts   = TermState(terms, typs)
