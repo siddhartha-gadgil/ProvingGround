@@ -2318,25 +2318,31 @@ object HoTTBot {
     )
   }
 
-  def inductionBackward(maxDepth: Option[Int] = None)
-      : MicroHoTTBoTT[SeekGoal, Option[FromAll], GatherPost[ExstInducDefn]] = {
+  def inductionBackward(
+      maxDepth: Option[Int] = None
+  ): MicroHoTTBoTT[SeekGoal, Option[FromAll], GatherPost[ExstInducDefn]] = {
     val response
         : GatherPost[ExstInducDefn] => SeekGoal => Future[Option[FromAll]] =
       gpInd =>
         sg =>
-          Future (
-            if (maxDepth.map(sz => sg.forConsequences.size <= sz).getOrElse(true))
-            {
-            import TermGeneratorNodes.targetInducFuncs
-            val funcs =
-              gpInd.contents.flatMap(ind => targetInducFuncs(ind, sg.goal))
-            val fromAlls = funcs.flatMap(
-              fn => FromAll.get(fn, sg.goal, sg.forConsequences, sg.context)
-            )
-            fromAlls.headOption
-          } else {
-            Utils.logger.info(s"did not resolve $sg as it has ${sg.forConsequences.size} consequences")
-            None})
+          Future(
+            if (maxDepth
+                  .map(sz => sg.forConsequences.size <= sz)
+                  .getOrElse(true)) {
+              import TermGeneratorNodes.targetInducFuncs
+              val funcs =
+                gpInd.contents.flatMap(ind => targetInducFuncs(ind, sg.goal))
+              val fromAlls = funcs.flatMap(
+                fn => FromAll.get(fn, sg.goal, sg.forConsequences, sg.context)
+              )
+              fromAlls.headOption
+            } else {
+              Utils.logger.info(
+                s"did not resolve $sg as it has ${sg.forConsequences.size} consequences"
+              )
+              None
+            }
+          )
     MicroBot(response, name = Some("induction resolved"))
   }
 
@@ -2493,13 +2499,18 @@ object HoTTBot {
     ] =
       (previous) =>
         sg =>
-          Future {
-            val newGoal =
-              SeekGoal(negate(sg.goal), sg.context, sg.forConsequences)
-            if (previous.contents.contains(newGoal)) None
-            else
-              Some(Contradicts.fromTyp(sg.goal, sg.context) :: newGoal :: HNil)
-          }
+          Future(
+            if (sg.context.variables.nonEmpty) None
+            else {
+              val newGoal =
+                SeekGoal(negate(sg.goal), sg.context, sg.forConsequences)
+              if (previous.contents.contains(newGoal)) None
+              else
+                Some(
+                  Contradicts.fromTyp(sg.goal, sg.context) :: newGoal :: HNil
+                )
+            }
+          )
     MicroBot(response, name = Some("negating goal"))
   }
 
@@ -2624,8 +2635,8 @@ object HoTTBot {
   val goalInContext
       : SimpleBot[SeekGoal, Option[ProofLambda :: SeekGoal :: HNil]] =
     MicroBot.simple(
-      (sk: SeekGoal) =>
-        {Utils.logger.info(s"matching for context for $sk")
+      (sk: SeekGoal) => {
+        Utils.logger.info(s"matching for context for $sk")
         sk.goal match {
           case PiDefn(variable: Term, value: Typ[u]) =>
             logger.info(s"putting pi definition ${sk.goal} in context")
@@ -2663,9 +2674,11 @@ object HoTTBot {
             logger.info("returning function type in context")
             Some(pfLambda :: newSeek :: HNil)
           case _ =>
-            logger.info(s"cannot put goal ${sk.goal} in context") 
+            logger.info(s"cannot put goal ${sk.goal} in context")
             None
-        }}, name = Some("goal in context")
+        }
+      },
+      name = Some("goal in context")
     )
 
   val exportProof
