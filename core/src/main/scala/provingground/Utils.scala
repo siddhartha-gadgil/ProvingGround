@@ -68,6 +68,12 @@ object Utils {
   def logDebug() =
     logger = logger.withHandler(
       writer = ConsoleWriter,
+      minimumLevel = Some(Level.Debug)
+    )
+
+  def logTrace() =
+    logger = logger.withHandler(
+      writer = ConsoleWriter,
       minimumLevel = Some(Level.Trace)
     )
 

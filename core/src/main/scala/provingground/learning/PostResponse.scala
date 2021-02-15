@@ -139,7 +139,7 @@ class SimpleSession[W, ID](
             }
         }.andThen{
           (_) => completedResponses.append((postID, response))
-          Utils.logger.debug(s"global remaining responses: ${remainingResponses.size}")
+          Utils.logger.trace(s"global remaining responses: ${remainingResponses.size}")
           if (remainingResponses.isEmpty) {
             completionResponse.foreach(
               resp => 
