@@ -55,8 +55,8 @@ object Utils {
 
   import scribe._, writer._
   var logger = Logger()
-    .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
-    .replace()
+    // .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
+    // .replace()
 
   def logAll =
     logger = logger.setModifiers(List()).replace()

@@ -11,7 +11,10 @@ object ChompSession {
   Utils.logger = {
     import scribe._, writer._, Utils._
     logger
-      .withHandler(writer = FileWriter().path(file.LogPath.daily()))
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily()),
+        minimumLevel = Some(Level.Info)
+      )
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily("errors")),
         minimumLevel = Some(Level.Error)
@@ -96,7 +99,9 @@ object ChompSession {
       ws3 <- ws2.act(expnEqnUpdate)
       ws4 <- ws3.act(expFS)
       ws5 <- ws4.postLast(lp)
-      ws6 <- ws5.act(finalStateToConcurrentChomp(concurrency=8).triggerWith[LocalProver])
+      ws6 <- ws5.act(
+        finalStateToConcurrentChomp(concurrency = 8).triggerWith[LocalProver]
+      )
       ws7 <- ws6.act(chompReport())
       ws8 <- ws7.act(goalsAfterChomp)
     } yield ws8
@@ -104,7 +109,6 @@ object ChompSession {
   lazy val sessF: Future[HoTTWebSession] =
     wsF.map(ws => HoTTWebSession.launch(ws, bots))
 }
-
 
 object ChompSessionEq {
   Utils.logger = {
@@ -200,14 +204,20 @@ object ChompSessionEq {
       ws3 <- ws2.act(expnEqnUpdate)
       ws4 <- ws3.act(expFS)
       ws5 <- ws4.postLast(lp)
-      ws6 <- ws5.act(finalStateToConcurrentChomp(concurrency=8).triggerWith[LocalProver])
+      ws6 <- ws5.act(
+        finalStateToConcurrentChomp(concurrency = 8).triggerWith[LocalProver]
+      )
       ws7 <- ws6.act(chompReport())
       ws8 <- ws7.act(chompEqnUpdate)
       ws9 <- ws8.act(goalsAfterChomp)
     } yield ws9
 
   lazy val sessF: Future[HoTTWebSession] =
-    wsF.map(ws => HoTTWebSession.launch(ws, bots, Some(PostResponse.capResponse(HoTTMessages.Cap))))
+    wsF.map(
+      ws =>
+        HoTTWebSession
+          .launch(ws, bots, Some(PostResponse.capResponse(HoTTMessages.Cap)))
+    )
 }
 
 object ParChompSessionEq {
@@ -304,12 +314,19 @@ object ParChompSessionEq {
       ws3 <- ws2.act(expnEqnUpdate)
       ws4 <- ws3.act(expFS)
       ws5 <- ws4.postLast(lp)
-      ws6 <- ws5.act(finalStateToParallelChomp(cutoffScales = List(10, 1)).triggerWith[LocalProver])
+      ws6 <- ws5.act(
+        finalStateToParallelChomp(cutoffScales = List(10, 1))
+          .triggerWith[LocalProver]
+      )
       ws7 <- ws6.act(chompReport())
       ws8 <- ws7.act(chompEqnUpdate)
       ws9 <- ws8.act(goalsAfterChomp)
     } yield ws9
 
   lazy val sessF: Future[HoTTWebSession] =
-    wsF.map(ws => HoTTWebSession.launch(ws, bots, Some(PostResponse.capResponse(HoTTMessages.Cap))))
+    wsF.map(
+      ws =>
+        HoTTWebSession
+          .launch(ws, bots, Some(PostResponse.capResponse(HoTTMessages.Cap)))
+    )
 }

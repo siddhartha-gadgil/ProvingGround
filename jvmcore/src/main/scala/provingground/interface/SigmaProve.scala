@@ -11,7 +11,10 @@ object SigmaProve {
   Utils.logger = {
     import scribe._, writer._, Utils._
     logger
-      .withHandler(writer = FileWriter().path(file.LogPath.daily()))
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily()),
+        minimumLevel = Some(Level.Info)
+      )
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily("errors")),
         minimumLevel = Some(Level.Error)
@@ -50,9 +53,9 @@ object SigmaProve {
   val ts   = TermState(terms, typs)
   val tg   = TermGenParams(solverW = 0.05)
 
-  val lp  = LocalProver(ts, tg).sharpen(10)
+  val lp = LocalProver(ts, tg).sharpen(10)
 
-  val A = "A" :: Type 
+  val A = "A" :: Type
 
   val goal = A &: (A ->: Zero)
 

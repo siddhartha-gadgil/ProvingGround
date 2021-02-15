@@ -12,14 +12,17 @@ object InductionSession {
   Utils.logger = {
     import scribe._, writer._, Utils._
     logger
-      .withHandler(writer = FileWriter().path(file.LogPath.daily()))
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("errors")),
-        minimumLevel = Some(Level.Error)
-      )
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily("debug")),
         minimumLevel = Some(Level.Debug)
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily()),
+        minimumLevel = Some(Level.Info)
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily("errors")),
+        minimumLevel = Some(Level.Error)
       )
       .replace()
   }
@@ -64,7 +67,7 @@ object InductionSession {
   val ts   = TermState(terms, typs)
   val tg   = TermGenParams.zero.copy(appW = 0.2, unAppW = 0.2)
 
-  val lp = LocalProver (ts, tg)
+  val lp = LocalProver(ts, tg)
 
   val hypothesis = n ~>: (f(n) =:= f(succ(n)))
 

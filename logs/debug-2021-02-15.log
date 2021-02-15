@@ -1,0 +1,11 @@
+[0m2021.02.15 15:49:05:395 [main      ] [[34mINFO [0m] [32mprovingground.interface.ChompSession.ChompSession:29[0m - 
+This is a Bot based run for goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+After debugging, everything generated was proved but there was an error in reporting.
+[0m
+[0m2021.02.15 15:49:05:409 [main      ] [[34mINFO [0m] [32mprovingground.interface.ChompSession.ChompSession:39[0m - Number of threads: 8[0m
+[0m2021.02.15 15:49:05:410 [main      ] [[34mINFO [0m] [32mprovingground.interface.ChompSession.ChompSession:41[0m - JAVA_OPTS: -Xms512m -Xmx4g -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints[0m
+[0m2021.02.15 15:49:05:411 [main      ] [[34mINFO [0m] [32mprovingground.interface.ChompSession.ChompSession:43[0m - JAVA_HOME: /home/gadgil/.cache/coursier/jvm/adopt@1.11.0-8[0m
+[0m2021.02.15 15:49:18:641 [main      ] [[32mDEBUG[0m] [32mammonite.$sess.c.res3:1[0m - debug log[0m
