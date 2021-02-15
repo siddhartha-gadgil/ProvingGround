@@ -89,3 +89,23 @@ object LocalConstImpliesConstSym {
 
   val pf = inductor(base)(n :~> step) !: thm
 }
+
+object EqualityNats {
+  import NatRing._
+  val n = NatTyp.sym
+  val m = NatTyp.sym
+  val k = NatTyp.sym
+
+  val A = Type.sym
+
+  val recNU  = NatRing.rec(Type)
+  val recNNU = NatRing.rec(NatTyp ->: Type)
+
+  val eqm = "Eq(m)" :: NatTyp ->: Type
+
+  val Eq = recNNU(
+    recNU(One)(n :-> (A :-> (Zero : Typ[Term]))))(
+    m :-> (eqm :-> (
+      recNU(Zero)(n :-> (A :-> (eqm(n))))
+    )) )
+}
