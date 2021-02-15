@@ -103,9 +103,24 @@ object EqualityNats {
 
   val eqm = "Eq(m)" :: NatTyp ->: Type
 
-  val Eq = recNNU(
-    recNU(One)(n :-> (A :-> (Zero : Typ[Term]))))(
+  val Eq = recNNU(recNU(One)(n :-> (A :-> (Zero: Typ[Term]))))(
     m :-> (eqm :-> (
       recNU(Zero)(n :-> (A :-> (eqm(n))))
-    )) )
+    ))
+  )
+
+  val eqkk = "Eq(k)(k)" :: Eq(k)(k)
+
+  val diag = NatRing.induc(k :-> Eq(k)(k))(Star)(k :~> (eqkk :-> eqkk))
+
+  val equalmn = "Eq(m)(n)" :: (m =:= n)
+
+  val eqFamily =
+    IdentityTyp.induc(NatTyp, 
+    m :~> (n :~> (equalmn :~> (Eq(m)(n))))
+    )(diag)
+
+  val zeroNotSucc = n :~> (eqFamily(zero)(succ(n)) !: ((zero =:= succ(n)) ->: Zero))
+  
+  val succNotZero = n :~> (eqFamily(succ(n))(zero) !: ((succ(n) =:= zero ) ->: Zero))
 }
