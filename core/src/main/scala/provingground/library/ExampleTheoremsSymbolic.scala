@@ -120,7 +120,9 @@ object EqualityNats {
     m :~> (n :~> (equalmn :~> (Eq(m)(n))))
     )(diag)
 
-  val zeroNotSucc = n :~> (eqFamily(zero)(succ(n)) !: ((zero =:= succ(n)) ->: Zero))
+  val zeroNotSucc = n :~> (eqFamily(zero)(succ(n)) ) !: (
+    n ~>: ((zero =:= succ(n)) ->: Zero))
   
-  val succNotZero = n :~> (eqFamily(succ(n))(zero) !: ((succ(n) =:= zero ) ->: Zero))
+  val succNotZero = n :~> (eqFamily(succ(n))(zero) 
+  ) !: (n ~>: ((succ(n) =:= zero) ->: Zero))
 }
