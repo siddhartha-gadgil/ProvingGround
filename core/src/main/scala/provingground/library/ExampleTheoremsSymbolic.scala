@@ -116,13 +116,45 @@ object EqualityNats {
   val equalmn = "Eq(m)(n)" :: (m =:= n)
 
   val eqFamily =
-    IdentityTyp.induc(NatTyp, 
-    m :~> (n :~> (equalmn :~> (Eq(m)(n))))
-    )(diag)
-
-  val zeroNotSucc = n :~> (eqFamily(zero)(succ(n)) ) !: (
-    n ~>: ((zero =:= succ(n)) ->: Zero))
-  
-  val succNotZero = n :~> (eqFamily(succ(n))(zero) 
-  ) !: (n ~>: ((succ(n) =:= zero) ->: Zero))
+    IdentityTyp.induc(NatTyp, m :~> (n :~> (equalmn :~> (Eq(m)(n)))))(diag)
 }
+
+import EqualityNats._
+object ZeroNotSucc {
+
+  val thm = n ~>: ((zero =:= succ(n)) ->: Zero)
+
+  val pf = n :~> (eqFamily(zero)(succ(n))) !: thm
+
+  val formalPf = "lemma" :: thm
+}
+object SuccNotZero {
+
+  val thm = n ~>: ((succ(n) =:= zero) ->: Zero)
+
+  val pf = n :~> (eqFamily(succ(n))(zero)) !: thm
+
+  val formalPf = "lemma" :: thm
+}
+
+object ExercisesNat {
+  val sumZero = n ~>: m ~>: ((sum(n)(m) =:= zero) ->: ((n =:= 0) && (m =:= zero)))
+
+  val sumZero1 = n ~>: m ~>: ((sum(n)(m) =:= zero) ->: (n =:= 0))
+
+  val sumZero2 = n ~>: m ~>: ((sum(n)(m) =:= zero) ->: (m =:= 0))
+
+  val zeroLeq = n ~>: (leq(zero)(n))
+
+  val leqZero = n ~>: (leq(n)(zero) ->: (n =:= zero))
+
+  val leqTrans = n ~>: (m ~>: (k ~>: (leq(n)(m) ->: (leq(m)(k) ->: leq(n)(k)))))
+
+  val divTrans = n ~>: (m ~>: (k ~>: (divides(n)(m) ->: (divides(m)(k) ->: divides(n)(k)))))
+
+  val leqAntiSym = n ~>: (m ~>: (leq(n)(m) ->: (leq(m)(n) ->: (m =:= n))))
+
+  val divAntiSym = n ~>: (m ~>: (divides(n)(m) ->: (divides(m)(n) ->: (m =:= n))))
+
+}
+
