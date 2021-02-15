@@ -8,11 +8,12 @@ import java.util.concurrent.Executors
 import scala.concurrent._
 
 object Utils {
-  val threadNum = scala.util.Properties.envOrNone("THREADS").map(_.toInt).getOrElse(8) 
+  val threadNum =
+    scala.util.Properties.envOrNone("THREADS").map(_.toInt).getOrElse(8)
 
   implicit val ec: scala.concurrent.ExecutionContext =
     ExecutionContext.global
-    // ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(threadNum))
+  // ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(threadNum))
 
   type MapDist[A] = Map[A, Double]
 
@@ -35,14 +36,20 @@ object Utils {
     if (limitOpt
           .map(limit => System.currentTimeMillis() > limit)
           .getOrElse(false)) {
-            Utils.logger.info(s"out of time with ${l.size} batches remaining, returning accumulated stuff.")
-            accum
-          }
-    else
+      Utils.logger.debug(
+        s"out of time with ${l.size} batches remaining, returning accumulated stuff."
+      )
+      accum
+    } else
       l match {
         case head +: tail =>
           Utils.logger.debug(s"processing ${l.size} batches")
-          limitOpt.foreach(limit => Utils.logger.debug(s"time remaining ${(limit - System.currentTimeMillis())/1000} seconds"))
+          limitOpt.foreach(
+            limit =>
+              Utils.logger.debug(
+                s"time remaining ${(limit - System.currentTimeMillis()) / 1000} seconds"
+              )
+          )
           val result = head.par.map(fn)
           Utils.logger.debug(s"mapped batch of size ${head.size}")
           gatherMapSet(tail, result.seq.toSet union (accum), fn, limitOpt)
@@ -55,11 +62,14 @@ object Utils {
 
   import scribe._, writer._
   var logger = Logger()
-    // .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
-    // .replace()
+  // .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
+  // .replace()
 
-  def logAll =
-    logger = logger.setModifiers(List()).replace()
+  def logDebug() =
+    logger = logger.withHandler(
+      writer = ConsoleWriter,
+      minimumLevel = Some(Level.Trace)
+    )
 
   def logBrief =
     logger = logger

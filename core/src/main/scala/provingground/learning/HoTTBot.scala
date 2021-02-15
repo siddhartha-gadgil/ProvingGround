@@ -219,8 +219,8 @@ object HoTTBot {
         fs.ts.terms.support
           .filterNot(t => earliestTyps.contains(t.typ))
           .groupBy(_.typ)
-      logger.info(s"New lemmas: ${pfMap.size}")
-      logger.info(
+      logger.debug(s"New lemmas: ${pfMap.size}")
+      logger.debug(
         s"Theorem numbers: ${previous.map(fs => fs.ts.terms.map(_.typ).support.size)}"
       )
       val thmsByPf: FiniteDistribution[Typ[Term]] = fs.ts.terms
@@ -232,7 +232,7 @@ object HoTTBot {
           (tp, Some(terms.maxBy(fs.ts.terms(_))), thmsByPf(tp))
       }
     } else {
-      logger.info("New lemmas : none as there were no previous states")
+      logger.debug("New lemmas : none as there were no previous states")
       Vector()
     }
   }
@@ -263,7 +263,7 @@ object HoTTBot {
             val proved =
               (tt union
                 qinit.init.terms.support).map(_.typ)
-            Utils.logger.info(
+            Utils.logger.debug(
               s"avoiding ${proved.size} types as tautologies and generators."
             )
             Lemmas(
@@ -365,7 +365,7 @@ object HoTTBot {
           .flatMap(
             DE.formalTypEquations(_)
           ))
-        Utils.logger.info(s"Obtained ${allEquations.size} formal equations")
+        Utils.logger.debug(s"Obtained ${allEquations.size} formal equations")
         val normalEquations = allEquations.map(TermData.isleNormalize(_))
         web.addEqns(normalEquations.seq)
       },
@@ -420,7 +420,7 @@ object HoTTBot {
                     } else output
                 }
                 .mkString("\n")}"
-              logger.info(view)
+              logger.debug(view)
               Utils.report(view)
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
@@ -463,7 +463,7 @@ object HoTTBot {
                       .terms(best)}; statement weight ${fs.ts.typs(tp)}"
                 }
                 .mkString("\n")}"
-              logger.info(view)
+              logger.debug(view)
               // Utils.report(view)
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
@@ -485,7 +485,7 @@ object HoTTBot {
         .flatMap(typ => ls.lemmas.find(_._1 == typ).map(typ -> _._3))
       val view = s"Tangent lemmas: ${tls.size}\n${tls
         .mkString("\n")}"
-      logger.info(view)
+      logger.debug(view)
       Utils.report(view)
     }
 
@@ -497,7 +497,7 @@ object HoTTBot {
         .flatMap(typ => ls.lemmas.find(_._1 == typ).map(typ -> _._3))
       val view = s"Base mixin lemmas: ${tls.size}\n${tls
         .mkString("\n")}"
-      logger.info(view)
+      logger.debug(view)
       Utils.report(view)
     }
 
@@ -516,7 +516,7 @@ object HoTTBot {
             s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
         }
         .mkString("\n")}"
-      logger.info(view)
+      logger.debug(view)
       Utils.report(view)
     }
 
@@ -550,7 +550,7 @@ object HoTTBot {
                     s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
                 }
                 .mkString("\n")}"
-            logger.info(view1 + "\n" + view2 + "\n\n")
+            logger.debug(view1 + "\n" + view2 + "\n\n")
             Utils.report(view1 + "\n" + view2 + "\n\n")
           }
     Callback(update, name = Some("report base and tangent pairs"))
@@ -565,7 +565,7 @@ object HoTTBot {
   lazy val expEvToFinalState: SimpleBot[ExpressionEval, FinalState] =
     MicroBot.simple(
       (ev: ExpressionEval) => {
-        Utils.logger.info("computing final state")
+        Utils.logger.debug("computing final state")
         FinalState(ev.finalTermState())
       }
     )
@@ -659,12 +659,12 @@ object HoTTBot {
               case ft: FuncTyp[u, v] =>
                 val newGoal = negate(ft.dom)
                 if (newGoal == goal.goal) {
-                  Utils.logger.info(
+                  Utils.logger.debug(
                     s"nothing gained by contradicting hypothesis for ${goal.goal}"
                   )
                   None
                 } else {
-                  Utils.logger.info(
+                  Utils.logger.debug(
                     s"try to prove $newGoal as contradicting hypothesis  for ${goal.goal}"
                   )
                   val x = ft.dom.Var
@@ -682,7 +682,7 @@ object HoTTBot {
                       Option(ExstFunc(transform)),
                       goal.context
                     )
-                  Utils.logger.info(s"Consequence: $cons")
+                  Utils.logger.debug(s"Consequence: $cons")
                   Some(
                     cons :: SeekGoal(
                       newGoal,
@@ -694,12 +694,12 @@ object HoTTBot {
               case pd: PiDefn[u, v] =>
                 val newGoal = negate(pd.domain)
                 if (newGoal == goal.goal) {
-                  Utils.logger.info(
+                  Utils.logger.debug(
                     s"nothing gained by contradicting hypothesis for ${goal.goal}"
                   )
                   None
                 } else {
-                  Utils.logger.info(
+                  Utils.logger.debug(
                     s"try to prove $newGoal as contradicting hypothesis for ${goal.goal}"
                   )
                   val x = pd.domain.Var
@@ -717,7 +717,7 @@ object HoTTBot {
                       Option(ExstFunc(transform)),
                       goal.context
                     )
-                  Utils.logger.info(s"Consequence: $cons")
+                  Utils.logger.debug(s"Consequence: $cons")
                   Some(
                     cons :: SeekGoal(
                       newGoal,
@@ -727,7 +727,7 @@ object HoTTBot {
                   )
                 }
               case _ =>
-                Utils.logger.info(
+                Utils.logger.debug(
                   s"cannot prove ${goal.goal} by contradicting hypothesis"
                 )
                 None
@@ -1353,12 +1353,12 @@ object HoTTBot {
       decay: Double = 1,
       maxTime: Option[Long] = None
   ) = {
-    logger.info("Computing base state")
+    logger.debug("Computing base state")
     val groupedVec = Equation
       .groupMap(equationNodes, DE.termStateInitMap(initialState))
       .values
       .toVector
-    Utils.logger.info("Created vector of equations")
+    Utils.logger.debug("Created vector of equations")
     val groupedSet = Utils.makeSet(
       groupedVec
       // .map(TermData.isleNormalize(_))
@@ -1391,14 +1391,14 @@ object HoTTBot {
       decay: Double = 1,
       maxTime: Option[Long] = None
   ) = {
-    logger.info("Computing base state")
+    logger.debug("Computing base state")
     val groupSetTask = Task {
       val groupedVec =
         Equation
           .groupMap(equationNodes, DE.termStateInitMap(initialState))
           .values
           .toVector
-      Utils.logger.info("Created vector of equations")
+      Utils.logger.debug("Created vector of equations")
       Utils.makeSet(
         groupedVec
         // .map(TermData.isleNormalize(_))
@@ -1488,7 +1488,7 @@ object HoTTBot {
     ] = {
       case psps :: qp :: neqs :: HNil =>
         lems => {
-          logger.info(s"previous special init states are ${psps.contents.size}")
+          logger.debug(s"previous special init states are ${psps.contents.size}")
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
           logger.debug(s"Using ${neqs.size} equation nodes for base states")
@@ -1549,12 +1549,12 @@ object HoTTBot {
     ] = {
       case psps :: qp :: neqs :: HNil =>
         lems => {
-          logger.info(s"previous special init states are ${psps.contents.size}")
+          logger.debug(s"previous special init states are ${psps.contents.size}")
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
           logger.debug(s"Using ${neqs.size} equation nodes for base states")
           // val eqVec = Equation.groupIt(neqs).toVector
-          // Utils.logger.info("Grouped into equations from lookup")
+          // Utils.logger.debug("Grouped into equations from lookup")
           psps.contents.map(
             ps => {
               import qp.lp
@@ -2337,7 +2337,7 @@ object HoTTBot {
               )
               fromAlls.headOption
             } else {
-              Utils.logger.info(
+              Utils.logger.debug(
                 s"did not resolve $sg as it has ${sg.forConsequences.size} consequences"
               )
               None
@@ -2361,7 +2361,7 @@ object HoTTBot {
     ] =
       qp =>
         seekInst => {
-          Utils.logger.info(
+          Utils.logger.debug(
             s"seeking instances for ${seekInst.typ} with cutoff ${qp.lp.cutoff}"
           )
           import TermGeneratorNodes._, TermRandomVars._
@@ -2573,7 +2573,7 @@ object HoTTBot {
               )
             )
           case _ =>
-            Utils.logger.info(s"no instances sought for ${sk.goal}")
+            Utils.logger.debug(s"no instances sought for ${sk.goal}")
             None
         },
       Some("sigma-type resolved")
@@ -2636,10 +2636,10 @@ object HoTTBot {
       : SimpleBot[SeekGoal, Option[ProofLambda :: SeekGoal :: HNil]] =
     MicroBot.simple(
       (sk: SeekGoal) => {
-        Utils.logger.info(s"matching for context for $sk")
+        Utils.logger.debug(s"matching for context for $sk")
         sk.goal match {
           case PiDefn(variable: Term, value: Typ[u]) =>
-            logger.info(s"putting pi definition ${sk.goal} in context")
+            logger.debug(s"putting pi definition ${sk.goal} in context")
             val newSeek = SeekGoal(
               value,
               sk.context.addVariable(variable),
@@ -2653,10 +2653,10 @@ object HoTTBot {
               variable,
               true
             )
-            logger.info("returning pi-defn in context")
+            logger.debug("returning pi-defn in context")
             Some(pfLambda :: newSeek :: HNil)
           case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
-            logger.info(s"putting function type ${sk.goal} in context")
+            logger.debug(s"putting function type ${sk.goal} in context")
             val x = dom.Var
             val newSeek = SeekGoal(
               codom,
@@ -2671,10 +2671,10 @@ object HoTTBot {
               x,
               false
             )
-            logger.info("returning function type in context")
+            logger.debug("returning function type in context")
             Some(pfLambda :: newSeek :: HNil)
           case _ =>
-            logger.info(s"cannot put goal ${sk.goal} in context")
+            logger.debug(s"cannot put goal ${sk.goal} in context")
             None
         }
       },
@@ -2879,7 +2879,7 @@ object HoTTBot {
                   case (lp: LocalProver, x: Term) =>
                     lp.addVar(x, varWeight)
                 }
-                Utils.logger.info(s"initial state ${withVars.initState}")
+                Utils.logger.debug(s"initial state ${withVars.initState}")
                 val pde = ParDistEq.fromParams(qp.lp.tg, qp.lp.tg.varWeight)
                 Future {
                   val (fd, eqs) = pde.varDist(
@@ -2893,7 +2893,7 @@ object HoTTBot {
                     EquationExporter.export(eqs.to(Set), initTerms, newVars)
                   val geqs = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
-                    Utils.logger.info(s"""|Failed for ${TermRandomVars
+                    Utils.logger.debug(s"""|Failed for ${TermRandomVars
                                            .termsWithTyp(goal.goal)}
                           |initial state: ${withVars.initState}
                           |cutoff: ${withVars.cutoff}
@@ -2969,7 +2969,7 @@ object HoTTBot {
                   case (lp: LocalProver, x: Term) =>
                     lp.addVar(x, varWeight)
                 }
-                Utils.logger.info(s"initial state ${withVars.initState}")
+                Utils.logger.debug(s"initial state ${withVars.initState}")
                 withVars
                   .varDistEqs(TermRandomVars.termsWithTyp(goal.goal))
                   .runToFuture
@@ -2982,7 +2982,7 @@ object HoTTBot {
                       val geqs = GeneratedEquationNodes(expEqs)
                       Some(geqs :: {
                         if (fd.pmf.isEmpty) {
-                          Utils.logger.info(
+                          Utils.logger.debug(
                             s"""|Failed for 
                                             |${TermRandomVars
                                  .termsWithTyp(goal.goal)}
@@ -3055,8 +3055,8 @@ object HoTTBot {
         (_) =>
           (_) =>
             topLevelRelevantGoals(web, context).map { goals =>
-              Utils.logger.info(s"remaining top level goals: ${goals.size}")
-              Utils.logger.info(goals.mkString("\n"))
+              Utils.logger.debug(s"remaining top level goals: ${goals.size}")
+              Utils.logger.debug(goals.mkString("\n"))
               if (haltIfEmpty && goals.isEmpty) {
                 web.halt()
                 Utils.running = false

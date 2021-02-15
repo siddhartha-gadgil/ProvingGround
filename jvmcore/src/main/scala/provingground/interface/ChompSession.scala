@@ -36,7 +36,7 @@ object ChompSession {
        |""".stripMargin
   )
 
-  logger.info(s"Number of threads: $threadNum")
+  
 
   envOrNone("JAVA_OPTS").foreach(w => logger.info(s"JAVA_OPTS: $w"))
 
@@ -136,7 +136,7 @@ object ChompSessionEq {
        |""".stripMargin
   )
 
-  logger.info(s"Number of threads: $threadNum")
+  
 
   envOrNone("JAVA_OPTS").foreach(w => logger.info(s"JAVA_OPTS: $w"))
 
@@ -246,7 +246,7 @@ object ParChompSessionEq {
        |""".stripMargin
   )
 
-  logger.info(s"Number of threads: $threadNum")
+  
 
   envOrNone("JAVA_OPTS").foreach(w => logger.info(s"JAVA_OPTS: $w"))
 

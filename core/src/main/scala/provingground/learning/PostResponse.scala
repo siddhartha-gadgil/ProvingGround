@@ -39,7 +39,7 @@ object PostResponse {
   ): Option[TypedPostResponse[Q, W, ID]] = response match {
     case r: TypedPostResponse[p, W, ID] =>
       if (qp.tag.tpe =:= r.pw.tag.tpe) {
-        // logger.info(s"triggered response with type ${r.pw.tag}")
+        // logger.debug(s"triggered response with type ${r.pw.tag}")
         Some(r.asInstanceOf[TypedPostResponse[Q, W, ID]])}
       else None
     case _ => None
@@ -223,11 +223,11 @@ object TypedPostResponse {
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
       val message = name.getOrElse(this.hashCode().toHexString)
-      logger.info(s"triggered callback '${message}' for type ${pw.tag} with input hash ${content.hashCode()}")
+      logger.debug(s"triggered callback '${message}' for type ${pw.tag} with input hash ${content.hashCode()}")
       val auxFuture = lv.getAt(web, id, predicate)
       val task = auxFuture.flatMap { auxs =>
         Future.sequence(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
-      }.andThen(_ => logger.info(s"completed callback '${message}' for type ${pw.tag} with input hash ${content.hashCode()}"))
+      }.andThen(_ => logger.debug(s"completed callback '${message}' for type ${pw.tag} with input hash ${content.hashCode()}"))
       task
     }
 
@@ -275,7 +275,7 @@ object TypedPostResponse {
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
       val message = name.getOrElse(this.hashCode().toHexString)
-      logger.info(s"triggered response '${message}' of type ${qw.tag} to post of type ${pw.tag} with input hash ${content.hashCode()}")
+      logger.debug(s"triggered response '${message}' of type ${qw.tag} to post of type ${pw.tag} with input hash ${content.hashCode()}")
       val auxFuture = lv.getAt(web, id, predicate(content)) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
@@ -293,7 +293,7 @@ object TypedPostResponse {
         st => st.fold(fa => {logger.error(s"completed response '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()} with error;")
                 fa.printStackTrace()
               logger.error(s"${fa.getMessage()}\n${fa.getStackTrace().toVector.mkString("\n")}")},
-          fb => logger.info(s"completed response '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}; " + 
+          fb => logger.debug(s"completed response '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}; " + 
                 s"output ${fb.map(_.content.hashCode())}")))
               
       task
@@ -407,7 +407,7 @@ object TypedPostResponse {
           content: P,
           id: ID
       ): Future[Vector[PostData[_, W, ID]]] = {
-        logger.info(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
+        logger.debug(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val taskNest =
           auxFuture.map{
@@ -424,7 +424,7 @@ object TypedPostResponse {
           }
         val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten))
         .andThen(st =>
-                logger.info(s"completed all responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}" + 
+                logger.debug(s"completed all responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}" + 
                 s"output ${st.fold(fa => fa.getMessage, fb => fb.map(_.content.hashCode()))}")
 )
         task
@@ -475,22 +475,22 @@ object TypedPostResponse {
           content: P,
           id: ID
       ): Future[Vector[PostData[_, W, ID]]] = {
-        logger.info(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag}")
+        logger.debug(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag}")
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val taskNest =
           auxFuture.flatMap{
             {auxs =>              
-              Utils.logger.info(s"launching ${auxs.size} branches")
+              Utils.logger.debug(s"launching ${auxs.size} branches")
               Future.sequence(auxs.flatMap{
                 aux => 
                   val newPostsFuture = responses(aux)(content)
                    var remaining = newPostsFuture.size
-                  Utils.logger.info(s"launching ${remaining} responses  of type ${qw.tag} in branch")
+                  Utils.logger.debug(s"launching ${remaining} responses  of type ${qw.tag} in branch")
                   val newPostsData = newPostsFuture.map(cF => cF.flatMap{c => 
                       val idNewF = qw.post(c, web, Set(id))
                       idNewF.map(idNew => PostData.get(c, idNew)).andThen{
                         case Success(_) => remaining = remaining - 1
-                          Utils.logger.info(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
+                          Utils.logger.debug(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
                         case Failure(exception) => 
                           Utils.logger.error(s"response failed with error")
                           Utils.logger.error(exception)
@@ -500,7 +500,7 @@ object TypedPostResponse {
                   newPostsData})
                   }
           }.andThen(st => 
-          logger.info(s"completed (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}" +
+          logger.debug(s"completed (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}" +
           s"output ${st.fold(fa => fa.getMessage, fb => fb.map(_.content.hashCode()))}")
           )
         taskNest
@@ -553,23 +553,23 @@ object TypedPostResponse {
       ): Future[Vector[PostData[_, W, ID]]] = {
         val message = name.getOrElse(this.hashCode().toHexString)
 
-        logger.info(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
+        logger.debug(s"triggered (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val auxTask = Task.fromFuture(auxFuture)
         val taskNest =
           auxTask.flatMap{
             {auxs =>              
-              Utils.logger.info(s"launching ${auxs.size} branches")
+              Utils.logger.debug(s"launching ${auxs.size} branches")
               Task.parSequence(auxs.flatMap{
                 aux => 
                   val newPostsTask = responses(aux)(content)
                    var remaining = newPostsTask.size
-                  Utils.logger.info(s"launching ${remaining} responses  of type ${qw.tag}  to posts of type ${pw.tag} in branch")
+                  Utils.logger.debug(s"launching ${remaining} responses  of type ${qw.tag}  to posts of type ${pw.tag} in branch")
                   val newPostsData = newPostsTask.map(cF => cF.flatMap{c => 
                       val idNewT = Task.fromFuture(qw.post(c, web, Set(id)))
                       idNewT.map(idNew => PostData.get(c, idNew)).materialize.map{
                         case Success(result) => remaining = remaining - 1
-                          Utils.logger.info(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
+                          Utils.logger.debug(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
                           result
                         case Failure(exception) => 
                           Utils.logger.error(s"response failed with error")
@@ -582,7 +582,7 @@ object TypedPostResponse {
                   }
           }
           .map{result => 
-          logger.info(s"completed (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
+          logger.debug(s"completed (multiple) responses '$message' of type ${qw.tag} to posts of type ${pw.tag} with input hash ${content.hashCode()}")
           result
           }
         taskNest.runToFuture
@@ -695,8 +695,8 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
       pd => lp.getAt(web, pd.id, predicate)
     }).map(_.flatten)
     result.foreach{v => 
-      Utils.logger.info(s"${v.size} responses to enquiry ${qt}")
-      // v.foreach(x => Utils.logger.info(s"element: $x for $qt"))
+      Utils.logger.debug(s"${v.size} responses to enquiry ${qt}")
+      // v.foreach(x => Utils.logger.debug(s"element: $x for $qt"))
     }
   result}
 }

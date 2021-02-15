@@ -35,7 +35,7 @@ object SigmaProve {
        |""".stripMargin
   )
 
-  logger.info(s"Number of threads: $threadNum")
+  
 
   envOrNone("JAVA_OPTS").foreach(w => logger.info(s"JAVA_OPTS: $w"))
 

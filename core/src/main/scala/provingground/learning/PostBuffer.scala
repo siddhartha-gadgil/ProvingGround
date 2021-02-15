@@ -138,7 +138,7 @@ object ErasablePostBuffer {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] = {
         val idF = buffer(web).post(content, pred)
         idF.map { id =>
-          logger.info(
+          logger.debug(
             s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, hash : ${content.hashCode()}"
           )
           // logger.debug(
@@ -217,13 +217,13 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
   def find[W](
       index: ID
   )(implicit pw: Postable[P, W, ID]): Option[(PostData[P, W, ID], Set[ID])] = {
-    // Utils.logger.info(indexMap.toString())
-    // Utils.logger.info(index.toString)
-    // Utils.logger.info(tag.tpe.toString)
+    // Utils.logger.debug(indexMap.toString())
+    // Utils.logger.debug(index.toString)
+    // Utils.logger.debug(tag.tpe.toString)
     indexMap.get(index).flatMap { n =>
       val (pOpt, _, preds) = buffer(n)
-      // Utils.logger.info(n.toString())
-      // Utils.logger.info(pOpt.toString())
+      // Utils.logger.debug(n.toString())
+      // Utils.logger.debug(pOpt.toString())
       pOpt.map(p => (PostData[P, W, ID](p, index), preds))
     }
   }
@@ -324,7 +324,7 @@ object PostBuffer {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] = {
         val idF = buffer(web).post(content, pred)
         idF.map { id =>
-          logger.info(
+          logger.debug(
             s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}, hash: ${content.hashCode()}"
           )
           id

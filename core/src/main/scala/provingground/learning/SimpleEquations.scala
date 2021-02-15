@@ -274,7 +274,7 @@ object SimpleEquations {
           )
         else 
           {
-            Utils.logger.info(s"reached cutoff limit $minCutoff")
+            Utils.logger.debug(s"reached cutoff limit $minCutoff")
             Task(accum union(result))
           }
         case (b, (result, _, _)) =>

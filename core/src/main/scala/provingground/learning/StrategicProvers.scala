@@ -266,7 +266,7 @@ object StrategicProvers {
             termSet = termSet union (terms)
             if (ss.isEmpty) {
               failures.append(typ)
-              Utils.logger.info(s"failed to prove $typ")
+              Utils.logger.debug(s"failed to prove $typ")
               update(())
               liberalChomper(
                 lp,
@@ -281,9 +281,9 @@ object StrategicProvers {
             } else {
               successes.append(ss)
               ss.foreach(
-                s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
+                s => Utils.logger.debug(s"proved ${s._1} with proof ${s._3}")
               )
-              Utils.logger.info(s"goals remaining ${ys.size}")
+              Utils.logger.debug(s"goals remaining ${ys.size}")
               update(())
               liberalChomper(
                 lp,
@@ -320,7 +320,7 @@ object StrategicProvers {
         val (ss, eqs, terms) =
           polySolveTyp(typ, initState, tg, cutoffs, accumTerms)
         if (ss.isEmpty) {
-          Utils.logger.info(s"failed to prove $typ and ${negate(typ)}")
+          Utils.logger.debug(s"failed to prove $typ and ${negate(typ)}")
           parChomper(
             ys,
             initState,
@@ -333,9 +333,9 @@ object StrategicProvers {
           )
         } else {
           ss.foreach(
-            s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
+            s => Utils.logger.debug(s"proved ${s._1} with proof ${s._3}")
           )
-          Utils.logger.info(s"goals remaining ${ys.size}")
+          Utils.logger.debug(s"goals remaining ${ys.size}")
           parChomper(
             ys,
             initState,
@@ -369,7 +369,7 @@ object StrategicProvers {
       case Vector() =>
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typGroup +: ys =>
-        Utils.logger.info(
+        Utils.logger.debug(
           s"seeking result for group ${typGroup.mkString(" ; ")}"
         )
         val resultGroup =
@@ -386,10 +386,10 @@ object StrategicProvers {
           Task.sequence(resultGroup).map(SeekResult.collate(_))
         result.flatMap {
           case ((ss, eqs, terms), failures) =>
-            Utils.logger.info(s"proved ${ss.size} results")
+            Utils.logger.debug(s"proved ${ss.size} results")
             if (failures.nonEmpty)
-              Utils.logger.info(s"failed to prove ${failures.mkString("\n")}")
-            Utils.logger.info(s"remaining ${ys.size} groups to prove/disprove")
+              Utils.logger.debug(s"failed to prove ${failures.mkString("\n")}")
+            Utils.logger.debug(s"remaining ${ys.size} groups to prove/disprove")
             equationNodes = equationNodes union (eqs)
             termSet = termSet union (terms)
             concurrentTargetChomper(
@@ -423,7 +423,7 @@ object StrategicProvers {
       case Vector() =>
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typ +: ys =>
-        Utils.logger.info(s"trying to prove ${typ} or ${negate(typ)}")
+        Utils.logger.debug(s"trying to prove ${typ} or ${negate(typ)}")
         solveTyp(lp, typ, accumTerms)
           .onErrorRecover {
             case te: TimeoutException =>
@@ -435,7 +435,7 @@ object StrategicProvers {
               equationNodes = equationNodes union (eqs)
               termSet = termSet union (terms)
               if (ss.isEmpty) {
-                Utils.logger.info(s"failed to prove $typ")
+                Utils.logger.debug(s"failed to prove $typ")
                 targetChomper(
                   lp,
                   ys,
@@ -446,9 +446,9 @@ object StrategicProvers {
                 )
               } else {
                 ss.foreach(
-                  s => Utils.logger.info(s"proved ${s._1} with proof ${s._3}")
+                  s => Utils.logger.debug(s"proved ${s._1} with proof ${s._3}")
                 )
-                Utils.logger.info(s"goals remaining ${ys.size}")
+                Utils.logger.debug(s"goals remaining ${ys.size}")
                 targetChomper(
                   lp,
                   ys,
