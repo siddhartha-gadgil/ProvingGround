@@ -463,7 +463,7 @@ object HoTTBot {
                       .terms(best)}; statement weight ${fs.ts.typs(tp)}"
                 }
                 .mkString("\n")}"
-              logger.debug(view)
+              logger.info(view)
               // Utils.report(view)
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
