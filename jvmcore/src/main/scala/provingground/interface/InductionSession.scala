@@ -10,7 +10,7 @@ import provingground.scalahott.NatRing
 
 object InductionSession {
   Utils.logger = {
-    import scribe._, writer._, Utils._
+    import scribe._, writer._, Utils._, scribe.output.format.ASCIIOutputFormat
     logger
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily("debug")),
@@ -18,7 +18,8 @@ object InductionSession {
       )
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily()),
-        minimumLevel = Some(Level.Info)
+        minimumLevel = Some(Level.Info),
+        outputFormat = ASCIIOutputFormat
       )
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily("errors")),
