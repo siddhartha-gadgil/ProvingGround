@@ -2,6 +2,7 @@ package provingground.interface
 import provingground._, library._
 import scala.util._, Properties.envOrNone
 import Utils._
+import scribe.output.format.ASCIIOutputFormat
 
 object CzSlRun extends App {
   Utils.logger = {
@@ -9,7 +10,8 @@ object CzSlRun extends App {
     logger
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily()),
-        minimumLevel = Some(Level.Info)
+        minimumLevel = Some(Level.Info),
+        outputFormat = ASCIIOutputFormat
       )
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily("errors")),
