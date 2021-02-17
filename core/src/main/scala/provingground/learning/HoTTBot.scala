@@ -1488,7 +1488,9 @@ object HoTTBot {
     ] = {
       case psps :: qp :: neqs :: HNil =>
         lems => {
-          logger.debug(s"previous special init states are ${psps.contents.size}")
+          logger.debug(
+            s"previous special init states are ${psps.contents.size}"
+          )
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
           logger.debug(s"Using ${neqs.size} equation nodes for base states")
@@ -1549,7 +1551,9 @@ object HoTTBot {
     ] = {
       case psps :: qp :: neqs :: HNil =>
         lems => {
-          logger.debug(s"previous special init states are ${psps.contents.size}")
+          logger.debug(
+            s"previous special init states are ${psps.contents.size}"
+          )
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
           logger.debug(s"Using ${neqs.size} equation nodes for base states")
@@ -2893,12 +2897,11 @@ object HoTTBot {
                     EquationExporter.export(eqs.to(Set), initTerms, newVars)
                   val geqs = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
-                    Utils.logger.debug(s"""|Failed for ${TermRandomVars
-                                           .termsWithTyp(goal.goal)}
-                          |initial state: ${withVars.initState}
-                          |cutoff: ${withVars.cutoff}
-                          |parameters : ${withVars.tg}""".stripMargin)
-                    if (fd.isEmpty)
+                    if (fd.isEmpty) {
+                      Utils.logger.debug(s"""|Failed for ${TermRandomVars.termsWithTyp(goal.goal)}
+                                              |initial state: ${withVars.initState}
+                                              |cutoff: ${withVars.cutoff}
+                                              |parameters : ${withVars.tg}""".stripMargin)
                       Left(
                         FailedToProve(
                           goal.goal,
@@ -2906,7 +2909,7 @@ object HoTTBot {
                           goal.forConsequences
                         )
                       )
-                    else {
+                    } else {
                       val best = fd.maxBy(_._2)._1
                       Right(Proved(goal.goal, Some(best), goal.context))
                     }
