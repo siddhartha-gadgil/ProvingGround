@@ -2837,6 +2837,26 @@ object HoTTBot {
           )
     )
 
+  lazy val parLpEqns: SimpleBot[LocalProver, GeneratedEquationNodes] =
+    MicroBot.simple(
+      (lp: LocalProver) => {
+        val pde = ParDistEq.fromParams(lp.tg, lp.tg.varWeight)
+        val (_, eqs) = pde.nextStateEqs(
+          ParMapState.fromTermState(lp.initState),
+          lp.cutoff,
+          Some(lp.maxDepth)
+        )
+        val exported = EquationExporter.export(
+          eqs.to(Set),
+          lp.initState.terms.support union (lp.initState.typs.support
+            .map(tp => tp : Term)),
+          lp.initState.vars
+        )
+        GeneratedEquationNodes(exported)
+      },
+      name = Some("parallel equation generation")
+    )
+
   def parGoalAttemptEqs(
       varWeight: Double
   ): MicroBot[SeekGoal, Option[
@@ -2898,10 +2918,13 @@ object HoTTBot {
                   val geqs = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
                     if (fd.isEmpty) {
-                      Utils.logger.debug(s"""|Failed for ${TermRandomVars.termsWithTyp(goal.goal)}
+                      Utils.logger.debug(
+                        s"""|Failed for ${TermRandomVars
+                             .termsWithTyp(goal.goal)}
                                               |initial state: ${withVars.initState}
                                               |cutoff: ${withVars.cutoff}
-                                              |parameters : ${withVars.tg}""".stripMargin)
+                                              |parameters : ${withVars.tg}""".stripMargin
+                      )
                       Left(
                         FailedToProve(
                           goal.goal,
