@@ -13,9 +13,16 @@ eqs.size
 
 val exported = EquationExporter.export(eqs.to(Set), Set(A, B), Vector(A, B))
 import GeneratorVariables._
-val termsLHS = exported.flatMap(eqn => Expression.varVals(eqn.lhs)).collect{case FinalVal(Elem(t: Term, _)) => t}
+val termsLHS = exported.flatMap(eqn => Expression.varVals(eqn.lhs)).collect{
+    case FinalVal(Elem(t: Term, _)) => t
+    case FinalVal(Elem(fn: ExstFunc, _)) => (fn.func : Term)
+}
 termsLHS.size
 println(termsLHS.find(_.dependsOn(B)))
+val termsRHS = exported.flatMap(eqn => Expression.varVals(eqn.rhs)).collect{
+    case FinalVal(Elem(t: Term, _)) => t
+    case FinalVal(Elem(fn: ExstFunc, _)) => (fn.func : Term)}
+println(termsRHS.find(_.dependsOn(B)))
 def hasEscaped(exp: Expression) = Expression.varVals(exp).collect{
     case FinalVal(Elem(t: Term, _)) => t
     case FinalVal(Elem(fn: ExstFunc, _)) => (fn.func : Term)
