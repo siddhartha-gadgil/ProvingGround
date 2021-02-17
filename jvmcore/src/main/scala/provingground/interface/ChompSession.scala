@@ -310,18 +310,19 @@ object ParChompSessionEq {
   lazy val wsF =
     for {
       ws1 <- ws.post(lp0, Set())
-      ws2 <- ws1.act(lpToEnhancedExpEv)
-      ws3 <- ws2.act(expnEqnUpdate)
-      ws4 <- ws3.act(expFS)
-      ws5 <- ws4.postLast(lp)
-      ws6 <- ws5.act(
+      ws2 <- ws1.act(parLpEqns)
+      ws3 <- ws2.act(eqnUpdate)
+      ws4 <- ws3.act(eqnsToExpEv(Some(ParMapState.coeffVal(lp0.tg))))
+      ws5 <- ws4.act(expFS)
+      ws6 <- ws5.postLast(lp)
+      ws7 <- ws6.act(
         finalStateToParallelChomp(cutoffScales = List(10, 1))
           .triggerWith[LocalProver]
       )
-      ws7 <- ws6.act(chompReport())
-      ws8 <- ws7.act(chompEqnUpdate)
-      ws9 <- ws8.act(goalsAfterChomp)
-    } yield ws9
+      ws8 <- ws7.act(chompReport())
+      ws9 <- ws8.act(chompEqnUpdate)
+      ws10 <- ws9.act(goalsAfterChomp)
+    } yield ws10
 
   lazy val sessF: Future[HoTTWebSession] =
     wsF.map(
