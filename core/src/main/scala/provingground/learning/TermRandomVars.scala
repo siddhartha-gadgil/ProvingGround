@@ -197,6 +197,8 @@ object TermRandomVars {
   ) extends (Term => RandomVar[Term]) {
     def apply(x: Term): RandomVar[Term] =
       termsWithTyp(pd.fibers(x.asInstanceOf[U]))
+
+    override def toString(): String = s"PiOutput($pd)"
   }
 
   def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
@@ -416,7 +418,12 @@ object TermRandomVars {
     val newIsleOutput = isle.islandOutput match {
       case ConstRandVar(randomVar) =>
         ConstRandVar(randomVarSubs(x, y)(randomVar))
+      case PiOutput(pd: PiDefn[u, v]) => PiOutput(pd.replace(x, y)).asInstanceOf[Term => RandomVar[d]]
       case _ =>
+        Utils.logger.warn(
+          s"creating lambda random variable by substitution  for ${isle.islandOutput} in $isle; $boat gives ${isle
+            .islandOutput(boat)}"
+        )
         (z: Term) => randomVarSubs(x, y)(isle.islandOutput(z))
     }
     Island[c, TermState, d, Term](

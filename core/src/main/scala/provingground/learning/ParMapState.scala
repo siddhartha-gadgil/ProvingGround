@@ -209,6 +209,8 @@ object ParMapState {
   }
   case object ParEnterIsle extends ((Term, ParMapState) => ParMapState) {
     def apply(x: HoTT.Term, state: ParMapState): ParMapState = state.inIsle(x)
+
+    override def toString = "ParEnterIsle"
   }
 
   case class ParGenNodes(tg: TermGenParams)

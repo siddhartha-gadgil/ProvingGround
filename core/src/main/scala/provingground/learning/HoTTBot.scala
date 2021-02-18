@@ -801,13 +801,13 @@ object HoTTBot {
   ): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
-    Set[EquationNode] :: QueryProver :: ExpressionEval :: HNil
+    Set[EquationNode] :: QueryProver  :: HNil
   ] = {
     val response
-        : Set[EquationNode] :: QueryProver :: ExpressionEval :: HNil => GeneratedEquationNodes => Future[
+        : Set[EquationNode] :: QueryProver  :: HNil => GeneratedEquationNodes => Future[
           ExpressionEval
         ] = {
-      case eqns :: qlp :: expEv :: HNil =>
+      case eqns :: qlp  :: HNil =>
         eqs =>
           val neqs  = eqs.normalized
           val nodes = eqns union (neqs)
@@ -831,11 +831,11 @@ object HoTTBot {
               lp.exponent,
               lp.decay,
               lp.maxTime,
-              Some(expEv.finalDist)
+              None//Some(expEv.finalDist)
             )
           )
     }
-    MicroBot(response)
+    MicroBot(response, name = Some("expression eval from equations"))
   }
 
   lazy val termResultToChomp: MicroBot[

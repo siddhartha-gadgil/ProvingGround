@@ -222,16 +222,20 @@ object ChompSessionEq {
 
 object ParChompSessionEq {
   Utils.logger = {
-    import scribe._, writer._, Utils._
+    import scribe._, writer._, Utils._, scribe.output.format.ASCIIOutputFormat
     logger
-      .withHandler(writer = FileWriter().path(file.LogPath.daily()))
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("errors")),
-        minimumLevel = Some(Level.Error)
-      )
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily("debug")),
         minimumLevel = Some(Level.Debug)
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily()),
+        minimumLevel = Some(Level.Info),
+        outputFormat = ASCIIOutputFormat
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily("errors")),
+        minimumLevel = Some(Level.Error)
       )
       .replace()
   }
@@ -302,7 +306,7 @@ object ParChompSessionEq {
     reportContradicted,
     topLevelRelevantGoalsBot[FailedToProve](true),
     topLevelRelevantGoalsBot[Proved](true),
-    repostGoals(LocalProver(ts, tg).sharpen(10)),
+    // repostGoals(LocalProver(ts, tg).sharpen(10)),
     goalsAfterChomp,
     exportProof
   )
@@ -328,6 +332,8 @@ object ParChompSessionEq {
     wsF.map(
       ws =>
         HoTTWebSession
-          .launch(ws, bots, Some(PostResponse.capResponse(HoTTMessages.Cap)))
+          .launch(ws, bots, 
+          // Some(PostResponse.capResponse(HoTTMessages.Cap))
+          )
     )
 }
