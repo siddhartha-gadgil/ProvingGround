@@ -9741,3 +9741,14 @@ After debugging, everything generated was proved but there was an error in repor
 2021.02.18 17:23:02:208 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved PlusTyp(PlusTyp(((𝒰 _0) , (Unit)),((𝒰 _0) , ((𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)) by Some(FirstIncl(PlusTyp(PlusTyp(((𝒰 _0) , (Unit)),((𝒰 _0) , ((𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)),FirstIncl(PlusTyp(((𝒰 _0) , (Unit)),((𝒰 _0) , ((𝒰 _0) → (Zero)))),((Unit) , (Star))))) in context {}
 2021.02.18 17:23:39:520 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved 𝒰 _0 by Some((`@a : ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0) ) ~> ((`@a) ((`@a :  𝒰 _0) ↦ (`@a)))) in context {Given `$cmakfmn : 𝒰 _0}
 2021.02.18 17:50:52:253 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved 𝒰 _0 by Some((`@a : ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0) ) ~> ((`@a) ((`@a :  𝒰 _0) ↦ (`@a)))) in context {Given `@a : 𝒰 _0}
+2021.02.18 18:04:21:695 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:243 - 
+This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+After debugging, everything generated was proved but there was an error in reporting.
+
+2021.02.18 18:04:21:942 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:255 - JAVA_OPTS: -Xms2G -Xmx20G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.02.18 18:04:21:946 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:257 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.02.18 18:04:22:642 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((0,-271021757))
+2021.02.18 18:04:22:646 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (0,-271021757) with hash -271021757
