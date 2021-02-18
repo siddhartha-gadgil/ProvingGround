@@ -280,8 +280,8 @@ object ParChompSessionEq {
   val ts0  = TermState(FiniteDistribution(), FiniteDistribution.unif(Type))
   val tg   = TermGenParams(solverW = 0.05)
 
-  val lp  = LocalProver(ts, tg).sharpen(10)
-  val lp0 = LocalProver(ts0).sharpen(50)
+  val lp  = LocalProver(ts, tg).sharpen(10).copy(maxTime = Some(600000L))
+  val lp0 = LocalProver(ts0).sharpen(50).copy(maxTime = Some(600000L))
 
   val expFS =
     expEvToFinalState.andThen(updateTerms)
