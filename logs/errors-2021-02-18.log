@@ -1,0 +1,101 @@
+[0m2021.02.18 10:45:34:668 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.ExpressionEval.stableVec:1376[0m - Timeout for stable vector after 110128 steps[0m
+[0m2021.02.18 11:04:52:850 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:293[0m - completed response 'skolemizing goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Consequence :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash -154113873 with error;[0m
+[0m2021.02.18 11:04:52:860 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:295[0m - Boxed Exception
+scala.concurrent.impl.Promise$.scala$concurrent$impl$Promise$$resolve(Promise.scala:99)
+scala.concurrent.impl.Promise$Transformation.handleFailure(Promise.scala:407)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:469)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)[0m
+[0m2021.02.18 11:10:33:599 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:293[0m - completed response 'skolemizing goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Consequence :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash -985169787 with error;[0m
+[0m2021.02.18 11:10:33:601 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:295[0m - Boxed Exception
+scala.concurrent.impl.Promise$.scala$concurrent$impl$Promise$$resolve(Promise.scala:99)
+scala.concurrent.impl.Promise$Transformation.handleFailure(Promise.scala:407)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:469)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)[0m
+[0m2021.02.18 11:10:33:607 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:293[0m - completed response 'negating goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Contradicts :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash -985169787 with error;[0m
+[0m2021.02.18 11:10:33:608 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:295[0m - function (($zupnhd :  Unit) ↦ ($zupnhe) :  (Unit) → (Zero)) ↦ ($zupnhe) with domain(optional) Some((Unit) → (Zero)) cannot act on given term $zupnax with type Unit
+provingground.HoTT$.fold(HoTT.scala:3785)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.HoTT$.negateContra(HoTT.scala:827)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.learning.HoTTMessages$Contradicts$.fromTyp(HoTTMessages.scala:460)
+provingground.learning.HoTTBot$.$anonfun$negateGoal$3(HoTTBot.scala:2514)
+scala.concurrent.Future$.$anonfun$apply$1(Future.scala:671)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)[0m
+[0m2021.02.18 11:23:59:330 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:293[0m - completed response 'skolemizing goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Consequence :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash 1436813206 with error;[0m
+[0m2021.02.18 11:23:59:331 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:295[0m - Boxed Exception
+scala.concurrent.impl.Promise$.scala$concurrent$impl$Promise$$resolve(Promise.scala:99)
+scala.concurrent.impl.Promise$Transformation.handleFailure(Promise.scala:407)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:469)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)[0m
+[0m2021.02.18 11:27:13:029 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:293[0m - completed response 'skolemizing goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Consequence :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash 37018392 with error;[0m
+[0m2021.02.18 11:27:13:030 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:295[0m - Boxed Exception
+scala.concurrent.impl.Promise$.scala$concurrent$impl$Promise$$resolve(Promise.scala:99)
+scala.concurrent.impl.Promise$Transformation.handleFailure(Promise.scala:407)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:469)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)[0m
+[0m2021.02.18 11:31:00:043 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:293[0m - completed response 'negating goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Contradicts :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash 292077028 with error;[0m
+[0m2021.02.18 11:31:00:044 [scala-e...] [[31mERROR[0m] [32mprovingground.learning.PostResponse.applyOrElse:295[0m - function (($cblghxs :  Unit) ↦ ($cblghxt) :  (Unit) → (Zero)) ↦ ($cblghxt) with domain(optional) Some((Unit) → (Zero)) cannot act on given term $cblghrh with type Unit
+provingground.HoTT$.fold(HoTT.scala:3785)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.HoTT$.negateContra(HoTT.scala:838)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.learning.HoTTMessages$Contradicts$.fromTyp(HoTTMessages.scala:460)
+provingground.learning.HoTTBot$.$anonfun$negateGoal$3(HoTTBot.scala:2514)
+scala.concurrent.Future$.$anonfun$apply$1(Future.scala:671)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)[0m

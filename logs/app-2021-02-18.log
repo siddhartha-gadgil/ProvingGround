@@ -9481,3 +9481,215 @@ After debugging, everything generated was proved but there was an error in repor
 2021.02.18 10:35:00:940 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:257 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
 2021.02.18 10:35:01:622 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((0,-271021757))
 2021.02.18 10:35:01:631 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (0,-271021757) with hash -271021757
+2021.02.18 10:35:29:130 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((1,-775531565))
+2021.02.18 10:35:29:131 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (1,-775531565) with hash -775531565
+2021.02.18 10:35:30:055 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((1,-775531565))
+2021.02.18 10:35:30:056 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (1,-775531565) with hash -775531565
+2021.02.18 10:35:33:211 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((2,11541132))
+2021.02.18 10:35:33:212 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (2,11541132) with hash 11541132
+2021.02.18 10:45:34:668 [scala-e...] [ERROR] provingground.learning.ExpressionEval.stableVec:1376 - Timeout for stable vector after 110128 steps
+2021.02.18 10:45:37:350 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((4,-112047676))
+2021.02.18 10:45:37:350 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (4,-112047676) with hash -112047676
+2021.02.18 10:45:39:497 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:943 - seeking to chomp 755 unknown groups
+2021.02.18 11:02:45:868 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((5,-269579703))
+2021.02.18 11:02:45:868 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (5,-269579703) with hash -269579703
+2021.02.18 11:02:45:940 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:998 - number of successes: 754
+2021.02.18 11:02:45:944 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1003 - number of failures: 1
+2021.02.18 11:02:45:944 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1004 - top 10 failures: (`@a : 𝒰 _0 ) ~> (((𝒰 _0) → (((`@a) , (𝒰 _0)))) → (`@a))
+2021.02.18 11:02:45:977 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((5,-269579703))
+2021.02.18 11:02:45:977 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (5,-269579703) with hash -269579703
+2021.02.18 11:03:15:289 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((5,-269579703))
+2021.02.18 11:03:15:290 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (5,-269579703) with hash -269579703
+2021.02.18 11:04:52:850 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'skolemizing goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Consequence :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash -154113873 with error;
+2021.02.18 11:04:52:860 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - Boxed Exception
+scala.concurrent.impl.Promise$.scala$concurrent$impl$Promise$$resolve(Promise.scala:99)
+scala.concurrent.impl.Promise$Transformation.handleFailure(Promise.scala:407)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:469)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021.02.18 11:09:37:231 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (𝒰 _0) → (((Unit) , (𝒰 _0))) by Some((@a :  𝒰 _0) ↦ (((Star) , ((`@a : 𝒰 _0 ) ~> (((`@a) , ((`@b : 𝒰 _0 ) ~> (`@b)))))))) in context {}
+2021.02.18 11:10:33:599 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'skolemizing goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Consequence :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash -985169787 with error;
+2021.02.18 11:10:33:601 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - Boxed Exception
+scala.concurrent.impl.Promise$.scala$concurrent$impl$Promise$$resolve(Promise.scala:99)
+scala.concurrent.impl.Promise$Transformation.handleFailure(Promise.scala:407)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:469)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021.02.18 11:10:33:607 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'negating goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Contradicts :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash -985169787 with error;
+2021.02.18 11:10:33:608 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - function (($zupnhd :  Unit) ↦ ($zupnhe) :  (Unit) → (Zero)) ↦ ($zupnhe) with domain(optional) Some((Unit) → (Zero)) cannot act on given term $zupnax with type Unit
+provingground.HoTT$.fold(HoTT.scala:3785)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.HoTT$.negateContra(HoTT.scala:827)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.learning.HoTTMessages$Contradicts$.fromTyp(HoTTMessages.scala:460)
+provingground.learning.HoTTBot$.$anonfun$negateGoal$3(HoTTBot.scala:2514)
+scala.concurrent.Future$.$anonfun$apply$1(Future.scala:671)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021.02.18 11:14:20:502 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (Zero) → (Zero) by Some((```@a :  Zero) ↦ (```@a)) in context {}
+2021.02.18 11:20:24:160 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved 𝒰 _0 by Some((`@a : ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0) ) ~> ((`@a) ((`@a :  𝒰 _0) ↦ (`@a)))) in context {Given `$lzegsu : 𝒰 _0}
+2021.02.18 11:21:03:716 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved 𝒰 _0 by Some((`@a : ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0) ) ~> ((`@a) ((`@a :  𝒰 _0) ↦ (`@a)))) in context {Given $apyvqvo : 𝒰 _0}
+2021.02.18 11:23:59:330 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'skolemizing goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Consequence :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash 1436813206 with error;
+2021.02.18 11:23:59:331 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - Boxed Exception
+scala.concurrent.impl.Promise$.scala$concurrent$impl$Promise$$resolve(Promise.scala:99)
+scala.concurrent.impl.Promise$Transformation.handleFailure(Promise.scala:407)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:469)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021.02.18 11:26:05:385 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved ((𝒰 _0) , (PlusTyp(Unit,(𝒰 _0) → (Zero)))) by Some(((Unit) , (FirstIncl(PlusTyp(Unit,(𝒰 _0) → (Zero)),Star)))) in context {}
+2021.02.18 11:27:13:029 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'skolemizing goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Consequence :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash 37018392 with error;
+2021.02.18 11:27:13:030 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - Boxed Exception
+scala.concurrent.impl.Promise$.scala$concurrent$impl$Promise$$resolve(Promise.scala:99)
+scala.concurrent.impl.Promise$Transformation.handleFailure(Promise.scala:407)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:469)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021.02.18 11:29:24:371 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved PlusTyp(((𝒰 _0) , (PlusTyp(Unit,(𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)) by Some(FirstIncl(PlusTyp(((𝒰 _0) , (PlusTyp(Unit,(𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)),((Unit) , (FirstIncl(PlusTyp(Unit,(𝒰 _0) → (Zero)),Star))))) in context {}
+2021.02.18 11:29:52:557 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved PlusTyp((𝒰 _0) → (Zero),((Unit) , (𝒰 _0))) by Some(ScndIncl(PlusTyp((𝒰 _0) → (Zero),((Unit) , (𝒰 _0))),((Star) , (Zero)))) in context {}
+2021.02.18 11:31:00:043 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'negating goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Contradicts :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash 292077028 with error;
+2021.02.18 11:31:00:044 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - function (($cblghxs :  Unit) ↦ ($cblghxt) :  (Unit) → (Zero)) ↦ ($cblghxt) with domain(optional) Some((Unit) → (Zero)) cannot act on given term $cblghrh with type Unit
+provingground.HoTT$.fold(HoTT.scala:3785)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.HoTT$.negateContra(HoTT.scala:838)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.learning.HoTTMessages$Contradicts$.fromTyp(HoTTMessages.scala:460)
+provingground.learning.HoTTBot$.$anonfun$negateGoal$3(HoTTBot.scala:2514)
+scala.concurrent.Future$.$anonfun$apply$1(Future.scala:671)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021.02.18 11:40:30:420 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved 𝒰 _0 by Some((`@a : ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0) ) ~> ((`@a) ((`@a :  𝒰 _0) ↦ (`@a)))) in context {Given `@a : 𝒰 _0}
+2021.02.18 14:22:21:583 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:243 - 
+This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+After debugging, everything generated was proved but there was an error in reporting.
+
+2021.02.18 14:22:21:807 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:255 - JAVA_OPTS: -Xms2G -Xmx20G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.02.18 14:22:21:813 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:257 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.02.18 14:22:22:515 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((0,-271021757))
+2021.02.18 14:22:22:517 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (0,-271021757) with hash -271021757
+2021.02.18 14:22:48:044 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((1,-811446451))
+2021.02.18 14:22:48:045 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (1,-811446451) with hash -811446451
+2021.02.18 14:22:48:955 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((1,-811446451))
+2021.02.18 14:22:48:955 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (1,-811446451) with hash -811446451
+2021.02.18 14:22:52:040 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((2,982982116))
+2021.02.18 14:22:52:040 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (2,982982116) with hash 982982116
+2021.02.18 14:32:53:606 [scala-e...] [ERROR] provingground.learning.ExpressionEval.stableVec:1376 - Timeout for stable vector after 118364 steps
+2021.02.18 14:32:56:375 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((4,-112047676))
+2021.02.18 14:32:56:375 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (4,-112047676) with hash -112047676
+2021.02.18 14:32:58:534 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:943 - seeking to chomp 754 unknown groups
+2021.02.18 14:49:41:459 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((5,-1953963689))
+2021.02.18 14:49:41:460 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (5,-1953963689) with hash -1953963689
+2021.02.18 14:49:41:533 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:998 - number of successes: 753
+2021.02.18 14:49:41:537 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1003 - number of failures: 1
+2021.02.18 14:49:41:537 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1004 - top 10 failures: (`@a : 𝒰 _0 ) ~> (((𝒰 _0) → (((`@a) , (𝒰 _0)))) → (`@a))
+2021.02.18 14:49:41:567 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((5,-1953963689))
+2021.02.18 14:49:41:567 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (5,-1953963689) with hash -1953963689
+2021.02.18 14:50:06:723 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((5,-1953963689))
+2021.02.18 14:50:06:723 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (5,-1953963689) with hash -1953963689
+2021.02.18 14:56:49:016 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (𝒰 _0) → (((Unit) , (𝒰 _0))) by Some((@a :  𝒰 _0) ↦ (((Star) , ((`@a : 𝒰 _0 ) ~> (((`@a) , ((`@b : 𝒰 _0 ) ~> (`@b)))))))) in context {}
+2021.02.18 14:58:59:429 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (((𝒰 _0) → (Unit)) , ((𝒰 _0) → (𝒰 _0))) by Some((((@a :  𝒰 _0) ↦ (Star)) , ((`@a :  𝒰 _0) ↦ (`@a)))) in context {}
+2021.02.18 15:00:04:242 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'negating goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Contradicts :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash 1741922566 with error;
+2021.02.18 15:00:04:246 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - function (($akoqghn :  Unit) ↦ ($akoqghp) :  (Unit) → (Zero)) ↦ ($akoqghp) with domain(optional) Some((Unit) → (Zero)) cannot act on given term ($akoqghj) ($akoqghk) with type Unit
+provingground.HoTT$.fold(HoTT.scala:3786)
+provingground.HoTT$.negateContra(HoTT.scala:827)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.learning.HoTTMessages$Contradicts$.fromTyp(HoTTMessages.scala:460)
+provingground.learning.HoTTBot$.$anonfun$negateGoal$3(HoTTBot.scala:2514)
+scala.concurrent.Future$.$anonfun$apply$1(Future.scala:671)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021.02.18 15:02:07:439 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'negating goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Contradicts :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash 371058896 with error;
+2021.02.18 15:02:07:440 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - function (($arapeiz :  Unit) ↦ ($arapeja) :  (Unit) → (Zero)) ↦ ($arapeja) with domain(optional) Some((Unit) → (Zero)) cannot act on given term ($arapeiv) ($arapeiw) with type Unit
+provingground.HoTT$.fold(HoTT.scala:3786)
+provingground.HoTT$.negateContra(HoTT.scala:827)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.learning.HoTTMessages$Contradicts$.fromTyp(HoTTMessages.scala:460)
+provingground.learning.HoTTBot$.$anonfun$negateGoal$3(HoTTBot.scala:2514)
+scala.concurrent.Future$.$anonfun$apply$1(Future.scala:671)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:146)
+scala.concurrent.BlockContext$.usingBlockContext(BlockContext.scala:107)
+scala.concurrent.BatchingExecutor$AsyncBatch.run(BatchingExecutor.scala:154)
+java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021.02.18 15:02:07:495 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:293 - completed response 'negating goal' of type TypeTag[Option[provingground.learning.HoTTMessages.Contradicts :: provingground.learning.HoTTMessages.SeekGoal :: shapeless.HNil]] to posts of type TypeTag[provingground.learning.HoTTMessages.FailedToProve] with input hash -985169787 with error;
+2021.02.18 15:02:07:495 [scala-e...] [ERROR] provingground.learning.PostResponse.applyOrElse:295 - function (($araqfge :  Unit) ↦ ($araqfgf) :  (Unit) → (Zero)) ↦ ($araqfgf) with domain(optional) Some((Unit) → (Zero)) cannot act on given term $araqezt with type Unit
+provingground.HoTT$.fold(HoTT.scala:3786)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.HoTT$.negateContra(HoTT.scala:827)
+provingground.HoTT$.negateContra(HoTT.scala:848)
+provingground.learning.HoTTMessages$Contradicts$.fromTyp(HoTTMessages.scala:460)
+provingground.learning.HoTTBot$.$anonfun$negateGoal$3(HoTTBot.scala:2514)
+scala.concurrent.Future$.$anonfun$apply$1(Future.scala:671)
+scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)
+scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
+scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
+scala.concurrent.BatchingExecut
