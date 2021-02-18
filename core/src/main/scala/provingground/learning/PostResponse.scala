@@ -279,14 +279,16 @@ object TypedPostResponse {
       val auxFuture = lv.getAt(web, id, predicate(content)) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
-          (auxs => 
+          {auxs => 
+            if (auxs.isEmpty) logger.debug(s"no query answers for response '${message}' of type ${qw.tag} to post of type ${pw.tag} with input hash ${content.hashCode()}")
+            else logger.debug(s"obtained ${auxs.size} query answers for response '${message}' of type ${qw.tag} to post of type ${pw.tag} with input hash ${content.hashCode()}")
             auxs.map{
               aux => 
                 val newPostFuture = response(aux)(content)
                 newPostFuture.flatMap{newPost => 
                   val idNewFuture = qw.post(newPost, web, Set(id))
                   idNewFuture.map(idNew => PostData.get(newPost, idNew)(dg))}
-            })
+            }}
         }
       val task = taskNest.flatMap(st => Future.sequence(st))
       .andThen(
