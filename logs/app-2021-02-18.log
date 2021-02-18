@@ -9470,3 +9470,14 @@ After debugging, everything generated was proved but there was an error in repor
 2021.02.18 09:49:30:884 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:257 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
 2021.02.18 09:49:31:630 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((0,257821092))
 2021.02.18 09:49:31:633 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (0,257821092) with hash 257821092
+2021.02.18 10:35:00:705 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:243 - 
+This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+After debugging, everything generated was proved but there was an error in reporting.
+
+2021.02.18 10:35:00:935 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:255 - JAVA_OPTS: -Xms2G -Xmx20G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.02.18 10:35:00:940 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:257 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.02.18 10:35:01:622 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((0,-271021757))
+2021.02.18 10:35:01:631 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (0,-271021757) with hash -271021757
