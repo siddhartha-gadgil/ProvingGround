@@ -2885,16 +2885,18 @@ object HoTTBot {
       case (qp: QueryProver) :: terms :: gp :: HNil =>
         // pprint.log(qp)
         goal =>
+          logger.debug(s"seeking goal $goal")
           Future(terms.find(_.typ == goal.goal)).flatMap(
             tOpt =>
               if (tOpt.nonEmpty)
-                Future.successful(
+                {Utils.logger.debug(s"goal $goal already proved using $tOpt")
+                  Future.successful(
                   Some(
                     GeneratedEquationNodes(Set()) :: Right(
                       Proved(goal.goal, tOpt, goal.context)
                     ) :: HNil
                   )
-                )
+                )}
               else if (goal.relevantGiven(terms, gp.contents)) {
                 val lpVars   = qp.lp.initState.context.variables
                 val goalVars = goal.context.variables
@@ -2938,7 +2940,10 @@ object HoTTBot {
                     }
                   } :: HNil)
                 }
-              } else Future.successful(None)
+              } else {
+                logger.debug(s"Goal $goal not relevant")
+                Future.successful(None)
+              }
           )
     }
 
