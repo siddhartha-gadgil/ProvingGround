@@ -628,7 +628,7 @@ object HoTTBot {
             else
               Some {
                 val y         = sk.Var
-                val transform = y :~> fromSkolemized(sk)(y)
+                val transform = y :~> fromSkolemized(goal.goal)(y)
                 val cons =
                   Consequence(
                     sk,

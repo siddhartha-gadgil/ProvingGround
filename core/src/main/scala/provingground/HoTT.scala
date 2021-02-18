@@ -1216,7 +1216,7 @@ object HoTT {
     */
   val Type: Universe = Universe(0)
 
-  object ProdTyp{
+  object ProdTyp {
     lazy val A = Type.Var
     lazy val B = Type.Var
 
@@ -2357,7 +2357,8 @@ object HoTT {
 
     lazy val outerSym: AnySym = outer.name
 
-    override def toString: String = "`" + variable.name.toString + (if (verbose) s"@${hashCode()}" else "")
+    override def toString: String =
+      "`" + variable.name.toString + (if (verbose) s"@${hashCode()}" else "")
 
     def subs(x: Term, y: Term): InnerSym[U] = {
       this
@@ -2632,7 +2633,7 @@ object HoTT {
       if (variable.replace(x, y) == variable)
         PiDefn(variable, value.replace(xx, yy))
       else {
-        val newvar = variable.newobj
+        val newvar   = variable.newobj
         val newvalue = value.replace(variable, newvar)
         // verbose = true
         // pprint.log(s"created new variable $newvar for $variable substituting $x by $y, actually $xx by $yy")
@@ -2733,8 +2734,8 @@ object HoTT {
     def subs(x: Term, y: Term): FuncLike[W, U] = (x, y) match {
       case (u, v: FuncLike[W, U]) if (u == this) => v
       case _ =>
-        val safe = variable.replace(x, y) == variable
-        val newvar = if (safe) variable else variable.newobj
+        val safe     = variable.replace(x, y) == variable
+        val newvar   = if (safe) variable else variable.newobj
         val newvalue = if (safe) value else value.replace(variable, newvar)
         def symbobj(sym: AnySym) =
           PiSymbolicFunc(sym, newvar.replace(x, y), newvalue.replace(x, y))
@@ -2850,7 +2851,7 @@ object HoTT {
     override def toString: String = name.toString + "_2"
   }
 
-  object SigmaTyp{
+  object SigmaTyp {
     lazy val A = Type.Var
     lazy val B = (A ->: Type).Var
 
