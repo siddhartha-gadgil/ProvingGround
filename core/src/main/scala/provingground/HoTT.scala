@@ -873,7 +873,7 @@ object HoTT {
       case Unit =>
         val x = Unit.Var
         val y = Zero.Var
-        x :~> y :~> y
+        x :~> (y :~> y)
       case Zero =>
         val x = Unit.Var
         val y = Zero.Var
