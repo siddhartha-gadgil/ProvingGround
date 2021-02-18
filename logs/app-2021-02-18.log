@@ -9692,4 +9692,14 @@ scala.concurrent.Future$.$anonfun$apply$1(Future.scala:671)
 scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)
 scala.concurrent.BatchingExecutor$AbstractBatch.runN(BatchingExecutor.scala:141)
 scala.concurrent.BatchingExecutor$AsyncBatch.apply(BatchingExecutor.scala:163)
-scala.concurrent.BatchingExecut
+scala.concurrent.BatchingExecut2021.02.18 15:43:27:440 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:243 - 
+This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+After debugging, everything generated was proved but there was an error in reporting.
+
+2021.02.18 15:43:27:685 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:255 - JAVA_OPTS: -Xms2G -Xmx20G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.02.18 15:43:27:691 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:257 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.02.18 15:43:28:388 [scala-e...] [INFO ] provingground.learning.PostResponse.act:668 - apex posts Vector((0,-271021757))
+2021.02.18 15:43:28:393 [scala-e...] [INFO ] provingground.learning.PostResponse.act:674 - acting on post (0,-271021757) with hash -271021757
