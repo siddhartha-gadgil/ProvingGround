@@ -104,7 +104,7 @@ class SimpleSession[W, ID](
     * @param pw postability
     * @return the data of the post as a future
     */ 
-  def post[P](content: P, preds: Set[ID], withResponse: Boolean = true)(implicit pw: Postable[P, W, ID]): Future[PostData[_, W, ID]] = {
+  def post[P](content: P, preds: Set[ID], withResponse: Boolean = true)(implicit pw: Postable[P, W, ID], dg: DataGetter[P, W, ID]): Future[PostData[_, W, ID]] = {
     val postIdFuture = pw.post(content, web, preds)
     if (withResponse) postIdFuture.onComplete(attempt => attempt.fold(err => {
       Utils.logger.error(err.getMessage())
@@ -114,10 +114,31 @@ class SimpleSession[W, ID](
       respond(content, postID)
     }))
     postIdFuture.map{id => 
-      val data = PostData(content, id)
+      val data = PostData.get(content, id)
       logs.foreach{fn => fn(data).foreach(_ => ())}
       data}
   }
+
+  def respondSeq(pds: Vector[PostData[_, W, ID]]) : Unit = if (running) {
+     val newDataF  =
+      Future.sequence(responses.flatMap(
+       response => pds.map{
+         case pd : PostData[q, W, ID] => PostResponse.postResponse(web, pd.content, pd.id, response)(pd.pw)
+       }
+     )).map(_.flatten) 
+
+      newDataF.foreach(pds => 
+        if (pds.nonEmpty) respondSeq(pds)
+        else {
+          val newPDs = 
+          completionResponse.foreach(
+              resp => 
+                resp(web).map{case pd: PostData[u, W, ID] => 
+                respondSeq(Vector(pd))
+              }
+              )
+        })
+    }
 
   /**
     * the recursive step for posting, the given content is not posted, only the responses are.
@@ -126,7 +147,7 @@ class SimpleSession[W, ID](
     * @param postID the ID of the head, to be used as predecessor for the other posts
     * @param pw postability
     */
-  def respond[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = if (running) {
+  def respond[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = if (running) 
     responses.foreach{
       response =>
         startedResponses.append((postID, response))
@@ -148,8 +169,7 @@ class SimpleSession[W, ID](
               }
               )
           }
-        }
-      }
+        }    
   }
 
   /**
