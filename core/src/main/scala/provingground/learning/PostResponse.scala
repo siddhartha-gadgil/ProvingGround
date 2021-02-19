@@ -111,11 +111,12 @@ class SimpleSession[W, ID](
       Utils.logger.error(err.getStackTrace().mkString("\n"))
        throw err}, 
     { postID => // posting done, the id is now the predecessor for further posts
-      respond(content, postID)
+      // respond(content, postID)
     }))
     postIdFuture.map{id => 
       val data = PostData.get(content, id)
       logs.foreach{fn => fn(data).foreach(_ => ())}
+      respondSeq(Vector(data))
       data}
   }
 

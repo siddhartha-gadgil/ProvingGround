@@ -3215,10 +3215,11 @@ object HoTTWebSession {
       ] = None
   ) = {
     val session = new HoTTWebSession(state.web, bots, completion)
-    state.apexPosts.foreach {
-      case pd: PostData[x, HoTTPostWeb, (Int, Int)] =>
-        session.respond(pd.content, pd.id)(pd.pw)
-    }
+    // state.apexPosts.foreach {
+    //   case pd: PostData[x, HoTTPostWeb, (Int, Int)] =>
+    //     session.respond(pd.content, pd.id)(pd.pw)
+    // }
+    session.respondSeq(state.apexPosts)
     session
   }
 }
