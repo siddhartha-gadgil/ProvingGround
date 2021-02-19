@@ -89,3 +89,33 @@ Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) 
 Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.009601643766868758; statement weight 4.48232102846048E-9
 Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.003935060111220138; statement weight 7.54617825229271E-12
 Lemma: (`$dkp : M ) ~> ((((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (`$dkp)) → (((eqM) (((mul) (n)) (m))) (`$dkp))); best proof: (`$bhaxytb :  M) ↦ (((((trans) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (`$bhaxytb)) (((((right-multiply) (m)) (n)) (((mul) (((mul) (m)) (n))) (m))) ((((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)))))) with weight 4.122742624157189E-18; statement weight 2.1176825788159902E-10
+2021.02.19 10:26:26:104 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:243 - 
+This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+After debugging, everything generated was proved but there was an error in reporting.
+
+2021.02.19 10:26:26:348 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:255 - JAVA_OPTS: -Xms2G -Xmx20G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.02.19 10:26:26:349 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:257 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.02.19 10:26:27:024 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((0,-271021757))
+2021.02.19 10:26:27:034 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (0,-271021757) with hash -271021757
+2021.02.19 10:26:54:238 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((1,-916079214))
+2021.02.19 10:26:54:238 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (1,-916079214) with hash -916079214
+2021.02.19 10:26:55:144 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((1,-916079214))
+2021.02.19 10:26:55:144 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (1,-916079214) with hash -916079214
+2021.02.19 10:26:58:401 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((2,727013918))
+2021.02.19 10:26:58:401 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (2,727013918) with hash 727013918
+2021.02.19 10:36:59:904 [scala-e...] [ERROR] provingground.learning.ExpressionEval.stableVec:1376 - Timeout for stable vector after 111600 steps
+2021.02.19 10:37:02:533 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((4,-112047676))
+2021.02.19 10:37:02:533 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (4,-112047676) with hash -112047676
+2021.02.19 10:37:04:705 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:943 - seeking to chomp 762 unknown groups
+2021.02.19 10:55:00:609 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((5,1474598380))
+2021.02.19 10:55:00:610 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (5,1474598380) with hash 1474598380
+2021.02.19 10:55:00:676 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:998 - number of successes: 761
+2021.02.19 10:55:00:679 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1003 - number of failures: 1
+2021.02.19 10:55:00:680 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1004 - top 10 failures: (`@a : 𝒰 _0 ) ~> (((𝒰 _0) → (((`@a) , (𝒰 _0)))) → (`@a))
+2021.02.19 10:55:00:712 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((5,1474598380))
+2021.02.19 10:55:00:712 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (5,1474598380) with hash 1474598380
+2021.02.19 10:55:31:310 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((5,1474598380))
+2021.02.19 10:55:31:310 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (5,1474598380) with hash 1474598380
