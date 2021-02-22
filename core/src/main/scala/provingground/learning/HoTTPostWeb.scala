@@ -19,9 +19,10 @@ import provingground.induction.ExstInducDefn
 class HoTTPostWeb {
   import HoTTPostWeb._
 
-  def halt() = {
+  def halt(delayOpt: Option[Long] = None) = {
     Utils.logger.info("Halting HoTT-post-web session")
     running = false
+    delayOpt.foreach(delay => Thread.sleep(delay))
   }
 
   var running: Boolean = true

@@ -467,7 +467,7 @@ object HoTTBot {
               // Utils.report(view)
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
-                  web.halt()
+                  web.halt(Some(30000L))
                   Utils.running = false
                 }
               }
