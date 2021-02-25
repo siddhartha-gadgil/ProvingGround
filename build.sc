@@ -7,7 +7,7 @@ import define.{Sources, Task}
 import os._
 import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r`
 
-val scalaV = "2.13.3"
+val scalaV = "2.13.5"
 
 val ammV = "2.3.8"
 

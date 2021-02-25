@@ -1,6 +1,6 @@
 import sbt.Project.projectToRef
 
-val scalaV = "2.13.3"
+val scalaV = "2.13.5"
 
 val ammV     = "2.2.0"
 val upickleV = "0.9.9"
