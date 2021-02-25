@@ -228,7 +228,7 @@ def gitlog() = {
 }
 
 object mantle extends CommonModule with SbtModule with PGPublish {
-  override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
+  override def moduleDeps = Seq(core.jvm, jvmcore, trepplein, leanlib.jvm)
 
   // def artifactName = "provingground-mantle"
 
@@ -270,7 +270,7 @@ object mantle extends CommonModule with SbtModule with PGPublish {
 
 object crust extends SbtModule with JvmModule with PGPublish {
   override def moduleDeps =
-    Seq(core.jvm, trepplein, leanlib.jvm, server, mantle)
+    Seq(core.jvm, jvmcore, trepplein, leanlib.jvm, server, mantle)
 
   // def artifactName = "provingground-crust"
 }
@@ -290,7 +290,7 @@ object leanlib extends Module {
 }
 
 object nlp extends SbtModule with ServerModule with PGPublish {
-  override def moduleDeps = Seq(core.jvm, mantle, crust)
+  override def moduleDeps = Seq(core.jvm, jvmcore, mantle, crust)
 
   override def ivyDeps = T {
     super.ivyDeps() ++ Agg(
@@ -308,10 +308,11 @@ object nlp extends SbtModule with ServerModule with PGPublish {
 }
 
 object jvmRoot extends CommonModule {
-  val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp, server, crust)
+  val projects = Seq(core.jvm, jvmcore, leanlib.jvm, mantle, nlp, server, crust)
 
   override def sources = T.sources {
-    core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp
+    core.jvm.sources() ++ jvmcore.sources() ++ leanlib.jvm.sources() ++ mantle
+      .sources() ++ nlp
       .sources() ++ andrewscurtis.sources() ++ server.sources() ++ crust
       .sources()
   }
@@ -329,11 +330,13 @@ object jvmRoot extends CommonModule {
   }
 }
 
-object jvmcore extends CommonModule with SbtModule {
+object jvmcore extends JvmModule with SbtModule with PGPublish {
   def moduleDeps = Seq(core.jvm)
+
+  def name = "ProvingGround--JVM-Core"
 }
 object exploring extends JvmModule {
-  override def moduleDeps = Seq(core.jvm, mantle, crust)
+  override def moduleDeps = Seq(core.jvm, jvmcore, mantle, crust)
 }
 
 object realfunctions extends JvmModule
@@ -388,7 +391,7 @@ trait ServerModule extends JvmModule {
 }
 
 object server extends SbtModule with ServerModule with PGPublish {
-  override def moduleDeps = Seq(core.jvm)
+  override def moduleDeps = Seq(core.jvm, jvmcore)
 
   override def mainClass = Some("provingground.interface.ScriptServer")
 

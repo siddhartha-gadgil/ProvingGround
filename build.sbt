@@ -1,6 +1,6 @@
 import sbt.Project.projectToRef
 
-val scalaV = "2.13.5"
+val scalaV = "2.13.3"
 
 val ammV     = "2.2.0"
 val upickleV = "0.9.9"
@@ -39,7 +39,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     "org.typelevel"          %%% "cats-core"                % "2.2.0",
     "io.monix"               %%% "monix"                    % "3.2.2",
     "org.scalameta"          %%% "scalameta"                % "4.3.10",
-    "com.outr"               %%% "scribe"                   % "2.8.6",
+    "com.outr"               %%% "scribe"                   % "3.1.9",
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
     "com.lihaoyi" %%% "pprint" % "0.5.9",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
@@ -223,6 +223,7 @@ lazy val server = (project in file("server"))
   )
   // .enablePlugins(JavaAppPackaging, UniversalPlugin)
   .dependsOn(coreJVM)
+  .dependsOn(jvmcore)
 
 val initCommands =
   """import provingground._, HoTT._, induction._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
@@ -232,6 +233,13 @@ lazy val leanlib =
     .settings(commonSettings: _*)
     .settings(jvmSettings: _*)
     .dependsOn(coreJVM)
+
+lazy val jvmcore =
+  (project in file("jvmcore"))
+    .settings(commonSettings: _*)
+    .settings(jvmSettings: _*)
+    .dependsOn(coreJVM)
+
 
 // lazy  val rootLocation: File = file(".").getAbsoluteFile
 
@@ -259,6 +267,7 @@ lazy val mantle = (project in file("mantle"))
     Seq(file)
   }.taskValue)
   .dependsOn(coreJVM)
+  .dependsOn(jvmcore)
   .dependsOn(server)
   .dependsOn(trepplein)
   .dependsOn(leanlib)
@@ -286,6 +295,7 @@ lazy val crust = (project in file("crust"))
     Seq(file)
   }.taskValue)
   .dependsOn(coreJVM)
+  .dependsOn(jvmcore)
   .dependsOn(server)
   .dependsOn(trepplein)
   .dependsOn(leanlib)
@@ -297,6 +307,7 @@ lazy val exploring = project
     libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV
   )
   .dependsOn(coreJVM)
+  .dependsOn(jvmcore)
   .dependsOn(mantle)
   .dependsOn(crust)
 // .enablePlugins(JavaAppPackaging, UniversalPlugin)
@@ -318,6 +329,7 @@ lazy val nlp = (project in file("nlp"))
   }.taskValue)
   .settings(jvmSettings: _*)
   .dependsOn(coreJVM)
+  .dependsOn(jvmcore)
   .dependsOn(mantle)
   .dependsOn(crust)
 
