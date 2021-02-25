@@ -943,7 +943,7 @@ object HoTTBot {
           val lp       = qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight))
           Utils.logger.info(s"seeking to chomp ${unknowns.size} unknown groups")
           Future {
-            val (s, fl, eqs, _) = StrategicProvers
+            val (s, fl, eqs, _) = ParStrategicProvers
               .parChomper(
                 unknowns,
                 ParMapState.fromTermState(lp.initState),
