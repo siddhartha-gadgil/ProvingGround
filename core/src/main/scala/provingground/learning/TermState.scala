@@ -12,6 +12,7 @@ import scala.collection.parallel.immutable._
 
 import TermGeneratorNodes._
 import scala.math.Ordering.Double.TotalOrdering
+import provingground.FiniteDistribution
 
 trait TermsTypThms { self =>
   val terms: FD[Term]
@@ -159,80 +160,19 @@ case class TermState(
 
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
-  lazy val termDistMap: ParMap[Term, Double] = terms.toParMap
-
-  lazy val typDistMap = typs.toParMap
-
-  lazy val funcDist = terms.condMap(FuncOpt)
-
-  lazy val funcDistMap: ParMap[ExstFunc, Double] = {
-    val base = termDistMap.flatMap {
-      case (x, w) =>
-        ExstFunc.opt(x).map { fn =>
-          fn -> w
-        }
-    }
-    val total = base.values.sum
-    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
-    else ParMap.empty
-  }
-
-  lazy val thmsSet: ParSet[Typ[Term]] = termDistMap.keySet
-    .map(_.typ)
-    .intersect(typDistMap.keySet union (goalSet))
-    .to(ParSet)
-
-  lazy val thmsByStParMap: ParMap[Typ[Term], Double] = {
-    val base  = typDistMap.filterKeys(thmsSet.contains(_))
-    val total = base.values.sum
-    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
-    else ParMap.empty
-  }
-
-  lazy val thmsByPfParMap: ParMap[Typ[Term], Double] =
-    thmsSet.map(tp => tp -> termsWithTypsMap(tp).map(_._2).sum).to(ParMap)
-
   lazy val typFamilyDist = terms.condMap(TypFamilyOpt)
-
-  lazy val typFamilyDistMap: ParMap[ExstFunc, Double] = {
-    val base = termDistMap.flatMap {
-      case (x, w) =>
-        TypFamilyOpt(x).map { fn =>
-          fn -> w
-        }
-    }
-    val total = base.values.sum
-    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
-    else ParMap.empty
-  }
 
   lazy val typOrFamilyDist = terms.conditioned(isTypFamily)
 
   lazy val typOrFamilyDistMap = typOrFamilyDist.toMap
 
-  lazy val termTyps = terms.support.map(_.typ : Typ[Term])
+  lazy val termTyps = terms.support.map(_.typ: Typ[Term])
 
   lazy val termWithTyps = termTyps
     .map(
       typ => (typ: Typ[Term]) -> (terms.conditioned(_.typ == typ): FD[Term])
     )
     .toMap
-
-  lazy val termsWithTypsMap
-      : ParMap[HoTT.Typ[HoTT.Term], ParMap[HoTT.Term, Double]] =
-    termDistMap.groupBy(_._1.typ: Typ[Term]).map {
-      case (typ, m) =>
-        val total = m.values.sum
-        typ -> m.map { case (x, p) => (x, p / total) }
-    }
-  // termTyps
-  //   .map(
-  //     typ =>
-  //       (typ: Typ[Term]) -> (terms.conditioned(_.typ == typ): FD[Term]).toMap
-  //   )
-  //   .toMap
-
-  lazy val domTotals = funcDistMap.groupBy(_._1).mapValues(_.values.sum)
 
   lazy val funcsWithDoms =
     termTyps
@@ -251,7 +191,9 @@ case class TermState(
         typ -> m.map { case (x, p) => (x, p / total) }
     }
 
-  lazy val allTyps = termTyps union typs.support union termSet.collect { case t: Typ[u] => t : Typ[Term]}
+  lazy val allTyps = termTyps union typs.support union termSet.collect {
+    case t: Typ[u] => t: Typ[Term]
+  }
 
   lazy val extraTyps = terms.support.map(_.typ) -- typs.support
 
@@ -344,20 +286,6 @@ case class TermState(
           -(thmsByStMap(x) / (q * math.log(q)))
         )
     }
-    .sortBy(_._3)
-    .reverse
-
-  lazy val lemmasPar: Vector[(Typ[Term], Option[Term], Double)] = thmsSet
-    .map { tp =>
-      val pfs = termsWithTypsMap(tp)
-      val q   = pfs.map(_._2).sum
-      (
-        tp,
-        Some(pfs.maxBy(_._2)._1),
-        -(thmsByStParMap(tp) / (q * math.log(q)))
-      )
-    }
-    .to(Vector)
     .sortBy(_._3)
     .reverse
 
@@ -476,6 +404,78 @@ case class TermState(
       goals.mapOpt(ctx.importTypOpt(_)),
       ctx
     )
+
+  lazy val funcDist: FiniteDistribution[ExstFunc] = terms.condMap(FuncOpt)
+
+  import ParTermState._
+
+  lazy val termDistMap: ParMap[Term, Double] = fdToParMap(terms)
+
+  lazy val typDistMap: ParMap[Typ[Term],Double] = fdToParMap(typs) 
+
+  lazy val funcDistMap: ParMap[ExstFunc, Double] = {
+    val base = termDistMap.flatMap {
+      case (x, w) =>
+        ExstFunc.opt(x).map { fn =>
+          fn -> w
+        }
+    }
+    val total = base.values.sum
+    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
+    else ParMap.empty
+  }
+
+  lazy val thmsSet: ParSet[Typ[Term]] = termDistMap.keySet
+    .map(_.typ)
+    .intersect(typDistMap.keySet union (goalSet))
+    .to(ParSet)
+
+  lazy val thmsByStParMap: ParMap[Typ[Term], Double] = {
+    val base  = typDistMap.filterKeys(thmsSet.contains(_))
+    val total = base.values.sum
+    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
+    else ParMap.empty
+  }
+
+  lazy val thmsByPfParMap: ParMap[Typ[Term], Double] =
+    thmsSet.map(tp => tp -> termsWithTypsMap(tp).map(_._2).sum).to(ParMap)
+
+  lazy val typFamilyDistMap: ParMap[ExstFunc, Double] = {
+    val base = termDistMap.flatMap {
+      case (x, w) =>
+        TypFamilyOpt(x).map { fn =>
+          fn -> w
+        }
+    }
+    val total = base.values.sum
+    if (total > 0) base.mapValues(_ * (1 / total)).to(ParMap)
+    else ParMap.empty
+  }
+
+  lazy val termsWithTypsMap
+      : ParMap[HoTT.Typ[HoTT.Term], ParMap[HoTT.Term, Double]] =
+    termDistMap.groupBy(_._1.typ: Typ[Term]).map {
+      case (typ, m) =>
+        val total = m.values.sum
+        typ -> m.map { case (x, p) => (x, p / total) }
+    }
+
+  lazy val lemmasPar: Vector[(Typ[Term], Option[Term], Double)] = thmsSet
+    .map { tp =>
+      val pfs = termsWithTypsMap(tp)
+      val q   = pfs.map(_._2).sum
+      (
+        tp,
+        Some(pfs.maxBy(_._2)._1),
+        -(thmsByStParMap(tp) / (q * math.log(q)))
+      )
+    }
+    .to(Vector)
+    .sortBy(_._3)
+    .reverse
+
+  lazy val domTotals = funcDistMap.groupBy(_._1).mapValues(_.values.sum)
+
   import TermRandomVars._
 
   def elemVal(elem: Any, randomVar: RandomVar[_]): Double =
@@ -511,6 +511,13 @@ case class TermState(
         }
 
     }
+}
+
+object ParTermState {
+  import scala.collection.parallel.CollectionConverters._
+
+  def fdToParMap[T](fd: FD[T]): ParMap[T, Double] =
+    fd.pmf.par.groupBy(_.elem).mapValues(_.map(_.weight).sum).to(ParMap)
 }
 
 object TermState {

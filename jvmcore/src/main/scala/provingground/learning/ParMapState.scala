@@ -158,13 +158,14 @@ case class ParMapState(
 }
 
 object ParMapState {
+  import ParTermState._
   def fromTermState(ts: TermState) =
     ParMapState(
-      ts.terms.toParMap,
-      ts.typs.toParMap,
+      fdToParMap(ts.terms),
+      fdToParMap(ts.typs),
       ts.vars,
-      ts.inds.toParMap,
-      ts.goals.toParMap,
+      fdToParMap(ts.inds),
+      fdToParMap(ts.goals),
       ts.context
     )
 

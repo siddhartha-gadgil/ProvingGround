@@ -12,8 +12,6 @@ import upickle.default._
 import provingground.scalahott.IntTypes.Fin
 import cats.effect.syntax.`package`.all
 import scala.math.Ordering.Double.TotalOrdering
-import scala.collection.parallel.CollectionConverters._
-import scala.collection.parallel.immutable._
 
 //import LinearStructure._
 
@@ -130,14 +128,9 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def flatten: FiniteDistribution[T] =
     FiniteDistribution(toMap.map { case (x, w) => Weighted(x, w) }.toVector)
 
-  def parPMF = pmf.par
-
   def toMap: Map[T, Double] =
     pmf.groupMapReduce(_.elem)(_.weight)(_ + _)
   // Weighted.flatten(pmf).map { case Weighted(x, p) => x -> p }.toMap
-
-  def toParMap: ParMap[T, Double] =
-    parPMF.groupBy(_.elem).mapValues(_.map(_.weight).sum).to(ParMap)
 
   def restrict(s: Set[T]): FiniteDistribution[T] =
     FiniteDistribution(pmf.filter { case Weighted(x, _) => s.contains(x) })

@@ -151,10 +151,10 @@ object ExpressionEval {
   ): Task[Map[Expression, Double]] = {
     val atomVec = atoms.toVector
     JvmUtils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
-    JvmUtils.logger.debug(
-      s"Computed (sizes of) memoized maps: ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" +
-        s", ${initialState.typFamilyDistMap.size}, ${initialState.termsWithTypsMap.size}, ${initialState.funcsWithDomsMap.size}"
-    )
+    // JvmUtils.logger.debug(
+    //   s"Computed (sizes of) memoized maps: ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" +
+    //     s", ${initialState.typFamilyDistMap.size}, ${initialState.termsWithTypsMap.size}, ${initialState.funcsWithDomsMap.size}"
+    // )
     val valueVecTask =
       Task.parSequence(
         atomVec.map(

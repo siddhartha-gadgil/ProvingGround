@@ -1764,7 +1764,7 @@ object HoTTBot {
                 val limit        = System.currentTimeMillis() + maxTime.toMillis
                 def halted()     = System.currentTimeMillis() > limit
                 val baseState    = ParMapState.fromTermState(tb.ts)
-                val tangentState = ParMapState(tl.fd.toParMap, ParMap())
+                val tangentState = ParMapState(ParTermState.fdToParMap(tl.fd), ParMap())
                 import ParMapState.{normalize, add}
                 val state = ParMapState(
                   normalize(add(baseState.termDist, tangentState.termDist)),
