@@ -14,9 +14,6 @@ import cats.effect.syntax.`package`.all
 import scala.math.Ordering.Double.TotalOrdering
 
 //import LinearStructure._
-
-//import scala.collection.parallel.immutable.ParVector
-
 object FiniteDistribution {
   val random = new scala.util.Random
 
