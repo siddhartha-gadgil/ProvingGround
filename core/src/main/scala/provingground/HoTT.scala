@@ -586,7 +586,7 @@ object HoTT {
         case pair: AbsPair[u, v] =>
           Some(pair.first)
         case a =>
-          // Utils.logger.debug(s"inner evaluation gives $a")
+          // JvmUtils.logger.debug(s"inner evaluation gives $a")
           None
       }
     case RightProjSym(s) =>
@@ -594,7 +594,7 @@ object HoTT {
         case pair: AbsPair[u, v] =>
           Some(pair.second)
         case a =>
-          // Utils.logger.debug(s"inner evaluation gives $a")
+          // JvmUtils.logger.debug(s"inner evaluation gives $a")
           None
       }
     case fx: ApplnSym[w, u] =>

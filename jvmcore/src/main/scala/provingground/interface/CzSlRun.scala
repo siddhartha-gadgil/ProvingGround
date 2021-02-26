@@ -1,11 +1,11 @@
 package provingground.interface
 import provingground._, library._
 import scala.util._, Properties.envOrNone
-import Utils._
+import Utils._, JvmUtils._
 import scribe.output.format.ASCIIOutputFormat
 
 object CzSlRun extends App {
-  Utils.logger = {
+  JvmUtils.logger = {
     import scribe._, writer._, Utils._
     logger
       .withHandler(

@@ -420,7 +420,7 @@ object TermRandomVars {
         ConstRandVar(randomVarSubs(x, y)(randomVar))
       case PiOutput(pd: PiDefn[u, v]) => PiOutput(pd.replace(x, y)).asInstanceOf[Term => RandomVar[d]]
       case _ =>
-        Utils.logger.warn(
+        Utils.baseLogger.warn(
           s"creating lambda random variable by substitution  for ${isle.islandOutput} in $isle; $boat gives ${isle
             .islandOutput(boat)}"
         )

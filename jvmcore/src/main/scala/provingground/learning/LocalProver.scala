@@ -409,7 +409,7 @@ trait LocalProverStep {
       )
     }
 
-  import Utils._, scribe._
+  import Utils._, JvmUtils._, scribe._
 
   lazy val enhancedExpressionEval: Task[ExpressionEval] =
     for {

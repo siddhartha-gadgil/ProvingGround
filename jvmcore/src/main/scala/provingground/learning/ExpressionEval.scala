@@ -127,19 +127,19 @@ object ExpressionEval {
       initialState: TermState
   ): Map[Expression, Double] = {
     val atomVec = atoms.toVector.par
-    Utils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
+    JvmUtils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
     val valueVec = atomVec.map(
       exp => initVal(exp, coeffval, varWeight, initialState)
     )
-    Utils.logger.debug("Computed initial values")
+    JvmUtils.logger.debug("Computed initial values")
     val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
       case (Some(x), n) if x > 0 => (atomVec(n), x)
     }
     val expMapVec = valueVec.zipWithIndex.collect(fn)
-    Utils.logger.debug(s"Computed vector for map, size ${expMapVec.size}")
-    Utils.logger.debug(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+    JvmUtils.logger.debug(s"Computed vector for map, size ${expMapVec.size}")
+    JvmUtils.logger.debug(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
     val result = expMapVec.toMap
-    Utils.logger.debug("Computed map")
+    JvmUtils.logger.debug("Computed map")
     result.seq
   }
 
@@ -150,8 +150,8 @@ object ExpressionEval {
       initialState: TermState
   ): Task[Map[Expression, Double]] = {
     val atomVec = atoms.toVector
-    Utils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
-    Utils.logger.debug(
+    JvmUtils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
+    JvmUtils.logger.debug(
       s"Computed (sizes of) memoized maps: ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" +
         s", ${initialState.typFamilyDistMap.size}, ${initialState.termsWithTypsMap.size}, ${initialState.funcsWithDomsMap.size}"
     )
@@ -170,17 +170,17 @@ object ExpressionEval {
         )
       )
     valueVecTask.map { valueVec =>
-      Utils.logger.debug("Computed initial values")
+      JvmUtils.logger.debug("Computed initial values")
       val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
         case (Some(x), n) if x > 0 => (atomVec(n), x)
       }
       val expMapVec = valueVec.zipWithIndex.collect(fn)
-      Utils.logger.debug(s"Computed vector for map, size ${expMapVec.size}")
-      Utils.logger.debug(
+      JvmUtils.logger.debug(s"Computed vector for map, size ${expMapVec.size}")
+      JvmUtils.logger.debug(
         s"Zero initial values are ${valueVec.count(_.isEmpty)}"
       )
       val result = expMapVec.toMap
-      Utils.logger.debug("Computed map")
+      JvmUtils.logger.debug("Computed map")
       result
     }
   }
@@ -475,9 +475,9 @@ object ExpressionEval {
         }
       }
       if (base.pmf.exists(_.weight.isNaN))
-        Utils.logger.error(s"NaN for some types before normalizing")
+        JvmUtils.logger.error(s"NaN for some types before normalizing")
       if (base.pmf.forall(_.weight.isNaN))
-        Utils.logger.error(s"NaN for all types before normalizing")
+        JvmUtils.logger.error(s"NaN for all types before normalizing")
 
       base.safeNormalized
     }
@@ -638,13 +638,13 @@ case class ProdExpr(
       else {
         val rec = 1.0 / y
         if ((rec.isNaN() || rec.isInfinite()) && !y.isNaN)
-          Utils.logger.error(s"the reciprocal of $y is not a number or is infinite")
+          JvmUtils.logger.error(s"the reciprocal of $y is not a number or is infinite")
         rec
       }
     })
     val result = subTerms.product * constant
     if ((result.isNaN() || result.isInfinite()) && !subTerms.exists(_.isNaN()) && !constant.isNaN())
-      Utils.logger.error(
+      JvmUtils.logger.error(
         s"the product of $subTerms  and constant $constant is not a number or is infinite in $this"
       )
     if (result.isNaN()) 0 else result
@@ -677,13 +677,13 @@ case class ProdExpr(
         else {
           val rec = 1.0 / y
           if ((rec.isNaN() || rec.isInfinite()) && !y.isNaN)
-            Utils.logger.error(s"the reciprocal of $y is not a number or is infinite")
+            JvmUtils.logger.error(s"the reciprocal of $y is not a number or is infinite")
           rec
         }
     })
     val result = subTerms.product * constant
     if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN())
-      Utils.logger.error(
+      JvmUtils.logger.error(
         s"the product of $subTerms  and constant $constant is not a number"
       )
     result
@@ -737,11 +737,11 @@ case class SumExpr(terms: Vector[ProdExpr]) {
     val subTerms = terms.map(_.eval(v))
     val result   = subTerms.sum
     // if (result < 0)
-    //   Utils.logger.error(
+    //   JvmUtils.logger.error(
     //     s"Negative value for expression with terms $terms, values $subTerms"
     //   )
     if (result.isNaN() && !subTerms.exists(_.isNaN()))
-      Utils.logger.error(s"the sum of $subTerms is not a number")
+      JvmUtils.logger.error(s"the sum of $subTerms is not a number")
     result
   }
 
@@ -752,7 +752,7 @@ case class SumExpr(terms: Vector[ProdExpr]) {
     val subTerms = terms.map(_.evaluate(m))
     val result   = subTerms.sum
     if (result.isNaN() && !subTerms.exists(_.isNaN()))
-      Utils.logger.error(s"the sum of $subTerms is not a number")
+      JvmUtils.logger.error(s"the sum of $subTerms is not a number")
     result
   }
 
@@ -885,7 +885,7 @@ class ExprEquations(
           case Literal(value)       => ProdExpr(value, Vector(), Vector())
           case InitialVal(variable) => ProdExpr(0, Vector(), Vector())
           case _ =>
-            Utils.logger.debug(
+            JvmUtils.logger.debug(
               s"cannot decompose $exp as a product, though it is in the rhs of ${equationVec
                 .find(eqq => (Expression.atoms(eqq.rhs).contains(exp)))}"
             )
@@ -1123,7 +1123,7 @@ class ExprCalc(
         val newValue = if (z > 0) {
           val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
           if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
-            Utils.logger.error(
+            JvmUtils.logger.error(
               s"Geometric mean of $y and $z with exponent $exponent is not a number\nEquation with negative value: ${scala.util
                 .Try(equationVec(j))}"
             )
@@ -1304,12 +1304,12 @@ class ExprCalc(
       case (exp, j) =>
         val y = exp.eval(v)
         // if (y < 0)
-        //   Utils.logger.error(s"Equation with negative value: ${equationVec(j)}")
+        //   JvmUtils.logger.error(s"Equation with negative value: ${equationVec(j)}")
         val z = v(j)
         if (z > 0) {
           val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
           if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
-            Utils.logger.error(
+            JvmUtils.logger.error(
               s"Geometric mean of $y and $z with exponent $exponent is not a number\nEquation with negative value: ${scala.util
                 .Try(equationVec(j))}"
             )
@@ -1320,16 +1320,16 @@ class ExprCalc(
   }
 
   def simpleNextVec(v: ParVector[Double]): ParVector[Double] = {
-    // Utils.logger.debug("Computing new vector")
+    // JvmUtils.logger.debug("Computing new vector")
     val fn: ((SumExpr, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         val z = v(j)
         if (z > 0) z else y
     }
-    // Utils.logger.debug("Computing new vector: defined function")
+    // JvmUtils.logger.debug("Computing new vector: defined function")
     val z = rhsExprs.zipWithIndex
-    // Utils.logger.debug(s"Mapping ${z.size} expressions")
+    // JvmUtils.logger.debug(s"Mapping ${z.size} expressions")
     z.par.map(fn)
   }
 
@@ -1373,18 +1373,18 @@ class ExprCalc(
       steps: Long
   ): ParVector[Double] =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      Utils.logger.error(s"Timeout for stable vector after $steps steps")
+      JvmUtils.logger.error(s"Timeout for stable vector after $steps steps")
       initVec
     } else {
-      if (steps % 100 == 2) Utils.logger.debug(s"completed $steps steps")
+      if (steps % 100 == 2) JvmUtils.logger.debug(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newBaseVec    = nextVec(initVec, exponent)
       // val initSum = math.max(initVec.sum, 1.0) 
       val currSum = newBaseVec.sum
       val scale = size.toDouble / currSum
-      // Utils.logger.info(initSum.toString())
-      // Utils.logger.info(currSum.toString)
-      // Utils.logger.info(scale.toString())
+      // JvmUtils.logger.info(initSum.toString())
+      // JvmUtils.logger.info(currSum.toString)
+      // JvmUtils.logger.info(scale.toString())
       val newVec = newBaseVec.map(_ * scale)
       if (normalizedBounded(initVec.seq, newVec.seq))
         newVec
@@ -1407,13 +1407,13 @@ class ExprCalc(
       steps: Long
   ): ParVector[Double] =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      Utils.logger.error(
+      JvmUtils.logger.error(
         s"Timeout for stable support vector after $steps steps"
       )
       initVec
     } else {
       if (steps % 100 == 2)
-        Utils.logger.debug(
+        JvmUtils.logger.debug(
           s"completed $steps steps without stable support, support size : ${initVec
             .count(_ > 0)}"
         )
@@ -1425,12 +1425,12 @@ class ExprCalc(
         n => (initVec(n) != 0) || (newVec(n) == 0)
       )
       if (check) {
-        Utils.logger.debug(
+        JvmUtils.logger.debug(
           s"stable support with support size ${newVec.count(_ != 0)}"
         )
         newVec
       } else {
-        // Utils.logger.debug("recursive call for stable support vector")
+        // JvmUtils.logger.debug("recursive call for stable support vector")
         val usedTime = System.currentTimeMillis() - startTime
         stableSupportVec(
           newVec,
@@ -1448,19 +1448,19 @@ class ExprCalc(
       steps: Long
   ): (Map[Int, Double], Set[Int]) =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      Utils.logger.error(
+      JvmUtils.logger.error(
         s"Timeout for stable support vector after $steps steps"
       )
       (initMap, initSupport)
     } else {
       if (steps % 100 == 2)
-        Utils.logger.debug(
+        JvmUtils.logger.debug(
           s"completed $steps steps without stable support, support size : ${initMap.size}"
         )
       val startTime                   = System.currentTimeMillis()
       val (newMap, newSupport, check) = nextMapSupport(initMap, initSupport)
       if (check) {
-        Utils.logger.debug(
+        JvmUtils.logger.debug(
           s"stable support with support size ${newMap.size}"
         )
         (newMap, newSupport)
@@ -1485,14 +1485,14 @@ class ExprCalc(
       steps: Long
   ): Map[Int, Double] =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      Utils.logger.error(s"Timeout for stable map after $steps steps")
+      JvmUtils.logger.error(s"Timeout for stable map after $steps steps")
       initMap
     } else {
-      if (steps % 100 == 2) Utils.logger.debug(s"completed $steps steps")
+      if (steps % 100 == 2) JvmUtils.logger.debug(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newMap    = nextMap(initMap, support, exponent)
       if (normalizedMapBounded(initMap, newMap)) {
-        Utils.logger.debug("Obtained stable map")
+        JvmUtils.logger.debug("Obtained stable map")
         newMap
       } else {
         val usedTime = System.currentTimeMillis() - startTime
@@ -1516,14 +1516,14 @@ class ExprCalc(
     .getOrElse(ParVector.fill(equationVec.size)(0.0))
 
   lazy val finalVec: ParVector[Double] = {
-    Utils.logger.debug(
+    JvmUtils.logger.debug(
       s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
     )
-    Utils.logger.debug(s"Number of equations: ${equationVec.size}")
-    Utils.logger.debug(s"Computed initial vector with size: ${initVector.size}") // to avoid being part of time limit for stable vector
+    JvmUtils.logger.debug(s"Number of equations: ${equationVec.size}")
+    JvmUtils.logger.debug(s"Computed initial vector with size: ${initVector.size}") // to avoid being part of time limit for stable vector
     val stableSupport =
       stableSupportVec(initVector, maxTime, 0L)
-    Utils.logger.debug("Obtained vector with stable support")
+    JvmUtils.logger.debug("Obtained vector with stable support")
     stableVec(
       stableSupport,
       exponent,
@@ -1534,13 +1534,13 @@ class ExprCalc(
   }
 
   lazy val finalStableMap: Map[Int, Double] = {
-    Utils.logger.debug(
+    JvmUtils.logger.debug(
       s"Computing final map, with maximum time $maxTime, exponent: $exponent, decay: $decay"
     )
-    Utils.logger.debug(s"Number of equations: ${equationVec.size}")
+    JvmUtils.logger.debug(s"Number of equations: ${equationVec.size}")
     val (stableM, support) =
       stableSupportMap(startingMap, startingSupport, maxTime, 0L)
-    Utils.logger.debug("Obtained map with stable support")
+    JvmUtils.logger.debug("Obtained map with stable support")
     stableMap(
       stableM,
       support,

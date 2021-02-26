@@ -209,7 +209,7 @@ object StrategicProvers {
             termSet = termSet union (terms)
             if (ss.isEmpty) {
               failures.append(typ)
-              Utils.logger.debug(s"failed to prove $typ")
+              JvmUtils.logger.debug(s"failed to prove $typ")
               update(())
               liberalChomper(
                 lp,
@@ -224,9 +224,9 @@ object StrategicProvers {
             } else {
               successes.append(ss)
               ss.foreach(
-                s => Utils.logger.debug(s"proved ${s._1} with proof ${s._3}")
+                s => JvmUtils.logger.debug(s"proved ${s._1} with proof ${s._3}")
               )
-              Utils.logger.debug(s"goals remaining ${ys.size}")
+              JvmUtils.logger.debug(s"goals remaining ${ys.size}")
               update(())
               liberalChomper(
                 lp,
@@ -263,7 +263,7 @@ object StrategicProvers {
       case Vector() =>
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typGroup +: ys =>
-        Utils.logger.debug(
+        JvmUtils.logger.debug(
           s"seeking result for group ${typGroup.mkString(" ; ")}"
         )
         val resultGroup =
@@ -271,7 +271,7 @@ object StrategicProvers {
             solveTyp(lp, typ, accumTerms)
               .onErrorRecover {
                 case te: TimeoutException =>
-                  Utils.logger.error(te)
+                  JvmUtils.logger.error(te)
                   (Vector(), Set.empty[EquationNode], Set.empty[Term])
               }
               .map(typ -> _)
@@ -280,10 +280,10 @@ object StrategicProvers {
           Task.sequence(resultGroup).map(SeekResult.collate(_))
         result.flatMap {
           case ((ss, eqs, terms), failures) =>
-            Utils.logger.debug(s"proved ${ss.size} results")
+            JvmUtils.logger.debug(s"proved ${ss.size} results")
             if (failures.nonEmpty)
-              Utils.logger.debug(s"failed to prove ${failures.mkString("\n")}")
-            Utils.logger.debug(s"remaining ${ys.size} groups to prove/disprove")
+              JvmUtils.logger.debug(s"failed to prove ${failures.mkString("\n")}")
+            JvmUtils.logger.debug(s"remaining ${ys.size} groups to prove/disprove")
             equationNodes = equationNodes union (eqs)
             termSet = termSet union (terms)
             concurrentTargetChomper(
@@ -317,11 +317,11 @@ object StrategicProvers {
       case Vector() =>
         Task.now((accumSucc, accumFail, accumEqs, accumTerms))
       case typ +: ys =>
-        Utils.logger.debug(s"trying to prove ${typ} or ${negate(typ)}")
+        JvmUtils.logger.debug(s"trying to prove ${typ} or ${negate(typ)}")
         solveTyp(lp, typ, accumTerms)
           .onErrorRecover {
             case te: TimeoutException =>
-              Utils.logger.error(te)
+              JvmUtils.logger.error(te)
               (Vector(), Set.empty[EquationNode], Set.empty[Term])
           }
           .flatMap {
@@ -329,7 +329,7 @@ object StrategicProvers {
               equationNodes = equationNodes union (eqs)
               termSet = termSet union (terms)
               if (ss.isEmpty) {
-                Utils.logger.debug(s"failed to prove $typ")
+                JvmUtils.logger.debug(s"failed to prove $typ")
                 targetChomper(
                   lp,
                   ys,
@@ -340,9 +340,9 @@ object StrategicProvers {
                 )
               } else {
                 ss.foreach(
-                  s => Utils.logger.debug(s"proved ${s._1} with proof ${s._3}")
+                  s => JvmUtils.logger.debug(s"proved ${s._1} with proof ${s._3}")
                 )
-                Utils.logger.debug(s"goals remaining ${ys.size}")
+                JvmUtils.logger.debug(s"goals remaining ${ys.size}")
                 targetChomper(
                   lp,
                   ys,

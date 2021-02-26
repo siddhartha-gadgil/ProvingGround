@@ -188,7 +188,7 @@ object HoTTMessages {
       if (preNormalized) eqn
       else {
         val equationVec = eqn.toVector
-        Utils.gatherMapSet(
+        JvmUtils.gatherMapSet(
           equationVec.grouped(50000).toVector,
           Set(),
           TermData.isleNormalize(_)

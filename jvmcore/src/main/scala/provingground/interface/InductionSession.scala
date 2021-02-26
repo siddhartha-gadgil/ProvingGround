@@ -4,12 +4,12 @@ import provingground._, interface._, HoTT._, learning._
 import provingground.learning.HoTTMessages._
 import HoTTBot._
 import scala.util._, Properties.envOrNone
-import Utils._
+import Utils._, JvmUtils._
 import scala.concurrent._
 import provingground.scalahott.NatRing
 
 object InductionSession {
-  Utils.logger = {
+  JvmUtils.logger = {
     import scribe._, writer._, Utils._, scribe.output.format.ASCIIOutputFormat
     logger
       .withHandler(

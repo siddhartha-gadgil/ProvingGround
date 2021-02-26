@@ -87,7 +87,7 @@ object ParStrategicProvers{
         val (ss, eqs, terms) =
           polySolveTyp(typ, initState, tg, cutoffs, accumTerms)
         if (ss.isEmpty) {
-          Utils.logger.debug(s"failed to prove $typ and ${negate(typ)}")
+          JvmUtils.logger.debug(s"failed to prove $typ and ${negate(typ)}")
           parChomper(
             ys,
             initState,
@@ -100,9 +100,9 @@ object ParStrategicProvers{
           )
         } else {
           ss.foreach(
-            s => Utils.logger.debug(s"proved ${s._1} with proof ${s._3}")
+            s => JvmUtils.logger.debug(s"proved ${s._1} with proof ${s._3}")
           )
-          Utils.logger.debug(s"goals remaining ${ys.size}")
+          JvmUtils.logger.debug(s"goals remaining ${ys.size}")
           parChomper(
             ys,
             initState,

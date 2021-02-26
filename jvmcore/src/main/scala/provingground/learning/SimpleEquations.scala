@@ -188,7 +188,7 @@ object SimpleEquations {
       .map { y =>
         val eqnVec = y.flatMap(_._1)
         def normalized =
-          Utils.gatherMapSet(
+          JvmUtils.gatherMapSet(
             eqnVec.grouped(10000).toVector,
             Set(),
             TermData.isleNormalize(_),
@@ -227,27 +227,27 @@ object SimpleEquations {
     // .materialize
       .map {
         case (t, (result, newTerms, newTyps)) =>
-          Utils.logger.debug(s"new terms: ${newTerms.size}")
-          Utils.logger.debug(s"new types: ${newTyps.size}")
+          JvmUtils.logger.debug(s"new terms: ${newTerms.size}")
+          JvmUtils.logger.debug(s"new types: ${newTyps.size}")
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
           if (t > maxTime)
-            Utils.logger.debug(
+            JvmUtils.logger.debug(
               s"ran for time ${t.toSeconds}, exceeding time limit $maxTime, with cutoff ${cutoff}"
             )
           else
-            Utils.logger.debug(
+            JvmUtils.logger.debug(
               s"ran for time ${t.toSeconds}, less than the time limit $maxTime, with cutoff ${cutoff}; running again"
             )
           if (pmin * qmin > cutoff)
-            Utils.logger.debug(s"all pairs considered with cutoff $cutoff")
+            JvmUtils.logger.debug(s"all pairs considered with cutoff $cutoff")
           ((t < maxTime) && (pmin * qmin < cutoff), (result, newTerms, newTyps)) // ensuring not all pairs already used
         // case Failure(throwable) =>
         //   throwable match {
         //     case _: TimeoutException =>
-        //       Utils.logger.debug(s"Timed out with time limit $maxTime")
+        //       JvmUtils.logger.debug(s"Timed out with time limit $maxTime")
         //     case _ =>
-        //       Utils.logger.error(
+        //       JvmUtils.logger.error(
         //         s"Instead of timeout, unexpected exception ${throwable.getMessage()}"
         //       )
         //   }
@@ -274,7 +274,7 @@ object SimpleEquations {
           )
         else 
           {
-            Utils.logger.debug(s"reached cutoff limit $minCutoff")
+            JvmUtils.logger.debug(s"reached cutoff limit $minCutoff")
             Task(accum union(result))
           }
         case (b, (result, _, _)) =>

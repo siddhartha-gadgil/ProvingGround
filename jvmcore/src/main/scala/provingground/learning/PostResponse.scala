@@ -9,7 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.View
 import scala.util._
 import scala.reflect.runtime.universe._
-import Utils.logger
+import JvmUtils.logger
 import Utils.ec
 
 
@@ -107,8 +107,8 @@ class SimpleSession[W, ID](
   def post[P](content: P, preds: Set[ID], withResponse: Boolean = true)(implicit pw: Postable[P, W, ID], dg: DataGetter[P, W, ID]): Future[PostData[_, W, ID]] = {
     val postIdFuture = pw.post(content, web, preds)
     if (withResponse) postIdFuture.onComplete(attempt => attempt.fold(err => {
-      Utils.logger.error(err.getMessage())
-      Utils.logger.error(err.getStackTrace().mkString("\n"))
+      JvmUtils.logger.error(err.getMessage())
+      JvmUtils.logger.error(err.getStackTrace().mkString("\n"))
        throw err}, 
     { postID => // posting done, the id is now the predecessor for further posts
       // respond(content, postID)
@@ -161,7 +161,7 @@ class SimpleSession[W, ID](
             }
         }.andThen{
           (_) => completedResponses.append((postID, response))
-          Utils.logger.trace(s"global remaining responses: ${remainingResponses.size}")
+          JvmUtils.logger.trace(s"global remaining responses: ${remainingResponses.size}")
           if (remainingResponses.isEmpty) {
             completionResponse.foreach(
               resp => 
@@ -503,20 +503,20 @@ object TypedPostResponse {
         val taskNest =
           auxFuture.flatMap{
             {auxs =>              
-              Utils.logger.debug(s"launching ${auxs.size} branches")
+              JvmUtils.logger.debug(s"launching ${auxs.size} branches")
               Future.sequence(auxs.flatMap{
                 aux => 
                   val newPostsFuture = responses(aux)(content)
                    var remaining = newPostsFuture.size
-                  Utils.logger.debug(s"launching ${remaining} responses  of type ${qw.tag} in branch")
+                  JvmUtils.logger.debug(s"launching ${remaining} responses  of type ${qw.tag} in branch")
                   val newPostsData = newPostsFuture.map(cF => cF.flatMap{c => 
                       val idNewF = qw.post(c, web, Set(id))
                       idNewF.map(idNew => PostData.get(c, idNew)).andThen{
                         case Success(_) => remaining = remaining - 1
-                          Utils.logger.debug(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
+                          JvmUtils.logger.debug(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
                         case Failure(exception) => 
-                          Utils.logger.error(s"response failed with error")
-                          Utils.logger.error(exception)
+                          JvmUtils.logger.error(s"response failed with error")
+                          JvmUtils.logger.error(exception)
                       }
                     }
                   )
@@ -582,21 +582,21 @@ object TypedPostResponse {
         val taskNest =
           auxTask.flatMap{
             {auxs =>              
-              Utils.logger.debug(s"launching ${auxs.size} branches")
+              JvmUtils.logger.debug(s"launching ${auxs.size} branches")
               Task.parSequence(auxs.flatMap{
                 aux => 
                   val newPostsTask = responses(aux)(content)
                    var remaining = newPostsTask.size
-                  Utils.logger.debug(s"launching ${remaining} responses  of type ${qw.tag}  to posts of type ${pw.tag} in branch")
+                  JvmUtils.logger.debug(s"launching ${remaining} responses  of type ${qw.tag}  to posts of type ${pw.tag} in branch")
                   val newPostsData = newPostsTask.map(cF => cF.flatMap{c => 
                       val idNewT = Task.fromFuture(qw.post(c, web, Set(id)))
                       idNewT.map(idNew => PostData.get(c, idNew)).materialize.map{
                         case Success(result) => remaining = remaining - 1
-                          Utils.logger.debug(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
+                          JvmUtils.logger.debug(s"remaining $remaining responses of type ${qw.tag} to posts of type ${pw.tag}") 
                           result
                         case Failure(exception) => 
-                          Utils.logger.error(s"response failed with error")
-                          Utils.logger.error(exception)
+                          JvmUtils.logger.error(s"response failed with error")
+                          JvmUtils.logger.error(exception)
                          throw exception
                       }
                     }
@@ -718,8 +718,8 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
       pd => lp.getAt(web, pd.id, predicate)
     }).map(_.flatten)
     result.foreach{v => 
-      Utils.logger.debug(s"${v.size} responses to enquiry ${qt}")
-      // v.foreach(x => Utils.logger.debug(s"element: $x for $qt"))
+      JvmUtils.logger.debug(s"${v.size} responses to enquiry ${qt}")
+      // v.foreach(x => JvmUtils.logger.debug(s"element: $x for $qt"))
     }
   result}
 }

@@ -6,7 +6,7 @@ import scala.concurrent.Future
 import scala.collection.mutable, mutable.ArrayBuffer
 import scala.util._
 import scala.reflect.runtime.universe._
-import provingground._, Utils.logger
+import provingground._, JvmUtils.logger
 import ujson.Value
 import monix.eval._
 import monix.execution.AsyncVar
@@ -217,13 +217,13 @@ abstract class ErasablePostBuffer[P, ID](implicit val tag: TypeTag[P])
   def find[W](
       index: ID
   )(implicit pw: Postable[P, W, ID]): Option[(PostData[P, W, ID], Set[ID])] = {
-    // Utils.logger.debug(indexMap.toString())
-    // Utils.logger.debug(index.toString)
-    // Utils.logger.debug(tag.tpe.toString)
+    // JvmUtils.logger.debug(indexMap.toString())
+    // JvmUtils.logger.debug(index.toString)
+    // JvmUtils.logger.debug(tag.tpe.toString)
     indexMap.get(index).flatMap { n =>
       val (pOpt, _, preds) = buffer(n)
-      // Utils.logger.debug(n.toString())
-      // Utils.logger.debug(pOpt.toString())
+      // JvmUtils.logger.debug(n.toString())
+      // JvmUtils.logger.debug(pOpt.toString())
       pOpt.map(p => (PostData[P, W, ID](p, index), preds))
     }
   }

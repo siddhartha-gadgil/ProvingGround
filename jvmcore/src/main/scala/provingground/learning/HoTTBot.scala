@@ -11,7 +11,7 @@ import shapeless._
 import scala.collection.View
 import scala.reflect.runtime.universe._
 import HoTTMessages._
-import Utils.logger
+import JvmUtils.logger
 import scala.concurrent._, duration._
 import provingground.learning.Expression.FinalVal
 import scala.math.Ordering.Double.TotalOrdering
@@ -263,7 +263,7 @@ object HoTTBot {
             val proved =
               (tt union
                 qinit.init.terms.support).map(_.typ)
-            Utils.logger.debug(
+            JvmUtils.logger.debug(
               s"avoiding ${proved.size} types as tautologies and generators."
             )
             Lemmas(
@@ -328,7 +328,7 @@ object HoTTBot {
     Callback.simple(
       { (_) => (proved) =>
         Future {
-          Utils.logger.info(
+          JvmUtils.logger.info(
             s"Proved ${proved.statement} by ${proved.proofOpt} in context ${proved.context}"
           )
         }
@@ -339,7 +339,7 @@ object HoTTBot {
   lazy val reportContradicted: Callback[Contradicted, HoTTPostWeb, Unit, ID] =
     Callback.simple({ (_) => (proved) =>
       Future {
-        Utils.logger.info(
+        JvmUtils.logger.info(
           s"Contradicted ${proved.statement} in context ${proved.context}"
         )
       }
@@ -365,7 +365,7 @@ object HoTTBot {
           .flatMap(
             DE.formalTypEquations(_)
           ))
-        Utils.logger.debug(s"Obtained ${allEquations.size} formal equations")
+        JvmUtils.logger.debug(s"Obtained ${allEquations.size} formal equations")
         val normalEquations = allEquations.map(TermData.isleNormalize(_))
         web.addEqns(normalEquations.seq)
       },
@@ -566,7 +566,7 @@ object HoTTBot {
   lazy val expEvToFinalState: SimpleBot[ExpressionEval, FinalState] =
     MicroBot.simple(
       (ev: ExpressionEval) => {
-        Utils.logger.debug("computing final state")
+        JvmUtils.logger.debug("computing final state")
         FinalState(ev.finalTermState())
       }
     )
@@ -660,12 +660,12 @@ object HoTTBot {
               case ft: FuncTyp[u, v] =>
                 val newGoal = negate(ft.dom)
                 if (newGoal == goal.goal) {
-                  Utils.logger.debug(
+                  JvmUtils.logger.debug(
                     s"nothing gained by contradicting hypothesis for ${goal.goal}"
                   )
                   None
                 } else {
-                  Utils.logger.debug(
+                  JvmUtils.logger.debug(
                     s"try to prove $newGoal as contradicting hypothesis  for ${goal.goal}"
                   )
                   val x = ft.dom.Var
@@ -683,7 +683,7 @@ object HoTTBot {
                       Option(ExstFunc(transform)),
                       goal.context
                     )
-                  Utils.logger.debug(s"Consequence: $cons")
+                  JvmUtils.logger.debug(s"Consequence: $cons")
                   Some(
                     cons :: SeekGoal(
                       newGoal,
@@ -695,12 +695,12 @@ object HoTTBot {
               case pd: PiDefn[u, v] =>
                 val newGoal = negate(pd.domain)
                 if (newGoal == goal.goal) {
-                  Utils.logger.debug(
+                  JvmUtils.logger.debug(
                     s"nothing gained by contradicting hypothesis for ${goal.goal}"
                   )
                   None
                 } else {
-                  Utils.logger.debug(
+                  JvmUtils.logger.debug(
                     s"try to prove $newGoal as contradicting hypothesis for ${goal.goal}"
                   )
                   val x = pd.domain.Var
@@ -718,7 +718,7 @@ object HoTTBot {
                       Option(ExstFunc(transform)),
                       goal.context
                     )
-                  Utils.logger.debug(s"Consequence: $cons")
+                  JvmUtils.logger.debug(s"Consequence: $cons")
                   Some(
                     cons :: SeekGoal(
                       newGoal,
@@ -728,7 +728,7 @@ object HoTTBot {
                   )
                 }
               case _ =>
-                Utils.logger.debug(
+                JvmUtils.logger.debug(
                   s"cannot prove ${goal.goal} by contradicting hypothesis"
                 )
                 None
@@ -812,13 +812,13 @@ object HoTTBot {
         eqs =>
           val neqs  = eqs.normalized
           val nodes = eqns union (neqs)
-          Utils.logger.debug("Obtained normalized equations")
+          JvmUtils.logger.debug("Obtained normalized equations")
           val groupedItEqns = EquationOps.groupIt(nodes)
-          Utils.logger.debug("Obtained grouped equations as iterator")
+          JvmUtils.logger.debug("Obtained grouped equations as iterator")
           val groupedVecEqns = groupedItEqns.toVector
-          Utils.logger.debug("Obtained grouped equations as vector")
+          JvmUtils.logger.debug("Obtained grouped equations as vector")
           val groupedEqns = Utils.makeSet(groupedVecEqns)
-          Utils.logger.debug("Obtained set of grouped equations")
+          JvmUtils.logger.debug("Obtained set of grouped equations")
           import qlp.lp
           Future(
             ExpressionEval.fromInitEqs(
@@ -875,7 +875,7 @@ object HoTTBot {
       case (terms :: qp :: HNil) => {
         case fs =>
           val unknowns = fs.ts.orderedUnknowns
-          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknowns")
+          JvmUtils.logger.info(s"seeking to chomp ${unknowns.size} unknowns")
           StrategicProvers
             .targetChomper(
               qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight)),
@@ -907,7 +907,7 @@ object HoTTBot {
       case (terms :: qp :: HNil) => {
         case fs =>
           val unknowns = fs.ts.orderedUnknowns.grouped(concurrency).toVector
-          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknown groups")
+          JvmUtils.logger.info(s"seeking to chomp ${unknowns.size} unknown groups")
           StrategicProvers
             .concurrentTargetChomper(
               qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight)),
@@ -941,7 +941,7 @@ object HoTTBot {
         case fs =>
           val unknowns = fs.ts.orderedUnknowns
           val lp       = qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight))
-          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknown groups")
+          JvmUtils.logger.info(s"seeking to chomp ${unknowns.size} unknown groups")
           Future {
             val (s, fl, eqs, _) = ParStrategicProvers
               .parChomper(
@@ -971,7 +971,7 @@ object HoTTBot {
       case (terms :: qp :: HNil) => {
         case fs =>
           val unknowns = fs.ts.orderedUnknowns
-          Utils.logger.info(s"seeking to chomp ${unknowns.size} unknowns")
+          JvmUtils.logger.info(s"seeking to chomp ${unknowns.size} unknowns")
           StrategicProvers
             .liberalChomper(
               qp.lp.withParams(qp.lp.tg.copy(solverW = solverWeight)),
@@ -996,13 +996,13 @@ object HoTTBot {
         (fs) =>
           (cr) =>
             Future {
-              Utils.logger.info(s"number of successes: ${cr.successes.size}")
+              JvmUtils.logger.info(s"number of successes: ${cr.successes.size}")
               val topFails = cr.failures
                 .map(tp => tp -> fs.ts.typs(tp))
                 .sortBy { case (_, p) => -p }
                 .take(numFailures)
-              Utils.logger.info(s"number of failures: ${cr.failures.size}")
-              Utils.logger.info(s"""top ${numFailures} failures: ${cr.failures
+              JvmUtils.logger.info(s"number of failures: ${cr.failures.size}")
+              JvmUtils.logger.info(s"""top ${numFailures} failures: ${cr.failures
                 .mkString(", ")}""")
               if (haltIfComplete && topFails.isEmpty) web.halt()
             }
@@ -1333,7 +1333,7 @@ object HoTTBot {
             val sc    = scale / ltot
             val pfTot = l.map(_._4).sum
             val pfSc  = if (pfTot == 0.0) 0.0 else pfScale / pfTot
-            Utils.logger.debug(s"proof powers scaled by $pfSc")
+            JvmUtils.logger.debug(s"proof powers scaled by $pfSc")
             val tangLemmas = l.map {
               case (tp, pfOpt, w, u) => (tp, pfOpt, (w * sc) + (u * pfSc))
             }
@@ -1359,12 +1359,12 @@ object HoTTBot {
       .groupMap(equationNodes, DE.termStateInitMap(initialState))
       .values
       .toVector
-    Utils.logger.debug("Created vector of equations")
+    JvmUtils.logger.debug("Created vector of equations")
     val groupedSet = Utils.makeSet(
       groupedVec
       // .map(TermData.isleNormalize(_))
     )
-    Utils.logger.debug("Created set of equations")
+    JvmUtils.logger.debug("Created set of equations")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
       groupedSet,
@@ -1399,7 +1399,7 @@ object HoTTBot {
           .groupMap(equationNodes, DE.termStateInitMap(initialState))
           .values
           .toVector
-      Utils.logger.debug("Created vector of equations")
+      JvmUtils.logger.debug("Created vector of equations")
       Utils.makeSet(
         groupedVec
         // .map(TermData.isleNormalize(_))
@@ -1407,7 +1407,7 @@ object HoTTBot {
     }
     for {
       groupedSet <- groupSetTask
-      _ = Utils.logger.debug("Created set of equations")
+      _ = JvmUtils.logger.debug("Created set of equations")
       expEv <- ExpressionEval.fromInitEqsTask(
         initialState,
         groupedSet,
@@ -1559,7 +1559,7 @@ object HoTTBot {
           // val neqs = eqns.nodes
           logger.debug(s"Using ${neqs.size} equation nodes for base states")
           // val eqVec = EquationOps.groupIt(neqs).toVector
-          // Utils.logger.debug("Grouped into equations from lookup")
+          // JvmUtils.logger.debug("Grouped into equations from lookup")
           psps.contents.map(
             ps => {
               import qp.lp
@@ -1929,7 +1929,7 @@ object HoTTBot {
                               s"Tracing back $typ, step ${1 + j}, for base state with $initString"
                             )
                             val pfData = calc.proofData(typ)
-                            Utils.logger.debug(
+                            JvmUtils.logger.debug(
                               s"""|
                                 |Located proof data for $typ, step ${1 + j}, for base state $initString
                                 |Equations: 
@@ -1941,13 +1941,13 @@ object HoTTBot {
                               val backIndices = pfData
                                 .map(_._1)
                                 .flatMap(j => calc.traceIndices(j, depth))
-                              Utils.logger.debug(
+                              JvmUtils.logger.debug(
                                 s"The traced back indices for $typ, step ${1 + j}, for base with $initString with depth $depth are ${backIndices.size}, namely ${backIndices
                                   .mkString(", ")}"
                               )
 
                               backIndices.foreach { i =>
-                                Utils.logger.debug(
+                                JvmUtils.logger.debug(
                                   s"""|Details for index $i, traced back for $typ, step ${1 + j}, for base with $initString with depth $depth
                                                     |Equation: ${ev.exprCalc
                                        .equationVec(
@@ -2342,7 +2342,7 @@ object HoTTBot {
               )
               fromAlls.headOption
             } else {
-              Utils.logger.debug(
+              JvmUtils.logger.debug(
                 s"did not resolve $sg as it has ${sg.forConsequences.size} consequences"
               )
               None
@@ -2366,7 +2366,7 @@ object HoTTBot {
     ] =
       qp =>
         seekInst => {
-          Utils.logger.debug(
+          JvmUtils.logger.debug(
             s"seeking instances for ${seekInst.typ} with cutoff ${qp.lp.cutoff}"
           )
           import TermGeneratorNodes._, TermRandomVars._
@@ -2578,7 +2578,7 @@ object HoTTBot {
               )
             )
           case _ =>
-            Utils.logger.debug(s"no instances sought for ${sk.goal}")
+            JvmUtils.logger.debug(s"no instances sought for ${sk.goal}")
             None
         },
       Some("sigma-type resolved")
@@ -2641,7 +2641,7 @@ object HoTTBot {
       : SimpleBot[SeekGoal, Option[ProofLambda :: SeekGoal :: HNil]] =
     MicroBot.simple(
       (sk: SeekGoal) => {
-        Utils.logger.debug(s"matching for context for $sk")
+        JvmUtils.logger.debug(s"matching for context for $sk")
         sk.goal match {
           case PiDefn(variable: Term, value: Typ[u]) =>
             logger.debug(s"putting pi definition ${sk.goal} in context")
@@ -2792,7 +2792,7 @@ object HoTTBot {
                   case (lp: LocalProver, x: Term) =>
                     lp.addVar(x, varWeight)
                 }
-                Utils.logger.info(s"initial state ${withVars.initState}")
+                JvmUtils.logger.info(s"initial state ${withVars.initState}")
                 withVars
                   .varDist(TermRandomVars.termsWithTyp(goal.goal))
                   .runToFuture
@@ -2890,7 +2890,7 @@ object HoTTBot {
           Future(terms.find(_.typ == goal.goal)).flatMap(
             tOpt =>
               if (tOpt.nonEmpty)
-                {Utils.logger.debug(s"goal $goal already proved using $tOpt")
+                {JvmUtils.logger.debug(s"goal $goal already proved using $tOpt")
                   Future.successful(
                   Some(
                     GeneratedEquationNodes(Set()) :: Right(
@@ -2906,7 +2906,7 @@ object HoTTBot {
                   case (lp: LocalProver, x: Term) =>
                     lp.addVar(x, varWeight)
                 }
-                Utils.logger.debug(s"initial state ${withVars.initState}")
+                JvmUtils.logger.debug(s"initial state ${withVars.initState}")
                 val pde = ParDistEq.fromParams(qp.lp.tg, qp.lp.tg.varWeight)
                 Future {
                   val (fd, eqs) = pde.varDist(
@@ -2921,7 +2921,7 @@ object HoTTBot {
                   val geqs = GeneratedEquationNodes(expEqs)
                   Some(geqs :: {
                     if (fd.isEmpty) {
-                      Utils.logger.debug(
+                      JvmUtils.logger.debug(
                         s"""|Failed for ${TermRandomVars
                              .termsWithTyp(goal.goal)}
                                               |initial state: ${withVars.initState}
@@ -3001,7 +3001,7 @@ object HoTTBot {
                   case (lp: LocalProver, x: Term) =>
                     lp.addVar(x, varWeight)
                 }
-                Utils.logger.debug(s"initial state ${withVars.initState}")
+                JvmUtils.logger.debug(s"initial state ${withVars.initState}")
                 withVars
                   .varDistEqs(TermRandomVars.termsWithTyp(goal.goal))
                   .runToFuture
@@ -3014,7 +3014,7 @@ object HoTTBot {
                       val geqs = GeneratedEquationNodes(expEqs)
                       Some(geqs :: {
                         if (fd.pmf.isEmpty) {
-                          Utils.logger.debug(
+                          JvmUtils.logger.debug(
                             s"""|Failed for 
                                             |${TermRandomVars
                                  .termsWithTyp(goal.goal)}
@@ -3087,8 +3087,8 @@ object HoTTBot {
         (_) =>
           (_) =>
             topLevelRelevantGoals(web, context).map { goals =>
-              Utils.logger.debug(s"remaining top level goals: ${goals.size}")
-              Utils.logger.debug(goals.mkString("\n"))
+              JvmUtils.logger.debug(s"remaining top level goals: ${goals.size}")
+              JvmUtils.logger.debug(goals.mkString("\n"))
               if (haltIfEmpty && goals.isEmpty) {
                 web.halt()
                 Utils.running = false
@@ -3122,7 +3122,7 @@ object HoTTBot {
           val newProofs = gprvd.contents.filter { pr =>
             pr.context == context && cr.failures.contains(pr.statement)
           }.toVector
-          Utils.logger.info(
+          JvmUtils.logger.info(
             s"New top-level proofs obtained: ${newProofs.mkString("\n", "\n", "\n")}"
           )
           val failures =
@@ -3131,7 +3131,7 @@ object HoTTBot {
           // else
           Future {
             val fs = cfs.contents.head
-            Utils.logger.info(
+            JvmUtils.logger.info(
               s"reposting because of failures: ${failures.mkString("; ")}"
             )
             lp :: fs :: ChompResult(
