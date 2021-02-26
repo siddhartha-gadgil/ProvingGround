@@ -62,9 +62,9 @@ object QueryBaseState {
 
 case class QueryEquations(equations: Set[Equation]) {
   lazy val nodes: Set[EquationNode] =
-    equations.flatMap(Equation.split(_)).map(TermData.isleNormalize(_))
+    equations.flatMap(EquationOps.split(_)).map(TermData.isleNormalize(_))
 
-  lazy val isleNormalized: Set[Equation] = Equation.group(nodes)
+  lazy val isleNormalized: Set[Equation] = EquationOps.group(nodes)
 }
 
 object QueryEquations {
@@ -97,7 +97,7 @@ object QueryEquations {
               gp =>
                 gp.contents
                   .flatMap(_.equations)
-                  .flatMap(Equation.split(_))
+                  .flatMap(EquationOps.split(_))
                   .map(TermData.isleNormalize(_))
             )
         for {
@@ -105,7 +105,7 @@ object QueryEquations {
           expEqs <- gatheredExpEv
         } yield
           QueryEquations(
-            Equation.group(lookup union genEqs.toSet union expEqs.toSet)
+            EquationOps.group(lookup union genEqs.toSet union expEqs.toSet)
           )
       }
     }
@@ -560,7 +560,7 @@ object HoTTBot {
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
     MicroBot.simple(
       (ev: ExpressionEval) =>
-        GeneratedEquationNodes(ev.equations.flatMap(Equation.split))
+        GeneratedEquationNodes(ev.equations.flatMap(EquationOps.split))
     )
 
   lazy val expEvToFinalState: SimpleBot[ExpressionEval, FinalState] =
@@ -750,7 +750,7 @@ object HoTTBot {
       (web: HoTTPostWeb) =>
         (ev: ExpressionEval) => {
           val neqs = ev.equations.flatMap(
-            eqq => Equation.split(eqq).map(TermData.isleNormalize(_))
+            eqq => EquationOps.split(eqq).map(TermData.isleNormalize(_))
           )
           web.addEqns(neqs)
         }
@@ -813,7 +813,7 @@ object HoTTBot {
           val neqs  = eqs.normalized
           val nodes = eqns union (neqs)
           Utils.logger.debug("Obtained normalized equations")
-          val groupedItEqns = Equation.groupIt(nodes)
+          val groupedItEqns = EquationOps.groupIt(nodes)
           Utils.logger.debug("Obtained grouped equations as iterator")
           val groupedVecEqns = groupedItEqns.toVector
           Utils.logger.debug("Obtained grouped equations as vector")
@@ -1355,7 +1355,7 @@ object HoTTBot {
       maxTime: Option[Long] = None
   ) = {
     logger.debug("Computing base state")
-    val groupedVec = Equation
+    val groupedVec = EquationOps
       .groupMap(equationNodes, DE.termStateInitMap(initialState))
       .values
       .toVector
@@ -1395,7 +1395,7 @@ object HoTTBot {
     logger.debug("Computing base state")
     val groupSetTask = Task {
       val groupedVec =
-        Equation
+        EquationOps
           .groupMap(equationNodes, DE.termStateInitMap(initialState))
           .values
           .toVector
@@ -1558,7 +1558,7 @@ object HoTTBot {
           logger.debug(psps.contents.mkString("\n"))
           // val neqs = eqns.nodes
           logger.debug(s"Using ${neqs.size} equation nodes for base states")
-          // val eqVec = Equation.groupIt(neqs).toVector
+          // val eqVec = EquationOps.groupIt(neqs).toVector
           // Utils.logger.debug("Grouped into equations from lookup")
           psps.contents.map(
             ps => {
@@ -2208,7 +2208,7 @@ object HoTTBot {
               val baseState = lp.initState
               val expEv = ExpressionEval.fromInitEqs(
                 baseState.copy(terms = tdist),
-                Equation.group(baseEqs),
+                EquationOps.group(baseEqs),
                 lp.tg.coeffVal(_),
                 lp.tg.varWeight,
                 lp.maxRatio,

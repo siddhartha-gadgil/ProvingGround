@@ -200,11 +200,11 @@ case class GeneratorTF[State](
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
         val (terms, data) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
-        Equation.group(terms) -> data
+        EquationOps.group(terms) -> data
       case fmly =>
         val eqns = finalElemIndices(nodeCoeffs.output).flatMap { x =>
           val (terms, _) = nodeCoeffsEquationTerms(nodeCoeffs, x)
-          Equation.group(terms)
+          EquationOps.group(terms)
         }
         val dataSeq = finalElemIndices(nodeCoeffs.output).map { x =>
           nodeCoeffsEquationTerms(nodeCoeffs, x)._2
@@ -670,7 +670,7 @@ case class GeneratorTF[State](
       case _: RandomVar[Y] =>
         nodeCoeffsEquationTermsTask(nodeCoeffs, HNil).map {
           case (terms, data) =>
-            Equation.group(terms) -> data
+            EquationOps.group(terms) -> data
         }
       case fmly =>
         val tskSet: Set[Task[(Set[EquationNode], TFData)]] =
@@ -680,7 +680,7 @@ case class GeneratorTF[State](
         val eqnTask: Task[Set[Equation]] = Task
           .parSequence(tskSet.map(s => s.map(_._1)))
           .map(_.flatten)
-          .map(Equation.group)
+          .map(EquationOps.group)
         val dataTask: Task[TFData] = Task
           .parSequence(tskSet.map(s => s.map(_._2)))
           .map(_.foldLeft(baseData)(_ ++ _))

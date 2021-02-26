@@ -35,7 +35,7 @@ class HoTTPostWeb {
 
   var extraTerms: Set[Term] = Set()
 
-  def equations = Equation.group(equationNodes)
+  def equations = EquationOps.group(equationNodes)
 
   def terms = ExpressionEval.terms(equationNodes) union extraTerms
 

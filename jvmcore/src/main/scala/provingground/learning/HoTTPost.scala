@@ -24,7 +24,7 @@ class HoTTPost { web =>
 
   var equationNodes: Set[EquationNode] = Set()
 
-  def equations = Equation.group(equationNodes)
+  def equations = EquationOps.group(equationNodes)
 
   def terms = ExpressionEval.terms(equationNodes)
 
@@ -327,7 +327,7 @@ object HoTTPost {
 
   lazy val expEvToEqns: PostResponse[HoTTPost, ID] =
     MicroBot.simple(
-      (ev: ExpressionEval) => ev.equations.flatMap(Equation.split)
+      (ev: ExpressionEval) => ev.equations.flatMap(EquationOps.split)
     )
 
   lazy val eqnUpdate: PostResponse[HoTTPost, ID] =
@@ -436,7 +436,7 @@ object HoTTPost {
           Future {
             val expEv = ExpressionEval.fromInitEqs(
               init.ts,
-              Equation.group(eqs union alleqs),
+              EquationOps.group(eqs union alleqs),
               tg.coeffVal(_),
               tg.varWeight
             )

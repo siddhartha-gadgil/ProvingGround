@@ -390,14 +390,14 @@ trait LocalProverStep {
   val equationNodes: Task[Set[EquationNode]]
 
   lazy val equations: Task[Set[Equation]] = equationNodes.map { eqs =>
-    Equation.group(eqs)
+    EquationOps.group(eqs)
   }.memoize
 
   def bigExpressionEval(additional: Set[Equation]): Task[ExpressionEval] =
     equations.map { eqs =>
       ExpressionEval.fromInitEqs(
         initState,
-        Equation.merge(eqs, additional),
+        EquationOps.merge(eqs, additional),
         tg.coeffVal(_),
         tg.varWeight,
         maxRatio,
@@ -432,7 +432,7 @@ trait LocalProverStep {
       // }
       ExpressionEval.fromInitEqs(
         initState,
-        Equation.group(eqs union additional),
+        EquationOps.group(eqs union additional),
         tg.coeffVal(_),
         tg.varWeight,
         maxRatio,
@@ -706,7 +706,7 @@ trait LocalProverStep {
       tExpEval = ExpressionEval.fromStates(
         tangState,
         baseState,
-        Equation.group(teqnds),
+        EquationOps.group(teqnds),
         tg.coeffVal(_),
         tg.varWeight,
         maxRatio,

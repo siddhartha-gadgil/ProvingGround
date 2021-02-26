@@ -110,11 +110,11 @@ case class GeneratorEquations[State](
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
         val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
-        Equation.group(terms) union eqs
+        EquationOps.group(terms) union eqs
       case fmly =>
         finalElemIndices(nodeCoeffs.output).flatMap { x =>
           val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, x)
-          Equation.group(terms) union eqs
+          EquationOps.group(terms) union eqs
         }
     }
 

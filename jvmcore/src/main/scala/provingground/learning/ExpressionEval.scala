@@ -1615,7 +1615,7 @@ trait ExpressionEval { self =>
     new ExpressionEval {
       val init                                         = (0.5 *: self.init) + (0.5 *: that.init)
       lazy val finalTyps                               = self.finalTyps
-      val equations                                    = Equation.merge(self.equations, that.equations)
+      val equations                                    = EquationOps.merge(self.equations, that.equations)
       val coeffval                                     = self.coeffval
       val varWeight: Double                            = self.varWeight
       val coeffsAsVars                                 = self.coeffsAsVars
@@ -1843,7 +1843,7 @@ trait ExpressionEval { self =>
           rhs
         )
       }
-    isleEqs union (Equation.group(isleIn union bridgeEqs))
+    isleEqs union (EquationOps.group(isleIn union bridgeEqs))
   }
 
   def piExportEquations(
@@ -1895,7 +1895,7 @@ trait ExpressionEval { self =>
           rhs
         )
       }
-    isleEqs union (Equation.group(isleIn union bridgeEqs))
+    isleEqs union (EquationOps.group(isleIn union bridgeEqs))
   }
 
   def piTermExportEquations(
@@ -1947,7 +1947,7 @@ trait ExpressionEval { self =>
           rhs
         )
       }
-    isleEqs union (Equation.group(isleIn union bridgeEqs))
+    isleEqs union (EquationOps.group(isleIn union bridgeEqs))
   }
 
   def relVariable(x: Term): ExpressionEval = {
