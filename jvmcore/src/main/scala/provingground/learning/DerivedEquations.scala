@@ -1004,7 +1004,7 @@ class DerivedEquations(
       }
 
   def termStateElemPar(
-      ts: TermState
+      ts: ParTermState
   ): scala.collection.parallel.ParIterable[GeneratorVariables.Elem[_]] =
     ts.termDistMap.keys.map { x =>
       Elem(x, Terms): Elem[_]
@@ -1029,7 +1029,7 @@ class DerivedEquations(
       }
 
   def termStateInitMap(ts: TermState): ParMap[Expression, EquationNode] =
-    termStateElemPar(ts).map {
+    termStateElemPar(ParTermState(ts)).map {
       case Elem(t, rv) =>
         finalProb(t, rv) -> EquationNode(
           finalProb(t, rv),

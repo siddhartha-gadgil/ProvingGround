@@ -100,7 +100,7 @@ object ExpressionEval {
       exp: Expression,
       cv: Coeff[_] => Option[Double],
       varWeight: Double,
-      initialState: TermState
+      initialState: ParTermState
   ): Option[Double] =
     exp match {
       case cf @ Coeff(_) => cv(cf)
@@ -128,8 +128,9 @@ object ExpressionEval {
   ): Map[Expression, Double] = {
     val atomVec = atoms.toVector.par
     JvmUtils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
+    val parState = ParTermState(initialState)
     val valueVec = atomVec.map(
-      exp => initVal(exp, coeffval, varWeight, initialState)
+      exp => initVal(exp, coeffval, varWeight, parState)
     )
     JvmUtils.logger.debug("Computed initial values")
     val fn: PartialFunction[(Option[Double], Int), (Expression, Double)] = {
@@ -150,6 +151,7 @@ object ExpressionEval {
       initialState: TermState
   ): Task[Map[Expression, Double]] = {
     val atomVec = atoms.toVector
+    val parState = ParTermState(initialState)
     JvmUtils.logger.debug(s"Computing initial map with ${atomVec.size} atoms")
     // JvmUtils.logger.debug(
     //   s"Computed (sizes of) memoized maps: ${initialState.termDistMap.size}, ${initialState.typDistMap.size}, ${initialState.funcDistMap.size}" +
@@ -164,7 +166,7 @@ object ExpressionEval {
                 exp,
                 coeffval,
                 varWeight,
-                initialState
+                parState
               )
             )
         )
