@@ -125,7 +125,7 @@ class GraphEmbeddingLogisitic(
   def fit(
       inc: Int => Int => Float,
       steps: Int = 2000000
-  ): Try[(Vector[(Float, Float)], Vector[((Float, Float), (Float, Float))])] = {
+  ): Try[Vector[(Float, Float)]] = {
     Using(new Session(graph)) { session =>
       session.run(tf.init())
       JvmUtils.logger.info("initialized")
@@ -169,21 +169,21 @@ class GraphEmbeddingLogisitic(
         )
         val xd = tData.get(0).expect(TFloat32.DTYPE).data()
         val yd = tData.get(1).expect(TFloat32.DTYPE).data()
-        val unscaledPoints: Vector[(Float, Float)] =
+        val points: Vector[(Float, Float)] =
           (0 until (numPoints))
             .map(n => (xd.getFloat(n), yd.getFloat(n)))
             .toVector
-        val maxX  = unscaledPoints.map(_._1).max
-        val maxY  = unscaledPoints.map(_._2).max
+        val maxX  = points.map(_._1).max
+        val maxY  = points.map(_._2).max
         val scale = scala.math.min(300f / maxX, 300f / maxY)
-        val points = unscaledPoints.map {
+        val scaledPoints = points.map {
           case (x, y) =>
             (x * scale, y * scale)
         }
-        val lines = points.zip(points.tail :+ points.head)
+        val lines = scaledPoints.zip(scaledPoints.tail :+ scaledPoints.head)
         stepsRun = j
-        dataSnap = (points, lines)
-        (points, lines)
+        dataSnap = (scaledPoints, lines)
+        points
       }
       fitDone = true
       JvmUtils.logger.info("Tuning complete")
