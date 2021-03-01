@@ -14,6 +14,12 @@ import provingground.JvmUtils
 object GraphEmbedding {
   val rnd: Random = new Random()
 
+  def withProb(pOpt: Option[Double]) : Boolean =
+    pOpt.map(_ > rnd.nextDouble()).getOrElse(false)
+
+  def incFunction(probs: Int => Int => Option[Double]) : Int => Int => Float =
+    i => j => if (withProb(probs(i)(j))) 1f else 0f
+
   @scala.annotation.tailrec
   def getSample(
       remaining: Vector[Int],
@@ -32,6 +38,7 @@ class GraphEmbeddingLogisitic(
     numPoints: Int,
     batchSize: Int,
     graph: Graph,
+    maxCoord: Float = 2000f,
     epsilon: Float = 0.01f
 ) {
   val tf: Ops = Ops.create(graph)
@@ -46,29 +53,42 @@ class GraphEmbeddingLogisitic(
 
   val ones: Constant[TFloat32] = tf.constant(Array.fill(batchSize)(1.0f))
 
-  val fxs: Variable[TFloat32] = tf.variable(
+  val allXs: Variable[TFloat32] = tf.variable(
     tf.constant(Array.fill(numPoints)(rnd.nextFloat() * 2.0f))
   )
 
-  val fys: Variable[TFloat32] = tf.variable(
+  val allYs: Variable[TFloat32] = tf.variable(
     tf.constant(Array.fill(numPoints)(rnd.nextFloat() * 2.0f))
   )
+
+  val maxX: Max[TFloat32] = tf.max(tf.math.abs(allXs), tf.constant(Array(0)))
+
+  val maxY: Max[TFloat32] = tf.max(tf.math.abs(allYs), tf.constant(Array(0)))
+
+  val maxCoordScale =
+    tf.math.div(tf.math.maximum(maxX, maxY), tf.constant(maxCoord))
+
+  val rescaleX: Assign[TFloat32] =
+    tf.assign(allXs, tf.math.div(allXs, maxCoordScale))
+
+  val rescaleY: Assign[TFloat32] =
+    tf.assign(allYs, tf.math.div(allYs, maxCoordScale))
 
   val projection: PlaceholderWithDefault[TFloat32] = tf.placeholderWithDefault(
     tf.constant(Array.fill(batchSize)(Array.fill(numPoints)(1f))),
     ndarray.Shape.of(batchSize, numPoints)
   )
 
-  val xs: MatMul[TFloat32] = {
+  val sampleXs: MatMul[TFloat32] = {
     tf.linalg.matMul(
       projection,
-      tf.reshape(fxs, tf.constant(Array(numPoints, 1)))
+      tf.reshape(allXs, tf.constant(Array(numPoints, 1)))
     )
   }
 
-  val ys: MatMul[TFloat32] = tf.linalg.matMul(
+  val sampleYs: MatMul[TFloat32] = tf.linalg.matMul(
     projection,
-    tf.reshape(fys, tf.constant(Array(numPoints, 1)))
+    tf.reshape(allYs, tf.constant(Array(numPoints, 1)))
   )
 
   def rankOne(v: Operand[TFloat32], w: Operand[TFloat32]) = {
@@ -80,10 +100,10 @@ class GraphEmbeddingLogisitic(
   }
 
   val xDiff: SquaredDifference[TFloat32] =
-    tf.math.squaredDifference(rankOne(xs, ones), rankOne(ones, xs))
+    tf.math.squaredDifference(rankOne(sampleXs, ones), rankOne(ones, sampleXs))
 
   val yDiff: SquaredDifference[TFloat32] =
-    tf.math.squaredDifference(rankOne(ys, ones), rankOne(ones, ys))
+    tf.math.squaredDifference(rankOne(sampleYs, ones), rankOne(ones, sampleYs))
 
   val totDiff: Add[TFloat32] = tf.math.add(xDiff, yDiff)
 
@@ -124,6 +144,7 @@ class GraphEmbeddingLogisitic(
 
   def fit(
       inc: Int => Int => Float,
+      scalePeriodOpt: Option[Int] = None,
       steps: Int = 2000000
   ): Try[Vector[(Float, Float)]] = {
     Using(new Session(graph)) { session =>
@@ -150,14 +171,28 @@ class GraphEmbeddingLogisitic(
             projMat
           )
         )
+        scalePeriodOpt.foreach(
+          period =>
+            if (j % period == 0)
+              Try {
+                session.runner().addTarget(rescaleX).addTarget(rescaleY).run()
+              }.fold(
+                fa => {
+                  println(fa.getMessage())
+                  println(fa.printStackTrace())
+                  throw fa
+                },
+                (_ => ())
+              )
+        )
         val tData = Try(
           session
             .runner()
             .feed(incidence, incT)
             .feed(projection, projT)
             .addTarget(minimize)
-            .fetch(fxs)
-            .fetch(fys)
+            .fetch(allXs)
+            .fetch(allYs)
             .run()
         ).fold(
           fa => {
