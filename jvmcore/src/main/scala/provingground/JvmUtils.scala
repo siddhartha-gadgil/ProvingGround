@@ -39,26 +39,83 @@ object JvmUtils {
           accum
       }
 
-    import scribe._, writer._
+  import scribe._, writer._
+  import scribe.output.format.ASCIIOutputFormat
   var logger = Logger()
-  // .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
-  // .replace()
-
-  def logDebug() =
-    logger = logger.withHandler(
-      writer = ConsoleWriter,
+    .withHandler(
+      writer = FileWriter().path(file.LogPath.daily()),
+      minimumLevel = Some(Level.Info),
+      outputFormat = ASCIIOutputFormat
+    )
+    .withHandler(
+      writer = FileWriter().path(file.LogPath.daily("errors")),
+      minimumLevel = Some(Level.Error)
+    )
+    .withHandler(
+      writer = FileWriter().path(file.LogPath.daily("debug")),
       minimumLevel = Some(Level.Debug)
     )
+    .replace()
+
+  def logDebug() =
+    logger = logger
+      .withHandler(
+        writer = ConsoleWriter,
+        minimumLevel = Some(Level.Debug)
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily()),
+        minimumLevel = Some(Level.Info),
+        outputFormat = ASCIIOutputFormat
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily("errors")),
+        minimumLevel = Some(Level.Error)
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily("debug")),
+        minimumLevel = Some(Level.Debug)
+      )
+      .replace()
 
   def logTrace() =
-    logger = logger.withHandler(
-      writer = ConsoleWriter,
-      minimumLevel = Some(Level.Trace)
-    )
+    logger = logger
+      .withHandler(
+        writer = ConsoleWriter,
+        minimumLevel = Some(Level.Trace)
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily()),
+        minimumLevel = Some(Level.Info),
+        outputFormat = ASCIIOutputFormat
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily("errors")),
+        minimumLevel = Some(Level.Error)
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily("debug")),
+        minimumLevel = Some(Level.Debug)
+      )
+      .replace()
 
   def logBrief =
     logger = logger
       .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
+      .replace()
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily()),
+        minimumLevel = Some(Level.Info),
+        outputFormat = ASCIIOutputFormat
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily("errors")),
+        minimumLevel = Some(Level.Error)
+      )
+      .withHandler(
+        writer = FileWriter().path(file.LogPath.daily("debug")),
+        minimumLevel = Some(Level.Debug)
+      )
       .replace()
 
 }

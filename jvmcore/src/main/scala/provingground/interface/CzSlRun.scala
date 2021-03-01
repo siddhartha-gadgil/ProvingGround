@@ -5,24 +5,6 @@ import Utils._, JvmUtils._
 import scribe.output.format.ASCIIOutputFormat
 
 object CzSlRun extends App {
-  JvmUtils.logger = {
-    import scribe._, writer._, Utils._
-    logger
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily()),
-        minimumLevel = Some(Level.Info),
-        outputFormat = ASCIIOutputFormat
-      )
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("errors")),
-        minimumLevel = Some(Level.Error)
-      )
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("debug")),
-        minimumLevel = Some(Level.Debug)
-      )
-      .replace()
-  }
 
   logger.info(
     """|This is a Bot based run for the Czech-Slovak olympiand problem identified by Achal, who proved this with manual choice.

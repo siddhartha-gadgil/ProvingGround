@@ -121,7 +121,9 @@ val jvmLibs = List(
   ivy"org.apache.logging.log4j:log4j-core:2.13.0",
   ivy"org.platanios::tensorflow:0.5.1-SNAPSHOT;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:2.2.14",
-  ivy"org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r"
+  ivy"org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r",
+  ivy"org.tensorflow:tensorflow-core-platform:0.2.0",
+  ivy"org.tensorflow:tensorflow-framework:0.2.0"
 )
 
 trait JvmModule extends CommonModule {

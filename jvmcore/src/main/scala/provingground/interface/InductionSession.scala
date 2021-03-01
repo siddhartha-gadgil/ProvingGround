@@ -9,25 +9,6 @@ import scala.concurrent._
 import provingground.scalahott.NatRing
 
 object InductionSession {
-  JvmUtils.logger = {
-    import scribe._, writer._, Utils._, scribe.output.format.ASCIIOutputFormat
-    logger
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("debug")),
-        minimumLevel = Some(Level.Debug)
-      )
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily()),
-        minimumLevel = Some(Level.Info),
-        outputFormat = ASCIIOutputFormat
-      )
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("errors")),
-        minimumLevel = Some(Level.Error)
-      )
-      .replace()
-  }
-
   logger.info(
     """|
        |This is a Bot based run for testing a simple induction problem:
