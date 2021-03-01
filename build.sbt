@@ -112,7 +112,9 @@ lazy val jvmSettings = Seq(
     "org.deeplearning4j"       % "deeplearning4j-graph"     % "1.0.0-beta4",
     "org.nd4j"                 % "nd4j-native-platform"     % "1.0.0-beta4",
     "org.deeplearning4j"       % "deeplearning4j-nlp"       % "1.0.0-beta4",
-    "org.eclipse.jgit"         % "org.eclipse.jgit"         % "5.6.0.201912101111-r"
+    "org.eclipse.jgit"         % "org.eclipse.jgit"         % "5.6.0.201912101111-r",
+    "org.tensorflow" % "tensorflow-core-platform" % "0.2.0",
+    "org.tensorflow" % "tensorflow-framework" % "0.2.0"
   )
   // ,
   // resources in Compile += (fastOptJS in (client, Compile)).value.data
