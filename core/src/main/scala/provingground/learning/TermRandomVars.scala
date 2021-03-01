@@ -478,7 +478,7 @@ object TermRandomVars {
     v match {
       case Elem(element, randomVar) => v
       case Event(base, sort)        => v
-      case inIsleFull: InIsle[c, Y, _, d, _] =>
+      case inIsleFull: InIsle[c, y, _, d, _] =>
         val inIsleTry =
           Try(inIsleFull.asInstanceOf[InIsle[c, Y, TermState, d, Term]])
         inIsleTry.fold(

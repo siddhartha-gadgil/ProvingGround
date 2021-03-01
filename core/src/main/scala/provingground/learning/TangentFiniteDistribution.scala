@@ -160,12 +160,12 @@ case class TangentFiniteDistribution[State](
             case c: Filter[_] => base.conditioned(c.pred).purge(epsilon)
             case Restrict(f)  => base.condMap(f).purge(epsilon)
           }
-        case isle: Island[Y, State, o, b] =>
+        case isle: Island[y, State, o, b] =>
           import isle._
           val (isleInit, boat) = initMap(tangentState)(varWeight)                          // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
-            .map(export(boat, _))
+            .map(export(boat, _) : Y)
             .purge(epsilon) // exported result seen outside
       }
     }

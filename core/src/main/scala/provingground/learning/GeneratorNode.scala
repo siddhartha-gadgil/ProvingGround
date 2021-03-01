@@ -506,7 +506,7 @@ object GeneratorNode {
     * @tparam InitState the initial state
     * @tparam Boat scala type of the `boat`
     */
-  case class Island[+Y, InitState, O, Boat](
+  case class Island[Y, InitState, O, Boat](
       output: RandomVar[Y],
       islandOutput: Boat => RandomVar[O],
       initMap: InitState => Double => (InitState, Boat),

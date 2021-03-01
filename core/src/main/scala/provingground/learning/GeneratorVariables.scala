@@ -121,25 +121,25 @@ case class GeneratorVariables[State](
 }
 
 object GeneratorVariables {
-  def variableValue[Y, State](
-      // boatMap: (Boat, State) => State,
-      state: State
-  )(implicit sd: StateDistribution[State, FD]): Variable[Y] => Double = {
-    case rv @ Elem(element, randomVar) =>
-      val fd = StateDistribution.value(state)(randomVar)
-      fd(element)
-//    case NodeCoeff(_) => 1
-    case Event(base, sort) =>
-      val fd = StateDistribution.value(state)(base)
-      fd.filter(sort.pred).total
-    case PairEvent(base1, base2, sort) =>
-      val fd1 = StateDistribution.value(state)(base1)
-      val fd2 = StateDistribution.value(state)(base2)
-      fd1.zip(fd2).filter(sort.pred).total
-    case isle: InIsle[y, yy, State, o, boat] =>
-      val x = variableValue(isle.isle.finalMap(isle.boat, state))
-      x(isle.isleVar)
-  }
+//   def variableValue[Y, State](
+//       // boatMap: (Boat, State) => State,
+//       state: State
+//   )(implicit sd: StateDistribution[State, FD]): Variable[Y] => Double = {
+//     case rv @ Elem(element, randomVar) =>
+//       val fd = StateDistribution.value(state)(randomVar)
+//       fd(element)
+// //    case NodeCoeff(_) => 1
+//     case Event(base, sort) =>
+//       val fd = StateDistribution.value(state)(base)
+//       fd.filter(sort.pred).total
+//     case PairEvent(base1, base2, sort) =>
+//       val fd1 = StateDistribution.value(state)(base1)
+//       val fd2 = StateDistribution.value(state)(base2)
+//       fd1.zip(fd2).filter(sort.pred).total
+//     case isle: InIsle[y, yy, State, o, boat] =>
+//       val x = variableValue(isle.isle.finalMap(isle.boat, state))
+//       x(isle.isleVar)
+//   }
 
   /**
     * a variable representing a probability

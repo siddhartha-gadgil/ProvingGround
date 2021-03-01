@@ -10,6 +10,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 import ammonite.ops._
 
+@deprecated("use LeanParser", "buggy, avoid")
 object LeanAmmTest extends App {
   import interface._, LeanInterface._
   import trepplein._

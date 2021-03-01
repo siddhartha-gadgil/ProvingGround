@@ -670,7 +670,7 @@ case class MonixTangentFiniteDistributionEq[State](
                     )
                 }
             }
-          case isle: Island[Y, State, o, b] =>
+          case isle: Island[y, State, o, b] =>
             import isle._
             val (isleInit, boat) = initMap(initState)(varWeight)                                   // initial condition for island, boat to row back
             val isleOut          = varDist(isleInit, maxDepth.map(_ - 1), halted, memo)(islandOutput(boat), epsilon) //result for the island
@@ -705,7 +705,7 @@ case class MonixTangentFiniteDistributionEq[State](
                       )
                     }
                   (
-                    fd.map(export(boat, _))
+                    fd.map(export(boat, _): Y)
                       .purge(epsilon),
                     (isleEqs union bridgeEqs union isleIn),
                     memo ++ rm
