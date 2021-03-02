@@ -3,7 +3,6 @@ package compact_enumeration
 import spire.math._
 import spire.algebra._
 import spire.implicits._
-import spire.syntax.literals._
 import annotation.tailrec
 import scala.util._
 import LazyList._
@@ -272,9 +271,7 @@ object ApproxTrig {
     */
   type Approx = Interval[Rational] => Option[Interval[Rational]]
 
-  import spire.math.interval.{Bound, Closed, ValueBound}
-
-  import Interval._
+  import spire.math.interval.{Bound, ValueBound}
 
   import compact_enumeration.FieldOps._
 
@@ -290,7 +287,6 @@ object ApproxTrig {
     if (n == 0) xs.head else get(xs.tail, n - 1)
   }
 
-  import spire.math.Interval._
 
   /**
     * Get value of a bound, if finite.

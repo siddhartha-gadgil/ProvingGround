@@ -1,6 +1,5 @@
 package provingground.learning
 
-import provingground._
 import monix.eval._, monix.tail._
 
 import IterantRunner._

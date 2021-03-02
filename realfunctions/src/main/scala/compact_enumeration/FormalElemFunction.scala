@@ -40,7 +40,6 @@ trait ConstFunc extends OneVar {
   def derivative = Zero
 }
 
-import FormalElemFunction._
 
 import FieldOpsSyms._
 
@@ -308,11 +307,8 @@ object FormalElemFunction {
       Compose(x, y)
   }
 
-  import FieldOpsSyms._
 
-  import FormalElemFunc._
 
-  import Circ._
 
   def multiVar: FormalElemFunction => Boolean = {
     case Proj(_)       => true

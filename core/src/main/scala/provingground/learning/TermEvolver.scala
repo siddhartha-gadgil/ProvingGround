@@ -5,16 +5,13 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import learning.{TangVec => T}
 
-import cats._
 import cats.implicits._
 
 import monix.eval._
 // import monix.cats._
 
-import monix.execution.Scheduler.Implicits.global
 import monix.reactive._
 
-import scala.language.higherKinds
 
 import TangVec.{liftLinear => lin, liftBilinear => bil}
 
@@ -23,7 +20,6 @@ import TangVec.{liftLinear => lin, liftBilinear => bil}
 import HoTT._
 
 // import spire.algebra._
-import spire.implicits._
 
 object TermEvolver {
   implicit class TPOps[A](pd: T[PD[A]]) {
@@ -262,7 +258,7 @@ class TermEvolutionStep[X[_]](
     ev: TermEvolution = new TermEvolver(),
     val param: TermEvolutionStep.Param = TermEvolutionStep.Param()
 )(implicit val samp: TangSamples[X]) {
-  import samp._, TermEvolver._, param._
+  import samp._, param._
   lazy val init: PD[Term] = ev.baseEvolve(p)
 
   lazy val nextFD: X[FD[Term]] =

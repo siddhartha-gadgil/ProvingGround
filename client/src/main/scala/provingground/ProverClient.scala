@@ -1,7 +1,6 @@
 package provingground
 
 import provingground.{FiniteDistribution => FD}
-import org.scalajs.dom
 
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
@@ -23,7 +22,6 @@ import org.scalajs.dom.html.{Button, Div, Input, Span, Table, TableRow}
 import provingground.library.MonoidSimple
 import provingground.scalahott.NatRing
 import scalatags.JsDom
-import ujson.Js
 import ujson.Value
 import upickle.default._
 

@@ -1,6 +1,6 @@
 package provingground.andrewscurtis
 
-import provingground._, learning._
+import provingground._
 
 
 

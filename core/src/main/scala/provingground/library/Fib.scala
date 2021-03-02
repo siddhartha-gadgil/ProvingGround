@@ -1,8 +1,6 @@
 package provingground.library
 import provingground._
 import HoTT._
-import shapeless._
-import induction.TLImplicits._
 
 object Fibonacci {
   import Nats._

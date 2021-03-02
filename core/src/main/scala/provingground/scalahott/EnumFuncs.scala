@@ -2,11 +2,6 @@ package provingground.scalahott
 import provingground._, HoTT._
 import EnumType._
 import ScalaRep._
-import scala.reflect.runtime.universe.{
-  Try => UnivTry,
-  Function => FunctionUniv,
-  _
-}
 import provingground.scalahott.ScalaUniv._
 
 object EnumFuncs {

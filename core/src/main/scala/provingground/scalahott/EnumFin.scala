@@ -1,5 +1,5 @@
 package provingground.scalahott
-import provingground._, HoTT._
+import provingground._
 import ScalaRep._
 import IntTypes._
 import EnumType._

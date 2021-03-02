@@ -4,9 +4,7 @@ import provingground._
 
 import HoTT._
 
-import induction.TLImplicits._
 
-import shapeless._
 
 object SimpleEvens {
   import Nats.{Nat => Nt, _}
@@ -16,7 +14,7 @@ object SimpleEvens {
 }
 
 object DoubleEven {
-  import Nats.{Nat => Nt, _}
+  import Nats.{Nat => _, _}
 
   import SimpleEvens._
 
@@ -35,7 +33,7 @@ object DoubleEven {
 object SuccNOrNEven {
   import SimpleEvens._
 
-  import Nats.{Nat => Nt, _}
+  import Nats.{Nat => _, _}
 
   val claim = n :-> (isEven(n) || isEven(succ(n)))
 

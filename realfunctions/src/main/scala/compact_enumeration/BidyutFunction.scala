@@ -10,9 +10,8 @@ import Circ._
 
 import ApproxTrig._
 
-import spire.math.{Interval, Rational, SafeLong}
+import spire.math.{Interval, Rational}
 
-import spire.math.Interval._
 
 import spire.implicits._
 

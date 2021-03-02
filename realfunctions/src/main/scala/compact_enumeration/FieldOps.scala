@@ -80,7 +80,6 @@ object FieldOps {
     def div(x: A, y: A): A = f.div(x, y)
   }
 
-  import Interval._
 
   /**
     * Field operations on Intervals with endpoints in a field.

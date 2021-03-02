@@ -4,14 +4,13 @@ import provingground._, HoTT._
 import spire.algebra._
 import spire.implicits._
 
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
+import provingground.{FiniteDistribution => FD}
 
 import monix.eval._
 import math._
 
-import scala.concurrent._, duration._
+import scala.concurrent._
 
-import translation.FansiShow._
 import scala.math.Ordering.Double.TotalOrdering
 
 object ProverTasks {

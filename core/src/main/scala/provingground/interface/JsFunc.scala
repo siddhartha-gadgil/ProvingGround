@@ -158,7 +158,6 @@ object TermJson {
 
   val exstInduc = ExstInducStrucs.Base || NatRing
 
-  import library._
 
   def jsonToTerm(
       inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,

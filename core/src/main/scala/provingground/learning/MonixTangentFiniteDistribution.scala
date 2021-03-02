@@ -1,10 +1,7 @@
 package provingground.learning
 import provingground.{FiniteDistribution => FD, _}
-import shapeless.HList._
 import shapeless._
 
-import scala.collection.immutable
-import scala.language.higherKinds
 import monix.eval._
 
 object MonixTangentFiniteDistribution {
@@ -40,7 +37,6 @@ case class MonixTangentFiniteDistribution[State](
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
     MonixFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq), varWeight)
 
-  import StateDistribution._
 
   def baseVal[Y](rd: RandomVar[Y]): Task[FD[Y]] = Task(sd.value(baseState)(rd))
 

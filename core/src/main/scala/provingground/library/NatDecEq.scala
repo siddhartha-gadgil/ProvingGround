@@ -1,6 +1,6 @@
 package provingground.library
 
-import provingground._, induction._, scalahott._, HoTT._
+import provingground._, scalahott._, HoTT._
 import NatRing._
 // import spire.implicits._
 

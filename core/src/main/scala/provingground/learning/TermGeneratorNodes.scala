@@ -1,11 +1,10 @@
 package provingground.learning
 import provingground.HoTT._
-import provingground.{FiniteDistribution => FD, _}
+import provingground.{FiniteDistribution => _, _}
 import shapeless._
 import induction._
 import provingground.learning.GeneratorNode.{Map, MapOpt}
 
-import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
 

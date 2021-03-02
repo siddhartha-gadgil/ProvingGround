@@ -1,6 +1,5 @@
 package provingground
 
-import org.scalajs.dom
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
 
@@ -15,9 +14,8 @@ import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
 // import ujson.Js
 
-import scala.util.{Try, Success, Failure}
 
-import HoTT.{id => _, _}, translation._
+import HoTT.{id => _}
 @JSExportTopLevel("parser")
 object ConstituencyParser {
   @JSExport

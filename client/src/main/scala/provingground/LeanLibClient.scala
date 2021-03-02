@@ -1,19 +1,16 @@
 package provingground
 
-import org.scalajs.dom
 
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
 import org.scalajs.dom.raw._
 
-import scala.scalajs.js
 import org.scalajs.dom
 import dom.ext._
 import provingground._
-import HoTT._
 import org.scalajs.dom.html.{Button, Div, LI, UList}
 import scalatags.JsDom
-import ujson.{read => _, _}
+import ujson.{read => _}
 import upickle.default._
 
 import scala.concurrent.ExecutionContext.Implicits.global

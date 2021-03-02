@@ -3,13 +3,9 @@ import provingground.HoTT._
 import provingground.{FiniteDistribution => FD, _}
 import shapeless._
 import induction._
-import provingground.learning.GeneratorNode.{Map, MapOpt}
 
-import scala.language.higherKinds
-import GeneratorNode._
 import TermRandomVars._
 
-import TermGeneratorNodes._
 import scala.math.Ordering.Double.TotalOrdering
 import provingground.FiniteDistribution
 

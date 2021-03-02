@@ -1,10 +1,8 @@
 package provingground
 
-import org.scalajs.dom
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
 
-import scala.scalajs.js
 import org.scalajs.dom
 import dom.ext._
 import scala.concurrent.ExecutionContext.Implicits.global

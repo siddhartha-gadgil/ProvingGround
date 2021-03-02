@@ -1,10 +1,8 @@
 package provingground.learning
 import provingground.{FiniteDistribution => FD, _}
-import shapeless.HList._
 import shapeless._
 
 import scala.collection.immutable
-import scala.language.higherKinds
 
 object TangentFiniteDistribution {
   def av[X](x: FD[X], y: FD[X]) = (x ++ y) * 0.5

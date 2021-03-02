@@ -1,7 +1,5 @@
 package provingground.learning
 
-import provingground.{FiniteDistribution => _, _}
-
 import spire.implicits._
 
 import Expression._

@@ -5,13 +5,6 @@ import provingground._
 import HoTT._
 import monix.eval.Task
 
-import scala.concurrent._
-
-
-
-
-
-
 import scala.util.Success
 
 @deprecated("use composite prover", "now")

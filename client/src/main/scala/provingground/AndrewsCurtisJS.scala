@@ -1,16 +1,11 @@
 package provingground
 
-import scala.scalajs.js
 import org.scalajs.dom
-import dom.html
-import scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
 
 import learning._
 
-import Collections._
 
-import HoTT._
 
 import andrewscurtis._
 
@@ -25,7 +20,6 @@ object AndrewsCurtisJS {
 
   import dom.ext._
 
-  import interface.Header._
   // import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
 
   val sse = new dom.EventSource("/acstream")

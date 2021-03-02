@@ -1,34 +1,18 @@
 package provingground.learning
 import provingground.HoTT._
-import provingground.{FiniteDistribution => FD, _}
+import provingground.{FiniteDistribution => _, _}
 import shapeless._
 import induction._
-import provingground.learning.GeneratorNode.{Map, MapOpt}
+import provingground.learning.GeneratorNode.Map
 
-import scala.language.higherKinds
 import GeneratorNode._
-import TermRandomVars._
 import scala.util._
 
 import TermGeneratorNodes._
-import provingground.learning.GeneratorVariables.Elem
-import provingground.learning.GeneratorVariables.Event
-import provingground.learning.GeneratorVariables.InIsle
-import provingground.learning.GeneratorVariables.PairEvent
 import provingground.learning.Sort.All
 import provingground.learning.Sort.Filter
 import provingground.learning.Sort.Restrict
-import provingground.learning.Expression.FinalVal
-import provingground.learning.Expression.InitialVal
-import provingground.learning.Expression.Quotient
-import provingground.learning.Expression.Exp
-import provingground.learning.Expression.Literal
-import provingground.learning.Expression.Log
-import provingground.learning.Expression.IsleScale
-import provingground.learning.Expression.Coeff
-import provingground.learning.Expression.Sum
 import provingground.interface.ContextJson
-import cats.instances.vector
 
 object TermRandomVars {
 
@@ -662,7 +646,6 @@ object TermRandomVars {
     genvars.exists(v => varDepends(t)(v))
   }
 
-  import scala.collection.immutable.Map
   val randomVarStrings: Vector[(RandomVar[_], String, String)] =
     Vector(
       (Funcs, "funcs", "func"),

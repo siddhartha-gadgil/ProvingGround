@@ -5,9 +5,9 @@ import HoTT._
 import scalahott.{NatRing, QField, _}
 import andrewscurtis.FreeGroups._
 import spire.implicits._
-import NatRing.{Literal => nat, leq => leqNat, x => _, _}
-import QField.{Literal => rat, w => _, x => _, y => _, z => _, _}
-import FreeGroup.{Literal => elem, _}
+import NatRing.{Literal => nat, leq => _, x => _, _}
+import QField.{Literal => _, w => _, x => _, y => _, z => _, _}
+import FreeGroup.{Literal => _, _}
 import Theorems.{ConjPower, PowerDistributive}
 import spire.math.{Rational, SafeLong}
 

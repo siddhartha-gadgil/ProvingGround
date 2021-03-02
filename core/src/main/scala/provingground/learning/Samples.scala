@@ -3,7 +3,6 @@ import provingground._
 
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
-import learning.{TangVec => T}
 
 import cats._
 import cats.implicits._
@@ -11,10 +10,7 @@ import cats.implicits._
 import monix.eval._
 // import monix.cats._
 
-import monix.execution.Scheduler.Implicits.global
-import monix.reactive._
 
-import scala.language.higherKinds
 
 trait TangSamples[X[_]] {
   implicit val monad: Monad[X]

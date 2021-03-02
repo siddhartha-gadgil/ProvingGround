@@ -1,7 +1,6 @@
 package provingground
 
 //import scala.scalajs.js
-import org.scalajs.dom
 //import dom.html
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
@@ -18,11 +17,9 @@ import js.Dynamic.{global => g}
 import dom.ext._
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
-import ujson.Js
 
-import scala.util.{Try, Success, Failure}
 
-import HoTT.{id => _, _}
+import HoTT.{id => _}
 @JSExportTopLevel("CodeEditorJS")
 object CodeEditorJS {
 
