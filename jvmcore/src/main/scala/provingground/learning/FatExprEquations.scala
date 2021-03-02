@@ -6,7 +6,6 @@ import monix.eval._, monix.tail._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
-import ExpressionEval._
 
 import GeneratorVariables._, TermRandomVars._, Expression._,
 TermGeneratorNodes.{_}

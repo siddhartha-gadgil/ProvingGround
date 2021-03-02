@@ -6,7 +6,6 @@ import monix.eval._, monix.tail._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
-import ExpressionEval._
 
 import GeneratorVariables._, TermRandomVars._, Expression._,
 TermGeneratorNodes.{_}
@@ -24,11 +23,8 @@ import scala.collection.mutable
 import scala.concurrent._
 import monix.eval._
 import scala.collection.mutable.ArrayBuffer
-
+import ExprEquations.vecSum
 object ExprCalc {
-  def vecSum(vecs: Vector[Vector[(Int, Double)]]): Vector[(Int, Double)] =
-    vecs.reduce(_ ++ _).groupMapReduce(_._1)(_._2)(_ + _).toVector
-
   def getGenerators(
       exps: List[Expression]
   ): Option[(Set[Term], Set[Typ[Term]])] = exps match {
@@ -53,7 +49,6 @@ object ExprCalc {
 }
 
 class ExprCalc(
-    ev: ExpressionEval,
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
     params: Coeff[_] => Option[Double],

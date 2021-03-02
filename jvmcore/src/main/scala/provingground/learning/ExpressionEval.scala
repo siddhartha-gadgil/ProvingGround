@@ -745,7 +745,6 @@ trait ExpressionEval { self =>
   // val init: Map[Expression, Double] = initMap(eqAtoms(equations), coeffval, initialState)
 
   lazy val exprCalc = new ExprCalc(
-    this,
     init,
     equations,
     coeffval,

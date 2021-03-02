@@ -6,7 +6,6 @@ import monix.eval._, monix.tail._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
-import ExpressionEval._
 
 import GeneratorVariables._, TermRandomVars._, Expression._,
 TermGeneratorNodes.{_}
@@ -31,7 +30,7 @@ class ExprEquations(
     params: Coeff[_] => Option[Double],
     initVariables: Vector[Expression] = Vector()
 ) {
-  import ExprEquations._, ExprCalc.vecSum
+  import ExprEquations._
   lazy val equationVec: Vector[Equation] = equationSet.toVector //.par
 
   lazy val size = equationVec.size
@@ -88,7 +87,7 @@ class ExprEquations(
           case Literal(value)       => ProdExpr(value, Vector(), Vector())
           case InitialVal(variable) => ProdExpr(0, Vector(), Vector())
           case _ =>
-            JvmUtils.logger.debug(
+            JvmUtils.logger.warn(
               s"cannot decompose $exp as a product, though it is in the rhs of ${equationVec
                 .find(eqq => (Expression.atoms(eqq.rhs).contains(exp)))}"
             )
@@ -192,6 +191,9 @@ class ExprEquations(
 }
 
 object ExprEquations {
+  def vecSum(vecs: Vector[Vector[(Int, Double)]]): Vector[(Int, Double)] =
+    vecs.reduce(_ ++ _).groupMapReduce(_._1)(_._2)(_ + _).toVector
+
   def varGroups(
       vars: Vector[GeneratorVariables.Variable[_]]
   ): Vector[Vector[GeneratorVariables.Variable[_]]] = {
@@ -303,7 +305,7 @@ case class ProdExpr(
         j
       ) * denominatorTerms(j)) * constant * numerator
     }
-    ExprCalc.vecSum(Vector(posLiebnitz, negLiebnitz))
+    ExprEquations.vecSum(Vector(posLiebnitz, negLiebnitz))
   }
 
   def evaluate(m: Map[Int, Double]): Double = {
@@ -385,7 +387,7 @@ case class SumExpr(terms: Vector[ProdExpr]) {
   }
 
   def gradient(v: collection.parallel.ParSeq[Double]): Vector[(Int, Double)] =
-    ExprCalc.vecSum(terms.map(_.gradient(v)))
+    ExprEquations.vecSum(terms.map(_.gradient(v)))
 
   def evaluate(m: Map[Int, Double]): Double = {
     val subTerms = terms.map(_.evaluate(m))
