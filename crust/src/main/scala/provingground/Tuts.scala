@@ -33,7 +33,7 @@ object Tuts {
 
     pprint.log(tutcode)
 
-    val output = MDocService.replResult(tutcode).right.get
+    val output = MDocService.replResult(tutcode).getOrElse(throw new Exception("no repl result"))
 
     pprint.log(output)
 

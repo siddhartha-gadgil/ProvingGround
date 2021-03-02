@@ -127,6 +127,10 @@ case class ParTermState(ts: TermState) {
               s"cannot find valueAt of TermState for $fmly at $arg"
             )
         }
+      case _ =>
+        throw new IllegalArgumentException(
+          s"cannot find value of  $randomVar at $elem"
+        )
 
     }
 

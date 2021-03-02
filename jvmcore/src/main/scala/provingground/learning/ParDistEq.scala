@@ -554,8 +554,9 @@ class ParDistEq(
                 )
               (condDist, parUnion(eqs, parUnion(ceqs, evEqs)))
           }
-        case isle: Island[Y, ParMapState, o, b] =>
-          import isle._
+        case isle: Island[y, _, o, b] =>
+          val isleCast = isle.asInstanceOf[Island[y, ParMapState, o, b]]
+          import isleCast._
           val (isleInit, boat) = initMap(initState)(varWeight) // initial condition for island, boat to row back
           val isleOut = varDist(isleInit, maxDepth.map(_ - 1), halted)(
             islandOutput(boat),
