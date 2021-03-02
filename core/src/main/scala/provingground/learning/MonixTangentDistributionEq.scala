@@ -1,9 +1,7 @@
 package provingground.learning
 import provingground.{FiniteDistribution => FD, _}
-import shapeless.HList._
 import shapeless._
 
-import scala.language.higherKinds
 import monix.eval._
 
 import GeneratorVariables._, Expression._

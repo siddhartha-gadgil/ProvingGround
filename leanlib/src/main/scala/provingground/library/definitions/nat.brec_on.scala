@@ -2,9 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
-import Fold._
 object nat$brec_on {
   lazy val value = lambda("'s_1099773403" :: FuncTyp("nat" :: Type, Type))(lambda("'t_1370473497" :: "nat" :: Type)(lmbda("'u_2108981661" :: piDefn("'u_1469166675" :: "nat" :: Type)(FuncTyp(({
     val rxyz = natInd.value.rec(Type)

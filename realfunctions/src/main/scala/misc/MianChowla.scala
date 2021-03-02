@@ -1,6 +1,5 @@
 package misc
 
-import spire.algebra._
 import spire.math._
 import spire.implicits._
 import ammonite.ops._

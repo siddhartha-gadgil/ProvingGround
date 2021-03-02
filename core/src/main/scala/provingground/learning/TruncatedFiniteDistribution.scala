@@ -4,7 +4,6 @@ import shapeless.HList._
 import shapeless._
 
 import scala.collection.immutable
-import scala.language.higherKinds
 
 object TruncatedFiniteDistribution {
   import GeometricDistribution._
@@ -23,7 +22,6 @@ abstract class GenTruncatedFiniteDistribution[State](
     nodeCoeffSeq: NodeCoeffSeq[State, Double])(
     implicit sd: StateDistribution[State, FD]) {
   import NodeCoeffs._
-  import StateDistribution._
   import nodeCoeffSeq.find
 
   /**

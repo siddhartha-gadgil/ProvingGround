@@ -2,9 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
-import Fold._
 object monoid$mul_assoc {
   lazy val value = lambda("'cw_1367251480" :: Type)(({
     val rxyz = monoidInd.value("'cw_1367251480" :: Type).induc(lmbda("'cy_485932470" :: ("monoid" :: FuncTyp(Type, Type))("'cw_1367251480" :: Type))(piDefn("'cz" :: "'cw_1367251480" :: Type)(piDefn("'da" :: "'cw_1367251480" :: Type)(piDefn("'db" :: "'cw_1367251480" :: Type)(("eq" :: piDefn("'c_896019176" :: Type)(FuncTyp("'c_896019176" :: Type, FuncTyp("'c_896019176" :: Type, Prop))))("'cw_1367251480" :: Type)(({

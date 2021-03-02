@@ -2,9 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
-import Fold._
 object monoid$one {
   lazy val value = lambda("'cq_985760061" :: Type)(({
     val rxyz = monoidInd.value("'cq_985760061" :: Type).rec("'cq_985760061" :: Type)

@@ -2,9 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
-import Fold._
 object monoid$to_has_one {
   lazy val value = lambda("'cs_1625855700" :: Type)(lmbda("'ct_1358934355" :: ("monoid" :: FuncTyp(Type, Type))("'cs_1625855700" :: Type))(("has_one.mk" :: piDefn("'c" :: Type)(FuncTyp("'c" :: Type, ("has_one" :: FuncTyp(Type, Type))("'c" :: Type))))("'cs_1625855700" :: Type)(({
     val rxyz = monoidInd.value("'cs_1625855700" :: Type).rec("'cs_1625855700" :: Type)

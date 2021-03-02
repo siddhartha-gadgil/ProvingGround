@@ -2,9 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
-import Fold._
 object has_inv$inv {
   lazy val value = lambda("'i_2072061174" :: Type)(
     ({

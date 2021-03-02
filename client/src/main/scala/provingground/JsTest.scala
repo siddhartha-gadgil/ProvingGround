@@ -1,12 +1,10 @@
 package provingground
 
 //import scala.scalajs.js
-import org.scalajs.dom
 //import dom.html
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
 
-import scala.scalajs.js
 import org.scalajs.dom
 
 
@@ -33,7 +31,6 @@ object ScalaJSExample {
 
     val sse = new dom.EventSource("/events")
 
-    import upickle.default._
 
     sse.onmessage = (event: dom.MessageEvent) => {
       ticks.appendChild(p(event.data.toString).render)
@@ -89,7 +86,6 @@ object JsTest {
     val echo = span.render
 
     import dom.ext._
-    import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
     val box = input(`type` := "text", placeholder := "Type here!").render
 

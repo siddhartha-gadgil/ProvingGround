@@ -4,9 +4,7 @@ import provingground._
 
 import HoTT._, scalahott._
 
-import induction.TLImplicits._
 
-import shapeless._
 
 import NatRing.{NatTyp => Nt, _}
 

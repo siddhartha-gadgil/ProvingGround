@@ -1,6 +1,5 @@
 package provingground.andrewscurtis
 
-import Moves._
 
 import MoveGenerator._
 
@@ -10,17 +9,13 @@ import provingground._
 
 import learning._
 
-import Collections._
 
-import FiniteDistribution._
 
-import LinearStructure._
 
 import FreeGroups._
 
 import FiniteDistributionLearner._
 
-import AdjDiffbleFunction._
 
 import interface._, QDI._
 

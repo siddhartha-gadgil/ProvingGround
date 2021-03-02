@@ -2,9 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
-import Fold._
 object group$mul {
   lazy val value = lambda("'hs_112346752" :: Type)(({
     val rxyz = groupInd.value("'hs_112346752" :: Type).rec(FuncTyp("'hs_112346752" :: Type, FuncTyp("'hs_112346752" :: Type, "'hs_112346752" :: Type)))

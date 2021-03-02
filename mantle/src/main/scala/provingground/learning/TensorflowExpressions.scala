@@ -1,7 +1,5 @@
 package provingground.learning
 
-import provingground._
-
 import org.tensorflow._, org.tensorflow.op._, types._
 import provingground.learning.Expression._
 

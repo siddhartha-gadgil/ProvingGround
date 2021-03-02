@@ -2,8 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
 import Fold._
 object nat$decidable_eq$_main {
   lazy val value = lambda("'ag_1531296106_1797768165" :: "nat" :: Type)(({

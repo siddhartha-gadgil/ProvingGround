@@ -2,10 +2,10 @@ package provingground.learning
 
 import org.tensorflow._
 import org.tensorflow.op._, core._, math._, linalg._
-import org.tensorflow.types._, family.TType
+import org.tensorflow.types._
 import scala.util.Using
 import org.tensorflow.ndarray._
-import org.tensorflow.framework.optimizers.{Optimizer, Adam}
+import org.tensorflow.framework.optimizers.{Adam}
 import scala.util.Random
 import GraphEmbedding._
 import scala.util.Try

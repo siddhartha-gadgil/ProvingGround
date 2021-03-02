@@ -2,7 +2,6 @@ package provingground
 
 import spire.math._
 import spire.implicits._
-import spire.algebra._
 import scala.util.Random
 
 object Frankl {

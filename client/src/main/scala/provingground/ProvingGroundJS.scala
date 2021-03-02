@@ -5,7 +5,6 @@ import org.scalajs.dom
 import dom.html.{Map => _, _}
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
-import scalatags.JsDom.all
 import scala.util.Try
 import scalatags.JsDom.svgTags._
 import scalatags.JsDom.svgAttrs._

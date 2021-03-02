@@ -5,14 +5,13 @@ import provingground.{FiniteDistribution => FD, _}
 import shapeless._
 import induction._
 
-import scala.language.higherKinds
 import TermRandomVars._
 import monix.eval.Task
 import interface._
 
 import scala.concurrent._
 import duration._
-import upickle.default.{read, write, ReadWriter => RW, readwriter}
+import upickle.default.{read, write}
 import TermGenParams._, TermGeneratorNodes._
 import ujson.Value
 

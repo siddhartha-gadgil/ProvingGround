@@ -2,9 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
-import Fold._
 object eq_self_iff_true {
   lazy val value = lambda("'j_474627022" :: Type)(
     lambda("'k_1988480427" :: "'j_474627022" :: Type)(

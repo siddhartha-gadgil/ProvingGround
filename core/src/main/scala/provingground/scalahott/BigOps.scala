@@ -1,14 +1,8 @@
 package provingground.scalahott
 import provingground._, HoTT._
-import ScalaRep._
 import IntTypes._
 import EnumType._
 import ListType._
-import scala.reflect.runtime.universe.{
-  Try => UnivTry,
-  Function => FunctionUniv,
-  _
-}
 
 object BigOps {
 

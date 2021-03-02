@@ -1,11 +1,6 @@
 package provingground.scalahott
 import provingground._, HoTT._
 import ScalaRep._
-import scala.reflect.runtime.universe.{
-  Try => UnivTry,
-  Function => FunctionUniv,
-  _
-}
 // import provingground.ScalaUniv._
 
 object BoolType {

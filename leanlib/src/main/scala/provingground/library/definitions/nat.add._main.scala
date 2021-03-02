@@ -2,8 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
 import Fold._
 object nat$add$_main {
   lazy val value = lmbda("'z_404172118" :: "nat" :: Type)(lmbda("'aa_1379847308" :: "nat" :: Type)(({

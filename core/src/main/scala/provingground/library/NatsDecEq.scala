@@ -1,6 +1,6 @@
 package provingground.library
 
-import provingground._, induction._, scalahott._, HoTT._
+import provingground._, HoTT._
 import Nats.{Nat => NatTyp, _}
 import NatInd.{rec, induc}
 // import spire.implicits._

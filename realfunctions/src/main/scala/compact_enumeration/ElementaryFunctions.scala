@@ -21,5 +21,4 @@ trait ElementaryFunctions[A] {
 
   implicit val fieldOps: FieldOps[A]
 
-  import FieldOpsSyms._
 }

@@ -3,7 +3,6 @@ import provingground._
 
 import scala.annotation._
 import scala.util._
-import Collections._
 import math._
 import scala.math.Ordering.Double.TotalOrdering
 

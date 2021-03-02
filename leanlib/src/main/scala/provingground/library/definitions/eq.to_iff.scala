@@ -2,9 +2,6 @@ package provingground.library
 import provingground._
 import HoTT._
 import induction._
-import implicits._
-import shapeless._
-import Fold._
 object eq$to_iff {
   lazy val value = lambda("'t_1737449411" :: Prop)(
     lambda("'u_1520895181" :: Prop)(

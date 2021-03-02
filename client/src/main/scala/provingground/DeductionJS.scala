@@ -14,7 +14,6 @@ import scalatags.JsDom.svgAttrs
 
 import js.Dynamic.{global => g}
 
-import org.scalajs.dom.ext._
 
 //import scala.concurrent._
 
