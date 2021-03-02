@@ -42,7 +42,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule {
   override def scalacOptions =
     Seq(
       "-Yrangepos",
-      // "-Xplugin-require:semanticdb",
+      "-Ywarn-unused:imports",
       "-unchecked",
       "-deprecation",
       "-feature",
