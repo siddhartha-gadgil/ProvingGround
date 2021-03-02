@@ -47,6 +47,7 @@ object Hub {
       .getString("stdout-loglevel"))
   println(cnf.getConfig("mongo-async-driver").getString("stdout-loglevel"))
 
+@deprecated("Only used in unused andrews-curtis code", "remove")
   object ReactiveMongo {
     lazy val driver     = new MongoDriver(Some(cnf))
     lazy val connection = driver.connection(List("localhost"))

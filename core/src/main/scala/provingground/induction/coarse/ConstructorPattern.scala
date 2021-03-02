@@ -572,7 +572,8 @@ object ConstructorPattern {
     * Dependent extension of a poly-pattern by a type pattern.
     * XXX this may never be applicable
     */
-  @deprecated("not general enough, but perhaps never used", "August 2, 2016")
+  // @deprecated("not general enough, but perhaps never used", "August 2, 2016")
+  //not general enough, but perhaps never used", "August 2, 2016
   case class DepFuncPtn[U <: Term with Subs[U],
                         V <: Term with Subs[V],
                         VV <: Term with Subs[VV],
