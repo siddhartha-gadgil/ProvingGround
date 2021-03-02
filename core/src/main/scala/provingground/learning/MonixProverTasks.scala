@@ -1,10 +1,10 @@
 package provingground.learning
 import provingground._, HoTT._
 
-import spire.algebra._
-import spire.implicits._
+// import spire.algebra._
+// import spire.implicits._
 
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
+import provingground.{FiniteDistribution => FD}
 
 import monix.eval._
 import math._
