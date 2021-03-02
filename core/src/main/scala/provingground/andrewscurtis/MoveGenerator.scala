@@ -1,11 +1,8 @@
 package provingground.andrewscurtis
 
-import provingground.andrewscurtis.FreeGroups._
-import provingground.andrewscurtis.Moves._
 
-import provingground.learning.Collections._
 
-import provingground._, learning._
+import provingground._
 
 object MoveGenerator {
 

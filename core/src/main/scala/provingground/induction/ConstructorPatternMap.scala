@@ -8,7 +8,6 @@ import provingground._, HoTT._
 
 //import IterFuncPattern.{IterFuncPtn => IterFuncPtn, _}
 
-import IterFuncPtnMap._
 import IterFuncShape._
 
 import shapeless._
@@ -399,7 +398,6 @@ object ConstructorPatternMap {
 
 }
 
-import scala.language.existentials
 
 /**
   * The introduction rule for an inductive type, as a function of the type;

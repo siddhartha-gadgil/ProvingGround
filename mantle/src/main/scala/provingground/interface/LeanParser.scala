@@ -4,9 +4,7 @@ import induction._
 
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
-import translation.FansiShow._
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import HoTT.{Name => _, _}
 import monix.execution.CancelableFuture
@@ -840,7 +838,6 @@ class LeanParser(
               .value
           codeGen.indexedConsSeqDom(indSeq)
       }
-    import scala.meta._
     val cp = p.map(codeGen(_).get)
     cp.foldRight(codeOpt.get) {
       case (x, y) =>

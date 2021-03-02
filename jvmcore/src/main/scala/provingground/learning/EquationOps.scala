@@ -1,13 +1,10 @@
 package provingground.learning
 
-import provingground._
 import shapeless._
-import HList._
-import scala.collection.immutable.Nil
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
 import scala.concurrent._
-import GeneratorVariables._, Expression._
+import Expression._
 
 object EquationOps {
   def group(ts: Set[EquationNode]): Set[Equation] = groupIt(ts).toSet
@@ -19,7 +16,6 @@ object EquationOps {
 
   def groupIt(ts: Set[EquationNode]): Iterable[Equation] = {
     val ps = ts.par
-    import scala.collection.parallel._
     // ps.tasksupport = new ForkJoinTaskSupport(
     //   new java.util.concurrent.ForkJoinPool(Utils.threadNum)
     // )
@@ -35,7 +31,6 @@ object EquationOps {
       previous: ParMap[Expression, EquationNode]
   ) = {
     val ps = ts.par
-    import scala.collection.parallel._
     // ps.tasksupport = new ForkJoinTaskSupport(
     //   new java.util.concurrent.ForkJoinPool(Utils.threadNum)
     // )

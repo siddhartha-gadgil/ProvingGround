@@ -1,7 +1,6 @@
 package provingground.induction.coarse
 
 import provingground._, induction._, HoTT._
-import shapeless.HList
 // import HList._
 
 trait ConstructorSeq[C <: Term with Subs[C], H <: Term with Subs[H]] {

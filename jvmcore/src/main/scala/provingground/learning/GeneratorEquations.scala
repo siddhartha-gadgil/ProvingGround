@@ -2,9 +2,7 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD}
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.{FlatMap, Island, ThenCondition}
 
-import scala.language.higherKinds
 import GeneratorVariables._, Expression._
 
 import scala.util.Try

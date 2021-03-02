@@ -7,7 +7,6 @@ import monix.eval.Task
 import cats._, cats.implicits._
 import scala.util.Failure
 import scala.util.Success
-import cats.instances.`package`.parallel
 import scala.collection.mutable
 
 class CompositeProver[D: Monoid] {
@@ -377,7 +376,6 @@ object TermData {
     case (ts, _) => Task(ts.terms.support.exists(_.typ == typ))
   }
 
-  import TermRandomVars.expressionMapVars
 
   def isleNormalizeDirect(eq: EquationNode, varWeight: Double = 0.3): EquationNode = {
     TermRandomVars.isleNormalize(eq, varWeight)

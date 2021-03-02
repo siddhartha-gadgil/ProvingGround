@@ -1,8 +1,7 @@
 package provingground.learning
 
 import provingground._
-import HoTT._
-import monix.eval._, monix.catnap._, monix.tail._
+import monix.eval._, monix.tail._
 
 import IterantRunner._
 

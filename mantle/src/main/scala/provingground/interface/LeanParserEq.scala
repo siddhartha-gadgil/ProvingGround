@@ -1,28 +1,21 @@
 package provingground.interface
 import provingground._, learning.{Sort => _, _}
-import induction._
 
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
-import translation.FansiShow._
 
-import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable
 import HoTT.{Name => _, _}
-import monix.execution.CancelableFuture
 
-import math.max
 import trepplein._
 
-import LeanInterface._, LeanParser._
-import ujson.Arr
+import LeanInterface._
 
 import scala.util.Try
 import provingground.learning.TermGeneratorNodes
 
 import TermRandomVars._, GeneratorVariables._, Expression._
 import LeanParser._
-import provingground.translation.FansiShow._
 
 object LeanParserEq {
   def load(s: String = "basic"): LeanParserEq = {

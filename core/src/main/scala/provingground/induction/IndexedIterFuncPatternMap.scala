@@ -2,7 +2,6 @@ package provingground.induction
 
 import provingground._, HoTT._
 import math._
-import scala.language.existentials
 
 import shapeless._
 

@@ -1,10 +1,8 @@
 package provingground.learning
 
-import provingground._, HoTT._
+import provingground._
 
-import ExpressionEval._, ExprCalc._, ExprEquations._
-import GeneratorVariables._, TermRandomVars._
-import org.tensorflow._, org.tensorflow.op._, types._, core._
+import org.tensorflow._, org.tensorflow.op._, types._
 import provingground.learning.Expression._
 
 case class TensorflowExpressions(

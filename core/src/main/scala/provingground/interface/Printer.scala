@@ -8,7 +8,6 @@ import monix.execution.Scheduler.Implicits.global
 import monix.eval._
 import ujson._
 
-import scala.collection.mutable.ArrayBuffer
 
 trait Printer[A] {
   def viewLines(a: A, lines: Int): String
@@ -67,7 +66,7 @@ object Printer extends FallbackPrinter {
   ): Printer[FiniteDistribution[A]] =
     (a: FiniteDistribution[A], lines: Int) => view(a.pmfVec)
 
-  import provingground.learning.GeneratorVariables._, Expression._
+  import Expression._
 
   implicit def equationPrint: Printer[Equation] =
     Printer.simple(eq => s"${view(eq.lhs)} = ${view(eq.rhs)}")

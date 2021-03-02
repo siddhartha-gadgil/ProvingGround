@@ -5,9 +5,7 @@ import HoTT._
 import FiniteDistributionLearner._
 import AdjDiffbleFunction._
 import scala.util._
-import FiniteDistribution._
 import LinearStructure._
-import scala.language.existentials
 
 object HoTTgen {
 

@@ -1,11 +1,7 @@
 package provingground.interface
 
 import trepplein._
-import Name.Str
-import BinderInfo._
-import Level._
 import os._
-import monix.eval.Task
 import provingground.library
 
 import scala.collection.mutable.ArrayBuffer

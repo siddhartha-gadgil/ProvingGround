@@ -13,11 +13,9 @@ import io.undertow.websockets.core.{
   WebSockets
 }
 import io.undertow.websockets.spi.WebSocketHttpExchange
-import monix.execution.CancelableFuture
 
 import scala.util.Try
 import cask.main.Routes
-import cask.util.Logger
 
 case class MantleRoutes()(implicit cc: castor.Context, log: cask.Logger)
     extends cask.Routes {

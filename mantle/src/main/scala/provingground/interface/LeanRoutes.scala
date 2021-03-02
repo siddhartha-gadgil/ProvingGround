@@ -9,22 +9,16 @@ import monix.eval._
 import LeanInterface._
 import LeanParser._
 import provingground.HoTT._
-import trepplein.{Modification, Name}
-import ujson.Js
+import trepplein.Modification
 import io.undertow.websockets.WebSocketConnectionCallback
 import io.undertow.websockets.core.{
-  AbstractReceiveListener,
-  BufferedTextMessage,
   WebSocketChannel,
   WebSockets
 }
 import io.undertow.websockets.spi.WebSocketHttpExchange
-import monix.execution.CancelableFuture
 import provingground.translation.TeXTranslate
-import ujson.Value
 
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable
 import upickle.default.{write => uwrite, read => _, _}
 
 import scala.util.Try

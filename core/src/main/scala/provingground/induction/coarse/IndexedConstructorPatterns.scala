@@ -4,7 +4,6 @@ import provingground._, induction._, HoTT._
 
 //import scala.language.implicitConversions
 //import scala.util._
-import scala.language.existentials
 
 //import IterFuncPattern.{IterFuncPtn => FmlyPtn, _}
 
@@ -35,7 +34,6 @@ F <: Term with Subs[F]](val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
     curry,
     depCurry,
     domTotal,
-    value,
     ArgType,
     IterFunc,
     IterTypFunc,

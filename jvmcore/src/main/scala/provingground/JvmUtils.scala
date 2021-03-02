@@ -1,8 +1,6 @@
 package provingground
 
 import scala.collection.parallel.CollectionConverters._
-import scala.collection.parallel.immutable._
-import scala.concurrent._
 
 object JvmUtils {
   @annotation.tailrec

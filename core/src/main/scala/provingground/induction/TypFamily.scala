@@ -2,7 +2,6 @@ package provingground.induction
 
 import provingground._, HoTT._
 
-import scala.language.existentials
 
 import shapeless._
 
@@ -10,7 +9,7 @@ import HList._
 
 import scala.util.Try
 
-import translation.{FansiShow, TermLang => TL}
+import translation.{TermLang => TL}
 
 import TermList._
 

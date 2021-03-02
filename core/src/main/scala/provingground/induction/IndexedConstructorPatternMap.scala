@@ -8,7 +8,6 @@ import provingground._, HoTT._
 
 import TermList._
 
-import scala.language.existentials
 
 import shapeless._
 

@@ -1,6 +1,6 @@
 package provingground.interface
 
-import provingground._, interface._, HoTT._, learning._
+import provingground._, HoTT._, learning._
 import provingground.learning.HoTTMessages._
 import HoTTBot._
 import scala.util._, Properties.envOrNone
@@ -9,7 +9,7 @@ import scala.concurrent._
 
 object SigmaProve {
   JvmUtils.logger = {
-    import scribe._, writer._, Utils._
+    import scribe._, writer._
     logger
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily()),

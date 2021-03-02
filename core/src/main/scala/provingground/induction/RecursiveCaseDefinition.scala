@@ -2,7 +2,6 @@ package provingground.induction
 
 import shapeless._
 
-import HList._
 
 import provingground._, HoTT._
 

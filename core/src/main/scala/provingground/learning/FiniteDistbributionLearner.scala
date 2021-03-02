@@ -8,10 +8,7 @@ import Collections._
 
 import LinearStructure._
 
-import annotation._
 
-import spire.algebra._
-import spire.implicits._
 
 import FiniteDistribution._
 

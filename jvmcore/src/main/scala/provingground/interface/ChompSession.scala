@@ -1,6 +1,6 @@
 package provingground.interface
 
-import provingground._, interface._, HoTT._, learning._
+import provingground._, HoTT._, learning._
 import provingground.learning.HoTTMessages._
 import HoTTBot._
 import scala.util._, Properties.envOrNone
@@ -9,7 +9,7 @@ import scala.concurrent._
 
 object ChompSession {
   JvmUtils.logger = {
-    import scribe._, writer._, Utils._
+    import scribe._, writer._
     logger
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily()),
@@ -112,7 +112,7 @@ object ChompSession {
 
 object ChompSessionEq {
   JvmUtils.logger = {
-    import scribe._, writer._, Utils._
+    import scribe._, writer._
     logger
       .withHandler(writer = FileWriter().path(file.LogPath.daily()))
       .withHandler(
@@ -222,7 +222,7 @@ object ChompSessionEq {
 
 object ParChompSessionEq {
   JvmUtils.logger = {
-    import scribe._, writer._, Utils._, scribe.output.format.ASCIIOutputFormat
+    import scribe._, writer._, scribe.output.format.ASCIIOutputFormat
     logger
       .withHandler(
         writer = FileWriter().path(file.LogPath.daily("debug")),

@@ -1,3 +1,5 @@
+import $ivy.`com.goyeau::mill-scalafix:0.2.1`
+import com.goyeau.mill.scalafix.ScalafixModule
 import mill._
 import scalalib._, publish._
 import scalajslib._
@@ -29,7 +31,7 @@ val commonLibs = List(
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
-trait CommonModule extends ScalaModule with ScalafmtModule {
+trait CommonModule extends ScalaModule with ScalafmtModule with ScalafixModule {
   def scalaVersion     = scalaV
   override def ivyDeps = Agg(commonLibs: _*)
   def version          = "0.1.2-SNAPSHOT"
@@ -42,7 +44,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule {
   override def scalacOptions =
     Seq(
       "-Yrangepos",
-      // "-Xplugin-require:semanticdb",
+      "-Ywarn-unused:imports",
       "-unchecked",
       "-deprecation",
       "-feature",

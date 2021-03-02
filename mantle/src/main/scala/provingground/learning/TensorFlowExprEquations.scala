@@ -1,14 +1,10 @@
 package provingground.learning
 
-import provingground._, HoTT._
+import provingground._
 
-import ExpressionEval._, ExprCalc._, ExprEquations._
-import GeneratorVariables._, TermRandomVars._
-import org.tensorflow._, org.tensorflow.op._, types._, core._
+import org.tensorflow._, org.tensorflow.op._, types._
 import org.tensorflow.framework.optimizers.{GradientDescent, Adam}
 import scala.util.{Using, Try}
-import scala.jdk.CollectionConverters._
-import org.tensorflow.op.linalg.MatMul
 object TensorFlowExprEquations {
   def opLookup(v: Operand[TFloat32], sess: Session): Float = {
     val result = sess.runner().fetch(v).run()

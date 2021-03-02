@@ -1,8 +1,7 @@
 package provingground.interface
 import provingground._, library._
 import scala.util._, Properties.envOrNone
-import Utils._, JvmUtils._
-import scribe.output.format.ASCIIOutputFormat
+import JvmUtils._
 
 object CzSlRun extends App {
 

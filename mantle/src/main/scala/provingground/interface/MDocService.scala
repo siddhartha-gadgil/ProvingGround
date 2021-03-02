@@ -7,7 +7,7 @@ object MDocService {
 
   def replResult(code: String): Either[String, String] = {
     pprint.log(code)
-    import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
+    import java.io.ByteArrayOutputStream
     val outputS = new ByteArrayOutputStream()
     val ps = new PrintStream(outputS)
     val md = s"```scala mdoc:to-string\n$code\n```"

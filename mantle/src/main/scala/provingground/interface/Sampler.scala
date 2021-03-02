@@ -235,7 +235,6 @@ object TermSampler {
 
 class TermSampler(d: BasicDeducer) {
   import Sampler._
-  import TermSampler._
 
   def flow(sampleSize: Int,
            derSampleSize: Int,

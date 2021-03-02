@@ -7,8 +7,7 @@ import HList._
 import provingground.learning.GeneratorNode.{Map => _, _}
 import provingground.learning.GeneratorNodeFamily.BasePi
 
-import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
-import provingground.learning.NodeCoeffs.Target
+import scala.language.implicitConversions
 
 /**
   * A `sort`, i.e. type refining a scala type.

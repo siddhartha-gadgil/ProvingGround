@@ -1,13 +1,9 @@
 package provingground.learning
-import provingground._
 import provingground.{FiniteDistribution => FD}
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.{Map => GMap, _}
-import scala.language.higherKinds
+import provingground.learning.GeneratorNode.{Map => _, _}
 import scala.util._
-import spire.util.Opt
-import provingground.learning.Expression.Exp
 import scala.collection.immutable.Nil
 
 /**
@@ -198,7 +194,7 @@ object GeneratorVariables {
 
 }
 
-import GeneratorVariables._, Expression._
+import GeneratorVariables._
 
 import Expression._
 
@@ -587,7 +583,7 @@ object Expression {
     def mapVars(f: VariableMap): Expression = this
   }
 
-  import spire.algebra._, spire.implicits._
+  import spire.algebra._
 
   implicit lazy val field: Field[Expression] = new Field[Expression] {
     // Members declared in algebra.ring.AdditiveGroup

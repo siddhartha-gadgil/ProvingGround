@@ -9,8 +9,6 @@ import spire.algebra._
 import spire.implicits._
 
 import upickle.default._
-import provingground.scalahott.IntTypes.Fin
-import cats.effect.syntax.`package`.all
 import scala.math.Ordering.Double.TotalOrdering
 
 //import LinearStructure._

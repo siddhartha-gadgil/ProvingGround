@@ -4,7 +4,6 @@ import provingground.{Context, _}
 import translation._
 import Translator.unmatched
 
-import scala.language.higherKinds
 import cats._
 import cats.implicits._
 import provingground.induction.{ExstInducDefn, ExstInducStrucs}

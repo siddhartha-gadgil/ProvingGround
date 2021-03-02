@@ -6,7 +6,6 @@ import scala.language.implicitConversions
 
 import upickle.default._
 
-import upickle.default.{ReadWriter => RW, macroRW}
 
 case class Weighted[T](elem: T, weight: Double) {
   def scale(s: Double) = Weighted(elem, weight * s)

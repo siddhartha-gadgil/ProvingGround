@@ -1,6 +1,6 @@
 package provingground.interface
 
-import provingground._, HoTT.{Variable => _, _}, learning._, translation._,
+import provingground._, HoTT.{Variable => _, _}, learning._,
 induction._
 import ujson._
 import provingground.learning.Sort.All

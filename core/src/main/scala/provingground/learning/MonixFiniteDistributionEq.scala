@@ -1,9 +1,7 @@
 package provingground.learning
 import provingground.{FiniteDistribution => FD, _}
-import shapeless.HList._
 import shapeless._
 
-import scala.language.higherKinds
 import monix.eval._
 
 import GeneratorVariables._, Expression._
@@ -12,10 +10,7 @@ import scala.concurrent._, duration._
 
 import MonixFiniteDistributionEq._
 
-import scala.util.Try
 
-import GeneratorNode.Island
-import cats.kernel.Eq
 
 object MonixFiniteDistributionEq {
   def finalProb[Y](y: Y, rv: RandomVar[Y]) = FinalVal(Elem(y, rv))

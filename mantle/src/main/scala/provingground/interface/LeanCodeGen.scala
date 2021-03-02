@@ -1,15 +1,12 @@
 package provingground.interface
 import provingground._
 import translation._
-import induction._
 import HoTT.{Name => _, _}
-import trepplein._
 
 import scala.meta.{Term => _, Type => _, _}
 import scala.meta
 import os._
 
-import scala.collection.immutable
 import scala.util.Try
 
 object LeanCodeGen {

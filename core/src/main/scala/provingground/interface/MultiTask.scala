@@ -1,7 +1,5 @@
 package provingground.interface
 
-import ujson.Js
-import upickle.default._
 import monix.eval._
 
 import scala.util.{Failure, Success}

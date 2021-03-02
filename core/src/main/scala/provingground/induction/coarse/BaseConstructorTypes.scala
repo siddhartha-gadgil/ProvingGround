@@ -7,7 +7,6 @@ import provingground._, induction._, HoTT._
 //import ConstructorPattern._
 import scala.language.implicitConversions
 
-import IterFuncPattern._
 
 //import RecFunction._
 

@@ -1,21 +1,15 @@
 package provingground.interface
 import provingground._, induction._
 
-import os._
 import scala.util._
 
-import scala.concurrent._
-import scala.concurrent.ExecutionContext.Implicits.global
 
 import HoTT.{Name => _, _}
 
-import translation.{TermLang => TL}
 import trepplein._
 
 import translation.FansiShow._
 
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable
 
 import LeanInterface._
 
@@ -306,9 +300,7 @@ case class SimpleIndMod(
   def getInd(p: Vector[Term]) =
     ConstructorSeqTL.getExst(toTyp(foldFuncLean(typF, p)), introsFold(p)).value
 
-  import LeanInterface.unifier
 
-  import implicits._
 
   import scala.util.Try
 
@@ -417,9 +409,7 @@ case class IndexedIndMod(
       .getIndexedConstructorSeq(foldFuncLean(typF, p), introsFold(p))
       .value
 
-  import LeanInterface.unifier
 
-  import implicits._
 
   val proofLiftOpt: (Term, Term) => Option[Term] = {
     case (w: Typ[u], tp: Typ[v]) => Some { (w.Var) :-> tp }

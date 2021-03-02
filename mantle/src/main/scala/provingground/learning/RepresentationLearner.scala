@@ -1,7 +1,5 @@
 package provingground.learning
 
-import org.datavec.api.util.ClassPathResource
-import org.deeplearning4j.models.embeddings.WeightLookupTable
 import org.deeplearning4j.models.embeddings.inmemory.InMemoryLookupTable
 import org.deeplearning4j.models.embeddings.learning.impl.elements.SkipGram
 import org.deeplearning4j.models.embeddings.loader.VectorsConfiguration
@@ -9,7 +7,6 @@ import org.deeplearning4j.models.sequencevectors.SequenceVectors
 import org.deeplearning4j.models.sequencevectors.iterators.AbstractSequenceIterator
 import org.deeplearning4j.models.sequencevectors.sequence._
 import scala.jdk.CollectionConverters._
-import org.deeplearning4j.models.sequencevectors.iterators._
 import org.deeplearning4j.models.word2vec.wordstore.inmemory.AbstractCache
 import HoTTMessages._
 

@@ -1,6 +1,6 @@
 package provingground.interface
 
-import provingground._, interface._, HoTT._, learning._
+import provingground._, HoTT._, learning._
 import provingground.learning.HoTTMessages._
 import HoTTBot._
 import scala.util._, Properties.envOrNone

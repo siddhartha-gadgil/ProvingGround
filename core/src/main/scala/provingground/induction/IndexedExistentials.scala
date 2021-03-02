@@ -2,7 +2,6 @@ package provingground.induction
 
 import provingground._, HoTT._
 import shapeless._
-import scala.language.existentials
 
 sealed trait TypFamilyExst { typFmlyExst =>
   import TypFamilyPtn._

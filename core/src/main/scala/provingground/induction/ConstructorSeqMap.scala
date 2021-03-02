@@ -203,7 +203,6 @@ object ConstructorSeqMap {
   }
 }
 
-import scala.language.existentials
 
 /**
   * given scala type of the codomain and a specific inductive type, lifts a [[ConstructorSeqDom]] to a [[ConstructorSeqMap]]

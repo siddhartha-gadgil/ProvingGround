@@ -2,13 +2,10 @@ package provingground.andrewscurtis
 
 import provingground._, learning._
 
-import Collections._
 
-import upickle.default.{write => uwrite, read => uread, _}
 
 import LinearStructure._
 
-import FiniteDistribution._
 
 import SimpleAcEvolution._
 

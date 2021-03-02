@@ -5,7 +5,6 @@ import spire.algebra._
 import spire.math._
 import spire.implicits._
 
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 object EvolverEquations {
   def klDiff[F: Field: Trig](p: F, q: F) =

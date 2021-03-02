@@ -2,7 +2,6 @@ package provingground.induction
 
 import provingground._, HoTT._
 
-import scala.language.existentials
 
 import TermList._
 

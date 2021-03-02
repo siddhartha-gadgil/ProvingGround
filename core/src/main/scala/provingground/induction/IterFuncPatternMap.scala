@@ -272,7 +272,6 @@ object IterFuncPtnMap {
     val univLevel = max(univlevel(tail.typ), headlevel)
   }
 }
-import scala.language.existentials
 
 // sealed trait IterFuncMapper[
 //   S <: Term with Subs[S],

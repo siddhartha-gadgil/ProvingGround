@@ -67,7 +67,6 @@ class EquationExporter(val equations: Set[EquationNode], val initTerms: Set[Term
         LamApply,
         EnterIsle
       )
-    import isle._
     val boat  = variable
     val coeff = Coeff(Base.lambdaNode)
     val isleEqs: Set[EquationNode] =
@@ -115,7 +114,6 @@ class EquationExporter(val equations: Set[EquationNode], val initTerms: Set[Term
         PiApply,
         EnterIsle
       )
-    import isle._
     val boat  = variable
     val coeff = Coeff(Base.piNode)
     val isleEqs: Set[EquationNode] =
@@ -162,7 +160,6 @@ class EquationExporter(val equations: Set[EquationNode], val initTerms: Set[Term
         PiApply,
         EnterIsle
       )
-    import isle._
     val boat  = variable
     val coeff = Coeff(Base.piNode.|(typAsTermSort, Terms))
     val isleEqs: Set[EquationNode] =

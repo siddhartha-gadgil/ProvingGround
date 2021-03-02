@@ -5,8 +5,6 @@ import HoTT._
 import translation._
 import learning._
 import FineProverTasks._
-import monix.execution.CancelableFuture
-import ujson._
 import monix.eval._
 import monix.execution.Scheduler.Implicits.global
 import scala.concurrent._

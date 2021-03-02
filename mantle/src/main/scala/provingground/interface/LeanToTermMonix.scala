@@ -1,6 +1,5 @@
 package provingground.interface
 import provingground._
-import induction._
 
 import scala.concurrent._, duration._
 //import monix.execution.Scheduler.Implicits.global
@@ -14,7 +13,7 @@ import scala.collection.mutable
 import HoTT.{Name => _, _}
 
 import trepplein._
-import LeanInterface._, LeanParser._
+import LeanParser._
 
 @deprecated("use LeanParser", "buggy, avoid")
 object LeanToTermMonix {

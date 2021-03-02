@@ -2,15 +2,10 @@ package provingground.andrewscurtis
 
 import provingground._, learning._
 
-import FreeGroups._
-import Moves._
 import MoveGenerator._
 import DiffStructure._
-import FiniteDistribution._
-import Collections._
 
 import FiniteDistributionLearner._
-import LinearStructure._
 
 import upickle.default._
 

@@ -3,7 +3,6 @@ package provingground
 import scala.util.Try
 //import scala.language.existentials
 import Math._
-import HoTT._
 //
 
 /**
@@ -126,7 +125,6 @@ object HoTT {
     */
   // implicit def stringSym(name: String) = Name(name)
 
-  import scala.language.existentials
 
   /**
     * A HoTT term.

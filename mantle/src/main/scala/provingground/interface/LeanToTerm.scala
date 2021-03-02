@@ -1,20 +1,15 @@
 package provingground.interface
 import provingground._
 
-import os._
 import scala.util._
 
-import scala.concurrent._
-import scala.concurrent.ExecutionContext.Implicits.global
 
 import HoTT.{Name => _, _}
 
-import translation.{TermLang => TL}
 import trepplein._
 
 import LeanToTerm._
 
-import translation.FansiShow._
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable
@@ -599,8 +594,7 @@ case class NewParseDiffersException(name: Name,
                                     old: Term,
                                     p: Try[Term])
     extends Exception("Parses not matched")
-
-import induction._ //, shapeless.{Path => _, _}
+ //, shapeless.{Path => _, _}
 
 object LeanToTerm {
 

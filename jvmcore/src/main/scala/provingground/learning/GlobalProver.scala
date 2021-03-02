@@ -6,19 +6,12 @@ import HoTT._
 import monix.eval.Task
 
 import scala.concurrent._
-import duration._
 
-import TermRandomVars._
 
-import GeneratorVariables._, Expression._
 
-import EntropyAtomWeight._
 
-import Utils.bestTask
 
-import monix.tail.Iterant
 
-import collection.mutable.ArrayBuffer
 import scala.util.Success
 
 @deprecated("use composite prover", "now")

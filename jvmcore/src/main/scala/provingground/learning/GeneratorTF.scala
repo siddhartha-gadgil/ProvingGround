@@ -1,9 +1,8 @@
 package provingground.learning
-import provingground.{HoTT, FiniteDistribution => FD}
+import provingground.{FiniteDistribution => FD}
 import shapeless._
 import HList._
 
-import scala.language.higherKinds
 import GeneratorVariables._, Expression._
 import scala.collection.mutable
 

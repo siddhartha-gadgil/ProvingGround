@@ -1,28 +1,14 @@
 package provingground.learning
 
-import provingground.{FiniteDistribution => FD, _}, HoTT._
-import monix.eval._, monix.tail._
+import provingground.{FiniteDistribution => _, _}, HoTT._
 
-import spire.algebra._
 import spire.math._
 import spire.implicits._
 
-import GeneratorVariables._, TermRandomVars._, Expression._,
-TermGeneratorNodes.{_}
+import GeneratorVariables._, TermRandomVars._, Expression._
 
-import annotation.tailrec
-import spire.util.Opt
-import fastparse.internal.Util
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
-import scala.math.Ordering.Double.TotalOrdering
-import scala.collection.immutable.Stream.cons
-import scala.collection.immutable.Nil
-import shapeless.ops.product
-import scala.collection.mutable
-import scala.concurrent._
-import monix.eval._
-import scala.collection.mutable.ArrayBuffer
 
 class ExprEquations(
     initMap: Map[Expression, Double],

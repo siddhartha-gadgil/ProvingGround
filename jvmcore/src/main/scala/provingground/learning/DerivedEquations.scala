@@ -8,7 +8,6 @@ import provingground.learning.Sort.Filter
 import provingground.learning.Sort.Restrict
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
-import shapeless.HNil
 import provingground.induction.ExstInducDefn
 import provingground.induction.ExstInducStrucs
 

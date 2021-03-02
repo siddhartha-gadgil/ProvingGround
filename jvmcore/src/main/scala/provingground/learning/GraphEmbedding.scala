@@ -1,6 +1,6 @@
 package provingground.learning
 
-import org.tensorflow._, ndarray._, types._
+import org.tensorflow._
 import org.tensorflow.op._, core._, math._, linalg._
 import org.tensorflow.types._, family.TType
 import scala.util.Using

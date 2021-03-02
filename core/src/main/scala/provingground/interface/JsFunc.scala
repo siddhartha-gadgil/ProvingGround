@@ -4,8 +4,6 @@ import provingground.{Context, _}
 import translation._
 import Translator.unmatched
 
-import scala.language.higherKinds
-import ujson.Js
 import upickle.default._
 import cats._
 import cats.implicits._
@@ -13,7 +11,6 @@ import provingground.induction.{ExstInducDefn, ExstInducStrucs}
 import provingground.scalahott.NatRing
 
 import scala.util.matching.Regex
-import scala.util._
 
 trait JsFunc[F[_]] {
   def encode(t: F[ujson.Value]): ujson.Value
@@ -161,7 +158,7 @@ object TermJson {
 
   val exstInduc = ExstInducStrucs.Base || NatRing
 
-  import library._, Nats._, Bools._, Vecs._
+  import library._
 
   def jsonToTerm(
       inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,

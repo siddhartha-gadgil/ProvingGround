@@ -1,30 +1,18 @@
 package provingground.interface
 
 import provingground._
-import library.LeanMemo
 import os._
 import monix.eval._
-import monix.execution.Scheduler.Implicits.global
 import LeanInterface._
 import LeanParser._
 import provingground.HoTT._
 import trepplein.{Modification, Name}
-import ujson.Js
-import io.undertow.websockets.WebSocketConnectionCallback
-import io.undertow.websockets.core.{
-  AbstractReceiveListener,
-  BufferedTextMessage,
-  WebSocketChannel,
-  WebSockets
-}
-import io.undertow.websockets.spi.WebSocketHttpExchange
 import monix.execution.CancelableFuture
 import provingground.translation.TeXTranslate
-import ujson.Value
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable
-import upickle.default.{write => uwrite, read => _, _}
+import upickle.default.{read => _}
 
 import scala.util.Try
 

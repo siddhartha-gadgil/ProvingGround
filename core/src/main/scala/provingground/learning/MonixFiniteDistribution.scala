@@ -3,7 +3,6 @@ import provingground.{FiniteDistribution => FD, _}
 import shapeless.HList._
 import shapeless._
 
-import scala.language.higherKinds
 import monix.eval._
 
 import scala.concurrent._, duration._

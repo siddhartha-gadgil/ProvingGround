@@ -1,8 +1,7 @@
 package provingground.induction.coarse
 
-import provingground._, induction._, HoTT._
+import provingground._, HoTT._
 import math._
-import scala.language.existentials
 
 import scala.util.Try
 

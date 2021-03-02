@@ -2,7 +2,6 @@ package provingground
 import HoTT._
 import scala.util.Try
 import scala.collection.mutable
-import java.util.concurrent.Executors
 import scala.concurrent._
 
 object Utils {
@@ -24,7 +23,7 @@ object Utils {
   def makeSet[A](v: Vector[A], groupSize: Int = 1000) =
     gatherSet(v.grouped(groupSize).toVector, Set())
 
-  import scribe._, writer._
+  import scribe._
   var baseLogger = Logger()
 
   var reportText: String = ""

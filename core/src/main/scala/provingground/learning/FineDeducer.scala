@@ -4,7 +4,6 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 import translation.{TeXTranslate, TermLang => TL}
 import translation.Translator.unmatched
 
-import scala.language.existentials
 
 // import cats._
 import cats.implicits._
@@ -14,7 +13,6 @@ import monix.eval._
 
 // import monix.execution.Scheduler.Implicits.global
 import monix.reactive._
-import scala.language.higherKinds
 
 import HoTT._
 
@@ -45,7 +43,6 @@ object FineDeducer {
     case tp: Typ[u] => tp
   }
 
-  import translation.FansiShow._
   def unif(vars: Term*)(terms: Term*)(axioms: Typ[Term]*) =
     FD.uniform(
       vars.toVector ++ terms ++ // axioms.map(lambdaClosure(vars.toVector)) ++
