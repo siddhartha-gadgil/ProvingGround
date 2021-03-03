@@ -276,6 +276,7 @@ object ExpressionEval {
       init: Map[Expression, Double],
       equations: Set[Equation],
       maxRatio: Double = 1.01,
+      resolution: Double = 0.0,
       exponent: Double = 0.5,
       decay: Double = 1,
       maxTime: Option[Long]
@@ -292,6 +293,7 @@ object ExpressionEval {
           newMap,
           equations,
           maxRatio,
+          resolution,
           exponent * decay,
           decay,
           maxTime.map(t => t - usedTime)
@@ -336,6 +338,7 @@ object ExpressionEval {
       coeffvalS: Coeff[_] => Option[Double],
       varWeightS: Double,
       maxRatioS: Double = 1.01,
+      resolutionS: Double = 0.0,
       scaleS: Double = 1.0,
       smoothS: Option[Double] = None,
       exponentS: Double = 0.5,
@@ -354,6 +357,7 @@ object ExpressionEval {
       val coeffval                                     = coeffvalS
       val varWeight: Double                            = varWeightS
       val maxRatio                                     = maxRatioS
+      val resolution                                   = resolutionS
       val scale                                        = scaleS
       val coeffsAsVars: Boolean                        = false
       val smoothing: Option[Double]                    = smoothS
@@ -384,6 +388,7 @@ object ExpressionEval {
       coeffvalS: Coeff[_] => Option[Double],
       varWeightS: Double,
       maxRatioS: Double = 1.01,
+      resolutionS: Double = 0.0,
       scaleS: Double = 1.0,
       smoothS: Option[Double] = None,
       exponentS: Double = 0.5,
@@ -402,6 +407,7 @@ object ExpressionEval {
       val coeffval                                     = coeffvalS
       val varWeight: Double                            = varWeightS
       val maxRatio                                     = maxRatioS
+      val resolution                                   = resolutionS
       val scale                                        = scaleS
       val coeffsAsVars: Boolean                        = false
       val smoothing: Option[Double]                    = smoothS
@@ -432,6 +438,7 @@ object ExpressionEval {
       coeffvalS: Coeff[_] => Option[Double],
       varWeightS: Double,
       maxRatioS: Double = 1.01,
+      resolutionS: Double = 0.0,
       scaleS: Double = 1.0,
       smoothS: Option[Double] = None,
       exponentS: Double = 0.5,
@@ -447,6 +454,7 @@ object ExpressionEval {
           val coeffval                                     = coeffvalS
           val varWeight: Double                            = varWeightS
           val maxRatio                                     = maxRatioS
+          val resolution: Double                           = resolutionS
           val scale                                        = scaleS
           val coeffsAsVars: Boolean                        = false
           val smoothing: Option[Double]                    = smoothS
@@ -486,6 +494,7 @@ object ExpressionEval {
         varWeightNew: Double,
         coeffsAsVarsNew: Boolean = self.coeffsAsVars,
         maxRatioNew: Double = self.maxRatio,
+        resolutionNew: Double = self.resolution,
         scaleNew: Double = self.scale,
         smoothNew: Option[Double] = self.smoothing,
         exponentNew: Double = self.exponent,
@@ -498,6 +507,7 @@ object ExpressionEval {
       val varWeight: Double                            = varWeightNew
       val coeffsAsVars                                 = coeffsAsVarsNew
       val maxRatio                                     = maxRatioNew
+      val resolution: Double                           = resolutionNew
       val scale                                        = scaleNew
       val smoothing                                    = smoothNew
       val exponent: Double                             = exponentNew
@@ -525,6 +535,7 @@ object ExpressionEval {
         val varWeight: Double                              = self.varWeight
         val coeffsAsVars                                   = self.coeffsAsVars
         val maxRatio                                       = self.maxRatio
+        val resolution: Double                             = self.resolution
         val scale                                          = self.scale
         val smoothing: Option[Double]                      = self.smoothing
         val exponent: Double                               = self.exponent
@@ -614,7 +625,6 @@ object ExpressionEval {
 
 }
 
-
 trait ExpressionEval { self =>
   val init: Map[Expression, Double]
   val finalTyps: FD[Typ[Term]]
@@ -623,6 +633,7 @@ trait ExpressionEval { self =>
   val varWeight: Double
   val coeffsAsVars: Boolean
   val maxRatio: Double
+  val resolution: Double
   val scale: Double
   val smoothing: Option[Double]
   val exponent: Double
@@ -645,6 +656,7 @@ trait ExpressionEval { self =>
       val varWeight: Double                            = self.varWeight
       val coeffsAsVars                                 = self.coeffsAsVars
       val maxRatio                                     = self.maxRatio
+      val resolution: Double                           = self.resolution
       val scale                                        = self.scale
       val smoothing: Option[Double]                    = self.smoothing
       val exponent: Double                             = self.exponent
@@ -664,6 +676,7 @@ trait ExpressionEval { self =>
       varWeightNew: Double = self.varWeight,
       coeffsAsVarsNew: Boolean = self.coeffsAsVars,
       maxRatioNew: Double = self.maxRatio,
+      resolutionNew: Double = self.resolution,
       scaleNew: Double = self.scale,
       smoothNew: Option[Double] = self.smoothing,
       exponentNew: Double = self.exponent,
@@ -677,6 +690,7 @@ trait ExpressionEval { self =>
     val varWeight: Double                            = varWeightNew
     val coeffsAsVars: Boolean                        = coeffsAsVarsNew
     val maxRatio: Double                             = maxRatioNew
+    val resolution: Double                           = resolutionNew
     val scale: Double                                = scaleNew
     val smoothing: Option[Double]                    = smoothNew
     val exponent: Double                             = exponentNew
@@ -697,6 +711,7 @@ trait ExpressionEval { self =>
     val coeffsAsVars                                 = self.coeffsAsVars
     val varWeight: Double                            = self.varWeight
     val maxRatio                                     = self.maxRatio
+    val resolution: Double                           = self.resolution
     val scale                                        = self.scale
     val smoothing: Option[Double]                    = self.smoothing
     val exponent: Double                             = self.exponent
@@ -716,6 +731,7 @@ trait ExpressionEval { self =>
     val coeffsAsVars                                 = self.coeffsAsVars
     val varWeight: Double                            = self.varWeight
     val maxRatio                                     = self.maxRatio
+    val resolution: Double = self.resolution
     val scale                                        = self.scale
     val smoothing: Option[Double]                    = self.smoothing
     val exponent: Double                             = self.exponent
@@ -739,6 +755,7 @@ trait ExpressionEval { self =>
     equations,
     coeffval,
     maxRatio,
+    resolution,
     exponent,
     decay,
     maxTime,
@@ -1008,6 +1025,7 @@ trait ExpressionEval { self =>
       val varWeight: Double                            = self.varWeight
       val coeffsAsVars                                 = self.coeffsAsVars
       val maxRatio                                     = self.maxRatio
+      val resolution                                   = self.resolution
       val scale                                        = self.scale
       val smoothing: Option[Double]                    = self.smoothing
       val exponent: Double                             = self.exponent
@@ -1424,6 +1442,7 @@ trait ExpressionEval { self =>
         gradShift(p, t, eps),
         equations,
         maxRatio,
+        resolution,
         exponent,
         decay,
         maxTime

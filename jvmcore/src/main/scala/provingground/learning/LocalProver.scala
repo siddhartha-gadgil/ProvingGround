@@ -43,6 +43,7 @@ case class LocalProver(
     genMaxDepth: Option[Int] = None,
     limit: FiniteDuration = 12.minutes,
     maxRatio: Double = 1.01,
+    resolution: Double = 0.0,
     scale: Double = 1.0,
     steps: Int = 10000,
     maxDepth: Int = 10,
@@ -310,6 +311,7 @@ trait LocalProverStep {
   val genMaxDepth: Option[Int]
   val scale: Double
   val maxRatio: Double
+  val resolution: Double
   val steps: Int
   val maxDepth: Int
   val limit: FiniteDuration
@@ -401,6 +403,7 @@ trait LocalProverStep {
         tg.coeffVal(_),
         tg.varWeight,
         maxRatio,
+        resolution,
         scale,
         smoothing,
         exponent,
@@ -436,6 +439,7 @@ trait LocalProverStep {
         tg.coeffVal(_),
         tg.varWeight,
         maxRatio,
+        resolution,
         scale,
         smoothing,
         exponent,
@@ -497,6 +501,7 @@ trait LocalProverStep {
           tg.coeffVal(_),
           tg.varWeight,
           maxRatio,
+          resolution,
           scale,
           smoothing,
           exponent,
@@ -515,6 +520,7 @@ trait LocalProverStep {
           tg.coeffVal(_),
           tg.varWeight,
           maxRatio,
+          resolution,
           scale,
           smoothing,
           exponent,
@@ -638,6 +644,7 @@ trait LocalProverStep {
         genMaxDepth,
         limit,
         maxRatio,
+        resolution,
         scale,
         steps,
         maxDepth,
@@ -669,6 +676,7 @@ trait LocalProverStep {
         genMaxDepth,
         limit,
         maxRatio,
+        resolution,
         scale,
         steps,
         maxDepth,
@@ -710,6 +718,7 @@ trait LocalProverStep {
         tg.coeffVal(_),
         tg.varWeight,
         maxRatio,
+        resolution,
         scale,
         smoothing,
         exponent,
@@ -736,6 +745,7 @@ trait LocalProverStep {
             genMaxDepth,
             limit,
             maxRatio,
+            resolution,
             scale,
             steps,
             maxDepth,
@@ -786,6 +796,7 @@ case class LocalTangentProver(
     genMaxDepth: Option[Int] = None,
     limit: FiniteDuration = 3.minutes,
     maxRatio: Double = 1.01,
+    resolution: Double = 0.0,
     scale: Double = 1.0,
     steps: Int = 10000,
     maxDepth: Int = 10,

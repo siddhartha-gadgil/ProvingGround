@@ -41,6 +41,7 @@ class ExprCalc(
     equationSet: Set[Equation],
     params: Coeff[_] => Option[Double],
     maxRatio: Double,
+    resolution: Double,
     exponent: Double,
     decay: Double,
     maxTime: Option[Long],
@@ -326,7 +327,7 @@ class ExprCalc(
   ) = {
     val condition: (((Double, Double), Int)) => Boolean = {
       case ((x: Double, y: Double), j: Int) =>
-        x == 0 || y == 0 || ((x / y) <= bound && y / x <= bound)
+        x == 0 || y == 0 || ((x / (y + resolution)) <= bound && y / (x + resolution) <= bound)
     }
     v.zip(w).zipWithIndex.forall(condition)
   }

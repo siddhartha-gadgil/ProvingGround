@@ -468,7 +468,7 @@ object HoTTBot {
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
                   web.halt()
-                  Thread.sleep(300000L)
+                  Thread.sleep(30000L)
                   Utils.running = false
                 }
               }
@@ -827,6 +827,7 @@ object HoTTBot {
               cvOpt.getOrElse(lp.tg.coeffVal(_)),
               lp.tg.varWeight,
               lp.maxRatio,
+              lp.resolution,
               lp.scale,
               lp.smoothing,
               lp.exponent,
@@ -1348,6 +1349,7 @@ object HoTTBot {
       equationNodes: Set[EquationNode],
       tg: TermGenParams,
       maxRatio: Double = 1.01,
+      resolution: Double = 0.0,
       scale: Double = 1.0,
       smooth: Option[Double] = None,
       exponent: Double = 0.5,
@@ -1371,6 +1373,7 @@ object HoTTBot {
       tg.coeffVal(_),
       tg.varWeight,
       maxRatio,
+      resolution,
       scale,
       smooth,
       exponent,
@@ -1386,6 +1389,7 @@ object HoTTBot {
       equationNodes: Set[EquationNode],
       tg: TermGenParams,
       maxRatio: Double = 1.01,
+      resolution: Double = 0.0,
       scale: Double = 1.0,
       smooth: Option[Double] = None,
       exponent: Double = 0.5,
@@ -1414,6 +1418,7 @@ object HoTTBot {
         tg.coeffVal(_),
         tg.varWeight,
         maxRatio,
+        resolution,
         scale,
         smooth,
         exponent,
@@ -1456,6 +1461,7 @@ object HoTTBot {
               eqns.nodes,
               lp.tg,
               lp.maxRatio,
+              lp.resolution,
               lp.scale,
               lp.smoothing,
               lp.exponent,
@@ -1513,6 +1519,7 @@ object HoTTBot {
                   neqs,
                   ps.tgOpt.getOrElse(lp.tg),
                   lp.maxRatio,
+                  lp.resolution,
                   lp.scale,
                   lp.smoothing,
                   lp.exponent,
@@ -1578,6 +1585,7 @@ object HoTTBot {
                 neqs,
                 ps.tgOpt.getOrElse(lp.tg),
                 lp.maxRatio,
+                lp.resolution,
                 lp.scale,
                 lp.smoothing,
                 lp.exponent,
@@ -2033,6 +2041,7 @@ object HoTTBot {
                         tbs.depthOpt.orElse(lp.genMaxDepth),
                         lp.limit,
                         lp.maxRatio,
+                        lp.resolution,
                         lp.scale,
                         lp.steps,
                         lp.maxDepth,
@@ -2116,6 +2125,7 @@ object HoTTBot {
                     tbs.depthOpt.orElse(lp.genMaxDepth),
                     lp.limit,
                     lp.maxRatio,
+                    lp.resolution,
                     lp.scale,
                     lp.steps,
                     lp.maxDepth,
@@ -2212,6 +2222,7 @@ object HoTTBot {
                 lp.tg.coeffVal(_),
                 lp.tg.varWeight,
                 lp.maxRatio,
+                lp.resolution,
                 lp.scale,
                 lp.smoothing,
                 lp.exponent,

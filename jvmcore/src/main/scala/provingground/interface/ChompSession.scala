@@ -8,31 +8,13 @@ import Utils._, JvmUtils._
 import scala.concurrent._
 
 object ChompSession {
-  JvmUtils.logger = {
-    import scribe._, writer._
-    logger
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily()),
-        minimumLevel = Some(Level.Info)
-      )
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("errors")),
-        minimumLevel = Some(Level.Error)
-      )
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("debug")),
-        minimumLevel = Some(Level.Debug)
-      )
-      .replace()
-  }
-
   logger.info(
     """|
        |This is a Bot based run for goal chomping. This has been refined a few times.
        |Biggest change after first runs was having a session with bots.
        |Also parallel chomping, proving via zero, using inclusions and projections,
        |better reporting of status. 
-       |After debugging, everything generated was proved but there was an error in reporting.
+       |
        |""".stripMargin
   )
 
