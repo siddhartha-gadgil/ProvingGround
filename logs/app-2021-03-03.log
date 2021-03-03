@@ -70,3 +70,46 @@ Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) 
 Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.009601643766868753; statement weight 4.482321028460471E-9
 Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.003935060111220136; statement weight 7.546178252292699E-12
 Lemma: (`$dkp : M ) ~> ((((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (`$dkp)) → (((eqM) (((mul) (n)) (m))) (`$dkp))); best proof: (`$ccjdvzo :  M) ↦ (((((trans) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (`$ccjdvzo)) (((((right-multiply) (m)) (n)) (((mul) (((mul) (m)) (n))) (m))) ((((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)))))) with weight 4.1227426241571774E-18; statement weight 2.117682578815987E-10
+2021.03.03 10:38:02:075 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:206 - 
+This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+
+
+2021.03.03 10:38:02:095 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:218 - JAVA_OPTS: -Xms2G -Xmx40G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.03.03 10:38:02:097 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:220 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.03.03 10:38:03:139 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((0,752853775))
+2021.03.03 10:38:03:151 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (0,752853775) with hash 752853775
+2021.03.03 10:38:29:565 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((1,-428248350))
+2021.03.03 10:38:29:565 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (1,-428248350) with hash -428248350
+2021.03.03 10:38:30:484 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((1,-428248350))
+2021.03.03 10:38:30:485 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (1,-428248350) with hash -428248350
+2021.03.03 10:38:33:693 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((2,69869370))
+2021.03.03 10:38:33:694 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (2,69869370) with hash 69869370
+2021.03.03 10:48:35:124 [scala-e...] [ERROR] provingground.learning.ExprCalc.stableVec:358 - Timeout for stable vector after 112452 steps; resolution 1.0E-5
+2021.03.03 10:48:37:846 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((4,1584468285))
+2021.03.03 10:48:37:846 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (4,1584468285) with hash 1584468285
+2021.03.03 10:48:39:929 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:945 - seeking to chomp 763 unknown groups
+2021.03.03 11:06:37:845 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((5,421188103))
+2021.03.03 11:06:37:845 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (5,421188103) with hash 421188103
+2021.03.03 11:06:37:918 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1000 - number of successes: 762
+2021.03.03 11:06:37:921 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1005 - number of failures: 1
+2021.03.03 11:06:37:922 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:1006 - top 10 failures: (`@a : 𝒰 _0 ) ~> (((𝒰 _0) → (((`@a) , (𝒰 _0)))) → (`@a))
+2021.03.03 11:06:37:954 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((5,421188103))
+2021.03.03 11:06:37:954 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (5,421188103) with hash 421188103
+2021.03.03 11:07:08:755 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((5,421188103))
+2021.03.03 11:07:08:755 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (5,421188103) with hash 421188103
+2021.03.03 11:32:55:093 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved PlusTyp(((𝒰 _0) , (PlusTyp(Unit,(𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)) by Some(FirstIncl(PlusTyp(((𝒰 _0) , (PlusTyp(Unit,(𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)),((Unit) , (FirstIncl(PlusTyp(Unit,(𝒰 _0) → (Zero)),Star))))) in context {}
+2021.03.03 11:32:56:093 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved PlusTyp(((𝒰 _0) , (PlusTyp(Zero,(𝒰 _0) → (Zero)))),Unit) by Some(ScndIncl(PlusTyp(((𝒰 _0) , (PlusTyp(Zero,(𝒰 _0) → (Zero)))),Unit),Star)) in context {}
+2021.03.03 11:42:54:917 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved 𝒰 _0 by Some((`@a : ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0) ) ~> ((`@a) ((`@a :  𝒰 _0) ↦ (`@a)))) in context {Given `@a : 𝒰 _0}
+2021.03.03 11:42:55:918 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (Zero) → (Zero) by Some((```@a :  Zero) ↦ (```@a)) in context {}
+2021.03.03 11:42:55:987 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (𝒰 _0) → (((Unit) , (𝒰 _0))) by Some((@a :  𝒰 _0) ↦ (((Star) , ((`@a : 𝒰 _0 ) ~> (((`@a) , ((`@b : 𝒰 _0 ) ~> (`@b)))))))) in context {}
+2021.03.03 11:51:04:616 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved PlusTyp(PlusTyp(𝒰 _0,((𝒰 _0) , ((𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)) by Some(FirstIncl(PlusTyp(PlusTyp(𝒰 _0,((𝒰 _0) , ((𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)),FirstIncl(PlusTyp(𝒰 _0,((𝒰 _0) , ((𝒰 _0) → (Zero)))),Unit))) in context {}
+2021.03.03 11:51:05:617 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved PlusTyp(PlusTyp(((𝒰 _0) , (Zero)),((𝒰 _0) , ((𝒰 _0) → (Zero)))),Unit) by Some(ScndIncl(PlusTyp(PlusTyp(((𝒰 _0) , (Zero)),((𝒰 _0) , ((𝒰 _0) → (Zero)))),Unit),Star)) in context {}
+2021.03.03 11:55:43:107 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (Zero) → (Zero) by Some((```@a :  Zero) ↦ (```@a)) in context {}
+2021.03.03 11:55:44:108 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (Zero) → (Zero) by Some((```@a :  Zero) ↦ (```@a)) in context {}
+2021.03.03 12:00:26:186 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved 𝒰 _0 by Some((`@a : ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0) ) ~> ((`@a) ((`@a :  𝒰 _0) ↦ (`@a)))) in context {Given `$pjaqzl : 𝒰 _0}
+2021.03.03 12:07:53:495 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved PlusTyp(PlusTyp(((𝒰 _0) , (Unit)),((𝒰 _0) , ((𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)) by Some(FirstIncl(PlusTyp(PlusTyp(((𝒰 _0) , (Unit)),((𝒰 _0) , ((𝒰 _0) → (Zero)))),((Zero) → (Zero)) → (Zero)),FirstIncl(PlusTyp(((𝒰 _0) , (Unit)),((𝒰 _0) , ((𝒰 _0) → (Zero)))),((Unit) , (Star))))) in context {}
+2021.03.03 12:09:45:867 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved (Zero) → (Zero) by Some((```@a :  Zero) ↦ (```@a)) in context {}
+2021.03.03 12:13:32:051 [scala-e...] [INFO ] provingground.learning.HoTTBot.reportProved:331 - Proved 𝒰 _0 by Some((`@a : ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0) ) ~> ((`@a) ((`@a :  𝒰 _0) ↦ (`@a)))) in context {Given `$wltemn : 𝒰 _0}
