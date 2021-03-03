@@ -4,7 +4,7 @@ import provingground._, HoTT._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
-import ExpressionEval._, ExprCalc._, ExprEquations._
+import ExpressionEquationSolver._, IndexEquationSolver._, ExpressionEquationIndexifier._
 
 import scala.collection.parallel._, immutable.ParVector, collection.parallel
 import GeneratorVariables._, TermRandomVars._
@@ -18,7 +18,7 @@ class SpireExprEquations(
     equationSet: Set[Equation],
     params: TermGenParams,
     initVariables: Vector[Expression] = Vector() // values that can evolve
-) extends ExprEquations(initMap, equationSet, params.coeffVal(_), initVariables) {
+) extends ExpressionEquationIndexifier(initMap, equationSet, params.coeffVal(_), initVariables) {
   import SpireExprEquations._
 
   // val numVars = size + initVariables.size

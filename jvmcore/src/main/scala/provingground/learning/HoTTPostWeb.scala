@@ -37,7 +37,7 @@ class HoTTPostWeb {
 
   def equations = EquationOps.group(equationNodes)
 
-  def terms = ExpressionEval.terms(equationNodes) union extraTerms
+  def terms = ExpressionEquationSolver.terms(equationNodes) union extraTerms
 
   def addEqns(eqs: Set[EquationNode]): Unit = {
     equationNodes ++= eqs
@@ -82,7 +82,7 @@ class HoTTPostWeb {
       PostBuffer.build[Proved, ID]() ::
       PostBuffer.build[Contradicted, ID]() ::
       ErasablePostBuffer.build[LocalTangentProver, ID]() ::
-      ErasablePostBuffer.build[ExpressionEval, ID]() ::
+      ErasablePostBuffer.build[ExpressionEquationSolver, ID]() ::
       ErasablePostBuffer.build[ChompResult, ID]() ::
       PostBuffer.build[LocalProver, ID]() ::
       PostBuffer.build[Weight, ID]() ::

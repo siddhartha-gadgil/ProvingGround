@@ -282,7 +282,7 @@ case class LocalProver(
 
   lazy val optimalInit0: Task[LocalProver] = expressionEval.map { ev =>
     val p                            = ev.optimum(hW, klW, cutoff, ev.finalDist, maxRatio)
-    val td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
+    val td: FiniteDistribution[Term] = ExpressionEquationSolver.dist(Terms, p)
     val ts                           = initState.copy(terms = td)
     this.copy(initState = ts)
   }
@@ -291,7 +291,7 @@ case class LocalProver(
     for {
       ev <- expressionEval
       p  <- ev.optimumTask(hW, klW, cutoff, ev.finalDist, maxRatio)
-      td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
+      td: FiniteDistribution[Term] = ExpressionEquationSolver.dist(Terms, p)
       ts                           = initState.copy(terms = td)
     } yield this.copy(initState = ts)
 
@@ -395,9 +395,9 @@ trait LocalProverStep {
     EquationOps.group(eqs)
   }.memoize
 
-  def bigExpressionEval(additional: Set[Equation]): Task[ExpressionEval] =
+  def bigExpressionEval(additional: Set[Equation]): Task[ExpressionEquationSolver] =
     equations.map { eqs =>
-      ExpressionEval.fromInitEqs(
+      ExpressionEquationSolver.fromInitEqs(
         initState,
         EquationOps.merge(eqs, additional),
         tg.coeffVal(_),
@@ -414,7 +414,7 @@ trait LocalProverStep {
 
   import Utils._, JvmUtils._, scribe._
 
-  lazy val enhancedExpressionEval: Task[ExpressionEval] =
+  lazy val enhancedExpressionEval: Task[ExpressionEquationSolver] =
     for {
       eqs <- equationNodes
       ns  <- nextState
@@ -433,7 +433,7 @@ trait LocalProverStep {
       // Expression.rhsOrphans(additional).foreach {
       //   case (exp, eqq) => logger.error(s"$exp orphan in formal $eqq")
       // }
-      ExpressionEval.fromInitEqs(
+      ExpressionEquationSolver.fromInitEqs(
         initState,
         EquationOps.group(eqs union additional),
         tg.coeffVal(_),
@@ -492,10 +492,10 @@ trait LocalProverStep {
       eqs union additional
     }
 
-  lazy val expressionEval: Task[ExpressionEval] =
+  lazy val expressionEval: Task[ExpressionEquationSolver] =
     if (stateFromEquation)
       equations.map { eqs =>
-        ExpressionEval.fromInitEqs(
+        ExpressionEquationSolver.fromInitEqs(
           initState,
           eqs,
           tg.coeffVal(_),
@@ -513,7 +513,7 @@ trait LocalProverStep {
         fs  <- nextState
         eqs <- equations
       } yield
-        ExpressionEval.fromStates(
+        ExpressionEquationSolver.fromStates(
           initState,
           fs,
           eqs,
@@ -529,7 +529,7 @@ trait LocalProverStep {
       if (relativeEval)
         if (initState.vars.isEmpty)
           base.map(_.generateTyps)
-        else base.map(ev => ExpressionEval.export(ev, initState.vars))
+        else base.map(ev => ExpressionEquationSolver.export(ev, initState.vars))
       else base
     }.memoize
 
@@ -693,7 +693,7 @@ trait LocalProverStep {
   def tangentExpressionEval(
       x: Term,
       weight: Double = 1.0
-  ): Task[ExpressionEval] =
+  ): Task[ExpressionEquationSolver] =
     for {
       baseState <- nextState
       tangState: TermState = baseState.tangent(x)
@@ -711,7 +711,7 @@ trait LocalProverStep {
           cutoff * weight
         )
         .map(_._2)
-      tExpEval = ExpressionEval.fromStates(
+      tExpEval = ExpressionEquationSolver.fromStates(
         tangState,
         baseState,
         EquationOps.group(teqnds),

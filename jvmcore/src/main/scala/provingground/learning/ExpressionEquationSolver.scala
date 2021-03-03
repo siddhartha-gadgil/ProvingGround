@@ -5,7 +5,7 @@ import monix.tail._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
-import ExpressionEval._
+import ExpressionEquationSolver._
 
 import GeneratorVariables._, TermRandomVars._, Expression._
 
@@ -18,7 +18,7 @@ import monix.eval._
   * Working with expressions built from initial and final values of random variables, including in islands,
   * given equations satisfied by these
   */
-object ExpressionEval {
+object ExpressionEquationSolver {
   val sd: StateDistribution[TermState, FD] =
     implicitly[StateDistribution[TermState, FD]]
 
@@ -345,7 +345,7 @@ object ExpressionEval {
       decayS: Double = 1,
       maxTimeS: Option[Long] = None
   ) =
-    new ExpressionEval {
+    new ExpressionEquationSolver {
       val init = initMap(
         eqAtoms(equationsS),
         coeffvalS,
@@ -395,8 +395,8 @@ object ExpressionEval {
       decayS: Double = 1,
       maxTimeS: Option[Long] = None,
       previousMapS: Option[Map[Expression, Double]] = None
-  ): ExpressionEval =
-    new ExpressionEval with GenerateTyps {
+  ): ExpressionEquationSolver =
+    new ExpressionEquationSolver with GenerateTyps {
       val init = initMap(
         eqAtoms(equationsS),
         coeffvalS,
@@ -445,10 +445,10 @@ object ExpressionEval {
       decayS: Double = 1,
       maxTimeS: Option[Long] = None,
       previousMapS: Option[Map[Expression, Double]] = None
-  ): Task[ExpressionEval] =
+  ): Task[ExpressionEquationSolver] =
     initMapTask(eqAtoms(equationsS), coeffvalS, varWeightS, initialState).map(
       initM =>
-        new ExpressionEval with GenerateTyps {
+        new ExpressionEquationSolver with GenerateTyps {
           val init                                         = initM
           val equations                                    = equationsS
           val coeffval                                     = coeffvalS
@@ -468,7 +468,7 @@ object ExpressionEval {
   /**
     * [[ExpressionEval]] where the type distribution is generated from the equations
     */
-  trait GenerateTyps extends ExpressionEval { self =>
+  trait GenerateTyps extends ExpressionEquationSolver { self =>
     lazy val finalTyps = {
       val base = FD {
         finalDist.collect {
@@ -484,7 +484,7 @@ object ExpressionEval {
       base.safeNormalized
     }
 
-    override def generateTyps: ExpressionEval = self
+    override def generateTyps: ExpressionEquationSolver = self
 
     override def modify(
         initNew: Map[Expression, Double] = self.init,
@@ -500,7 +500,7 @@ object ExpressionEval {
         exponentNew: Double = self.exponent,
         decayNew: Double = self.decay,
         maxTimeNew: Option[Long] = self.maxTime
-    ): ExpressionEval = new ExpressionEval with GenerateTyps {
+    ): ExpressionEquationSolver = new ExpressionEquationSolver with GenerateTyps {
       val init                                         = initNew
       val equations                                    = equationsNew
       val coeffval                                     = coeffvalNew
@@ -526,7 +526,7 @@ object ExpressionEval {
         base.map { case (typ, exp) => (typ, exp / total) }
       }
 
-    def setProofWeights(pm: Map[Typ[Term], Double]): ExpressionEval =
+    def setProofWeights(pm: Map[Typ[Term], Double]): ExpressionEquationSolver =
       new FixedProofs {
         val proofWeights: Map[HoTT.Typ[HoTT.Term], Double] = pm
         val init                                           = self.init
@@ -617,7 +617,7 @@ object ExpressionEval {
     * @param vars variables
     * @return exported [[ExpressionEval]]
     */
-  def export(ev: ExpressionEval, vars: Vector[Term]): ExpressionEval =
+  def export(ev: ExpressionEquationSolver, vars: Vector[Term]): ExpressionEquationSolver =
     vars match {
       case Vector() => ev
       case xs :+ y  => export(ev.relVariable(y), xs)
@@ -625,7 +625,7 @@ object ExpressionEval {
 
 }
 
-trait ExpressionEval { self =>
+trait ExpressionEquationSolver { self =>
   val init: Map[Expression, Double]
   val finalTyps: FD[Typ[Term]]
   val equations: Set[Equation]
@@ -647,8 +647,8 @@ trait ExpressionEval { self =>
     * @param that the other initial distribution
     * @return averaged expression eval
     */
-  def avgInit(that: ExpressionEval) =
-    new ExpressionEval {
+  def avgInit(that: ExpressionEquationSolver) =
+    new ExpressionEquationSolver {
       val init                                         = (0.5 *: self.init) + (0.5 *: that.init)
       lazy val finalTyps                               = self.finalTyps
       val equations                                    = EquationOps.merge(self.equations, that.equations)
@@ -682,7 +682,7 @@ trait ExpressionEval { self =>
       exponentNew: Double = self.exponent,
       decayNew: Double = self.decay,
       maxTimeNew: Option[Long] = self.maxTime
-  ): ExpressionEval = new ExpressionEval {
+  ): ExpressionEquationSolver = new ExpressionEquationSolver {
     val init: Map[Expression, Double]                = initNew
     lazy val finalTyps: FD[Typ[Term]]                = finalTypsNew
     val equations: Set[Equation]                     = equationsNew
@@ -704,7 +704,7 @@ trait ExpressionEval { self =>
     *
     * @return
     */
-  def generateTyps: ExpressionEval = new ExpressionEval with GenerateTyps {
+  def generateTyps: ExpressionEquationSolver = new ExpressionEquationSolver with GenerateTyps {
     val init                                         = self.init
     val equations                                    = self.equations
     val coeffval                                     = self.coeffval
@@ -723,7 +723,7 @@ trait ExpressionEval { self =>
   /**
     * undoing generation of types by freezing them
     */
-  def fixTypes: ExpressionEval = new ExpressionEval {
+  def fixTypes: ExpressionEquationSolver = new ExpressionEquationSolver {
     val init                                         = self.init
     val finalTyps: FD[HoTT.Typ[HoTT.Term]]           = self.finalTyps
     val equations                                    = self.equations
@@ -750,7 +750,7 @@ trait ExpressionEval { self =>
   //   .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   // val init: Map[Expression, Double] = initMap(eqAtoms(equations), coeffval, initialState)
 
-  lazy val exprCalc = new ExprCalc(
+  lazy val indexEquationSolver = new IndexEquationSolver(
     init,
     equations,
     coeffval,
@@ -767,7 +767,7 @@ trait ExpressionEval { self =>
     */
   lazy val finalDist: Map[Expression, Double] =
     // exprCalc.finalDistMap
-    exprCalc.finalMap //.seq
+    indexEquationSolver.finalMap //.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
@@ -1001,7 +1001,7 @@ trait ExpressionEval { self =>
     isleEqs union (EquationOps.group(isleIn union bridgeEqs))
   }
 
-  def relVariable(x: Term): ExpressionEval = {
+  def relVariable(x: Term): ExpressionEquationSolver = {
     val varWeight: Double = math.max(
       init.getOrElse(InitialVal(Elem(x, Terms)), 0.0),
       init.getOrElse(InitialVal(Elem(x, Typs)), 0.0)
@@ -1018,7 +1018,7 @@ trait ExpressionEval { self =>
       }
       .flatten
       .toMap
-    new ExpressionEval with GenerateTyps {
+    new ExpressionEquationSolver with GenerateTyps {
       val init                                         = newInit
       val equations                                    = eqs
       val coeffval                                     = self.coeffval

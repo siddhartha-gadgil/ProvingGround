@@ -368,7 +368,7 @@ object TermData {
     for {
       ns <- lp.nextState
       ev <- lp.expressionEval
-      ev1 = ExpressionEval.export(ev, lp.initState.vars)
+      ev1 = ExpressionEquationSolver.export(ev, lp.initState.vars)
     } yield
       (ns.export(lp.initState.vars), ev1.equations.flatMap(EquationOps.split(_)))
 

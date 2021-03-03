@@ -12,7 +12,7 @@ class FatExprEquations(
     equationSet: Set[Equation],
     params: Coeff[_] => Option[Double],
     initVariables: Vector[Expression] = Vector()
-) extends ExprEquations(
+) extends ExpressionEquationIndexifier(
       initMap,
       equationSet,
       params,

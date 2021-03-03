@@ -122,7 +122,7 @@ object HoTTMessages {
       cutoffScale: Double = 1.0,
       tgOpt: Option[TermGenParams] = None,
       depthOpt: Option[Int] = None,
-      evOpt: Option[ExpressionEval] = None,
+      evOpt: Option[ExpressionEquationSolver] = None,
       initOpt: Option[SpecialInitState] = None
   )
 

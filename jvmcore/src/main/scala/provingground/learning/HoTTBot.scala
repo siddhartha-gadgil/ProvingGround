@@ -89,7 +89,7 @@ object QueryEquations {
             )
         val gatheredExpEv =
           LocalQueryable
-            .query[GatherPost[ExpressionEval], HoTTPostWeb](
+            .query[GatherPost[ExpressionEquationSolver], HoTTPostWeb](
               web,
               (_) => true
             )
@@ -123,33 +123,33 @@ object HoTTBot {
 
   type HoTTCallBack[P, Q] = Callback[P, HoTTPostWeb, Q, ID]
 
-  lazy val lpToExpEv: SimpleBot[LocalProver, ExpressionEval] = {
-    val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
+  lazy val lpToExpEv: SimpleBot[LocalProver, ExpressionEquationSolver] = {
+    val response: Unit => LocalProver => Future[ExpressionEquationSolver] = (_) =>
       lp => lp.expressionEval.runToFuture
     MicroBot(response)
   }
 
   lazy val lpToBigExpEv
-      : MicroHoTTBoTT[LocalProver, ExpressionEval, Set[Equation]] = {
-    val response: Set[Equation] => LocalProver => Future[ExpressionEval] =
+      : MicroHoTTBoTT[LocalProver, ExpressionEquationSolver, Set[Equation]] = {
+    val response: Set[Equation] => LocalProver => Future[ExpressionEquationSolver] =
       (adEqs) => lp => lp.bigExpressionEval(adEqs).runToFuture
     MicroBot(response)
   }
 
-  lazy val lpToEnhancedExpEv: SimpleBot[LocalProver, ExpressionEval] = {
-    val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
+  lazy val lpToEnhancedExpEv: SimpleBot[LocalProver, ExpressionEquationSolver] = {
+    val response: Unit => LocalProver => Future[ExpressionEquationSolver] = (_) =>
       lp => lp.enhancedExpressionEval.runToFuture
     MicroBot(response)
   }
 
-  lazy val lptToEnhancedExpEv: SimpleBot[LocalTangentProver, ExpressionEval] = {
-    val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
+  lazy val lptToEnhancedExpEv: SimpleBot[LocalTangentProver, ExpressionEquationSolver] = {
+    val response: Unit => LocalTangentProver => Future[ExpressionEquationSolver] = (_) =>
       lp => lp.enhancedExpressionEval.runToFuture
     MicroBot(response)
   }
 
-  lazy val lptToExpEv: SimpleBot[LocalTangentProver, ExpressionEval] = {
-    val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
+  lazy val lptToExpEv: SimpleBot[LocalTangentProver, ExpressionEquationSolver] = {
+    val response: Unit => LocalTangentProver => Future[ExpressionEquationSolver] = (_) =>
       lp => lp.expressionEval.runToFuture
     MicroBot(response)
   }
@@ -198,7 +198,7 @@ object HoTTBot {
       maxRatio: Double = 1.5,
       maxTime: Option[Long] = Some(60000L)
   ): Set[Term] = {
-    val expEv = ExpressionEval.fromInitEqs(
+    val expEv = ExpressionEquationSolver.fromInitEqs(
       tautGen,
       equationsS = eqs,
       coeffvalS = tg.coeffVal(_),
@@ -557,15 +557,15 @@ object HoTTBot {
     Callback(update, name = Some("report base and tangent pairs"))
   }
 
-  lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
+  lazy val expEvToEqns: SimpleBot[ExpressionEquationSolver, GeneratedEquationNodes] =
     MicroBot.simple(
-      (ev: ExpressionEval) =>
+      (ev: ExpressionEquationSolver) =>
         GeneratedEquationNodes(ev.equations.flatMap(EquationOps.split))
     )
 
-  lazy val expEvToFinalState: SimpleBot[ExpressionEval, FinalState] =
+  lazy val expEvToFinalState: SimpleBot[ExpressionEquationSolver, FinalState] =
     MicroBot.simple(
-      (ev: ExpressionEval) => {
+      (ev: ExpressionEquationSolver) => {
         JvmUtils.logger.debug("computing final state")
         FinalState(ev.finalTermState())
       }
@@ -745,10 +745,10 @@ object HoTTBot {
         (eqs: GeneratedEquationNodes) => web.addEqns(eqs.eqn)
     )
 
-  lazy val expnEqnUpdate: TypedPostResponse[ExpressionEval, HoTTPostWeb, ID] =
+  lazy val expnEqnUpdate: TypedPostResponse[ExpressionEquationSolver, HoTTPostWeb, ID] =
     Callback.simple(
       (web: HoTTPostWeb) =>
-        (ev: ExpressionEval) => {
+        (ev: ExpressionEquationSolver) => {
           val neqs = ev.equations.flatMap(
             eqq => EquationOps.split(eqq).map(TermData.isleNormalize(_))
           )
@@ -801,12 +801,12 @@ object HoTTBot {
       cvOpt: Option[Expression.Coeff[_] => Option[Double]] = None
   ): MicroHoTTBoTT[
     GeneratedEquationNodes,
-    ExpressionEval,
+    ExpressionEquationSolver,
     Set[EquationNode] :: QueryProver  :: HNil
   ] = {
     val response
         : Set[EquationNode] :: QueryProver  :: HNil => GeneratedEquationNodes => Future[
-          ExpressionEval
+          ExpressionEquationSolver
         ] = {
       case eqns :: qlp  :: HNil =>
         eqs =>
@@ -821,7 +821,7 @@ object HoTTBot {
           JvmUtils.logger.debug("Obtained set of grouped equations")
           import qlp.lp
           Future(
-            ExpressionEval.fromInitEqs(
+            ExpressionEquationSolver.fromInitEqs(
               lp.initState,
               groupedEqns,
               cvOpt.getOrElse(lp.tg.coeffVal(_)),
@@ -1174,7 +1174,7 @@ object HoTTBot {
               ev.finalDist,
               lp.maxRatio
             )
-            td: FiniteDistribution[Term] = ExpressionEval.dist(
+            td: FiniteDistribution[Term] = ExpressionEquationSolver.dist(
               TermRandomVars.Terms,
               p
             )
@@ -1367,7 +1367,7 @@ object HoTTBot {
       // .map(TermData.isleNormalize(_))
     )
     JvmUtils.logger.debug("Created set of equations")
-    val expEv = ExpressionEval.fromInitEqs(
+    val expEv = ExpressionEquationSolver.fromInitEqs(
       initialState,
       groupedSet,
       tg.coeffVal(_),
@@ -1412,7 +1412,7 @@ object HoTTBot {
     for {
       groupedSet <- groupSetTask
       _ = JvmUtils.logger.debug("Created set of equations")
-      expEv <- ExpressionEval.fromInitEqsTask(
+      expEv <- ExpressionEquationSolver.fromInitEqsTask(
         initialState,
         groupedSet,
         tg.coeffVal(_),
@@ -1926,7 +1926,7 @@ object HoTTBot {
                       logger.debug(
                         s"Extracting data from expression-evaluator for $initString"
                       )
-                      val calc = ev.exprCalc
+                      val calc = ev.indexEquationSolver
                       logger.debug(
                         s"Using expression-calculator for $initString"
                       )
@@ -1957,7 +1957,7 @@ object HoTTBot {
                               backIndices.foreach { i =>
                                 JvmUtils.logger.debug(
                                   s"""|Details for index $i, traced back for $typ, step ${1 + j}, for base with $initString with depth $depth
-                                                    |Equation: ${ev.exprCalc
+                                                    |Equation: ${ev.indexEquationSolver
                                        .equationVec(
                                          i
                                        )}
@@ -2216,7 +2216,7 @@ object HoTTBot {
               )
               val tdist     = (baseDist * (1.0 - lemmaMix) ++ (lemPfDist * lemmaMix))
               val baseState = lp.initState
-              val expEv = ExpressionEval.fromInitEqs(
+              val expEv = ExpressionEquationSolver.fromInitEqs(
                 baseState.copy(terms = tdist),
                 EquationOps.group(baseEqs),
                 lp.tg.coeffVal(_),

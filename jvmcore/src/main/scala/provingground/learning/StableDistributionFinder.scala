@@ -11,8 +11,8 @@ import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
 import scala.collection.immutable.Nil
 import scala.collection.mutable
-import ExprEquations.vecSum
-object ExprCalc {
+import ExpressionEquationIndexifier.vecSum
+object StableDistributionFinder {
   def getGenerators(
       exps: List[Expression]
   ): Option[(Set[Term], Set[Typ[Term]])] = exps match {
@@ -36,7 +36,7 @@ object ExprCalc {
     traces.flatMap(s => getGenerators(s.toList))
 }
 
-class ExprCalc(
+class StableDistributionFinder(
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
     params: Coeff[_] => Option[Double],
@@ -46,7 +46,7 @@ class ExprCalc(
     decay: Double,
     maxTime: Option[Long],
     previousMap: Option[Map[Expression, Double]]
-) extends ExprEquations(initMap, equationSet, params, Vector()) {
+) extends ExpressionEquationIndexifier(initMap, equationSet, params, Vector()) {
   lazy val startingMap = {
     val v = rhsExprs.zipWithIndex.filter(_._1.hasConstant)
     (v.map { case (exp, j) => j -> exp.initialValue }.toMap.filter(_._2 > 0))

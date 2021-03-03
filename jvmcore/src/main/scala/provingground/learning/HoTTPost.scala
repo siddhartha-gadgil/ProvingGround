@@ -26,7 +26,7 @@ class HoTTPost { web =>
 
   def equations = EquationOps.group(equationNodes)
 
-  def terms = ExpressionEval.terms(equationNodes)
+  def terms = ExpressionEquationSolver.terms(equationNodes)
 
   def addEqns(eqs: Set[EquationNode]): Unit = {
     equationNodes ++= eqs
@@ -42,7 +42,7 @@ class HoTTPost { web =>
 
   val lptBuff = PostBuffer[LocalTangentProver, ID](postGlobal)
 
-  val expEvalBuff = PostBuffer[ExpressionEval, ID](postGlobal)
+  val expEvalBuff = PostBuffer[ExpressionEquationSolver, ID](postGlobal)
 
   val eqnNodeBuff = PostBuffer[Set[EquationNode], ID](postGlobal)
 
@@ -129,7 +129,7 @@ object HoTTPost {
   implicit val postLPT: Postable[LocalTangentProver, HoTTPost, ID] =
     bufferPost(_.lptBuff)
 
-  implicit val postExpEv: Postable[ExpressionEval, HoTTPost, ID] = bufferPost(
+  implicit val postExpEv: Postable[ExpressionEquationSolver, HoTTPost, ID] = bufferPost(
     _.expEvalBuff
   )
 
@@ -297,13 +297,13 @@ object HoTTPost {
     }
 
   lazy val lpToExpEv: PostResponse[HoTTPost, ID] = {
-    val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
+    val response: Unit => LocalProver => Future[ExpressionEquationSolver] = (_) =>
       lp => lp.expressionEval.runToFuture
     MicroBot(response)
   }
 
   lazy val lptToExpEv: PostResponse[HoTTPost, ID] = {
-    val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
+    val response: Unit => LocalTangentProver => Future[ExpressionEquationSolver] = (_) =>
       lp => lp.expressionEval.runToFuture
     MicroBot(response)
   }
@@ -327,7 +327,7 @@ object HoTTPost {
 
   lazy val expEvToEqns: PostResponse[HoTTPost, ID] =
     MicroBot.simple(
-      (ev: ExpressionEval) => ev.equations.flatMap(EquationOps.split)
+      (ev: ExpressionEquationSolver) => ev.equations.flatMap(EquationOps.split)
     )
 
   lazy val eqnUpdate: PostResponse[HoTTPost, ID] =
@@ -434,7 +434,7 @@ object HoTTPost {
       case (alleqs :: init :: tg :: HNil) =>
         eqs =>
           Future {
-            val expEv = ExpressionEval.fromInitEqs(
+            val expEv = ExpressionEquationSolver.fromInitEqs(
               init.ts,
               EquationOps.group(eqs union alleqs),
               tg.coeffVal(_),
