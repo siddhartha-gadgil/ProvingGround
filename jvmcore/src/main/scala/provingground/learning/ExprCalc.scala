@@ -355,7 +355,7 @@ class ExprCalc(
       steps: Long
   ): ParVector[Double] =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      JvmUtils.logger.error(s"Timeout for stable vector after $steps steps")
+      JvmUtils.logger.error(s"Timeout for stable vector after $steps steps; resolution $resolution")
       initVec
     } else {
       if (steps % 100 == 2) JvmUtils.logger.debug(s"completed $steps steps")

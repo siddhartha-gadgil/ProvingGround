@@ -203,32 +203,13 @@ object ChompSessionEq {
 }
 
 object ParChompSessionEq {
-  JvmUtils.logger = {
-    import scribe._, writer._, scribe.output.format.ASCIIOutputFormat
-    logger
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("debug")),
-        minimumLevel = Some(Level.Debug)
-      )
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily()),
-        minimumLevel = Some(Level.Info),
-        outputFormat = ASCIIOutputFormat
-      )
-      .withHandler(
-        writer = FileWriter().path(file.LogPath.daily("errors")),
-        minimumLevel = Some(Level.Error)
-      )
-      .replace()
-  }
-
   logger.info(
     """|
        |This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
        |Biggest change after first runs was having a session with bots.
        |Also parallel chomping, proving via zero, using inclusions and projections,
        |better reporting of status. 
-       |After debugging, everything generated was proved but there was an error in reporting.
+       |
        |""".stripMargin
   )
 
@@ -262,8 +243,8 @@ object ParChompSessionEq {
   val ts0  = TermState(FiniteDistribution(), FiniteDistribution.unif(Type))
   val tg   = TermGenParams(solverW = 0.05)
 
-  val lp  = LocalProver(ts, tg).sharpen(10).copy(maxTime = Some(600000L))
-  val lp0 = LocalProver(ts0).sharpen(50).copy(maxTime = Some(600000L))
+  val lp  = LocalProver(ts, tg, resolution = math.pow(10, -5)).sharpen(10).copy(maxTime = Some(600000L))
+  val lp0 = LocalProver(ts0, resolution = math.pow(10, -5)).sharpen(50).copy(maxTime = Some(600000L))
 
   val expFS =
     expEvToFinalState.andThen(updateTerms)
