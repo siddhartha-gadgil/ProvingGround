@@ -9,7 +9,15 @@ import GeneratorVariables._, TermRandomVars._, Expression._
 
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
-
+/**
+  * Maps equations based on expressions in terms, randomvariables etc. to equations based on indices only,
+  * for rapid computation. Also provides some helpers to relate index combinations and expressions.
+  *
+  * @param initMap
+  * @param equationSet
+  * @param params
+  * @param initVariables
+  */
 class ExpressionEquationIndexifier(
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
@@ -52,17 +60,17 @@ class ExpressionEquationIndexifier(
 
   lazy val initPar = initMap.par
 
-  def getProd(exp: Expression): ProdExpr =
+  def getProd(exp: Expression): ProductIndexExpression =
     initPar
       .get(exp)
-      .map(c => ProdExpr(c, Vector(), Vector()))
+      .map(c => ProductIndexExpression(c, Vector(), Vector()))
       .orElse(
-        indexMap.get(exp).map(j => ProdExpr(1, Vector(j), Vector()))
+        indexMap.get(exp).map(j => ProductIndexExpression(1, Vector(j), Vector()))
       )
       .getOrElse(
         exp match {
           case cf @ Coeff(_) =>
-            ProdExpr(
+            ProductIndexExpression(
               params(cf)
                 .getOrElse(0),
               Vector(),
@@ -70,23 +78,23 @@ class ExpressionEquationIndexifier(
             )
           case Product(x, y)        => getProd(x) * getProd(y)
           case Quotient(x, y)       => getProd(x) / getProd(y)
-          case Literal(value)       => ProdExpr(value, Vector(), Vector())
-          case InitialVal(variable) => ProdExpr(0, Vector(), Vector())
+          case Literal(value)       => ProductIndexExpression(value, Vector(), Vector())
+          case InitialVal(variable) => ProductIndexExpression(0, Vector(), Vector())
           case _ =>
             JvmUtils.logger.warn(
               s"cannot decompose $exp as a product, though it is in the rhs of ${equationVec
                 .find(eqq => (Expression.atoms(eqq.rhs).contains(exp)))}"
             )
-            ProdExpr(0, Vector(), Vector())
+            ProductIndexExpression(0, Vector(), Vector())
         }
       )
 
-  def simplify(exp: Expression): SumExpr =
-    SumExpr(
+  def simplify(exp: Expression): SumIndexExpression =
+    SumIndexExpression(
       Expression.sumTerms(exp).map(getProd(_)).filterNot(_.constant == 0)
     )
 
-  lazy val rhsExprs: Vector[SumExpr] =
+  lazy val rhsExprs: Vector[SumIndexExpression] =
     equationVec.map(eq => simplify(eq.rhs))
 
   lazy val rhsExprsPar = rhsExprs.par
@@ -242,7 +250,7 @@ object ExpressionEquationIndexifier {
   }
 }
 
-case class ProdExpr(
+case class ProductIndexExpression(
     constant: Double,
     indices: Vector[Int],
     negIndices: Vector[Int]
@@ -333,22 +341,22 @@ case class ProdExpr(
   override def toString() =
     s"($constant * $numSupport $denSupport)"
 
-  def *(that: ProdExpr) =
-    ProdExpr(
+  def *(that: ProductIndexExpression) =
+    ProductIndexExpression(
       constant * that.constant,
       indices ++ that.indices,
       negIndices ++ that.negIndices
     )
 
-  def /(that: ProdExpr) =
-    ProdExpr(
+  def /(that: ProductIndexExpression) =
+    ProductIndexExpression(
       if (that.constant > 0) constant / that.constant else constant,
       indices ++ that.negIndices,
       negIndices ++ that.indices
     )
 }
 
-case class SumExpr(terms: Vector[ProdExpr]) {
+case class SumIndexExpression(terms: Vector[ProductIndexExpression]) {
   val constantTerm: Double = terms.filter(_.isConstant).map(_.constant).sum
   val indices: Vector[Int] = terms.flatMap(_.indices).distinct
   val hasConstant: Boolean = terms.exists(_.isPositiveConstant)

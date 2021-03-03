@@ -282,7 +282,7 @@ class IndexEquationSolver(
 
   def nextVec(v: ParVector[Double], exponent: Double): ParVector[Double] = {
     // pprint.log(exponent)
-    val fn: ((SumExpr, Int)) => Double = {
+    val fn: ((SumIndexExpression, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         // if (y < 0)
@@ -303,7 +303,7 @@ class IndexEquationSolver(
 
   def simpleNextVec(v: ParVector[Double]): ParVector[Double] = {
     // JvmUtils.logger.debug("Computing new vector")
-    val fn: ((SumExpr, Int)) => Double = {
+    val fn: ((SumIndexExpression, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         val z = v(j)
@@ -548,7 +548,7 @@ class IndexEquationSolver(
 
   def track(
       exp: Expression
-  ): Option[(Int, Double, SumExpr, Double, Vector[Double])] =
+  ): Option[(Int, Double, SumIndexExpression, Double, Vector[Double])] =
     equationVec.zipWithIndex.find(_._1.lhs == exp).map {
       case (_, j) =>
         (

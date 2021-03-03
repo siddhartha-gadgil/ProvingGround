@@ -42,7 +42,7 @@ class SpireExprEquations(
     
 
   def prodJet(
-      prod: ProdExpr,
+      prod: ProductIndexExpression,
       v: parallel.ParSeq[Double]
   ): Jet[Double] = {
     val num = prod.indices
@@ -53,13 +53,13 @@ class SpireExprEquations(
     prod.negIndices.map(n => 1 / indexJet(n, v)).fold(num)(_ * _)
   }
 
-  def sumJet(sum: SumExpr, v: parallel.ParSeq[Double]): Jet[Double] =
+  def sumJet(sum: SumIndexExpression, v: parallel.ParSeq[Double]): Jet[Double] =
     sum.terms.map(prodJet(_, v)).fold(0: Jet[Double])(_ + _)
 
   def matchEquationsJet(
       v: parallel.ParSeq[Double]
   ): ParVector[Jet[Double]] =
-    rhsExprsPar.zipWithIndex.map { rhsN: (SumExpr, Int) =>
+    rhsExprsPar.zipWithIndex.map { rhsN: (SumIndexExpression, Int) =>
       val (rhs, n) = rhsN
       sumJet(rhs, v) - indexJet(n, v)
     }
@@ -67,7 +67,7 @@ class SpireExprEquations(
   def scaledMatchEquationsJet(
       v: parallel.ParSeq[Double]
   ): ParVector[Jet[Double]] =
-    rhsExprsPar.zipWithIndex.map { rhsN: (SumExpr, Int) =>
+    rhsExprsPar.zipWithIndex.map { rhsN: (SumIndexExpression, Int) =>
       val (rhs, n) = rhsN
       val lhsJet   = indexJet(n, v)
       val rhsJet   = sumJet(rhs, v)

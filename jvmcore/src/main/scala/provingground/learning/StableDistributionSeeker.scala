@@ -12,7 +12,7 @@ import scala.collection.parallel.immutable._
 import scala.collection.immutable.Nil
 import scala.collection.mutable
 import ExpressionEquationIndexifier.vecSum
-object StableDistributionFinder {
+object StableDistributionSeeker {
   def getGenerators(
       exps: List[Expression]
   ): Option[(Set[Term], Set[Typ[Term]])] = exps match {
@@ -36,7 +36,7 @@ object StableDistributionFinder {
     traces.flatMap(s => getGenerators(s.toList))
 }
 
-class StableDistributionFinder(
+class StableDistributionSeeker(
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
     params: Coeff[_] => Option[Double],
@@ -282,7 +282,7 @@ class StableDistributionFinder(
 
   def nextVec(v: ParVector[Double], exponent: Double): ParVector[Double] = {
     // pprint.log(exponent)
-    val fn: ((SumExpr, Int)) => Double = {
+    val fn: ((SumIndexExpression, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         // if (y < 0)
@@ -303,7 +303,7 @@ class StableDistributionFinder(
 
   def simpleNextVec(v: ParVector[Double]): ParVector[Double] = {
     // JvmUtils.logger.debug("Computing new vector")
-    val fn: ((SumExpr, Int)) => Double = {
+    val fn: ((SumIndexExpression, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         val z = v(j)
@@ -548,7 +548,7 @@ class StableDistributionFinder(
 
   def track(
       exp: Expression
-  ): Option[(Int, Double, SumExpr, Double, Vector[Double])] =
+  ): Option[(Int, Double, SumIndexExpression, Double, Vector[Double])] =
     equationVec.zipWithIndex.find(_._1.lhs == exp).map {
       case (_, j) =>
         (

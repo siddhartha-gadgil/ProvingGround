@@ -105,7 +105,7 @@ class TensorFlowExprVarEquations(
     x => tf.math.sigmoid(x)
   )
 
-  def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
+  def prodOp(prod: ProductIndexExpression): Option[Operand[TFloat32]] = {
     if (prod.constant == 0) None
     else
       Some {
@@ -120,7 +120,7 @@ class TensorFlowExprVarEquations(
       }
   }
 
-  def sumOp(sum: SumExpr): Option[Operand[TFloat32]] = {
+  def sumOp(sum: SumIndexExpression): Option[Operand[TFloat32]] = {
     val terms = sum.terms
       .flatMap(prodOp(_))
     // if (terms.isEmpty) println("all product terms with 0 coefficients") else println("Got a sum")
@@ -232,7 +232,7 @@ class TensorFlowExprEquations(
       tf.constant(0)
     )
 
-  def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
+  def prodOp(prod: ProductIndexExpression): Option[Operand[TFloat32]] = {
     if (prod.constant == 0) None
     else
       Some {
@@ -247,7 +247,7 @@ class TensorFlowExprEquations(
       }
   }
 
-  def sumOp(sum: SumExpr): Option[Operand[TFloat32]] = {
+  def sumOp(sum: SumIndexExpression): Option[Operand[TFloat32]] = {
     val terms = sum.terms
       .flatMap(prodOp(_))
     // if (terms.isEmpty) println("all product terms with 0 coefficients") else println("Got a sum")
@@ -416,7 +416,7 @@ class TensorFlowFatExprEquations(
   //tf.concat(bilEntries.asJava, tf.constant(0))
 
   // Used only for complicated expressions
-  def prodOp(prod: ProdExpr): Option[Operand[TFloat32]] = {
+  def prodOp(prod: ProductIndexExpression): Option[Operand[TFloat32]] = {
     if (prod.constant == 0) None
     else
       Some {

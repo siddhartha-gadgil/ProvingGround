@@ -25,7 +25,7 @@ class FatExprEquations(
     val divMatrix =
       Array.fill(size)(Array.fill(numVars)(Array.fill(numVars)(0f)))
     val linMatrix = Array.fill(size)(Array.fill(numVars)(0f))
-    val complex   = ArrayBuffer.empty[(Int, ProdExpr)]
+    val complex   = ArrayBuffer.empty[(Int, ProductIndexExpression)]
 
     rhsExprs.zipWithIndex.foreach {
       case (rhs, k) =>
