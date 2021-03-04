@@ -1,835 +1,105 @@
-<!DOCTYPE html >
-<html>
-        <head>
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-          <title></title>
-          <meta name="description" content="" />
-          <meta name="keywords" content="" />
-          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-          
-      
-      <link href="../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
-      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
-      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
-      <script type="text/javascript" src="../lib/jquery.min.js"></script>
-      <script type="text/javascript" src="../lib/jquery.panzoom.min.js"></script>
-      <script type="text/javascript" src="../lib/jquery.mousewheel.min.js"></script>
-      <script type="text/javascript" src="../lib/index.js"></script>
-      <script type="text/javascript" src="../index.js"></script>
-      <script type="text/javascript" src="../lib/scheduler.js"></script>
-      <script type="text/javascript" src="../lib/template.js"></script>
-      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
-      <script type="text/javascript">
-        /* this variable can be used by the JS to determine the path to the root document */
-        var toRoot = '../';
-      </script>
-    
-        </head>
-        <body>
-      <div id="search">
-        <span id="doc-title"><span id="doc-version"></span></span>
-        <span class="close-results"><span class="left">&lt;</span> Back</span>
-        <div id="textfilter">
-          <span class="input">
-            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
-            <i class="clear material-icons"></i>
-            <i id="search-icon" class="material-icons"></i>
-          </span>
-        </div>
-    </div>
-      <div id="search-results">
-        <div id="search-progress">
-          <div id="progress-fill"></div>
-        </div>
-        <div id="results-content">
-          <div id="entity-results"></div>
-          <div id="member-results"></div>
-        </div>
-      </div>
-      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
-        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
-          <div id="subpackage-spacer">
-            <div id="packages">
-              <h1>Packages</h1>
-              <ul>
-                <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="_root_"></a><a id="root:_root_"></a>
-      <span class="permalink">
-      <a href="../index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="../index.html"><span class="name">root</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="_root_">root</a></dd></dl></div>
-    </li><li name="_root_.provingground" visbl="pub" class="indented1 current" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="provingground"></a><a id="provingground:provingground"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <span class="name">provingground</span>
-      </span>
-      
-      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+<!DOCTYPE html ><html><head><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/><title></title><meta content="" name="description"/><meta content="" name="keywords"/><meta http-equiv="content-type" content="text/html; charset=UTF-8"/><link href="../lib/index.css" media="screen" type="text/css" rel="stylesheet"/><link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet"/><link href="../lib/print.css" media="print" type="text/css" rel="stylesheet"/><link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css"/><script type="text/javascript" src="../lib/jquery.min.js"></script><script type="text/javascript" src="../lib/index.js"></script><script type="text/javascript" src="../index.js"></script><script type="text/javascript" src="../lib/scheduler.js"></script><script type="text/javascript" src="../lib/template.js"></script><script type="text/javascript" src="https://d3js.org/d3.v4.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/graphlib-dot@0.6.2/dist/graphlib-dot.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.6.1/dagre-d3.min.js"></script><script type="text/javascript">/* this variable can be used by the JS to determine the path to the root document */
+var toRoot = '../';</script></head><body><div id="search"><span id="doc-title"><span id="doc-version"></span></span> <span class="close-results"><span class="left">&lt;</span> Back</span><div id="textfilter"><span class="input"><input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/"/><i class="clear material-icons"></i><i id="search-icon" class="material-icons"></i></span></div></div><div id="search-results"><div id="search-progress"><div id="progress-fill"></div></div><div id="results-content"><div id="entity-results"></div><div id="member-results"></div></div></div><div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;"><div id="content-container" style="-webkit-overflow-scrolling: touch;"><div id="subpackage-spacer"><div id="packages"><h1>Packages</h1><ul><li class="indented0 " name="_root_.root" group="Ungrouped" fullComment="yes" data-isabs="false" visbl="pub"><a id="_root_"></a><a id="root:_root_"></a> <span class="permalink"><a href="../index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="../index.html" title=""><span class="name">root</span></a></span><div class="fullcomment"><dl class="attributes block"><dt>Definition Classes</dt><dd><a href="../index.html" name="_root_" id="_root_" class="extype">root</a></dd></dl></div></li><li class="indented1 current" name="_root_.provingground" group="Ungrouped" fullComment="yes" data-isabs="false" visbl="pub"><a id="provingground"></a><a id="provingground:provingground"></a> <span class="permalink"><a href="../provingground/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><span class="name">provingground</span></span><p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
-homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="translation/index.html" class="extype" name="provingground.translation">translation</a>
-package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="_root_">root</a></dd></dl></div>
-    </li><li name="provingground.andrewscurtis" visbl="pub" class="indented2 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="andrewscurtis"></a><a id="andrewscurtis:andrewscurtis"></a>
-      <span class="permalink">
-      <a href="../provingground/andrewscurtis/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="andrewscurtis/index.html"><span class="name">andrewscurtis</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.examples" visbl="pub" class="indented2 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="examples"></a><a id="examples:examples"></a>
-      <span class="permalink">
-      <a href="../provingground/examples/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="examples/index.html"><span class="name">examples</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="induction"></a><a id="induction:induction"></a>
-      <span class="permalink">
-      <a href="../provingground/induction/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="Much of  the richness of HoTT is in the definitions of Inductive types (and their indexed  counterparts) and of (dependent) functions on these by recursion and induction These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points)." href="induction/index.html"><span class="name">induction</span></a>
-      </span>
-      
-      <p class="shortcomment cmt">Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="HoTT$.html" name="provingground.HoTT" id="provingground.HoTT" class="extype">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="induction/index.html" name="provingground.induction" id="provingground.induction" class="extype">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="learning/index.html" name="provingground.learning" id="provingground.learning" class="extype">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="scalahott/index.html" name="provingground.scalahott" id="provingground.scalahott" class="extype">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="translation/index.html" name="provingground.translation" id="provingground.translation" class="extype">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="library/index.html" name="provingground.library" id="provingground.library" class="extype">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"><dt>Definition Classes</dt><dd><a href="../index.html" name="_root_" id="_root_" class="extype">root</a></dd></dl></div></li><li class="indented2 " name="provingground.andrewscurtis" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="andrewscurtis"></a><a id="andrewscurtis:andrewscurtis"></a> <span class="permalink"><a href="../provingground/andrewscurtis/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="andrewscurtis/index.html" title=""><span class="name">andrewscurtis</span></a></span></li><li class="indented2 " name="provingground.examples" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="examples"></a><a id="examples:examples"></a> <span class="permalink"><a href="../provingground/examples/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="examples/index.html" title=""><span class="name">examples</span></a></span></li><li class="indented2 " name="provingground.induction" group="Ungrouped" fullComment="yes" data-isabs="false" visbl="pub"><a id="induction"></a><a id="induction:induction"></a> <span class="permalink"><a href="../provingground/induction/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="induction/index.html" title="Much of  the richness of HoTT is in the definitions of Inductive types (and their indexed  counterparts) and of (dependent) functions on these by recursion and induction These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points)."><span class="name">induction</span></a></span><p class="shortcomment cmt">Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
 and of (dependent) functions on these by recursion and induction
 These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points).</p><div class="fullcomment"><div class="comment cmt"><p>Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
 and of (dependent) functions on these by recursion and induction
 These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points). In HoTT,
 recursion and induction are applications of (dependent) functions <code>rec_W,X</code> and  <code>ind_W, Xs</code> to the <code><code>definition data</code></code>.</p><p>It is useful to capture information regarding inductive types and the recursion and induction functions in scala types. Our implementation
-is designed to do this.</p><h4>Inductive Type Definitions</h4><p>Inductive types are specified by introduction rules. Each introduction rule is specified in <a href="induction/ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> (without specifying the type)
-and <a href="induction/ConstructorTL.html" class="extype" name="provingground.induction.ConstructorTL">ConstructorTL</a> including the specific type. The full definition is in <a href="induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>.</p><h4>Recursion and Induction functions</h4><p>These are defined recursively, first for each introduction rule and then for the inductive type as a whole. A subtlety is that the
+is designed to do this.</p><h4>Inductive Type Definitions</h4><p>Inductive types are specified by introduction rules. Each introduction rule is specified in <a href="induction/ConstructorShape.html" name="provingground.induction.ConstructorShape" id="provingground.induction.ConstructorShape" class="extype">ConstructorShape</a> (without specifying the type)
+and <a href="induction/ConstructorTL.html" name="provingground.induction.ConstructorTL" id="provingground.induction.ConstructorTL" class="extype">ConstructorTL</a> including the specific type. The full definition is in <a href="induction/ConstructorSeqTL.html" name="provingground.induction.ConstructorSeqTL" id="provingground.induction.ConstructorSeqTL" class="extype">ConstructorSeqTL</a>.</p><h4>Recursion and Induction functions</h4><p>These are defined recursively, first for each introduction rule and then for the inductive type as a whole. A subtlety is that the
 scala type of the <code>rec_W,X</code> and <code>induc_W, Xs</code> functions depends on the scala type of the codomain <code>X</code> (or family <code>Xs</code>).
-To make these types visible, some type level calculations using  implicits are done, giving traits <a href="induction/ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>
-and <a href="induction/ConstructorSeqMap.html" class="extype" name="provingground.induction.ConstructorSeqMap">ConstructorSeqMap</a> that have recursive definition of the recursion and induction functions, the former for the case of a
-single introduction rule. Traits <a href="induction/ConstructorSeqMapper.html" class="extype" name="provingground.induction.ConstructorSeqMapper">ConstructorSeqMapper</a> and <a href="induction/ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a> provide the lifts.</p><h4>Indexed Versions</h4><p>There are indexed versions of all these definitions, to work with indexed inductive type families.
-</p></div></div>
-    </li><li name="provingground.interface" visbl="pub" class="indented2 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="interface"></a><a id="interface:interface"></a>
-      <span class="permalink">
-      <a href="../provingground/interface/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="interface/index.html"><span class="name">interface</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="learning"></a><a id="learning:learning"></a>
-      <span class="permalink">
-      <a href="../provingground/learning/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="learning/index.html"><span class="name">learning</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.library" visbl="pub" class="indented2 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="library"></a><a id="library:library"></a>
-      <span class="permalink">
-      <a href="../provingground/library/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="library/index.html"><span class="name">library</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.scalahott" visbl="pub" class="indented2 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="scalahott"></a><a id="scalahott:scalahott"></a>
-      <span class="permalink">
-      <a href="../provingground/scalahott/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="scalahott/index.html"><span class="name">scalahott</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.scratch" visbl="pub" class="indented2 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="scratch"></a><a id="scratch:scratch"></a>
-      <span class="permalink">
-      <a href="../provingground/scratch/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="scratch/index.html"><span class="name">scratch</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.translation" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="translation"></a><a id="translation:translation"></a>
-      <span class="permalink">
-      <a href="../provingground/translation/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="Translation primarily using a functorial framework - see Translator$, for natural language processing as well as serialization, formatted output, parsing, interface with  formal languages etc." href="translation/index.html"><span class="name">translation</span></a>
-      </span>
-      
-      <p class="shortcomment cmt">Translation primarily using a functorial framework - see <a href="translation/Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
-as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><div class="fullcomment"><div class="comment cmt"><p>Translation primarily using a functorial framework - see <a href="translation/Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
-as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><p>Besides the <a href="translation/Translator.html" class="extype" name="provingground.translation.Translator">Translator</a> framework and helper typeclasses is <a href="translation/Functors$.html" class="extype" name="provingground.translation.Functors">Functors</a>, several structures for
+To make these types visible, some type level calculations using  implicits are done, giving traits <a href="induction/ConstructorPatternMap.html" name="provingground.induction.ConstructorPatternMap" id="provingground.induction.ConstructorPatternMap" class="extype">ConstructorPatternMap</a>
+and <a href="induction/ConstructorSeqMap.html" name="provingground.induction.ConstructorSeqMap" id="provingground.induction.ConstructorSeqMap" class="extype">ConstructorSeqMap</a> that have recursive definition of the recursion and induction functions, the former for the case of a
+single introduction rule. Traits <a href="induction/ConstructorSeqMapper.html" name="provingground.induction.ConstructorSeqMapper" id="provingground.induction.ConstructorSeqMapper" class="extype">ConstructorSeqMapper</a> and <a href="induction/ConstructorPatternMapper.html" name="provingground.induction.ConstructorPatternMapper" id="provingground.induction.ConstructorPatternMapper" class="extype">ConstructorPatternMapper</a> provide the lifts.</p><h4>Indexed Versions</h4><p>There are indexed versions of all these definitions, to work with indexed inductive type families.
+</p></div></div></li><li class="indented2 " name="provingground.interface" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="interface"></a><a id="interface:interface"></a> <span class="permalink"><a href="../provingground/interface/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="interface/index.html" title=""><span class="name">interface</span></a></span></li><li class="indented2 " name="provingground.learning" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="learning"></a><a id="learning:learning"></a> <span class="permalink"><a href="../provingground/learning/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="learning/index.html" title=""><span class="name">learning</span></a></span></li><li class="indented2 " name="provingground.library" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="library"></a><a id="library:library"></a> <span class="permalink"><a href="../provingground/library/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="library/index.html" title=""><span class="name">library</span></a></span></li><li class="indented2 " name="provingground.scalahott" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="scalahott"></a><a id="scalahott:scalahott"></a> <span class="permalink"><a href="../provingground/scalahott/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="scalahott/index.html" title=""><span class="name">scalahott</span></a></span></li><li class="indented2 " name="provingground.scratch" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="scratch"></a><a id="scratch:scratch"></a> <span class="permalink"><a href="../provingground/scratch/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="scratch/index.html" title=""><span class="name">scratch</span></a></span></li><li class="indented2 " name="provingground.translation" group="Ungrouped" fullComment="yes" data-isabs="false" visbl="pub"><a id="translation"></a><a id="translation:translation"></a> <span class="permalink"><a href="../provingground/translation/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="translation/index.html" title="Translation primarily using a functorial framework - see Translator$, for natural language processing as well as serialization, formatted output, parsing, interface with  formal languages etc."><span class="name">translation</span></a></span><p class="shortcomment cmt">Translation primarily using a functorial framework - see <a href="translation/Translator$.html" name="provingground.translation.Translator" id="provingground.translation.Translator" class="extype">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><div class="fullcomment"><div class="comment cmt"><p>Translation primarily using a functorial framework - see <a href="translation/Translator$.html" name="provingground.translation.Translator" id="provingground.translation.Translator" class="extype">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><p>Besides the <a href="translation/Translator.html" name="provingground.translation.Translator" id="provingground.translation.Translator" class="extype">Translator</a> framework and helper typeclasses is <a href="translation/Functors$.html" name="provingground.translation.Functors" id="provingground.translation.Functors" class="extype">Functors</a>, several structures for
 concrete languages including our implementation of HoTT are in this package.
-</p></div></div>
-    </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="object" href="Base$.html" title=""></a>
-                        <a href="Base$.html" title="">Base</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="Context$.html" title=""></a>
-                        <a class="trait" href="Context.html" title=""></a>
-                        <a href="Context.html" title="">Context</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="FiniteDistribution$.html" title=""></a>
-                        <a class="class" href="FiniteDistribution.html" title="Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates."></a>
-                        <a href="FiniteDistribution.html" title="Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates.">FiniteDistribution</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="object" href="Frankl$.html" title=""></a>
-                        <a href="Frankl$.html" title="">Frankl</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="object" href="HoTT$.html" title="Core of Homotopy Type Theory (HoTT) implementation."></a>
-                        <a href="HoTT$.html" title="Core of Homotopy Type Theory (HoTT) implementation.">HoTT</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="LinearStructure$.html" title=""></a>
-                        <a class="class" href="LinearStructure.html" title=""></a>
-                        <a href="LinearStructure.html" title="">LinearStructure</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="object" href="MereProposition$.html" title=""></a>
-                        <a href="MereProposition$.html" title="">MereProposition</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="PickledWeighted$.html" title=""></a>
-                        <a class="class" href="PickledWeighted.html" title=""></a>
-                        <a href="PickledWeighted.html" title="">PickledWeighted</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="ProbabilityDistribution$.html" title=""></a>
-                        <a class="trait" href="ProbabilityDistribution.html" title="A probability distribution, from which we can pick values at random (the only abstract method)."></a>
-                        <a href="ProbabilityDistribution.html" title="A probability distribution, from which we can pick values at random (the only abstract method).">ProbabilityDistribution</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="Subst$.html" title=""></a>
-                        <a class="trait" href="Subst.html" title="allows substitution of a Term by another."></a>
-                        <a href="Subst.html" title="allows substitution of a Term by another.">Subst</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="trait" href="SubstImplicits.html" title=""></a>
-                        <a href="SubstImplicits.html" title="">SubstImplicits</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="TermList$.html" title=""></a>
-                        <a class="trait" href="TermList.html" title="allows substitution of a Term by another, as well as mapping to a vector of terms chiefly subtypes of Term and HLists of these;"></a>
-                        <a href="TermList.html" title="allows substitution of a Term by another, as well as mapping to a vector of terms chiefly subtypes of Term and HLists of these;">TermList</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="trait" href="TermListImplicits.html" title=""></a>
-                        <a href="TermListImplicits.html" title="">TermListImplicits</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="object" href="Utils$.html" title=""></a>
-                        <a href="Utils$.html" title="">Utils</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="Weighted$.html" title=""></a>
-                        <a class="class" href="Weighted.html" title=""></a>
-                        <a href="Weighted.html" title="">Weighted</a>
-                      </li>
-              </ul>
-            </div>
-          </div>
-          <div id="content">
-            <body class="package value">
-      <div id="definition">
-        <div class="big-circle package">p</div>
-        
-        <h1>provingground<span class="permalink">
-      <a href="../provingground/index.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span></h1>
-        
-      </div>
+</p></div></div></li><li class="current-entities indented1"><span class="separator"></span> <a href="Base$.html" title="" class="object"></a><a href="Base$.html" title="">Base</a></li><li class="current-entities indented1"><a href="Context$.html" title="" class="object"></a> <a href="Context.html" title="" class="trait"></a><a href="Context.html" title="">Context</a></li><li class="current-entities indented1"><a href="FiniteDistribution$.html" title="" class="object"></a> <a href="FiniteDistribution.html" title="Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates." class="class"></a><a href="FiniteDistribution.html" title="Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates.">FiniteDistribution</a></li><li class="current-entities indented1"><span class="separator"></span> <a href="Frankl$.html" title="" class="object"></a><a href="Frankl$.html" title="">Frankl</a></li><li class="current-entities indented1"><span class="separator"></span> <a href="HoTT$.html" title="Core of Homotopy Type Theory (HoTT) implementation." class="object"></a><a href="HoTT$.html" title="Core of Homotopy Type Theory (HoTT) implementation.">HoTT</a></li><li class="current-entities indented1"><span class="separator"></span> <a href="JvmUtils$.html" title="" class="object"></a><a href="JvmUtils$.html" title="">JvmUtils</a></li><li class="current-entities indented1"><a href="LinearStructure$.html" title="" class="object"></a> <a href="LinearStructure.html" title="" class="class"></a><a href="LinearStructure.html" title="">LinearStructure</a></li><li class="current-entities indented1"><span class="separator"></span> <a href="MereProposition$.html" title="" class="object"></a><a href="MereProposition$.html" title="">MereProposition</a></li><li class="current-entities indented1"><a href="PickledWeighted$.html" title="" class="object"></a> <a href="PickledWeighted.html" title="" class="class"></a><a href="PickledWeighted.html" title="">PickledWeighted</a></li><li class="current-entities indented1"><a href="ProbabilityDistribution$.html" title="" class="object"></a> <a href="ProbabilityDistribution.html" title="A probability distribution, from which we can pick values at random (the only abstract method)." class="trait"></a><a href="ProbabilityDistribution.html" title="A probability distribution, from which we can pick values at random (the only abstract method).">ProbabilityDistribution</a></li><li class="current-entities indented1"><a href="Subst$.html" title="" class="object"></a> <a href="Subst.html" title="allows substitution of a Term by another." class="trait"></a><a href="Subst.html" title="allows substitution of a Term by another.">Subst</a></li><li class="current-entities indented1"><span class="separator"></span> <a href="SubstImplicits.html" title="" class="trait"></a><a href="SubstImplicits.html" title="">SubstImplicits</a></li><li class="current-entities indented1"><a href="TermList$.html" title="" class="object"></a> <a href="TermList.html" title="allows substitution of a Term by another, as well as mapping to a vector of terms chiefly subtypes of Term and HLists of these;" class="trait"></a><a href="TermList.html" title="allows substitution of a Term by another, as well as mapping to a vector of terms chiefly subtypes of Term and HLists of these;">TermList</a></li><li class="current-entities indented1"><span class="separator"></span> <a href="TermListImplicits.html" title="" class="trait"></a><a href="TermListImplicits.html" title="">TermListImplicits</a></li><li class="current-entities indented1"><span class="separator"></span> <a href="Utils$.html" title="" class="object"></a><a href="Utils$.html" title="">Utils</a></li><li class="current-entities indented1"><a href="Weighted$.html" title="" class="object"></a> <a href="Weighted.html" title="" class="class"></a><a href="Weighted.html" title="">Weighted</a></li></ul></div></div><div id="content"><body class="package value"><div id="definition"><div class="big-circle package">p</div><h1>provingground<span class="permalink"><a href="../provingground/index.html" title="Permalink"><i class="material-icons"></i></a></span></h1></div><h4 id="signature" class="signature"><span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><span class="name">provingground</span></span></h4><div id="comment" class="fullcommenttop"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="HoTT$.html" name="provingground.HoTT" id="provingground.HoTT" class="extype">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="induction/index.html" name="provingground.induction" id="provingground.induction" class="extype">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="learning/index.html" name="provingground.learning" id="provingground.learning" class="extype">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="scalahott/index.html" name="provingground.scalahott" id="provingground.scalahott" class="extype">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="translation/index.html" name="provingground.translation" id="provingground.translation" class="extype">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="library/index.html" name="provingground.library" id="provingground.library" class="extype">library</a> package is contains basic structures implemented in HoTT.
+</p></div><div class="toggleContainer"><div class="toggle block"><span>Linear Supertypes</span><div class="superTypes hiddenContent"><a href="../scala/index.html#AnyRef=Object" name="scala.AnyRef" id="scala.AnyRef" class="extmbr">AnyRef</a>, <span name="scala.Any" class="extype">Any</span></div></div></div><div id="content-diagram-container" class="toggleContainer block diagram-container"><span class="toggle diagram-link">Content Hierarchy</span><div id="content-diagram" class="diagram hiddenContent"><svg id="graph1" class="package-diagram" width="800" height="600"></svg><script type="text/dot" id="dot1">
+digraph G {
+  
+  
+  node0 [URL="ProbabilityDistribution.html#inheritance-diagram-container", label="ProbabilityDistribution[A]", id="graph1_0", class="default", tooltip="provingground.ProbabilityDistribution"] ;
+  node1 [URL="FiniteDistribution.html#inheritance-diagram-container", label="FiniteDistribution[T]", id="graph1_1", class="default", tooltip="provingground.FiniteDistribution"] ;
+  node2 [URL="TermListImplicits.html#inheritance-diagram-container", label="TermListImplicits", id="graph1_2", class="default", tooltip="provingground.TermListImplicits"] ;
+  node3 [URL="SubstImplicits.html#inheritance-diagram-container", label="SubstImplicits", id="graph1_3", class="default", tooltip="provingground.SubstImplicits"] ;
+  node4 [URL="TermList$.html#inheritance-diagram-container", label="TermList", id="graph1_4", class="default", tooltip="provingground.TermList"] ;
+  node5 [URL="TermList.html#inheritance-diagram-container", label="TermList[A]", id="graph1_5", class="default", tooltip="provingground.TermList"] ;
+  node6 [URL="Subst.html#inheritance-diagram-container", label="Subst[A]", id="graph1_6", class="default", tooltip="provingground.Subst"] ;
+  
+  
+  node6 -> node5 [arrowtail="empty", dir="back", id="graph1_6_5", class="inheritance", tooltip="TermList[A] is a subtype of Subst[A]"] ;
+  node2 -> node4 [arrowtail="empty", dir="back", id="graph1_2_4", class="inheritance", tooltip="TermList is a subtype of TermListImplicits"] ;
+  node3 -> node2 [arrowtail="empty", dir="back", id="graph1_3_2", class="inheritance", tooltip="TermListImplicits is a subtype of SubstImplicits"] ;
+  node0 -> node1 [arrowtail="empty", dir="back", id="graph1_0_1", class="inheritance", tooltip="FiniteDistribution[T] is a subtype of ProbabilityDistribution[A]"] ;
+}
+</script><script>$("#inheritance-diagram").bind('beforeShow', function() {
+  if ($("svg#graph1").children().length == 0) {
+    var dot = document.querySelector("#dot1").text;
+    var svg = d3.select("#graph1");
+    var inner = svg.append("g");
 
-      <h4 id="signature" class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <span class="name">provingground</span>
-      </span>
-      </h4>
+    // Set up zoom support
+    var zoom = d3.zoom()
+        .on("zoom", function() {
+          inner.attr("transform", d3.event.transform);
+        });
+    svg.call(zoom);
 
-      
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
-homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="translation/index.html" class="extype" name="provingground.translation">translation</a>
-package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
-</p></div><div class="toggleContainer block">
-          <span class="toggle">
-            Linear Supertypes
-          </span>
-          <div class="superTypes hiddenContent"><a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div><div class="toggleContainer block diagram-container" id="content-diagram-container">
-                <span class="toggle diagram-link">
-                  Content Hierarchy
-                </span>
-                <div class="diagram" id="content-diagram"><svg class="package-diagram" id="graph1" viewBox="0.00 0.00 394.00 155.00" height="155pt" width="394pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="graph0"><polygon points="-4,4 -4,-151 390,-151 390,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><!-- node0 --><g class="node trait" id="graph1_0"><g id="a_trait|graph1_0"><a xlink:title="provingground.ProbabilityDistribution" xlink:href="ProbabilityDistribution.html#inheritance-diagram"><path d="M141.6667,-147C141.6667,-147 8.3333,-147 8.3333,-147 4.1667,-147 0,-142.8333 0,-138.6667 0,-138.6667 0,-130.3333 0,-130.3333 0,-126.1667 4.1667,-122 8.3333,-122 8.3333,-122 141.6667,-122 141.6667,-122 145.8333,-122 150,-126.1667 150,-130.3333 150,-130.3333 150,-138.6667 150,-138.6667 150,-142.8333 145.8333,-147 141.6667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-141.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="31" text-anchor="start">ProbabilityDistribution[A]</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.FiniteDistribution" xlink:href="FiniteDistribution.html#inheritance-diagram"><path d="M129.6667,-86C129.6667,-86 20.3333,-86 20.3333,-86 16.1667,-86 12,-81.8333 12,-77.6667 12,-77.6667 12,-69.3333 12,-69.3333 12,-65.1667 16.1667,-61 20.3333,-61 20.3333,-61 129.6667,-61 129.6667,-61 133.8333,-61 138,-65.1667 138,-69.3333 138,-69.3333 138,-77.6667 138,-77.6667 138,-81.8333 133.8333,-86 129.6667,-86" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-80.5" x="22" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="43" text-anchor="start">FiniteDistribution[T]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="FiniteDistribution[T] is a subtype of ProbabilityDistribution[A]"><path d="M75,-114.7386C75,-105.3393 75,-94.3803 75,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="72.5501,-114.8607 75,-121.8608 77.4501,-114.8608 72.5501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="provingground.TermListImplicits" xlink:href="TermListImplicits.html#inheritance-diagram"><path d="M267.6667,-86C267.6667,-86 170.3333,-86 170.3333,-86 166.1667,-86 162,-81.8333 162,-77.6667 162,-77.6667 162,-69.3333 162,-69.3333 162,-65.1667 166.1667,-61 170.3333,-61 170.3333,-61 267.6667,-61 267.6667,-61 271.8333,-61 276,-65.1667 276,-69.3333 276,-69.3333 276,-77.6667 276,-77.6667 276,-81.8333 271.8333,-86 267.6667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-80.5" x="172" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="193" text-anchor="start">TermListImplicits</text></a></g></g><!-- node4 --><g class="node object" id="graph1_4"><g id="a_object|graph1_4"><a xlink:title="provingground.TermList" xlink:href="TermList$.html#inheritance-diagram"><path d="M250.6667,-25C250.6667,-25 187.3333,-25 187.3333,-25 183.1667,-25 179,-20.8333 179,-16.6667 179,-16.6667 179,-8.3333 179,-8.3333 179,-4.1667 183.1667,0 187.3333,0 187.3333,0 250.6667,0 250.6667,0 254.8333,0 259,-4.1667 259,-8.3333 259,-8.3333 259,-16.6667 259,-16.6667 259,-20.8333 254.8333,-25 250.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="189" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="210" text-anchor="start">TermList</text></a></g></g><!-- node2&#45;&gt;node4 --><g class="edge inheritance" id="graph1_2_4"><g id="a_inheritance|graph1_2_4"><a xlink:title="TermList is a subtype of TermListImplicits"><path d="M219,-53.7386C219,-44.3393 219,-33.3803 219,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="216.5501,-53.8607 219,-60.8608 221.4501,-53.8608 216.5501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="provingground.SubstImplicits" xlink:href="SubstImplicits.html#inheritance-diagram"><path d="M261.6667,-147C261.6667,-147 176.3333,-147 176.3333,-147 172.1667,-147 168,-142.8333 168,-138.6667 168,-138.6667 168,-130.3333 168,-130.3333 168,-126.1667 172.1667,-122 176.3333,-122 176.3333,-122 261.6667,-122 261.6667,-122 265.8333,-122 270,-126.1667 270,-130.3333 270,-130.3333 270,-138.6667 270,-138.6667 270,-142.8333 265.8333,-147 261.6667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-141.5" x="178" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="199" text-anchor="start">SubstImplicits</text></a></g></g><!-- node3&#45;&gt;node2 --><g class="edge inheritance" id="graph1_3_2"><g id="a_inheritance|graph1_3_2"><a xlink:title="TermListImplicits is a subtype of SubstImplicits"><path d="M219,-114.7386C219,-105.3393 219,-94.3803 219,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="216.5501,-114.8607 219,-121.8608 221.4501,-114.8608 216.5501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node trait" id="graph1_5"><g id="a_trait|graph1_5"><a xlink:title="provingground.TermList" xlink:href="TermList.html#inheritance-diagram"><path d="M377.6667,-86C377.6667,-86 302.3333,-86 302.3333,-86 298.1667,-86 294,-81.8333 294,-77.6667 294,-77.6667 294,-69.3333 294,-69.3333 294,-65.1667 298.1667,-61 302.3333,-61 302.3333,-61 377.6667,-61 377.6667,-61 381.8333,-61 386,-65.1667 386,-69.3333 386,-69.3333 386,-77.6667 386,-77.6667 386,-81.8333 381.8333,-86 377.6667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-80.5" x="304" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="325" text-anchor="start">TermList[A]</text></a></g></g><!-- node6 --><g class="node trait" id="graph1_6"><g id="a_trait|graph1_6"><a xlink:title="provingground.Subst" xlink:href="Subst.html#inheritance-diagram"><path d="M371.6667,-147C371.6667,-147 308.3333,-147 308.3333,-147 304.1667,-147 300,-142.8333 300,-138.6667 300,-138.6667 300,-130.3333 300,-130.3333 300,-126.1667 304.1667,-122 308.3333,-122 308.3333,-122 371.6667,-122 371.6667,-122 375.8333,-122 380,-126.1667 380,-130.3333 380,-130.3333 380,-138.6667 380,-138.6667 380,-142.8333 375.8333,-147 371.6667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-141.5" x="310" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="331" text-anchor="start">Subst[A]</text></a></g></g><!-- node6&#45;&gt;node5 --><g class="edge inheritance" id="graph1_6_5"><g id="a_inheritance|graph1_6_5"><a xlink:title="TermList[A] is a subtype of Subst[A]"><path d="M340,-114.7386C340,-105.3393 340,-94.3803 340,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="337.5501,-114.8607 340,-121.8608 342.4501,-114.8608 337.5501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
-                <div id="diagram-controls" class="hiddenContent">
-                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
-                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
-                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
-                </div>
-              </div></div>
-        
+    var render = new dagreD3.render();
+    var g = graphlibDot.read(dot);
+    render(inner, g);
 
-      <div id="mbrsel">
-        <div class="toggle"></div>
-        <div id="memberfilter">
-          <i class="material-icons arrow"></i>
-          <span class="input">
-            <input id="mbrsel-input" placeholder="Filter all members" type="text" accesskey="/" />
-          </span>
-          <i class="clear material-icons"></i>
-        </div>
-        <div id="filterby">
-          <div id="order">
-            <span class="filtertype">Ordering</span>
-            <ol>
-              
-              <li class="alpha in"><span>Alphabetic</span></li>
-              <li class="inherit out"><span>By Inheritance</span></li>
-            </ol>
-          </div>
-          <div class="ancestors">
-                  <span class="filtertype">Inherited<br />
-                  </span>
-                  <ol id="linearization">
-                    <li class="in" name="provingground"><span>provingground</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
-                  </ol>
-                </div><div class="ancestors">
-              <span class="filtertype"></span>
-              <ol>
-                <li class="hideall out"><span>Hide All</span></li>
-                <li class="showall in"><span>Show All</span></li>
-              </ol>
-            </div>
-          <div id="visbl">
-              <span class="filtertype">Visibility</span>
-              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
-            </div>
-        </div>
-      </div>
-
-      <div id="template">
-        <div id="allMembers">
-        
-
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="provingground.Context" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ContextextendsAnyRef"></a><a id="Context:Context"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">sealed </span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Context.html"><span class="name">Context</span></a><span class="result"> extends <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
-      </span>
-      
-      
-    </li><li name="provingground.FiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="FiniteDistribution[T]extendsAnyValwithProbabilityDistribution[T]withProductwithSerializable"></a><a id="FiniteDistribution[T]:FiniteDistribution[T]"></a>
-      <span class="permalink">
-      <a href="../provingground/FiniteDistribution.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a title="Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates." href="FiniteDistribution.html"><span class="name">FiniteDistribution</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span> with <a href="ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Finite distributions, often supposed to be probability distributions,
+    inner.selectAll("g.node").each(function(v) {
+      // https://stackoverflow.com/questions/27381452/wrapping-existing-inline-svg-g-element-with-a-element
+      var tgt = $("#"+ g.node(v).id +" g.label text")[0];
+      var parent = tgt.parentNode;
+      var a = document.createElementNS('http://www.w3.org/2000/svg', 'a');
+      a.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', g.node(v).URL);
+      a.appendChild(tgt);
+      parent.appendChild(a);
+    });
+  }
+})</script></div></div></div><div id="mbrsel"><div class="toggle"></div><div id="memberfilter"><i class="material-icons arrow"></i><span class="input"><input placeholder="Filter all members" id="mbrsel-input" type="text" accesskey="/"/></span><i class="clear material-icons"></i></div><div id="filterby"><div id="order"><span class="filtertype">Ordering</span><ol><li class="alpha in"><span>Alphabetic</span></li><li class="inherit out"><span>By Inheritance</span></li></ol></div><div class="ancestors"><span class="filtertype">Inherited<br/></span><ol id="linearization"><li class="in" name="provingground"><span>provingground</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li></ol></div><div class="ancestors"><span class="filtertype"></span><ol><li class="hideall out"><span>Hide All</span></li><li class="showall in"><span>Show All</span></li></ol></div><div id="visbl"><span class="filtertype">Visibility</span><ol><li class="public in"><span>Public</span></li><li class="protected out"><span>Protected</span></li></ol></div></div></div><div id="template"><div id="allMembers"><div id="packages" class="package members"><h3>Package Members</h3><ol><li class="indented0 " name="provingground.andrewscurtis" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="andrewscurtis"></a><a id="andrewscurtis:andrewscurtis"></a> <span class="permalink"><a href="../provingground/andrewscurtis/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="andrewscurtis/index.html" title=""><span class="name">andrewscurtis</span></a></span></li><li class="indented0 " name="provingground.examples" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="examples"></a><a id="examples:examples"></a> <span class="permalink"><a href="../provingground/examples/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="examples/index.html" title=""><span class="name">examples</span></a></span></li><li class="indented0 " name="provingground.induction" group="Ungrouped" fullComment="yes" data-isabs="false" visbl="pub"><a id="induction"></a><a id="induction:induction"></a> <span class="permalink"><a href="../provingground/induction/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="induction/index.html" title="Much of  the richness of HoTT is in the definitions of Inductive types (and their indexed  counterparts) and of (dependent) functions on these by recursion and induction These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points)."><span class="name">induction</span></a></span><p class="shortcomment cmt">Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points).</p><div class="fullcomment"><div class="comment cmt"><p>Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points). In HoTT,
+recursion and induction are applications of (dependent) functions <code>rec_W,X</code> and  <code>ind_W, Xs</code> to the <code><code>definition data</code></code>.</p><p>It is useful to capture information regarding inductive types and the recursion and induction functions in scala types. Our implementation
+is designed to do this.</p><h4>Inductive Type Definitions</h4><p>Inductive types are specified by introduction rules. Each introduction rule is specified in <a href="induction/ConstructorShape.html" name="provingground.induction.ConstructorShape" id="provingground.induction.ConstructorShape" class="extype">ConstructorShape</a> (without specifying the type)
+and <a href="induction/ConstructorTL.html" name="provingground.induction.ConstructorTL" id="provingground.induction.ConstructorTL" class="extype">ConstructorTL</a> including the specific type. The full definition is in <a href="induction/ConstructorSeqTL.html" name="provingground.induction.ConstructorSeqTL" id="provingground.induction.ConstructorSeqTL" class="extype">ConstructorSeqTL</a>.</p><h4>Recursion and Induction functions</h4><p>These are defined recursively, first for each introduction rule and then for the inductive type as a whole. A subtlety is that the
+scala type of the <code>rec_W,X</code> and <code>induc_W, Xs</code> functions depends on the scala type of the codomain <code>X</code> (or family <code>Xs</code>).
+To make these types visible, some type level calculations using  implicits are done, giving traits <a href="induction/ConstructorPatternMap.html" name="provingground.induction.ConstructorPatternMap" id="provingground.induction.ConstructorPatternMap" class="extype">ConstructorPatternMap</a>
+and <a href="induction/ConstructorSeqMap.html" name="provingground.induction.ConstructorSeqMap" id="provingground.induction.ConstructorSeqMap" class="extype">ConstructorSeqMap</a> that have recursive definition of the recursion and induction functions, the former for the case of a
+single introduction rule. Traits <a href="induction/ConstructorSeqMapper.html" name="provingground.induction.ConstructorSeqMapper" id="provingground.induction.ConstructorSeqMapper" class="extype">ConstructorSeqMapper</a> and <a href="induction/ConstructorPatternMapper.html" name="provingground.induction.ConstructorPatternMapper" id="provingground.induction.ConstructorPatternMapper" class="extype">ConstructorPatternMapper</a> provide the lifts.</p><h4>Indexed Versions</h4><p>There are indexed versions of all these definitions, to work with indexed inductive type families.
+</p></div></div></li><li class="indented0 " name="provingground.interface" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="interface"></a><a id="interface:interface"></a> <span class="permalink"><a href="../provingground/interface/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="interface/index.html" title=""><span class="name">interface</span></a></span></li><li class="indented0 " name="provingground.learning" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="learning"></a><a id="learning:learning"></a> <span class="permalink"><a href="../provingground/learning/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="learning/index.html" title=""><span class="name">learning</span></a></span></li><li class="indented0 " name="provingground.library" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="library"></a><a id="library:library"></a> <span class="permalink"><a href="../provingground/library/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="library/index.html" title=""><span class="name">library</span></a></span></li><li class="indented0 " name="provingground.scalahott" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="scalahott"></a><a id="scalahott:scalahott"></a> <span class="permalink"><a href="../provingground/scalahott/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="scalahott/index.html" title=""><span class="name">scalahott</span></a></span></li><li class="indented0 " name="provingground.scratch" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="scratch"></a><a id="scratch:scratch"></a> <span class="permalink"><a href="../provingground/scratch/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="scratch/index.html" title=""><span class="name">scratch</span></a></span></li><li class="indented0 " name="provingground.translation" group="Ungrouped" fullComment="yes" data-isabs="false" visbl="pub"><a id="translation"></a><a id="translation:translation"></a> <span class="permalink"><a href="../provingground/translation/index.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">package</span></span> <span class="symbol"><a href="translation/index.html" title="Translation primarily using a functorial framework - see Translator$, for natural language processing as well as serialization, formatted output, parsing, interface with  formal languages etc."><span class="name">translation</span></a></span><p class="shortcomment cmt">Translation primarily using a functorial framework - see <a href="translation/Translator$.html" name="provingground.translation.Translator" id="provingground.translation.Translator" class="extype">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><div class="fullcomment"><div class="comment cmt"><p>Translation primarily using a functorial framework - see <a href="translation/Translator$.html" name="provingground.translation.Translator" id="provingground.translation.Translator" class="extype">Translator$</a>, for natural language processing
+as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><p>Besides the <a href="translation/Translator.html" name="provingground.translation.Translator" id="provingground.translation.Translator" class="extype">Translator</a> framework and helper typeclasses is <a href="translation/Functors$.html" name="provingground.translation.Functors" id="provingground.translation.Functors" class="extype">Functors</a>, several structures for
+concrete languages including our implementation of HoTT are in this package.
+</p></div></div></li></ol></div><div id="types" class="types members"><h3>Type Members</h3><ol><li class="indented0 " name="provingground.Context" group="Ungrouped" fullComment="no" data-isabs="true" visbl="pub"><a id="ContextextendsAnyRef"></a><a id="Context:Context"></a> <span class="permalink"><a href="../provingground/Context.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier">sealed </span> <span class="kind">trait</span></span> <span class="symbol"><a href="Context.html" title=""><span class="name">Context</span></a><span class="result"> extends <a href="../scala/index.html#AnyRef=Object" name="scala.AnyRef" id="scala.AnyRef" class="extmbr">AnyRef</a></span></span></li><li class="indented0 " name="provingground.FiniteDistribution" group="Ungrouped" fullComment="yes" data-isabs="false" visbl="pub"><a id="FiniteDistribution[T]extendsAnyValwithProbabilityDistribution[T]withProductwithSerializable"></a><a id="FiniteDistribution[T]:FiniteDistribution[T]"></a> <span class="permalink"><a href="../provingground/FiniteDistribution.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier">final </span> <span class="kind">case class</span></span> <span class="symbol"><a href="FiniteDistribution.html" title="Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates."><span class="name">FiniteDistribution</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="pmf">pmf: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" name="scala.Vector" id="scala.Vector" class="extmbr">Vector</a>[<a href="Weighted.html" name="provingground.Weighted" id="provingground.Weighted" class="extype">Weighted</a>[<span name="provingground.FiniteDistribution.T" class="extype">T</span>]]</span>)</span><span class="result"> extends <span name="scala.AnyVal" class="extype">AnyVal</span> with <a href="ProbabilityDistribution.html" name="provingground.ProbabilityDistribution" id="provingground.ProbabilityDistribution" class="extype">ProbabilityDistribution</a>[<span name="provingground.FiniteDistribution.T" class="extype">T</span>] with <span name="scala.Product" class="extype">Product</span> with <a href="../scala/index.html#Serializable=java.io.Serializable" name="scala.Serializable" id="scala.Serializable" class="extmbr">Serializable</a></span></span><p class="shortcomment cmt">Finite distributions, often supposed to be probability distributions,
 but may also be tangents to this or intermediates.</p><div class="fullcomment"><div class="comment cmt"><p>Finite distributions, often supposed to be probability distributions,
 but may also be tangents to this or intermediates.
-</p></div><dl class="paramcmts block"><dt class="param">pmf</dt><dd class="cmt"><p>probability mass function, may have same object split.</p></dd></dl></div>
-    </li><li name="provingground.LinearStructure" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LinearStructure[A]extendsProductwithSerializable"></a><a id="LinearStructure[A]:LinearStructure[A]"></a>
-      <span class="permalink">
-      <a href="../provingground/LinearStructure.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="LinearStructure.html"><span class="name">LinearStructure</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="zero">zero: <span class="extype" name="provingground.LinearStructure.A">A</span></span>, <span name="sum">sum: (<span class="extype" name="provingground.LinearStructure.A">A</span>, <span class="extype" name="provingground.LinearStructure.A">A</span>) ⇒ <span class="extype" name="provingground.LinearStructure.A">A</span></span>, <span name="mult">mult: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="provingground.LinearStructure.A">A</span>) ⇒ <span class="extype" name="provingground.LinearStructure.A">A</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
-    </li><li name="provingground.PickledWeighted" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="PickledWeightedextendsProductwithSerializable"></a><a id="PickledWeighted:PickledWeighted"></a>
-      <span class="permalink">
-      <a href="../provingground/PickledWeighted.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="PickledWeighted.html"><span class="name">PickledWeighted</span></a><span class="params">(<span name="elem">elem: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
-    </li><li name="provingground.ProbabilityDistribution" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ProbabilityDistribution[A]extendsAny"></a><a id="ProbabilityDistribution[A]:ProbabilityDistribution[A]"></a>
-      <span class="permalink">
-      <a href="../provingground/ProbabilityDistribution.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a title="A probability distribution, from which we can pick values at random (the only abstract method)." href="ProbabilityDistribution.html"><span class="name">ProbabilityDistribution</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.Any">Any</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">A probability distribution, from which we can pick values at random (the only abstract method).</p><div class="fullcomment"><div class="comment cmt"><p>A probability distribution, from which we can pick values at random (the only abstract method).
+</p></div><dl class="paramcmts block"><dt class="param">pmf</dt><dd class="cmt"><p>probability mass function, may have same object split.</p></dd></dl></div></li><li class="indented0 " name="provingground.LinearStructure" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="LinearStructure[A]extendsProductwithSerializable"></a><a id="LinearStructure[A]:LinearStructure[A]"></a> <span class="permalink"><a href="../provingground/LinearStructure.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">case class</span></span> <span class="symbol"><a href="LinearStructure.html" title=""><span class="name">LinearStructure</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="zero">zero: <span name="provingground.LinearStructure.A" class="extype">A</span></span>, <span name="sum">sum: (<span name="provingground.LinearStructure.A" class="extype">A</span>, <span name="provingground.LinearStructure.A" class="extype">A</span>) =&gt; <span name="provingground.LinearStructure.A" class="extype">A</span></span>, <span name="mult">mult: (<span name="scala.Double" class="extype">Double</span>, <span name="provingground.LinearStructure.A" class="extype">A</span>) =&gt; <span name="provingground.LinearStructure.A" class="extype">A</span></span>)</span><span class="result"> extends <span name="scala.Product" class="extype">Product</span> with <a href="../scala/index.html#Serializable=java.io.Serializable" name="scala.Serializable" id="scala.Serializable" class="extmbr">Serializable</a></span></span></li><li class="indented0 " name="provingground.PickledWeighted" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="PickledWeightedextendsProductwithSerializable"></a><a id="PickledWeighted:PickledWeighted"></a> <span class="permalink"><a href="../provingground/PickledWeighted.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">case class</span></span> <span class="symbol"><a href="PickledWeighted.html" title=""><span class="name">PickledWeighted</span></a><span class="params">(<span name="elem">elem: <span name="scala.Predef.String" class="extype">String</span></span>, <span name="weight">weight: <span name="scala.Double" class="extype">Double</span></span>)</span><span class="result"> extends <span name="scala.Product" class="extype">Product</span> with <a href="../scala/index.html#Serializable=java.io.Serializable" name="scala.Serializable" id="scala.Serializable" class="extmbr">Serializable</a></span></span></li><li class="indented0 " name="provingground.ProbabilityDistribution" group="Ungrouped" fullComment="yes" data-isabs="true" visbl="pub"><a id="ProbabilityDistribution[A]extendsAny"></a><a id="ProbabilityDistribution[A]:ProbabilityDistribution[A]"></a> <span class="permalink"><a href="../provingground/ProbabilityDistribution.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">trait</span></span> <span class="symbol"><a href="ProbabilityDistribution.html" title="A probability distribution, from which we can pick values at random (the only abstract method)."><span class="name">ProbabilityDistribution</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span name="scala.Any" class="extype">Any</span></span></span><p class="shortcomment cmt">A probability distribution, from which we can pick values at random (the only abstract method).</p><div class="fullcomment"><div class="comment cmt"><p>A probability distribution, from which we can pick values at random (the only abstract method).
 We can obtain a random variable from this, which is an iterator.
-</p></div></div>
-    </li><li name="provingground.Subst" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Subst[A]extendsAnyRef"></a><a id="Subst[A]:Subst[A]"></a>
-      <span class="permalink">
-      <a href="../provingground/Subst.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a title="allows substitution of a Term by another." href="Subst.html"><span class="name">Subst</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
-      </span>
-      
-      <p class="shortcomment cmt">allows substitution of a <code>Term</code> by another.</p>
-    </li><li name="provingground.SubstImplicits" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="SubstImplicitsextendsAnyRef"></a><a id="SubstImplicits:SubstImplicits"></a>
-      <span class="permalink">
-      <a href="../provingground/SubstImplicits.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="SubstImplicits.html"><span class="name">SubstImplicits</span></a><span class="result"> extends <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
-      </span>
-      
-      
-    </li><li name="provingground.TermList" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="TermList[A]extendsSubst[A]"></a><a id="TermList[A]:TermList[A]"></a>
-      <span class="permalink">
-      <a href="../provingground/TermList.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">sealed </span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a title="allows substitution of a Term by another, as well as mapping to a vector of terms chiefly subtypes of Term and HLists of these;" href="TermList.html"><span class="name">TermList</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="Subst.html" class="extype" name="provingground.Subst">Subst</a>[<span class="extype" name="provingground.TermList.A">A</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">allows substitution of a <code>Term</code> by another, as well as mapping to a vector of terms
-chiefly subtypes of <code>Term</code> and <code>HList</code>s of these;</p>
-    </li><li name="provingground.TermListImplicits" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="TermListImplicitsextendsSubstImplicits"></a><a id="TermListImplicits:TermListImplicits"></a>
-      <span class="permalink">
-      <a href="../provingground/TermListImplicits.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="TermListImplicits.html"><span class="name">TermListImplicits</span></a><span class="result"> extends <a href="SubstImplicits.html" class="extype" name="provingground.SubstImplicits">SubstImplicits</a></span>
-      </span>
-      
-      
-    </li><li name="provingground.Weighted" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Weighted[T]extendsProductwithSerializable"></a><a id="Weighted[T]:Weighted[T]"></a>
-      <span class="permalink">
-      <a href="../provingground/Weighted.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Weighted.html"><span class="name">Weighted</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="elem">elem: <span class="extype" name="provingground.Weighted.T">T</span></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
-    </li></ol>
-            </div>
-
-        
-
-        <div class="values members">
-              <h3>Value Members</h3>
-              <ol>
-                <li name="provingground.Base" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Base"></a><a id="Base:Base"></a>
-      <span class="permalink">
-      <a href="../provingground/Base$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Base$.html"><span class="name">Base</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.Context" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Context"></a><a id="Context:Context"></a>
-      <span class="permalink">
-      <a href="../provingground/Context$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Context$.html"><span class="name">Context</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.FiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="FiniteDistribution"></a><a id="FiniteDistribution:FiniteDistribution"></a>
-      <span class="permalink">
-      <a href="../provingground/FiniteDistribution$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="FiniteDistribution$.html"><span class="name">FiniteDistribution</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
-    </li><li name="provingground.Frankl" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Frankl"></a><a id="Frankl:Frankl"></a>
-      <span class="permalink">
-      <a href="../provingground/Frankl$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Frankl$.html"><span class="name">Frankl</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.HoTT" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="HoTT"></a><a id="HoTT:HoTT"></a>
-      <span class="permalink">
-      <a href="../provingground/HoTT$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="Core of Homotopy Type Theory (HoTT) implementation." href="HoTT$.html"><span class="name">HoTT</span></a>
-      </span>
-      
-      <p class="shortcomment cmt">Core of Homotopy Type Theory (HoTT) implementation.</p><div class="fullcomment"><div class="comment cmt"><p>Core of Homotopy Type Theory (HoTT) implementation.
+</p></div></div></li><li class="indented0 " name="provingground.Subst" group="Ungrouped" fullComment="no" data-isabs="true" visbl="pub"><a id="Subst[A]extendsAnyRef"></a><a id="Subst[A]:Subst[A]"></a> <span class="permalink"><a href="../provingground/Subst.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">trait</span></span> <span class="symbol"><a href="Subst.html" title="allows substitution of a Term by another."><span class="name">Subst</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="../scala/index.html#AnyRef=Object" name="scala.AnyRef" id="scala.AnyRef" class="extmbr">AnyRef</a></span></span><p class="shortcomment cmt">allows substitution of a <code>Term</code> by another.</p></li><li class="indented0 " name="provingground.SubstImplicits" group="Ungrouped" fullComment="no" data-isabs="true" visbl="pub"><a id="SubstImplicitsextendsAnyRef"></a><a id="SubstImplicits:SubstImplicits"></a> <span class="permalink"><a href="../provingground/SubstImplicits.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">trait</span></span> <span class="symbol"><a href="SubstImplicits.html" title=""><span class="name">SubstImplicits</span></a><span class="result"> extends <a href="../scala/index.html#AnyRef=Object" name="scala.AnyRef" id="scala.AnyRef" class="extmbr">AnyRef</a></span></span></li><li class="indented0 " name="provingground.TermList" group="Ungrouped" fullComment="no" data-isabs="true" visbl="pub"><a id="TermList[A]extendsSubst[A]"></a><a id="TermList[A]:TermList[A]"></a> <span class="permalink"><a href="../provingground/TermList.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier">sealed </span> <span class="kind">trait</span></span> <span class="symbol"><a href="TermList.html" title="allows substitution of a Term by another, as well as mapping to a vector of terms chiefly subtypes of Term and HLists of these;"><span class="name">TermList</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="Subst.html" name="provingground.Subst" id="provingground.Subst" class="extype">Subst</a>[<span name="provingground.TermList.A" class="extype">A</span>]</span></span><p class="shortcomment cmt">allows substitution of a <code>Term</code> by another, as well as mapping to a vector of terms
+chiefly subtypes of <code>Term</code> and <code>HList</code>s of these;</p></li><li class="indented0 " name="provingground.TermListImplicits" group="Ungrouped" fullComment="no" data-isabs="true" visbl="pub"><a id="TermListImplicitsextendsSubstImplicits"></a><a id="TermListImplicits:TermListImplicits"></a> <span class="permalink"><a href="../provingground/TermListImplicits.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">trait</span></span> <span class="symbol"><a href="TermListImplicits.html" title=""><span class="name">TermListImplicits</span></a><span class="result"> extends <a href="SubstImplicits.html" name="provingground.SubstImplicits" id="provingground.SubstImplicits" class="extype">SubstImplicits</a></span></span></li><li class="indented0 " name="provingground.Weighted" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="Weighted[T]extendsProductwithSerializable"></a><a id="Weighted[T]:Weighted[T]"></a> <span class="permalink"><a href="../provingground/Weighted.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">case class</span></span> <span class="symbol"><a href="Weighted.html" title=""><span class="name">Weighted</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="elem">elem: <span name="provingground.Weighted.T" class="extype">T</span></span>, <span name="weight">weight: <span name="scala.Double" class="extype">Double</span></span>)</span><span class="result"> extends <span name="scala.Product" class="extype">Product</span> with <a href="../scala/index.html#Serializable=java.io.Serializable" name="scala.Serializable" id="scala.Serializable" class="extmbr">Serializable</a></span></span></li></ol></div><div class="values members"><h3>Value Members</h3><ol><li class="indented0 " name="provingground.Base" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="Base"></a><a id="Base:Base"></a> <span class="permalink"><a href="../provingground/Base$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="Base$.html" title=""><span class="name">Base</span></a></span></li><li class="indented0 " name="provingground.Context" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="Context"></a><a id="Context:Context"></a> <span class="permalink"><a href="../provingground/Context$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="Context$.html" title=""><span class="name">Context</span></a></span></li><li class="indented0 " name="provingground.FiniteDistribution" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="FiniteDistribution"></a><a id="FiniteDistribution:FiniteDistribution"></a> <span class="permalink"><a href="../provingground/FiniteDistribution$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="FiniteDistribution$.html" title=""><span class="name">FiniteDistribution</span></a><span class="result"> extends <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html#java.io.Serializable" name="java.io.Serializable" id="java.io.Serializable" class="extype">Serializable</a></span></span></li><li class="indented0 " name="provingground.Frankl" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="Frankl"></a><a id="Frankl:Frankl"></a> <span class="permalink"><a href="../provingground/Frankl$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="Frankl$.html" title=""><span class="name">Frankl</span></a></span></li><li class="indented0 " name="provingground.HoTT" group="Ungrouped" fullComment="yes" data-isabs="false" visbl="pub"><a id="HoTT"></a><a id="HoTT:HoTT"></a> <span class="permalink"><a href="../provingground/HoTT$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="HoTT$.html" title="Core of Homotopy Type Theory (HoTT) implementation."><span class="name">HoTT</span></a></span><p class="shortcomment cmt">Core of Homotopy Type Theory (HoTT) implementation.</p><div class="fullcomment"><div class="comment cmt"><p>Core of Homotopy Type Theory (HoTT) implementation.
 Includes:
--   terms : <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>,
--   types : <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>
+-   terms : <a href="HoTT$$Term.html" name="provingground.HoTT.Term" id="provingground.HoTT.Term" class="extype">Term</a>,
+-   types : <a href="HoTT$$Typ.html" name="provingground.HoTT.Typ" id="provingground.HoTT.Typ" class="extype">Typ</a>
 -   universes
 -   functions and dependent functions (see [FuncLike], [Func])
--   function types <a href="HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a> and pi-types <a href="HoTT$$PiDefn.html" class="extype" name="provingground.HoTT.PiDefn">PiDefn</a>,
--   lambda definitions <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a>,
--   pairs <a href="HoTT$$PairTerm.html" class="extype" name="provingground.HoTT.PairTerm">PairTerm</a> and dependent pairs <a href="HoTT$$DepPair.html" class="extype" name="provingground.HoTT.DepPair">DepPair</a>
--   product types <a href="HoTT$$ProdTyp.html" class="extype" name="provingground.HoTT.ProdTyp">ProdTyp</a> and sigma types <a href="HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a>
--   Coproduct types <a href="HoTT$$PlusTyp.html" class="extype" name="provingground.HoTT.PlusTyp">PlusTyp</a>, the Unit type <a href="HoTT$$Unit$.html" class="extype" name="provingground.HoTT.Unit">Unit</a> and the empty type <a href="HoTT$$Zero$.html" class="extype" name="provingground.HoTT.Zero">Zero</a>
--   recursion and induction functions for products, coproducts</p><p>General inductive types are <code><code>not</code></code> implemented here, but in the <a href="induction/index.html" class="extype" name="provingground.induction">induction</a> package.</p></div></div>
-    </li><li name="provingground.LinearStructure" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LinearStructure"></a><a id="LinearStructure:LinearStructure"></a>
-      <span class="permalink">
-      <a href="../provingground/LinearStructure$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="LinearStructure$.html"><span class="name">LinearStructure</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
-    </li><li name="provingground.MereProposition" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="MereProposition"></a><a id="MereProposition:MereProposition"></a>
-      <span class="permalink">
-      <a href="../provingground/MereProposition$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="MereProposition$.html"><span class="name">MereProposition</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.PickledWeighted" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="PickledWeighted"></a><a id="PickledWeighted:PickledWeighted"></a>
-      <span class="permalink">
-      <a href="../provingground/PickledWeighted$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="PickledWeighted$.html"><span class="name">PickledWeighted</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
-    </li><li name="provingground.ProbabilityDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ProbabilityDistribution"></a><a id="ProbabilityDistribution:ProbabilityDistribution"></a>
-      <span class="permalink">
-      <a href="../provingground/ProbabilityDistribution$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="ProbabilityDistribution$.html"><span class="name">ProbabilityDistribution</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.Subst" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Subst"></a><a id="Subst:Subst"></a>
-      <span class="permalink">
-      <a href="../provingground/Subst$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Subst$.html"><span class="name">Subst</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.TermList" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="TermList"></a><a id="TermList:TermList"></a>
-      <span class="permalink">
-      <a href="../provingground/TermList$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="TermList$.html"><span class="name">TermList</span></a><span class="result"> extends <a href="TermListImplicits.html" class="extype" name="provingground.TermListImplicits">TermListImplicits</a></span>
-      </span>
-      
-      
-    </li><li name="provingground.Utils" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Utils"></a><a id="Utils:Utils"></a>
-      <span class="permalink">
-      <a href="../provingground/Utils$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Utils$.html"><span class="name">Utils</span></a>
-      </span>
-      
-      
-    </li><li name="provingground.Weighted" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Weighted"></a><a id="Weighted:Weighted"></a>
-      <span class="permalink">
-      <a href="../provingground/Weighted$.html" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Weighted$.html"><span class="name">Weighted</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
-    </li>
-              </ol>
-            </div>
-
-        
-
-        
-        </div>
-
-        <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
-            </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
-            </div>
-        
-        </div>
-
-        <div id="groupedMembers">
-        <div class="group" name="Ungrouped">
-              <h3>Ungrouped</h3>
-              
-            </div>
-        </div>
-
-      </div>
-
-      <div id="tooltip"></div>
-
-      <div id="footer">  </div>
-    </body>
-          </div>
-        </div>
-      </div>
-    </body>
-      </html>
+-   function types <a href="HoTT$$FuncTyp.html" name="provingground.HoTT.FuncTyp" id="provingground.HoTT.FuncTyp" class="extype">FuncTyp</a> and pi-types <a href="HoTT$$PiDefn.html" name="provingground.HoTT.PiDefn" id="provingground.HoTT.PiDefn" class="extype">PiDefn</a>,
+-   lambda definitions <a href="HoTT$$LambdaLike.html" name="provingground.HoTT.LambdaLike" id="provingground.HoTT.LambdaLike" class="extype">LambdaLike</a>,
+-   pairs <a href="HoTT$$PairTerm.html" name="provingground.HoTT.PairTerm" id="provingground.HoTT.PairTerm" class="extype">PairTerm</a> and dependent pairs <a href="HoTT$$DepPair.html" name="provingground.HoTT.DepPair" id="provingground.HoTT.DepPair" class="extype">DepPair</a>
+-   product types <a href="HoTT$$ProdTyp.html" name="provingground.HoTT.ProdTyp" id="provingground.HoTT.ProdTyp" class="extype">ProdTyp</a> and sigma types <a href="HoTT$$SigmaTyp.html" name="provingground.HoTT.SigmaTyp" id="provingground.HoTT.SigmaTyp" class="extype">SigmaTyp</a>
+-   Coproduct types <a href="HoTT$$PlusTyp.html" name="provingground.HoTT.PlusTyp" id="provingground.HoTT.PlusTyp" class="extype">PlusTyp</a>, the Unit type <a href="HoTT$$Unit$.html" name="provingground.HoTT.Unit" id="provingground.HoTT.Unit" class="extype">Unit</a> and the empty type <a href="HoTT$$Zero$.html" name="provingground.HoTT.Zero" id="provingground.HoTT.Zero" class="extype">Zero</a>
+-   recursion and induction functions for products, coproducts</p><p>General inductive types are <code><code>not</code></code> implemented here, but in the <a href="induction/index.html" name="provingground.induction" id="provingground.induction" class="extype">induction</a> package.</p></div></div></li><li class="indented0 " name="provingground.JvmUtils" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="JvmUtils"></a><a id="JvmUtils:JvmUtils"></a> <span class="permalink"><a href="../provingground/JvmUtils$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="JvmUtils$.html" title=""><span class="name">JvmUtils</span></a></span></li><li class="indented0 " name="provingground.LinearStructure" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="LinearStructure"></a><a id="LinearStructure:LinearStructure"></a> <span class="permalink"><a href="../provingground/LinearStructure$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="LinearStructure$.html" title=""><span class="name">LinearStructure</span></a><span class="result"> extends <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html#java.io.Serializable" name="java.io.Serializable" id="java.io.Serializable" class="extype">Serializable</a></span></span></li><li class="indented0 " name="provingground.MereProposition" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="MereProposition"></a><a id="MereProposition:MereProposition"></a> <span class="permalink"><a href="../provingground/MereProposition$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="MereProposition$.html" title=""><span class="name">MereProposition</span></a></span></li><li class="indented0 " name="provingground.PickledWeighted" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="PickledWeighted"></a><a id="PickledWeighted:PickledWeighted"></a> <span class="permalink"><a href="../provingground/PickledWeighted$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="PickledWeighted$.html" title=""><span class="name">PickledWeighted</span></a><span class="result"> extends <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html#java.io.Serializable" name="java.io.Serializable" id="java.io.Serializable" class="extype">Serializable</a></span></span></li><li class="indented0 " name="provingground.ProbabilityDistribution" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="ProbabilityDistribution"></a><a id="ProbabilityDistribution:ProbabilityDistribution"></a> <span class="permalink"><a href="../provingground/ProbabilityDistribution$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="ProbabilityDistribution$.html" title=""><span class="name">ProbabilityDistribution</span></a></span></li><li class="indented0 " name="provingground.Subst" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="Subst"></a><a id="Subst:Subst"></a> <span class="permalink"><a href="../provingground/Subst$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="Subst$.html" title=""><span class="name">Subst</span></a></span></li><li class="indented0 " name="provingground.TermList" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="TermList"></a><a id="TermList:TermList"></a> <span class="permalink"><a href="../provingground/TermList$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="TermList$.html" title=""><span class="name">TermList</span></a><span class="result"> extends <a href="TermListImplicits.html" name="provingground.TermListImplicits" id="provingground.TermListImplicits" class="extype">TermListImplicits</a></span></span></li><li class="indented0 " name="provingground.Utils" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="Utils"></a><a id="Utils:Utils"></a> <span class="permalink"><a href="../provingground/Utils$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="Utils$.html" title=""><span class="name">Utils</span></a></span></li><li class="indented0 " name="provingground.Weighted" group="Ungrouped" fullComment="no" data-isabs="false" visbl="pub"><a id="Weighted"></a><a id="Weighted:Weighted"></a> <span class="permalink"><a href="../provingground/Weighted$.html" title="Permalink"><i class="material-icons"></i></a></span> <span class="modifier_kind"><span class="modifier"></span> <span class="kind">object</span></span> <span class="symbol"><a href="Weighted$.html" title=""><span class="name">Weighted</span></a><span class="result"> extends <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html#java.io.Serializable" name="java.io.Serializable" id="java.io.Serializable" class="extype">Serializable</a></span></span></li></ol></div></div><div id="inheritedMembers"><div name="scala.AnyRef" class="parent"><h3>Inherited from <a href="../scala/index.html#AnyRef=Object" name="scala.AnyRef" id="scala.AnyRef" class="extmbr">AnyRef</a></h3></div><div name="scala.Any" class="parent"><h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3></div></div><div id="groupedMembers"><div name="Ungrouped" class="group"><h3>Ungrouped</h3></div></div></div><div id="tooltip"></div><div id="footer"></div></body></div></div></div></body></html>

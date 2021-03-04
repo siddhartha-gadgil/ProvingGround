@@ -31,8 +31,7 @@ We have a family of universes, but mostly use the first one denoted by Type. Giv
 
 
 ```tut
-import provingground._
-import HoTT._
+import provingground._, HoTT._
 val A = "A" :: Type
 A == Type.::("A")
 ```
