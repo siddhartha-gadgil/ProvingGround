@@ -36,6 +36,21 @@ object IndexEquationSolver {
     traces.flatMap(s => getGenerators(s.toList))
 }
 
+/**
+  * Seek an approximately stable distribution for equations given in terms of indices, hence solving the equations (approximately). 
+  * Here stable distribution is under the iteration to solve equations viewing them as fixed points.
+  * A few quantitites related to the solutions, or the equations themselves, are also computed.
+  *
+  * @param initMap initial values of some expressions
+  * @param equationSet set of equations in expressions, to be transformed to index based ones
+  * @param params values of coefficients in the equations
+  * @param maxRatio bound on ratio of stabilization
+  * @param resolution additive scale for stabilization and some auxiliary quantities
+  * @param exponent the next step is stabilized using geometric means, weighted by the exponent
+  * @param decay decay of the exponent, to allow steps to be damped progressively more
+  * @param maxTime time in milliseconds for timing out stabilizations
+  * @param previousMap an optional previous map to initialize
+  */
 class IndexEquationSolver(
     initMap: Map[Expression, Double],
     equationSet: Set[Equation],
