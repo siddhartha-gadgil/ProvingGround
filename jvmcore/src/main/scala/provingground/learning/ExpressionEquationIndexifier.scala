@@ -9,6 +9,7 @@ import GeneratorVariables._, TermRandomVars._, Expression._
 
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
+
 /**
   * Maps equations based on expressions in terms, randomvariables etc. to equations based on indices only,
   * for rapid computation. Also provides some helpers to relate index combinations and expressions.
@@ -65,7 +66,9 @@ class ExpressionEquationIndexifier(
       .get(exp)
       .map(c => ProductIndexExpression(c, Vector(), Vector()))
       .orElse(
-        indexMap.get(exp).map(j => ProductIndexExpression(1, Vector(j), Vector()))
+        indexMap
+          .get(exp)
+          .map(j => ProductIndexExpression(1, Vector(j), Vector()))
       )
       .getOrElse(
         exp match {
@@ -76,10 +79,12 @@ class ExpressionEquationIndexifier(
               Vector(),
               Vector()
             )
-          case Product(x, y)        => getProd(x) * getProd(y)
-          case Quotient(x, y)       => getProd(x) / getProd(y)
-          case Literal(value)       => ProductIndexExpression(value, Vector(), Vector())
-          case InitialVal(variable) => ProductIndexExpression(0, Vector(), Vector())
+          case Product(x, y)  => getProd(x) * getProd(y)
+          case Quotient(x, y) => getProd(x) / getProd(y)
+          case Literal(value) =>
+            ProductIndexExpression(value, Vector(), Vector())
+          case InitialVal(variable) =>
+            ProductIndexExpression(0, Vector(), Vector())
           case _ =>
             JvmUtils.logger.warn(
               s"cannot decompose $exp as a product, though it is in the rhs of ${equationVec
@@ -106,6 +111,63 @@ class ExpressionEquationIndexifier(
 
   lazy val constantEquations: Set[Int] =
     (0 until (size)).filter(i => rhsExprs(i).isConstant).toSet
+
+  def proofData(typ: Typ[Term]): Vector[(Int, Equation)] =
+    equationVec.zipWithIndex.collect {
+      case (eq @ Equation(FinalVal(Elem(t: Term, Terms)), rhs), j)
+          if t.typ == typ =>
+        (j, eq)
+    }
+
+  def traceIndices(j: Int, depth: Int): Vector[Int] =
+    if (depth < 1) Vector(j)
+    else j +: rhsExprs(j).indices.flatMap(traceIndices(_, depth - 1))
+
+  def nextTraceVector(current: Vector[Vector[Int]]): Vector[Vector[Int]] =
+    current.flatMap { branch =>
+      (0 until (branch.length)).flatMap { j =>
+        val before    = branch.take(j)
+        val after     = branch.drop(j + 1)
+        val offspring = rhsExprs(j).terms
+        offspring.map(pt => before ++ pt.indices ++ after)
+      }
+    }
+
+  def nextTraceSet(
+      current: Set[Set[Int]],
+      relativeTo: Set[Int]
+  ): Set[Set[Int]] =
+    current.flatMap { branchSet =>
+      val branch = branchSet.toVector
+      (0 until (branch.length)).flatMap { j =>
+        val rest      = branch.take(j).toSet union branch.drop(j + 1).toSet
+        val offspring = rhsExprs(j).terms
+        offspring.map(pt => (rest union pt.indices.toSet) -- relativeTo)
+      }
+    }
+
+  @annotation.tailrec
+  final def recTraceSet(
+      current: Set[Set[Int]],
+      depth: Int,
+      relativeTo: Set[Int],
+      accum: Set[Set[Int]]
+  ): Set[Set[Int]] =
+    if (depth < 1 || current.isEmpty) accum
+    else {
+      val next = nextTraceSet(current, relativeTo)
+      recTraceSet(next, depth - 1, relativeTo, accum union (next))
+    }
+
+  def traceSet(
+      elem: Expression,
+      depth: Int,
+      relativeTo: Set[Int]
+  ): Set[Set[Int]] =
+    indexMap
+      .get(elem)
+      .map(index => recTraceSet(Set(Set(index)), depth, relativeTo, Set()))
+      .getOrElse(Set())
 
   // not orthonormal
   def equationGradients(

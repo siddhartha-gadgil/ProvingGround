@@ -1,6 +1,6 @@
 package provingground.learning
 
-import provingground.{FiniteDistribution => _, _}, HoTT._
+import provingground._, HoTT._, JvmUtils.logger
 
 import spire.implicits._
 
@@ -37,9 +37,10 @@ object IndexEquationSolver {
 }
 
 /**
-  * Seek an approximately stable distribution for equations given in terms of indices, hence solving the equations (approximately). 
+  * Seek an approximately stable distribution for equations given in terms of indices, hence solving the equations (approximately).
   * Here stable distribution is under the iteration to solve equations viewing them as fixed points.
   * A few quantitites related to the solutions, or the equations themselves, are also computed.
+  * 
   *
   * @param initMap initial values of some expressions
   * @param equationSet set of equations in expressions, to be transformed to index based ones
@@ -62,134 +63,196 @@ class IndexEquationSolver(
     maxTime: Option[Long],
     previousMap: Option[Map[Expression, Double]]
 ) extends ExpressionEquationIndexifier(initMap, equationSet, params, Vector()) {
-  lazy val startingMap = {
-    val v = rhsExprs.zipWithIndex.filter(_._1.hasConstant)
-    (v.map { case (exp, j) => j -> exp.initialValue }.toMap.filter(_._2 > 0))
+
+  def restrict(
+      v: Vector[Double],
+      indices: Vector[Int]
+  ): Vector[Double] = {
+    val base = indices.map { j =>
+      v(j)
+    }
+    val total = base.sum
+    if (total == 0) base else base.map(_ / total)
   }
 
-  lazy val constantMap = startingMap.filter {
-    case (j, _) => constantEquations.contains(j)
-  }
-
-  lazy val startingSupport = {
-    val indSupp = startingMap.keySet
-    rhsInvolves(indSupp) union indSupp
-  }
-
-  /**
-    * The next step towards a stable map with given equations
-    *
-    * @param m the map so far
-    * @param support the set of indices where we should recompute
-    * @return triple of the next map, next support and whether stable
-    */
-  def nextMapSupport(
-      m: Map[Int, Double],
-      support: Set[Int]
-  ): (Map[Int, Double], Set[Int], Boolean) = {
-    val lookup = support
-      .map { j =>
-        j -> rhsExprs(j).evaluate(m)
-      }
-      .filter(_._2 > 0)
-      .toMap
-    val newMap     = m ++ lookup
-    val newIndices = lookup.keySet -- m.keySet
-    val newSupport = (rhsInvolves(newIndices) union m.keySet) -- constantEquations
-    (newMap, newSupport, newIndices.isEmpty)
-  }
-
-  /**
-    * the next map, assuming support is stable and is the support except for terms that stay constant
-    *
-    * @param m the present map
-    * @param support the indices to update
-    * @param exponent exponent for geometric mean
-    * @return a stable map
-    */
-  def nextMap(
-      m: Map[Int, Double],
-      support: Set[Int],
-      exponent: Double
-  ): Map[Int, Double] = {
-    val base = support
-      .map { j =>
-        val exp = rhsExprs(j)
-        val y   = exp.evaluate(m) // the new value
-        val z   = m.getOrElse(j, 0.0) // the old value, if any
-        val newValue = if (z > 0) {
+  def nextVec(v: ParVector[Double], exponent: Double): ParVector[Double] = {
+    // pprint.log(exponent)
+    val fn: ((SumIndexExpression, Int)) => Double = {
+      case (exp, j) =>
+        val y = exp.eval(v)
+        // if (y < 0)
+        //   Logger.error(s"Equation with negative value: ${equationVec(j)}")
+        val z = v(j)
+        if (z > 0) {
           val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
           if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
-            JvmUtils.logger.error(
+            logger.error(
               s"Geometric mean of $y and $z with exponent $exponent is not a number\nEquation with negative value: ${scala.util
                 .Try(equationVec(j))}"
             )
           gm
         } else y
-        j -> newValue
-      }
-      .filter(_._2 > 0)
-      .toMap ++ constantMap
-    val scale = m.values.sum / base.values.sum
-    base.map { case (n, x) => (n, x * scale) }
+    }
+    rhsExprs.zipWithIndex.par.map(fn)
   }
 
-  def proofData(typ: Typ[Term]): Vector[(Int, Equation)] =
-    equationVec.zipWithIndex.collect {
-      case (eq @ Equation(FinalVal(Elem(t: Term, Terms)), rhs), j)
-          if t.typ == typ =>
-        (j, eq)
+  def simpleNextVec(v: ParVector[Double]): ParVector[Double] = {
+    val fn: ((SumIndexExpression, Int)) => Double = {
+      case (exp, j) =>
+        val y = exp.eval(v)
+        val z = v(j)
+        if (z > 0) z else y
     }
+    val z = rhsExprs.zipWithIndex
+    z.par.map(fn)
+  }
 
-  def traceIndices(j: Int, depth: Int): Vector[Int] =
-    if (depth < 1) Vector(j)
-    else j +: rhsExprs(j).indices.flatMap(traceIndices(_, depth - 1))
+  def equalSupport(v: Vector[Double], w: Vector[Double]) = {
+    require(v.size == w.size)
+    v.zip(w).forall { case (x, y) => (x == 0 && y == 0) || (x != 0 && y != 0) }
+  }
 
-  def nextTraceVector(current: Vector[Vector[Int]]): Vector[Vector[Int]] =
-    current.flatMap { branch =>
-      (0 until (branch.length)).flatMap { j =>
-        val before    = branch.take(j)
-        val after     = branch.drop(j + 1)
-        val offspring = rhsExprs(j).terms
-        offspring.map(pt => before ++ pt.indices ++ after)
+  def ratioBounded(
+      v: Vector[Double],
+      w: Vector[Double],
+      bound: Double = maxRatio
+  ) = {
+    val condition: (((Double, Double), Int)) => Boolean = {
+      case ((x: Double, y: Double), j: Int) =>
+        x == 0 || y == 0 || ((x / (y + resolution)) <= bound && y / (x + resolution) <= bound)
+    }
+    v.zip(w).zipWithIndex.forall(condition)
+  }
+
+  def normalizedBounded(v: Vector[Double], w: Vector[Double]) = {
+    equalSupport(v, w) &&
+    ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
+    ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
+  }
+
+  
+
+  @tailrec
+  final def stableVec(
+      initVec: ParVector[Double],
+      exponent: Double = 0.5,
+      decay: Double,
+      maxTime: Option[Long],
+      steps: Long
+  ): ParVector[Double] =
+    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
+      logger.error(
+        s"Timeout for stable vector after $steps steps; resolution $resolution"
+      )
+      initVec
+    } else {
+      if (steps % 100 == 2) logger.debug(s"completed $steps steps")
+      val startTime  = System.currentTimeMillis()
+      val newBaseVec = nextVec(initVec, exponent)
+      val currSum = newBaseVec.sum
+      val scale   = size.toDouble / currSum
+      val newVec = newBaseVec.map(_ * scale)
+      if (normalizedBounded(initVec.seq, newVec.seq))
+        newVec
+      else {
+        val usedTime = System.currentTimeMillis() - startTime
+        stableVec(
+          newVec,
+          exponent * decay,
+          decay,
+          maxTime.map(t => t - usedTime),
+          steps + 1
+        )
       }
     }
 
-  def nextTraceSet(
-      current: Set[Set[Int]],
-      relativeTo: Set[Int]
-  ): Set[Set[Int]] =
-    current.flatMap { branchSet =>
-      val branch = branchSet.toVector
-      (0 until (branch.length)).flatMap { j =>
-        val rest      = branch.take(j).toSet union branch.drop(j + 1).toSet
-        val offspring = rhsExprs(j).terms
-        offspring.map(pt => (rest union pt.indices.toSet) -- relativeTo)
+  @tailrec
+  final def stableSupportVec(
+      initVec: ParVector[Double],
+      maxTime: Option[Long],
+      steps: Long
+  ): ParVector[Double] =
+    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
+      logger.error(
+        s"Timeout for stable support vector after $steps steps"
+      )
+      initVec
+    } else {
+      if (steps % 100 == 2)
+        logger.debug(
+          s"completed $steps steps without stable support, support size : ${initVec
+            .count(_ > 0)}"
+        )
+      val startTime  = System.currentTimeMillis()
+      val newBaseVec = simpleNextVec(initVec.par)
+      val scale      = size.toDouble / newBaseVec.sum
+      val newVec     = newBaseVec.map(_ * scale)
+      val check = (0 until (initVec.size)).forall(
+        n => (initVec(n) != 0) || (newVec(n) == 0)
+      )
+      if (check) {
+        logger.debug(
+          s"stable support with support size ${newVec.count(_ != 0)}"
+        )
+        newVec
+      } else {
+        // logger.debug("recursive call for stable support vector")
+        val usedTime = System.currentTimeMillis() - startTime
+        stableSupportVec(
+          newVec,
+          maxTime.map(t => t - usedTime),
+          steps + 1
+        )
       }
     }
 
-  @annotation.tailrec
-  final def recTraceSet(
-      current: Set[Set[Int]],
-      depth: Int,
-      relativeTo: Set[Int],
-      accum: Set[Set[Int]]
-  ): Set[Set[Int]] =
-    if (depth < 1 || current.isEmpty) accum
-    else {
-      val next = nextTraceSet(current, relativeTo)
-      recTraceSet(next, depth - 1, relativeTo, accum union (next))
+  lazy val initVector: ParVector[Double] = previousMap
+    .map { pm =>
+      equationVec.zipWithIndex.par.map {
+        case (equation, j) => pm.getOrElse(equation.lhs, 0.0)
+      }
     }
+    .getOrElse(ParVector.fill(equationVec.size)(0.0))
 
-  def traceSet(
-      elem: Expression,
-      depth: Int,
-      relativeTo: Set[Int]
-  ): Set[Set[Int]] =
-    indexMap
-      .get(elem)
-      .map(index => recTraceSet(Set(Set(index)), depth, relativeTo, Set()))
-      .getOrElse(Set())
+  /**
+    * vector of values (at indices) in an approximately stable solution to the equation
+    *
+    * @return vector of approximate solution values
+    */
+  lazy val finalVec: ParVector[Double] = {
+    logger.debug(
+      s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
+    )
+    logger.debug(s"Number of equations: ${equationVec.size}")
+    logger.debug(
+      s"Computed initial vector with size: ${initVector.size}"
+    ) // to avoid being part of time limit for stable vector
+    val stableSupport =
+      stableSupportVec(initVector, maxTime, 0L)
+    logger.debug("Obtained vector with stable support")
+    stableVec(
+      stableSupport,
+      exponent,
+      decay,
+      maxTime,
+      0L
+    )
+  }
+
+  /**
+    * values of expressions in an approximately stable solution to the equation
+    *
+    * @return map of approximate solution values
+    */
+  lazy val finalMap: Map[Expression, Double] = {
+    val fn: ((Double, Int)) => (Expression, Double) = {
+      case (x, j) => equationVec(j).lhs -> x
+    }
+    finalVec.zipWithIndex.map(fn).toMap ++ initMap
+  }.seq
+
+
+  // various backward tracing methods
 
   def gradientStep(index: Int): Vector[(Int, Double)] = {
     val rhs = rhsExprs(index)
@@ -273,293 +336,6 @@ class IndexEquationSolver(
       vecSum(branches :+ Vector(index -> 1.0))
     }
 
-  def restrict(
-      v: Vector[Double],
-      indices: Vector[Int]
-  ): Vector[Double] = {
-    val base = indices.map { j =>
-      v(j)
-    }
-    val total = base.sum
-    if (total == 0) base else base.map(_ / total)
-  }
-
-  def restrictMap(
-      m: Map[Int, Double],
-      indices: Vector[Int]
-  ): Vector[Double] = {
-    val base = indices.map { j =>
-      m.get(j)
-    }.flatten
-    val total = base.sum
-    if (total == 0) base else base.map(_ / total)
-  }
-
-  def nextVec(v: ParVector[Double], exponent: Double): ParVector[Double] = {
-    // pprint.log(exponent)
-    val fn: ((SumIndexExpression, Int)) => Double = {
-      case (exp, j) =>
-        val y = exp.eval(v)
-        // if (y < 0)
-        //   JvmUtils.logger.error(s"Equation with negative value: ${equationVec(j)}")
-        val z = v(j)
-        if (z > 0) {
-          val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
-          if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
-            JvmUtils.logger.error(
-              s"Geometric mean of $y and $z with exponent $exponent is not a number\nEquation with negative value: ${scala.util
-                .Try(equationVec(j))}"
-            )
-          gm
-        } else y
-    }
-    rhsExprs.zipWithIndex.par.map(fn)
-  }
-
-  def simpleNextVec(v: ParVector[Double]): ParVector[Double] = {
-    // JvmUtils.logger.debug("Computing new vector")
-    val fn: ((SumIndexExpression, Int)) => Double = {
-      case (exp, j) =>
-        val y = exp.eval(v)
-        val z = v(j)
-        if (z > 0) z else y
-    }
-    // JvmUtils.logger.debug("Computing new vector: defined function")
-    val z = rhsExprs.zipWithIndex
-    // JvmUtils.logger.debug(s"Mapping ${z.size} expressions")
-    z.par.map(fn)
-  }
-
-  def equalSupport(v: Vector[Double], w: Vector[Double]) = {
-    require(v.size == w.size)
-    v.zip(w).forall { case (x, y) => (x == 0 && y == 0) || (x != 0 && y != 0) }
-  }
-
-  def ratioBounded(
-      v: Vector[Double],
-      w: Vector[Double],
-      bound: Double = maxRatio
-  ) = {
-    val condition: (((Double, Double), Int)) => Boolean = {
-      case ((x: Double, y: Double), j: Int) =>
-        x == 0 || y == 0 || ((x / (y + resolution)) <= bound && y / (x + resolution) <= bound)
-    }
-    v.zip(w).zipWithIndex.forall(condition)
-  }
-
-  def normalizedBounded(v: Vector[Double], w: Vector[Double]) = {
-    equalSupport(v, w) &&
-    ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
-    ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
-  }
-
-  def normalizedMapBounded(
-      v: Map[Int, Double],
-      w: Map[Int, Double]
-  ): Boolean = {
-    ratioBounded(restrictMap(v, termIndices), restrictMap(w, termIndices)) &&
-    ratioBounded(restrictMap(v, typIndices), restrictMap(w, typIndices))
-  }
-
-  @tailrec
-  final def stableVec(
-      initVec: ParVector[Double],
-      exponent: Double = 0.5,
-      decay: Double,
-      maxTime: Option[Long],
-      steps: Long
-  ): ParVector[Double] =
-    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      JvmUtils.logger.error(s"Timeout for stable vector after $steps steps; resolution $resolution")
-      initVec
-    } else {
-      if (steps % 100 == 2) JvmUtils.logger.debug(s"completed $steps steps")
-      val startTime  = System.currentTimeMillis()
-      val newBaseVec = nextVec(initVec, exponent)
-      // val initSum = math.max(initVec.sum, 1.0)
-      val currSum = newBaseVec.sum
-      val scale   = size.toDouble / currSum
-      // JvmUtils.logger.info(initSum.toString())
-      // JvmUtils.logger.info(currSum.toString)
-      // JvmUtils.logger.info(scale.toString())
-      val newVec = newBaseVec.map(_ * scale)
-      if (normalizedBounded(initVec.seq, newVec.seq))
-        newVec
-      else {
-        val usedTime = System.currentTimeMillis() - startTime
-        stableVec(
-          newVec,
-          exponent * decay,
-          decay,
-          maxTime.map(t => t - usedTime),
-          steps + 1
-        )
-      }
-    }
-
-  @tailrec
-  final def stableSupportVec(
-      initVec: ParVector[Double],
-      maxTime: Option[Long],
-      steps: Long
-  ): ParVector[Double] =
-    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      JvmUtils.logger.error(
-        s"Timeout for stable support vector after $steps steps"
-      )
-      initVec
-    } else {
-      if (steps % 100 == 2)
-        JvmUtils.logger.debug(
-          s"completed $steps steps without stable support, support size : ${initVec
-            .count(_ > 0)}"
-        )
-      val startTime  = System.currentTimeMillis()
-      val newBaseVec = simpleNextVec(initVec.par)
-      val scale      = size.toDouble / newBaseVec.sum
-      val newVec     = newBaseVec.map(_ * scale)
-      val check = (0 until (initVec.size)).forall(
-        n => (initVec(n) != 0) || (newVec(n) == 0)
-      )
-      if (check) {
-        JvmUtils.logger.debug(
-          s"stable support with support size ${newVec.count(_ != 0)}"
-        )
-        newVec
-      } else {
-        // JvmUtils.logger.debug("recursive call for stable support vector")
-        val usedTime = System.currentTimeMillis() - startTime
-        stableSupportVec(
-          newVec,
-          maxTime.map(t => t - usedTime),
-          steps + 1
-        )
-      }
-    }
-
-  @tailrec
-  final def stableSupportMap(
-      initMap: Map[Int, Double],
-      initSupport: Set[Int],
-      maxTime: Option[Long],
-      steps: Long
-  ): (Map[Int, Double], Set[Int]) =
-    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      JvmUtils.logger.error(
-        s"Timeout for stable support vector after $steps steps"
-      )
-      (initMap, initSupport)
-    } else {
-      if (steps % 100 == 2)
-        JvmUtils.logger.debug(
-          s"completed $steps steps without stable support, support size : ${initMap.size}"
-        )
-      val startTime                   = System.currentTimeMillis()
-      val (newMap, newSupport, check) = nextMapSupport(initMap, initSupport)
-      if (check) {
-        JvmUtils.logger.debug(
-          s"stable support with support size ${newMap.size}"
-        )
-        (newMap, newSupport)
-      } else {
-        val usedTime = System.currentTimeMillis() - startTime
-        stableSupportMap(
-          newMap,
-          newSupport,
-          maxTime.map(t => t - usedTime),
-          steps + 1
-        )
-      }
-    }
-
-  @tailrec
-  final def stableMap(
-      initMap: Map[Int, Double],
-      support: Set[Int],
-      exponent: Double = 0.5,
-      decay: Double,
-      maxTime: Option[Long],
-      steps: Long
-  ): Map[Int, Double] =
-    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
-      JvmUtils.logger.error(s"Timeout for stable map after $steps steps")
-      initMap
-    } else {
-      if (steps % 100 == 2) JvmUtils.logger.debug(s"completed $steps steps")
-      val startTime = System.currentTimeMillis()
-      val newMap    = nextMap(initMap, support, exponent)
-      if (normalizedMapBounded(initMap, newMap)) {
-        JvmUtils.logger.debug("Obtained stable map")
-        newMap
-      } else {
-        val usedTime = System.currentTimeMillis() - startTime
-        stableMap(
-          newMap,
-          support,
-          exponent * decay,
-          decay,
-          maxTime.map(t => t - usedTime),
-          steps + 1
-        )
-      }
-    }
-
-  lazy val initVector: ParVector[Double] = previousMap
-    .map { pm =>
-      equationVec.zipWithIndex.par.map {
-        case (equation, j) => pm.getOrElse(equation.lhs, 0.0)
-      }
-    }
-    .getOrElse(ParVector.fill(equationVec.size)(0.0))
-
-  lazy val finalVec: ParVector[Double] = {
-    JvmUtils.logger.debug(
-      s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
-    )
-    JvmUtils.logger.debug(s"Number of equations: ${equationVec.size}")
-    JvmUtils.logger.debug(
-      s"Computed initial vector with size: ${initVector.size}"
-    ) // to avoid being part of time limit for stable vector
-    val stableSupport =
-      stableSupportVec(initVector, maxTime, 0L)
-    JvmUtils.logger.debug("Obtained vector with stable support")
-    stableVec(
-      stableSupport,
-      exponent,
-      decay,
-      maxTime,
-      0L
-    )
-  }
-
-  lazy val finalStableMap: Map[Int, Double] = {
-    JvmUtils.logger.debug(
-      s"Computing final map, with maximum time $maxTime, exponent: $exponent, decay: $decay"
-    )
-    JvmUtils.logger.debug(s"Number of equations: ${equationVec.size}")
-    val (stableM, support) =
-      stableSupportMap(startingMap, startingSupport, maxTime, 0L)
-    JvmUtils.logger.debug("Obtained map with stable support")
-    stableMap(
-      stableM,
-      support,
-      exponent,
-      decay,
-      maxTime,
-      0L
-    )
-  }
-
-  lazy val finalDistMap: Map[Expression, Double] = finalStableMap.map {
-    case (j, p) => equationVec(j).lhs -> p
-  }
-
-  lazy val finalMap: Map[Expression, Double] = {
-    val fn: ((Double, Int)) => (Expression, Double) = {
-      case (x, j) => equationVec(j).lhs -> x
-    }
-    finalVec.zipWithIndex.map(fn).toMap ++ initMap
-  }.seq
 
   def track(
       exp: Expression
