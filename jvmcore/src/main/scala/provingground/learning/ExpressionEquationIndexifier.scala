@@ -21,12 +21,12 @@ import scala.collection.parallel.immutable._
   */
 class ExpressionEquationIndexifier(
     initMap: Map[Expression, Double],
-    equationSet: Set[Equation],
+    val equationVec: Vector[Equation],
     params: Coeff[_] => Option[Double],
     initVariables: Vector[Expression] = Vector()
 ) {
   import ExpressionEquationIndexifier._
-  lazy val equationVec: Vector[Equation] = equationSet.toVector //.par
+  // lazy val equationVec: Vector[Equation] = equationSet.toVector //.par
 
   lazy val size = equationVec.size
 

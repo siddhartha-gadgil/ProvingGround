@@ -54,7 +54,7 @@ object IndexEquationSolver {
   */
 class IndexEquationSolver(
     initMap: Map[Expression, Double],
-    equationSet: Set[Equation],
+    equationVec: Vector[Equation],
     params: Coeff[_] => Option[Double],
     maxRatio: Double,
     resolution: Double,
@@ -62,7 +62,7 @@ class IndexEquationSolver(
     decay: Double,
     maxTime: Option[Long],
     previousMap: Option[Map[Expression, Double]]
-) extends ExpressionEquationIndexifier(initMap, equationSet, params, Vector()) {
+) extends ExpressionEquationIndexifier(initMap, equationVec, params, Vector()) {
 
   def restrict(
       v: Vector[Double],

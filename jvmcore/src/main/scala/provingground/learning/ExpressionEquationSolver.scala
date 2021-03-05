@@ -49,7 +49,7 @@ trait ExpressionEquationSolver { self =>
     */
   lazy val indexEquationSolver = new IndexEquationSolver(
     init,
-    equations,
+    equations.toVector,
     coeffval,
     maxRatio,
     resolution,

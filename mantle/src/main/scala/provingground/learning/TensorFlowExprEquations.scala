@@ -15,14 +15,14 @@ object TensorFlowExprEquations {
   def equationEvolver(
       graph: Graph,
       initState: TermState,
-      equationSet: Set[Equation],
+      equationVec: Vector[Equation],
       params: TermGenParams,
       learningRate: Float
   ) = {
     new TensorFlowExprVarEquations(
       ExpressionEquationSolver
-        .initMap(ExpressionEquationSolver.eqAtoms(equationSet), params.coeffVal(_), params.varWeight,  initState),
-      equationSet,
+        .initMap(ExpressionEquationSolver.eqAtoms(equationVec.toSet), params.coeffVal(_), params.varWeight,  initState),
+      equationVec,
       params,
       graph,
       learningRate
@@ -31,39 +31,39 @@ object TensorFlowExprEquations {
 
   def takeSteps(
       initState: TermState,
-      equationSet: Set[Equation],
+      equationVec: Vector[Equation],
       params: TermGenParams,
       steps: Int,
       learningRate: Float = 0.1f
   ): Try[FiniteDistribution[HoTT.Term]] =
     Using(new Graph()) { graph =>
       val evolver =
-        equationEvolver(graph, initState, equationSet, params, learningRate)
+        equationEvolver(graph, initState, equationVec, params, learningRate)
       evolver.fit(steps)
     }.flatten
 
   def quickCheck(
       initState: TermState,
-      equationSet: Set[Equation],
+      equationVec: Vector[Equation],
       params: TermGenParams,
       learningRate: Float = 0.1f
   ) = Using(new Graph()) { graph =>
     val evolver =
-      equationEvolver(graph, initState, equationSet, params, learningRate)
+      equationEvolver(graph, initState, equationVec, params, learningRate)
     evolver.quickCheck()
   }
 
   def matrixCheck(
       initState: TermState,
-      equationSet: Set[Equation],
+      equationVec: Vector[Equation],
       params: TermGenParams
   ) =
     Using(new Graph()) { graph =>
       val evolver =
         new TensorFlowFatExprEquations(
           ExpressionEquationSolver
-            .initMap(ExpressionEquationSolver.eqAtoms(equationSet), params.coeffVal(_), params.varWeight, initState),
-          equationSet,
+            .initMap(ExpressionEquationSolver.eqAtoms(equationVec.toSet), params.coeffVal(_), params.varWeight, initState),
+          equationVec,
           params,
           graph
         )
@@ -73,15 +73,15 @@ object TensorFlowExprEquations {
   def tuned(
       steps: Int,
       initState: TermState,
-      equationSet: Set[Equation],
+      equationVec: Vector[Equation],
       params: TermGenParams
   ) =
     Using(new Graph()) { graph =>
       val evolver =
         new TensorFlowExprEquations(
           ExpressionEquationSolver
-            .initMap(ExpressionEquationSolver .eqAtoms(equationSet), params.coeffVal(_), params.varWeight, initState),
-          equationSet,
+            .initMap(ExpressionEquationSolver .eqAtoms(equationVec.toSet), params.coeffVal(_), params.varWeight, initState),
+          equationVec,
           params,
           graph
         )
@@ -93,12 +93,12 @@ import TensorFlowExprEquations._
 
 class TensorFlowExprVarEquations(
     initMap: Map[Expression, Double], // values specified and frozen
-    equationSet: Set[Equation],
+    equationVec: Vector[Equation],
     params: TermGenParams,
     graph: Graph,
     learningRate: Float,
     initVariables: Vector[Expression] = Vector() // values that can evolve
-) extends ExpressionEquationIndexifier(initMap, equationSet, params.coeffVal(_), initVariables) {
+) extends ExpressionEquationIndexifier(initMap, equationVec, params.coeffVal(_), initVariables) {
   val tf = Ops.create(graph)
   val xs = Vector.tabulate(numVars)(j => tf.withName(s"x$j").variable(tf.constant(0f)))
   val ps: Vector[Operand[TFloat32]] = xs.map(
@@ -209,11 +209,11 @@ class TensorFlowExprVarEquations(
 
 class TensorFlowExprEquations(
     initMap: Map[Expression, Double], // values specified and frozen
-    equationSet: Set[Equation],
+    equationVec: Vector[Equation],
     params: TermGenParams,
     graph: Graph,
     initVariables: Vector[Expression] = Vector() // values that can evolve
-) extends ExpressionEquationIndexifier(initMap, equationSet, params.coeffVal(_), initVariables) {
+) extends ExpressionEquationIndexifier(initMap, equationVec, params.coeffVal(_), initVariables) {
   val tf   = Ops.create(graph)
   val xVec = tf.variable(tf.constant(Array.fill(numVars)(0f)))
   val pVec = tf.math.sigmoid(xVec)
@@ -334,11 +334,11 @@ class TensorFlowExprEquations(
 
 class TensorFlowFatExprEquations(
     initMap: Map[Expression, Double], // values specified and frozen
-    equationSet: Set[Equation],
+    equationVec: Vector[Equation],
     params: TermGenParams,
     graph: Graph,
     initVariables: Vector[Expression] = Vector() // values that can evolve
-) extends FatExprEquations(initMap, equationSet, params.coeffVal(_), initVariables) {
+) extends FatExprEquations(initMap, equationVec, params.coeffVal(_), initVariables) {
   val tf   = Ops.create(graph)
   val xVec = tf.variable(tf.constant(Array.fill(numVars)(0f)))
   val pVec = tf.math.sigmoid(xVec)

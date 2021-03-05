@@ -9,12 +9,12 @@ import scala.collection.mutable.ArrayBuffer
 
 class FatExprEquations(
     initMap: Map[Expression, Double],
-    equationSet: Set[Equation],
+    equationVec: Vector[Equation],
     params: Coeff[_] => Option[Double],
     initVariables: Vector[Expression] = Vector()
 ) extends ExpressionEquationIndexifier(
       initMap,
-      equationSet,
+      equationVec,
       params,
       initVariables
     ) {
