@@ -18,8 +18,6 @@ object ChompSession {
        |""".stripMargin
   )
 
-  
-
   envOrNone("JAVA_OPTS").foreach(w => logger.info(s"JAVA_OPTS: $w"))
 
   envOrNone("JAVA_HOME").foreach(w => logger.info(s"JAVA_HOME: $w"))
@@ -118,8 +116,6 @@ object ChompSessionEq {
        |""".stripMargin
   )
 
-  
-
   envOrNone("JAVA_OPTS").foreach(w => logger.info(s"JAVA_OPTS: $w"))
 
   envOrNone("JAVA_HOME").foreach(w => logger.info(s"JAVA_HOME: $w"))
@@ -213,8 +209,6 @@ object ParChompSessionEq {
        |""".stripMargin
   )
 
-  
-
   envOrNone("JAVA_OPTS").foreach(w => logger.info(s"JAVA_OPTS: $w"))
 
   envOrNone("JAVA_HOME").foreach(w => logger.info(s"JAVA_HOME: $w"))
@@ -243,8 +237,12 @@ object ParChompSessionEq {
   val ts0  = TermState(FiniteDistribution(), FiniteDistribution.unif(Type))
   val tg   = TermGenParams(solverW = 0.05)
 
-  val lp  = LocalProver(ts, tg, resolution = math.pow(10, -5)).sharpen(10).copy(maxTime = Some(600000L))
-  val lp0 = LocalProver(ts0, resolution = math.pow(10, -5)).sharpen(50).copy(maxTime = Some(600000L))
+  val lp = LocalProver(ts, tg, resolution = math.pow(10, -5))
+    .sharpen(10)
+    .copy(maxTime = Some(600000L))
+  val lp0 = LocalProver(ts0, resolution = math.pow(10, -5))
+    .sharpen(50)
+    .copy(maxTime = Some(600000L))
 
   val expFS =
     expEvToFinalState.andThen(updateTerms)
@@ -274,29 +272,35 @@ object ParChompSessionEq {
     exportProof
   )
 
-  lazy val wsF =
+  lazy val wsF0 =
     for {
       ws1 <- ws.post(lp0, Set())
       ws2 <- ws1.act(parLpEqns)
       ws3 <- ws2.act(eqnUpdate)
       ws4 <- ws3.act(eqnsToExpEv(Some(ParMapState.coeffVal(lp0.tg))))
       ws5 <- ws4.act(expFS)
-      ws6 <- ws5.postLast(lp)
-      ws7 <- ws6.act(
-        finalStateToParallelChomp(cutoffScales = List(10, 1))
-          .triggerWith[LocalProver]
-      )
-      ws8 <- ws7.act(chompReport())
-      ws9 <- ws8.act(chompEqnUpdate)
-      ws10 <- ws9.act(goalsAfterChomp)
-    } yield ws10
+    } yield ws5
+
+  lazy val wsF = for {
+    ws5 <- wsF0
+    ws6 <- ws5.postLast(lp)
+    ws7 <- ws6.act(
+      finalStateToParallelChomp(cutoffScales = List(10, 1))
+        .triggerWith[LocalProver]
+    )
+    ws8  <- ws7.act(chompReport())
+    ws9  <- ws8.act(chompEqnUpdate)
+    ws10 <- ws9.act(goalsAfterChomp)
+  } yield ws10
 
   lazy val sessF: Future[HoTTWebSession] =
     wsF.map(
       ws =>
         HoTTWebSession
-          .launch(ws, bots, 
-          // Some(PostResponse.capResponse(HoTTMessages.Cap))
+          .launch(
+            ws,
+            bots
+            // Some(PostResponse.capResponse(HoTTMessages.Cap))
           )
     )
 }

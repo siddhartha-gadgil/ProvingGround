@@ -40,7 +40,7 @@ object IndexEquationSolver {
   * Seek an approximately stable distribution for equations given in terms of indices, hence solving the equations (approximately).
   * Here stable distribution is under the iteration to solve equations viewing them as fixed points.
   * A few quantitites related to the solutions, or the equations themselves, are also computed.
-  * 
+  *
   *
   * @param initMap initial values of some expressions
   * @param equationSet set of equations in expressions, to be transformed to index based ones
@@ -124,14 +124,35 @@ class IndexEquationSolver(
     v.zip(w).zipWithIndex.forall(condition)
   }
 
-  def normalizedBounded(v: Vector[Double], w: Vector[Double]) = {
-    equalSupport(v, w) &&
-    ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
-    ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
+  def bigRatio(
+      v: Vector[Double],
+      w: Vector[Double],
+      bound: Double = maxRatio
+  ): Vector[((Double, Double), Int)] = {
+    val condition: (((Double, Double), Int)) => Boolean = {
+      case ((x: Double, y: Double), j: Int) =>
+        x == 0 || y == 0 || ((x / (y + resolution)) <= bound && y / (x + resolution) <= bound)
+    }
+    v.zip(w).zipWithIndex.filterNot(condition)
   }
 
-  
-
+  def normalizedBounded(
+      v: Vector[Double],
+      w: Vector[Double],
+      report: Boolean = false
+  ) = {
+    equalSupport(v, w) && {
+      if (report)
+        logger.debug(
+          s"${bigRatio(restrict(v, termIndices), restrict(w, termIndices))}/${termIndices.size}"
+        )
+      logger.debug(
+        s"${bigRatio(restrict(v, typIndices), restrict(w, typIndices))}/${typIndices.size}"
+      )
+      ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
+      ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
+    }
+  }
   @tailrec
   final def stableVec(
       initVec: ParVector[Double],
@@ -146,13 +167,13 @@ class IndexEquationSolver(
       )
       initVec
     } else {
-      if (steps % 100 == 2) logger.debug(s"completed $steps steps")
+      if (steps % 1000 == 2) logger.debug(s"completed $steps steps")
       val startTime  = System.currentTimeMillis()
       val newBaseVec = nextVec(initVec, exponent)
-      val currSum = newBaseVec.sum
-      val scale   = size.toDouble / currSum
-      val newVec = newBaseVec.map(_ * scale)
-      if (normalizedBounded(initVec.seq, newVec.seq))
+      val currSum    = newBaseVec.sum
+      val scale      = size.toDouble / currSum
+      val newVec     = newBaseVec.map(_ * scale)
+      if (normalizedBounded(initVec.seq, newVec.seq, (steps % 1000 == 2)))
         newVec
       else {
         val usedTime = System.currentTimeMillis() - startTime
@@ -251,7 +272,6 @@ class IndexEquationSolver(
     finalVec.zipWithIndex.map(fn).toMap ++ initMap
   }.seq
 
-
   // various backward tracing methods
 
   def gradientStep(index: Int): Vector[(Int, Double)] = {
@@ -335,7 +355,6 @@ class IndexEquationSolver(
       }
       vecSum(branches :+ Vector(index -> 1.0))
     }
-
 
   def track(
       exp: Expression
