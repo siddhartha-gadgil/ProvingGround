@@ -144,10 +144,10 @@ class IndexEquationSolver(
     equalSupport(v, w) && {
       if (report)
         logger.debug(
-          s"${bigRatio(restrict(v, termIndices), restrict(w, termIndices))}/${termIndices.size}"
+          s"${bigRatio(restrict(v, termIndices), restrict(w, termIndices)).size}/${termIndices.size}"
         )
       logger.debug(
-        s"${bigRatio(restrict(v, typIndices), restrict(w, typIndices))}/${typIndices.size}"
+        s"${bigRatio(restrict(v, typIndices), restrict(w, typIndices)).size}/${typIndices.size}"
       )
       ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
       ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
