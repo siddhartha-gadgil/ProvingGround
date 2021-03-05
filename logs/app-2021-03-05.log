@@ -81,3 +81,21 @@ better reporting of status.
 2021.03.05 20:51:53:162 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:214 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
 2021.03.05 20:51:53:861 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((0,752853775))
 2021.03.05 20:51:53:872 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (0,752853775) with hash 752853775
+2021.03.05 21:07:18:377 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:202 - 
+This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+
+
+2021.03.05 21:07:18:640 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:212 - JAVA_OPTS: -Xms2G -Xmx40G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.03.05 21:07:18:641 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:214 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.03.05 21:07:19:362 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((0,752853775))
+2021.03.05 21:07:19:364 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (0,752853775) with hash 752853775
+2021.03.05 21:07:45:569 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((1,-979042912))
+2021.03.05 21:07:45:570 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (1,-979042912) with hash -979042912
+2021.03.05 21:07:46:519 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((1,-979042912))
+2021.03.05 21:07:46:519 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (1,-979042912) with hash -979042912
+2021.03.05 21:07:49:696 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((2,980479414))
+2021.03.05 21:07:49:697 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (2,980479414) with hash 980479414
+2021.03.05 21:17:50:986 [scala-e...] [ERROR] provingground.learning.IndexEquationSolver.stableVec:165 - Timeout for stable vector after 111790 steps; resolution 1.0E-5
