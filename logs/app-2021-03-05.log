@@ -1,0 +1,83 @@
+2021.03.05 20:12:38:082 [main      ] [INFO ] provingground.interface.CzSlRun.CzSlRun:8 - This is a Bot based run for the Czech-Slovak olympiand problem identified by Achal, who proved this with manual choice.
+This problem involves showing the left and right identity coincide given a bunch of axioms. We can only use forward reasoning
+since there are no models.
+
+There is a little domain knowledge in the tuning, with tautologies specified (to not be used as lemmas) 
+and "base states" given based on what is used together. But this is largely a robust choice of parameters.
+Much of the work has been in ensuring that all the hot code is parallelized.
+
+2021.03.05 20:12:38:130 [main      ] [INFO ] provingground.interface.CzSlRun.CzSlRun:21 - JAVA_OPTS: -Xms2G -Xmx40G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.03.05 20:12:38:132 [main      ] [INFO ] provingground.interface.CzSlRun.CzSlRun:23 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.03.05 20:12:39:475 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((3,-1886051167))
+2021.03.05 20:12:39:478 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (3,-1886051167) with hash -1886051167
+2021.03.05 20:13:47:258 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((4,1622426909))
+2021.03.05 20:13:47:259 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (4,1622426909) with hash 1622426909
+2021.03.05 20:13:50:537 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((4,1622426909))
+2021.03.05 20:13:50:538 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (4,1622426909) with hash 1622426909
+2021.03.05 20:13:55:874 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((5,-1506006694))
+2021.03.05 20:13:55:874 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (5,-1506006694) with hash -1506006694
+2021.03.05 20:13:58:649 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((6,1881595674))
+2021.03.05 20:13:58:650 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (6,1881595674) with hash 1881595674
+2021.03.05 20:13:58:692 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((9,890758532))
+2021.03.05 20:13:58:693 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (9,890758532) with hash 890758532
+2021.03.05 20:14:20:020 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:466 - Results: 5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 4.4991466802622805E-5; statement weight 1.5558054921411615E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 1.1460984659504979E-4; statement weight 1.0248689160923823E-7
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 6.8643975865914325E-6; statement weight 1.1105216691571513E-7
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.2696057169749555E-7; statement weight 7.315490687096209E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 1.1460984659504979E-4; statement weight 6.196288150382436E-8
+2021.03.05 20:14:23:167 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:466 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.058758778910143576; statement weight 7.485634800505807E-5
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$ekwpqq :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$ekwpqq)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 4.111366209468642E-7; statement weight 2.3315738573709303E-8
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.008965065663896796; statement weight 3.086288499779202E-9
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.003519329258236165; statement weight 8.376881626503359E-12
+2021.03.05 20:16:04:227 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:466 - Results: 6
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 5.046306822416397E-5; statement weight 1.383177684866232E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 1.2556404118699632E-4; statement weight 9.72371488317459E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 8.159240290314018E-6; statement weight 1.0558077066594213E-7
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.560338926964738E-7; statement weight 7.422314370475232E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 1.2556404118699632E-4; statement weight 5.786088238476775E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)); best proof: (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n))) with weight 2.747809495855491E-14; statement weight 4.762580809972088E-5
+2021.03.05 20:16:09:846 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:466 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.05755568147131915; statement weight 1.5198210812638092E-4
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$ekwpqq :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$ekwpqq)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.301950176708079E-7; statement weight 3.187120219650528E-8
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.009306031079713886; statement weight 3.851266313776041E-9
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.0037400072233850818; statement weight 8.098214865340753E-12
+2021.03.05 20:19:45:279 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:466 - Results: 7
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 5.4229966477486446E-5; statement weight 1.2523716394150111E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 1.3296399874517288E-4; statement weight 9.18131558433243E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 9.101604841704262E-6; statement weight 9.983153221537083E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.7776952478394128E-7; statement weight 7.318800698189636E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 1.3296399874517288E-4; statement weight 5.406792547375706E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)); best proof: (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n))) with weight 3.8092396607645055E-14; statement weight 4.202553622516126E-5
+Lemma: ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)); best proof: ((((right-multiply) (m)) (n)) (((mul) (((mul) (m)) (n))) (m))) ((((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)))) with weight 5.190413530729064E-17; statement weight 4.6132707505179603E-10
+2021.03.05 20:19:53:477 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:466 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.05676908896192914; statement weight 2.3039228035655495E-4
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$ekwpqq :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$ekwpqq)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 6.230236918552171E-7; statement weight 3.8277983249978665E-8
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.009527750425610448; statement weight 4.330019330309782E-9
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.003885929818693337; statement weight 7.70603641084982E-12
+2021.03.05 20:25:34:249 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:466 - Results: 7
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 5.5520430476949236E-5; statement weight 1.2064731162193356E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 1.3547102565618504E-4; statement weight 8.967712076819848E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 9.434232103520016E-6; statement weight 9.75553538810885E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.8553318032437295E-7; statement weight 7.251294579473336E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 1.3547102565618504E-4; statement weight 5.262697228090521E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)); best proof: (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n))) with weight 4.240925889391581E-14; statement weight 4.01468120455697E-5
+Lemma: ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)); best proof: ((((right-multiply) (m)) (n)) (((mul) (((mul) (m)) (n))) (m))) ((((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)))) with weight 5.920122695163012E-17; statement weight 4.5560122260223914E-10
+2021.03.05 20:25:56:097 [scala-e...] [INFO ] provingground.learning.HoTTBot.response:466 - Steps (in final state): 5
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.05650566559000805; statement weight 2.630264021120027E-4
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$ekwpqq :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$ekwpqq)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 6.570062026229322E-7; statement weight 4.054104953846939E-8
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.009601643766868749; statement weight 4.482321028460468E-9
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.003935060111220134; statement weight 7.546178252292696E-12
+Lemma: (`$dkp : M ) ~> ((((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (`$dkp)) → (((eqM) (((mul) (n)) (m))) (`$dkp))); best proof: (`$ceslxsx :  M) ↦ (((((trans) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (`$ceslxsx)) (((((right-multiply) (m)) (n)) (((mul) (((mul) (m)) (n))) (m))) ((((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)))))) with weight 4.122742624157184E-18; statement weight 2.117682578815988E-10
+2021.03.05 20:51:52:916 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:202 - 
+This is a Bot based run for parallel generation goal chomping. This has been refined a few times.
+Biggest change after first runs was having a session with bots.
+Also parallel chomping, proving via zero, using inclusions and projections,
+better reporting of status. 
+
+
+2021.03.05 20:51:53:161 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:212 - JAVA_OPTS: -Xms2G -Xmx40G -Xss6M -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints
+2021.03.05 20:51:53:162 [main      ] [INFO ] provingground.interface.ChompSession.ParChompSessionEq:214 - JAVA_HOME: /usr/lib/jvm/java-8-oracle
+2021.03.05 20:51:53:861 [scala-e...] [INFO ] provingground.learning.PostResponse.act:691 - apex posts Vector((0,752853775))
+2021.03.05 20:51:53:872 [scala-e...] [INFO ] provingground.learning.PostResponse.act:697 - acting on post (0,752853775) with hash 752853775
