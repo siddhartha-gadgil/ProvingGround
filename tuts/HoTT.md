@@ -19,16 +19,10 @@ The major components of homotopy type theory implemented in the object HoTT are
 
 Inductive types, induction and recursion are in different objects as they are rather subtle. The other major way (also not in the _HoTT_ object) of constructing non-composite types is to wrap scala types, possibly including symbolic algebra.
 
-
 The _core_ project contains code that is agnostic to how it is run. In particular this also compiles to scala-js.
-
-
-
-
 ### Universes, Symbolic types
 
 We have a family of universes, but mostly use the first one denoted by Type. Given a type, we can construct symbolic objects of that type. We construct such a type _A_.
-
 
 ```scala mdoc:to-string
 import provingground._, HoTT._
