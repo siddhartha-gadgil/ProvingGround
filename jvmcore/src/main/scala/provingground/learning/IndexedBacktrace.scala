@@ -343,7 +343,54 @@ class IndexedBacktrace(
     case (x, i) => typToIndex.get(x.typ).map(j => i -> j)
   }
 
+  val typNegateIndexVec: Map[Int, Int] = typToIndex.flatMap {
+    case (typ, j) => typToIndex.get(negate(typ)).map(ntp => (ntp, j))
+  }
+
   val termTypIndexMap = termTypIndexVec.toMap
 
-  val typInhabitantsIndexMap: Map[Int,Vector[Int]] = termTypIndexVec.groupMap(_._2)(_._1)
+  val typInhabitantsIndexMap: Map[Int, Vector[Int]] =
+    termTypIndexVec.groupMap(_._2)(_._1)
+
+  val typInhabitantsWeight: Map[Int, Double] =
+    typInhabitantsIndexMap.map { case (i, v) => (i, v.map(probVec(_)).sum) }
+
+  def traceBackTerms(index: Int, cutoff: Double): Vector[(Term, Double)] =
+    traceBackWeighted(index, cutoff, 1.0).flatMap {
+      case (j, p) => indexToTerm.get(j).map(t => (t, p))
+    }
+
+  def termsInTraceBack(
+      index: Int,
+      cutoff: Double
+  ): Vector[(Term, Double)] = {
+    val base  = traceBackTerms(index, cutoff)
+    val total = base.map(_._2).sum
+    base.map { case (t, p) => (t, p / total) }
+  }
+
+  def traceBackTypInhabitants(index: Int, cutoff: Double): Map[Term, Double] =
+    typInhabitantsIndexMap(index)
+      .flatMap(t => traceBackTerms(t, cutoff))
+      .groupMapReduce(_._1)(_._2)(_ + _)
+
+  def typsInProofsTraceBack(
+      typIndex: Int,
+      cutoff: Double
+  ): Map[Typ[Term], Double] =
+    traceBackTypInhabitants(typIndex, cutoff).map {
+      case (x, p) => (x.typ: Typ[Term], p)
+    }
+
+  def scaleMap[A](m: Map[A, Double]): Map[A,Double] = {
+    val total = m.map(_._2).sum
+    m.map{case (x, p) => (x, p/total)}
+  }
+
+  def indexifyTermWeights(m: Map[Term, Double]): Map[Int,Double] =
+    m.flatMap { case (x, p) => termToIndex.get(x).map(_ -> p) }
+
+  def indexifyTypWeights(m: Map[Typ[Term], Double]): Map[Int,Double] =
+    m.flatMap { case (x, p) => typToIndex.get(x).map(_ -> p) }
+
 }
