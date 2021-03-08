@@ -234,7 +234,7 @@ class ExpressionEquationIndexifier(
     initVariables.zipWithIndex.collect(pfn)
   }
 
-  lazy val thmPfIndices =
+  lazy val thmPfIndices: Map[Int,Vector[Int]] =
     equationVec.zipWithIndex
       .collect {
         case (Equation(FinalVal(Elem(x: Term, Terms)), _), j) => j -> x.typ

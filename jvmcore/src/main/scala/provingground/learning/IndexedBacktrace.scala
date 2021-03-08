@@ -1,5 +1,7 @@
 package provingground.learning
 
+import provingground._, HoTT._
+
 object IndexedBacktrace {
 
   /**
@@ -143,8 +145,9 @@ object IndexedBacktrace {
   * @param probVec vector of probabilies, i.e., probabilites as function of indices.
   */
 class IndexedBacktrace(
-    rhsExprs: Vector[SumIndexExpression],
-    probVec: Vector[Double]
+    rhsIndexedExprs: Vector[SumIndexExpression],
+    probVec: Vector[Double],
+    lhsExpressions: Vector[Expression]
 ) {
   import IndexedBacktrace._
 
@@ -178,7 +181,7 @@ class IndexedBacktrace(
   ): Vector[(Int, Double)] =
     if (headWeight < cutoff) Vector()
     else {
-      val rhs: SumIndexExpression = rhsExprs(index)
+      val rhs: SumIndexExpression = rhsIndexedExprs(index)
       val children: Vector[(Int, Double)] =
         rhs.terms.flatMap(
           prodTerm =>
@@ -204,7 +207,8 @@ class IndexedBacktrace(
     * @return map of distance bounds
     */
   lazy val baseDistances: DistBoundMap = symmetrizedBoundMap(
-    Vector.tabulate(rhsExprs.size)(i => ((i, i), 0.0)) ++ rhsExprs.zipWithIndex
+    Vector
+      .tabulate(rhsIndexedExprs.size)(i => ((i, i), 0.0)) ++ rhsIndexedExprs.zipWithIndex
       .flatMap {
         case (rhs, i) =>
           rhs.terms.flatMap(
@@ -226,7 +230,7 @@ class IndexedBacktrace(
   /**
     * distance between product expressions, given by considering all matches where distance bounds are known;
     * with distance for each match given by distances between matched indices and norms of unmatched ones.
-    *  
+    *
     * @param exp1 first product expression
     * @param exp2 second product expression
     * @param baseDistance previous distance bounds
@@ -260,14 +264,14 @@ class IndexedBacktrace(
       baseDistance: DistBoundMap,
       maxDistance: Double
   ): Vector[((Int, Int), Double)] =
-    rhsExprs.zipWithIndex.flatMap {
+    rhsIndexedExprs.zipWithIndex.flatMap {
       case (rhs1, i1) =>
         rhs1.terms.flatMap(
           t1 =>
-            (rhsExprs.zipWithIndex
+            (rhsIndexedExprs.zipWithIndex
               .flatMap {
                 case (rhs2, i2) =>
-                  rhs2.terms.map {t2 =>
+                  rhs2.terms.map { t2 =>
                     val der = derivedDistance(t1, t2, baseDistance)
                     (i1, i2) -> baseDistance
                       .get((i1, i2))
@@ -314,4 +318,32 @@ class IndexedBacktrace(
       derivedStep(_, maxDistance, resolution),
       resolution
     )
+
+  import TermRandomVars._, GeneratorVariables._, Expression._
+
+  val termIndexVec: Vector[(Term, Int)] = lhsExpressions.zipWithIndex.collect {
+    case (FinalVal(Elem(t: Term, Terms)), j) => (t, j)
+  }
+
+  val typIndexVec: Vector[(Typ[Term], Int)] =
+    lhsExpressions.zipWithIndex.collect {
+      case (FinalVal(Elem(t: Typ[_], Typs)), j) => (t: Typ[Term], j)
+    }
+
+  val termToIndex: Map[Term, Int] = termIndexVec.toMap
+
+  val typToIndex: Map[Typ[Term], Int] = typIndexVec.toMap
+
+  val indexToTerm: Map[Int, Term] = termIndexVec.map(ab => (ab._2, ab._1)).toMap
+
+  val indexToTyp: Map[Int, Typ[Term]] =
+    typIndexVec.map(ab => (ab._2, ab._1)).toMap
+
+  val termTypIndexVec: Vector[(Int, Int)] = termIndexVec.flatMap {
+    case (x, i) => typToIndex.get(x.typ).map(j => i -> j)
+  }
+
+  val termTypIndexMap = termTypIndexVec.toMap
+
+  val typInhabitantsIndexMap: Map[Int,Vector[Int]] = termTypIndexVec.groupMap(_._2)(_._1)
 }
