@@ -477,18 +477,18 @@ object TermState {
   def islePairs(
       ts: TermState,
       variable: Term
-  ): Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = {
-    val termPairs: Set[(RandomVar.Elem[_], RandomVar.Elem[_])] =
+  ): Set[(RandomVar.Element[_], RandomVar.Element[_])] = {
+    val termPairs: Set[(RandomVar.Element[_], RandomVar.Element[_])] =
       ts.terms.support.map { x =>
-        (RandomVar.Elem(Terms, x), RandomVar.Elem(Terms, variable :~> x))
+        (RandomVar.Element(Terms, x), RandomVar.Element(Terms, variable :~> x))
       }
-    val typPairs: Set[(RandomVar.Elem[_], RandomVar.Elem[_])] =
+    val typPairs: Set[(RandomVar.Element[_], RandomVar.Element[_])] =
       ts.typs.support.map { x =>
-        (RandomVar.Elem(Typs, x), RandomVar.Elem(Typs, variable ~>: x))
+        (RandomVar.Element(Typs, x), RandomVar.Element(Typs, variable ~>: x))
       }
-    val goalPairs: Set[(RandomVar.Elem[_], RandomVar.Elem[_])] =
+    val goalPairs: Set[(RandomVar.Element[_], RandomVar.Element[_])] =
       ts.goals.support.map { x =>
-        (RandomVar.Elem(Goals, x), RandomVar.Elem(Goals, variable ~>: x))
+        (RandomVar.Element(Goals, x), RandomVar.Element(Goals, variable ~>: x))
       }
     termPairs union typPairs union goalPairs
   }

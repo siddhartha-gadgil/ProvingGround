@@ -330,6 +330,17 @@ class IndexedBacktrace(
       case (FinalVal(Elem(t: Typ[_], Typs)), j) => (t: Typ[Term], j)
     }
 
+  import TermRandomVars.variableToTermInContext
+
+  val termInContextIndexVec: Vector[((Term, Vector[Term]), Int)] =
+    lhsExpressions.zipWithIndex.flatMap {
+      case (FinalVal(variable), j) =>
+        variableToTermInContext(variable).map(_ -> j)
+    }
+
+  val indexToTermInContext: Map[Int, (Term, Vector[Term])] =
+    termInContextIndexVec.map(ab => (ab._2, ab._1)).toMap
+
   val termToIndex: Map[Term, Int] = termIndexVec.toMap
 
   val typToIndex: Map[Typ[Term], Int] = typIndexVec.toMap
@@ -360,6 +371,11 @@ class IndexedBacktrace(
       case (j, p) => indexToTerm.get(j).map(t => (t, p))
     }
 
+  def traceBackTermsInContexts(index: Int, cutoff: Double): Vector[((Term, Vector[Term]), Double)] =
+    traceBackWeighted(index, cutoff, 1.0).flatMap {
+      case (j, p) => indexToTermInContext.get(j).map(t => (t, p))
+    }
+
   def termsInTraceBack(
       index: Int,
       cutoff: Double
@@ -382,15 +398,15 @@ class IndexedBacktrace(
       case (x, p) => (x.typ: Typ[Term], p)
     }
 
-  def scaleMap[A](m: Map[A, Double]): Map[A,Double] = {
+  def scaleMap[A](m: Map[A, Double]): Map[A, Double] = {
     val total = m.map(_._2).sum
-    m.map{case (x, p) => (x, p/total)}
+    m.map { case (x, p) => (x, p / total) }
   }
 
-  def indexifyTermWeights(m: Map[Term, Double]): Map[Int,Double] =
+  def indexifyTermWeights(m: Map[Term, Double]): Map[Int, Double] =
     m.flatMap { case (x, p) => termToIndex.get(x).map(_ -> p) }
 
-  def indexifyTypWeights(m: Map[Typ[Term], Double]): Map[Int,Double] =
+  def indexifyTypWeights(m: Map[Typ[Term], Double]): Map[Int, Double] =
     m.flatMap { case (x, p) => typToIndex.get(x).map(_ -> p) }
 
 }

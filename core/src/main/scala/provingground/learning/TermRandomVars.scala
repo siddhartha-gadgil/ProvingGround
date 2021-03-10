@@ -402,7 +402,8 @@ object TermRandomVars {
     val newIsleOutput = isle.islandOutput match {
       case ConstRandVar(randomVar) =>
         ConstRandVar(randomVarSubs(x, y)(randomVar))
-      case PiOutput(pd: PiDefn[u, v]) => PiOutput(pd.replace(x, y)).asInstanceOf[Term => RandomVar[d]]
+      case PiOutput(pd: PiDefn[u, v]) =>
+        PiOutput(pd.replace(x, y)).asInstanceOf[Term => RandomVar[d]]
       case _ =>
         Utils.baseLogger.warn(
           s"creating lambda random variable by substitution  for ${isle.islandOutput} in $isle; $boat gives ${isle
@@ -798,5 +799,17 @@ object TermRandomVars {
 
     }
   }
+
+  def variableToTermInContext[Y](v: Variable[Y]): Option[(Term, Vector[Term])] =
+    v match {
+      case Elem(element: Term, randomVar) => Some((element, Vector()))
+      case Event(base, sort)              => None
+      case PairEvent(base1, base2, sort)  => None
+      case InIsle(isleVar, boat: Term, isle) =>
+        variableToTermInContext(isleVar).map {
+          case (t, ctx) => (t, boat +: ctx)
+        }
+      case _ => None
+    }
 
 }

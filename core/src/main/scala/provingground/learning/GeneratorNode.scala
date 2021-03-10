@@ -139,7 +139,7 @@ object RandomVar {
     */
   case class Value[O, D[_]](randVar: RandomVar[O], value: D[O])
 
-  case class Elem[O](randVar: RandomVar[O], value: O)
+  case class Element[O](randVar: RandomVar[O], value: O)
 }
 
 /**
