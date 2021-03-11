@@ -135,6 +135,20 @@ object IndexedBacktrace {
               ).map { case (m, i1, i2) => (m + ((i, j)), i1, i2) }
           )
     ) :+ (Set.empty[(Int, Int)], indices1, indices2)).distinct
+
+  def relatedTypes(t: Term): Vector[Typ[Term]] =
+    t match {
+      case tp: Typ[u] => Vector(tp)
+      case fn: Func[u, v] =>
+        val l = funcToLambdaFixed(fn)
+        relatedTypes(l.value)
+          .map(tp => piDefn(l.variable)(tp): Typ[Term]) :+ (fn.typ)
+      case fn: FuncLike[u, v] =>
+        val l = funcToLambda(fn)
+        relatedTypes(l.value)
+          .map(tp => piDefn(l.variable)(tp): Typ[Term]) :+ (fn.typ)
+      case _ => Vector(t.typ)
+    }
 }
 
 /**
@@ -200,6 +214,32 @@ class IndexedBacktrace(
         }
         .filter(_._2 > cutoff)
     }
+
+  def relativeProbability(
+      index: Int,
+      base: Map[Int, Double],
+      cutoff: Double
+  ): Double =
+    base
+      .get(index)
+      .getOrElse(
+        if (cutoff > 1) probVec(index)
+        else {
+          val rhs: SumIndexExpression = rhsIndexedExprs(index)
+          rhs.terms.map { prodTerm =>
+            prodTerm.indices
+              .map(
+                i =>
+                  relativeProbability(
+                    i,
+                    base,
+                    cutoff / numeratorComplement(i, prodTerm)
+                  )
+              )
+              .product
+          }.sum
+        }
+      )
 
   /**
     * distance bounds from diagonals and from comparing lhs and rhs of equations
@@ -336,10 +376,30 @@ class IndexedBacktrace(
     lhsExpressions.zipWithIndex.flatMap {
       case (FinalVal(variable), j) =>
         variableToTermInContext(variable).map(_ -> j)
+      case _ => None
     }
 
   val indexToTermInContext: Map[Int, (Term, Vector[Term])] =
     termInContextIndexVec.map(ab => (ab._2, ab._1)).toMap
+
+  def termInContextBackTrace(
+      index: Int,
+      cutoff: Double
+  ): Vector[((Term, Vector[Term]), Double)] = {
+    val supportTerms: Vector[(Term, Vector[Term])] =
+      traceBackWeighted(index, cutoff, 1.0)
+        .map(_._1)
+        .flatMap(indexToTermInContext.get(_))
+    supportTerms.map { tc =>
+      val m: Map[Int, Double] = termInContextIndexVec
+        .filter(_._1 == tc)
+        .map(_._2)
+        .map(j => j -> 1.0)
+        .toMap
+      tc -> relativeProbability(index, m, cutoff)
+    }
+
+  }
 
   val termToIndex: Map[Term, Int] = termIndexVec.toMap
 
@@ -371,7 +431,10 @@ class IndexedBacktrace(
       case (j, p) => indexToTerm.get(j).map(t => (t, p))
     }
 
-  def traceBackTermsInContexts(index: Int, cutoff: Double): Vector[((Term, Vector[Term]), Double)] =
+  def traceBackTermsInContexts(
+      index: Int,
+      cutoff: Double
+  ): Vector[((Term, Vector[Term]), Double)] =
     traceBackWeighted(index, cutoff, 1.0).flatMap {
       case (j, p) => indexToTermInContext.get(j).map(t => (t, p))
     }
