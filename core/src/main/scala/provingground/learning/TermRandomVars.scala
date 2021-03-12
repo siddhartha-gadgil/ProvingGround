@@ -800,13 +800,17 @@ object TermRandomVars {
     }
   }
 
-  def variableToTermInContext[Y](v: Variable[Y]): Option[(Term, Vector[Term])] =
+  def variableToTermInContext[Y](
+      v: Variable[Y],
+      baseCondition: RandomVar[_] => Boolean
+  ): Option[(Term, Vector[Term])] =
     v match {
-      case Elem(element: Term, randomVar) => Some((element, Vector()))
-      case Event(base, sort)              => None
-      case PairEvent(base1, base2, sort)  => None
+      case Elem(element: Term, randomVar) =>
+        if (baseCondition(randomVar)) Some((element, Vector())) else None
+      case Event(base, sort)             => None
+      case PairEvent(base1, base2, sort) => None
       case InIsle(isleVar, boat: Term, isle) =>
-        variableToTermInContext(isleVar).map {
+        variableToTermInContext(isleVar, baseCondition).map {
           case (t, ctx) => (t, boat +: ctx)
         }
       case _ => None

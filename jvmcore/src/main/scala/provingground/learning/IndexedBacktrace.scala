@@ -149,6 +149,14 @@ object IndexedBacktrace {
           .map(tp => piDefn(l.variable)(tp): Typ[Term]) :+ (fn.typ)
       case _ => Vector(t.typ)
     }
+
+  def flattenWeights[A](
+      data: Vector[(Vector[(A, Double)], Double)]
+  ): Vector[(A, Double)] =
+    (for {
+      (v, p) <- data
+      (a, q) <- v
+    } yield (a, p * q)).groupMapReduce(_._1)(_._2)(_ + _).toVector
 }
 
 /**
@@ -215,6 +223,14 @@ class IndexedBacktrace(
         .filter(_._2 > cutoff)
     }
 
+  /**
+    * probability relative to a weighted set of the expression at an index; often all weights are 1 and the elements in the support are equivalent
+    *
+    * @param index index of expression
+    * @param base map giving weights of terms relative to which we calculate, typically mapping some terms to 1.0
+    * @param cutoff cut-off for tracing
+    * @return double giving weighted probability
+    */
   def relativeProbability(
       index: Int,
       base: Map[Int, Double],
@@ -370,18 +386,62 @@ class IndexedBacktrace(
       case (FinalVal(Elem(t: Typ[_], Typs)), j) => (t: Typ[Term], j)
     }
 
-  import TermRandomVars.variableToTermInContext
+  import TermRandomVars.{variableToTermInContext, Terms, Typs}
 
   val termInContextIndexVec: Vector[((Term, Vector[Term]), Int)] =
     lhsExpressions.zipWithIndex.flatMap {
       case (FinalVal(variable), j) =>
-        variableToTermInContext(variable).map(_ -> j)
+        variableToTermInContext(variable, (_) => true).map(_ -> j)
       case _ => None
     }
+
+  val termAsTermInContextIndexVec: Vector[((Term, Vector[Term]), Int)] =
+    lhsExpressions.zipWithIndex.flatMap {
+      case (FinalVal(variable), j) =>
+        variableToTermInContext(variable, _ == Terms).map(_ -> j)
+      case _ => None
+    }
+
+  val typAsTypInContextIndexVec: Vector[((Typ[Term], Vector[Term]), Int)] =
+    lhsExpressions.zipWithIndex.flatMap {
+      case (FinalVal(variable), j) =>
+        variableToTermInContext(variable, _ == Typs).flatMap {
+          case (t, ctx) =>
+            typOpt(t).map(tp => (tp, ctx)).map(_ -> j)
+        }
+      case _ => None
+    }
+
+  val typAsTypsInContextIndexMap: Map[(Typ[Term], Vector[Term]), Int] =
+    typAsTypInContextIndexVec.toMap
+
+  val typInContextInhabitants: Map[Int, Vector[(Int, Double)]] =
+    termAsTermInContextIndexVec
+      .groupMap {
+        case ((t, ctx), _) => (t.typ, ctx)
+      }(_._2)
+      .flatMap {
+        case (tp, js) => typAsTypsInContextIndexMap.get(tp).map(i => i -> js)
+      }
+      .map {
+        case (i, js) => (i, js, js.map(probVec(_)).sum)
+      }
+      .filter(_._3 > 0.0)
+      .map {
+        case (i, js, total) => (i, js.map(j => j -> (probVec(j) / total)))
+      }
+      .toMap
 
   val indexToTermInContext: Map[Int, (Term, Vector[Term])] =
     termInContextIndexVec.map(ab => (ab._2, ab._1)).toMap
 
+  /**
+    * trace back mapping (as a partial quotient to term in context)
+    *
+    * @param index index from which we trace
+    * @param cutoff cut-off both for determining support and for stopping branching
+    * @return vector of weighted terms in context
+    */
   def termInContextBackTrace(
       index: Int,
       cutoff: Double
@@ -398,8 +458,35 @@ class IndexedBacktrace(
         .toMap
       tc -> relativeProbability(index, m, cutoff)
     }
-
   }
+
+  def proofsTraceBack(index: Int, cutoff: Double): Vector[((Term, Vector[Term]), Double)] =
+    flattenWeights(typInContextInhabitants(index).map {
+      case (j, q) => (termInContextBackTrace(j, cutoff), q)
+    })
+
+  def proofsOfRelatedTyps(trace: Vector[((Term, Vector[Term]), Double)]): Vector[(Int, Double)] =
+    flattenWeights(trace.flatMap {
+      case ((t, ctx), p) =>
+        val relTyps = relatedTypes(t)
+        (relTyps.flatMap { tp =>
+          val pfsOpt = typAsTypsInContextIndexMap
+            .get((tp, ctx))
+            .flatMap(j => typInContextInhabitants.get(j))
+          pfsOpt.map(pfs => (pfs, p / relTyps.size))
+        })
+    })
+
+
+  // older approach with trace back not using relative weights and/or not mapping to terms in context
+
+  def traceBackTermsInContexts(
+      index: Int,
+      cutoff: Double
+  ): Vector[((Term, Vector[Term]), Double)] =
+    traceBackWeighted(index, cutoff, 1.0).flatMap {
+      case (j, p) => indexToTermInContext.get(j).map(t => (t, p))
+    }
 
   val termToIndex: Map[Term, Int] = termIndexVec.toMap
 
@@ -429,14 +516,6 @@ class IndexedBacktrace(
   def traceBackTerms(index: Int, cutoff: Double): Vector[(Term, Double)] =
     traceBackWeighted(index, cutoff, 1.0).flatMap {
       case (j, p) => indexToTerm.get(j).map(t => (t, p))
-    }
-
-  def traceBackTermsInContexts(
-      index: Int,
-      cutoff: Double
-  ): Vector[((Term, Vector[Term]), Double)] =
-    traceBackWeighted(index, cutoff, 1.0).flatMap {
-      case (j, p) => indexToTermInContext.get(j).map(t => (t, p))
     }
 
   def termsInTraceBack(
