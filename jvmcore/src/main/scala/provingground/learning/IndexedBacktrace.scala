@@ -157,6 +157,64 @@ object IndexedBacktrace {
       (v, p) <- data
       (a, q) <- v
     } yield (a, p * q)).groupMapReduce(_._1)(_._2)(_ + _).toVector
+
+  @annotation.tailrec
+  def greedyMinimalCover[A, B](
+      space: Set[A],
+      subspaces: Set[B],
+      contains: B => A => Boolean,
+      minSize: Int,
+      accum: Set[B]
+  ): Option[Set[B]] =
+    if (accum.size >= minSize && space.forall(
+          a => accum.exists(b => contains(b)(a))
+        )) Some(accum)
+    else {
+      if (space.forall(
+            a => (accum union subspaces).exists(b => contains(b)(a))
+          )) {
+        val uncovered = space.filterNot(a => accum.exists(b => contains(b)(a)))
+        val best = subspaces.maxBy(
+          b =>
+            (
+              uncovered.count(a => contains(b)(a)),
+              space.count(a => contains(b)(a))
+            )
+        )
+        greedyMinimalCover(
+          space,
+          subspaces - best,
+          contains,
+          minSize,
+          accum + best
+        )
+      } else None
+    }
+
+  @annotation.tailrec
+  def bestMinimalCover[A, B, L](
+      space: Set[A],
+      subspaces: Set[B],
+      contains: L => B => A => Boolean,
+      minSize: Int,
+      baseLevel: L,
+      refine: L => L,
+      bestSoFar: Option[Set[B]]
+  ): Option[Set[B]] = {
+    val atThisLevelOpt =
+      greedyMinimalCover(space, subspaces, contains(baseLevel), minSize, Set())
+    if (atThisLevelOpt.nonEmpty)
+      bestMinimalCover(
+        space,
+        subspaces,
+        contains,
+        minSize,
+        refine(baseLevel),
+        refine,
+        atThisLevelOpt
+      )
+    else bestSoFar
+  }
 }
 
 /**
@@ -460,12 +518,17 @@ class IndexedBacktrace(
     }
   }
 
-  def proofsTraceBack(index: Int, cutoff: Double): Vector[((Term, Vector[Term]), Double)] =
+  def proofsTraceBack(
+      index: Int,
+      cutoff: Double
+  ): Vector[((Term, Vector[Term]), Double)] =
     flattenWeights(typInContextInhabitants(index).map {
       case (j, q) => (termInContextBackTrace(j, cutoff), q)
     })
 
-  def proofsOfRelatedTyps(trace: Vector[((Term, Vector[Term]), Double)]): Vector[(Int, Double)] =
+  def proofsOfRelatedTyps(
+      trace: Vector[((Term, Vector[Term]), Double)]
+  ): Vector[(Int, Double)] =
     flattenWeights(trace.flatMap {
       case ((t, ctx), p) =>
         val relTyps = relatedTypes(t)
@@ -476,7 +539,6 @@ class IndexedBacktrace(
           pfsOpt.map(pfs => (pfs, p / relTyps.size))
         })
     })
-
 
   // older approach with trace back not using relative weights and/or not mapping to terms in context
 
