@@ -8,7 +8,7 @@ import scala.util.{Using, Try}
 object TensorFlowExprEquations {
   def opLookup(v: Operand[TFloat32], sess: Session): Float = {
     val result = sess.runner().fetch(v).run()
-    val data   = result.get(0).expect(TFloat32.DTYPE).data()
+    val data   = result.get(0).asInstanceOf[TFloat32]
     data.getFloat()
   }
 
@@ -186,11 +186,11 @@ class TensorFlowExprVarEquations(
 
   val shift = optimizer.minimize(mismatch)
 
-  def quickCheck(): Try[Tensor[TFloat32]] =
+  def quickCheck(): Try[TFloat32] =
     Using(new Session(graph)) { session =>
       session.run(tf.init())
       val output = session.runner().fetch(mismatch).run()
-      output.get(0).expect(TFloat32.DTYPE)
+      output.get(0).asInstanceOf[TFloat32]
     }
 
   def fit(steps: Int): Try[FiniteDistribution[HoTT.Term]] =
@@ -306,11 +306,11 @@ class TensorFlowExprEquations(
 
   val shift = optimizer.minimize(mismatch)
 
-  def quickCheck(): Try[Tensor[TFloat32]] =
+  def quickCheck(): Try[TFloat32] =
     Using(new Session(graph)) { session =>
       session.run(tf.init())
       val output = session.runner().fetch(mismatch).run()
-      output.get(0).expect(TFloat32.DTYPE)
+      output.get(0).asInstanceOf[TFloat32]
     }
 
   def fit(steps: Int): Try[(Vector[(Expression, Float)], Float)] =
@@ -324,11 +324,11 @@ class TensorFlowExprEquations(
       }
       println("getting probabilities")
       val output   = session.runner().fetch(pVec).fetch(mismatch).run
-      val allProbs = output.get(0).expect(TFloat32.DTYPE)
+      val allProbs = output.get(0).asInstanceOf[TFloat32]
       val probs = equationVec.zipWithIndex.map {
-        case (eq, j) => eq.lhs -> allProbs.data().getFloat(j)
+        case (eq, j) => eq.lhs -> allProbs.getFloat(j)
       }
-      (probs, output.get(1).expect(TFloat32.DTYPE).data().getFloat())
+      (probs, output.get(1).asInstanceOf[TFloat32].getFloat())
     }
 }
 
@@ -482,11 +482,11 @@ class TensorFlowFatExprEquations(
 
   val shift = optimizer.minimize(mismatch)
 
-  def quickCheck(): Try[Tensor[TFloat32]] =
+  def quickCheck(): Try[TFloat32] =
     Using(new Session(graph)) { session =>
       session.run(tf.init())
       val output = session.runner().fetch(mismatch).run()
-      output.get(0).expect(TFloat32.DTYPE)
+      output.get(0).asInstanceOf[TFloat32]
     }
 
   def fit(steps: Int): Try[(Vector[(Expression, Float)], Float)] =
@@ -500,10 +500,10 @@ class TensorFlowFatExprEquations(
       }
       println("getting probabilities")
       val output   = session.runner().fetch(pVec).fetch(mismatch).run
-      val allProbs = output.get(0).expect(TFloat32.DTYPE)
+      val allProbs = output.get(0).asInstanceOf[TFloat32]
       val probs = equationVec.zipWithIndex.map {
-        case (eq, j) => eq.lhs -> allProbs.data().getFloat(j)
+        case (eq, j) => eq.lhs -> allProbs.getFloat(j)
       }
-      (probs, output.get(1).expect(TFloat32.DTYPE).data().getFloat())
+      (probs, output.get(1).asInstanceOf[TFloat32].getFloat())
     }
 }
