@@ -124,8 +124,8 @@ val jvmLibs = List(
   ivy"org.platanios::tensorflow:0.5.1-SNAPSHOT;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:2.2.18",
   ivy"org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r",
-  ivy"org.tensorflow:tensorflow-core-platform:0.2.0",
-  ivy"org.tensorflow:tensorflow-framework:0.2.0"
+  ivy"org.tensorflow:tensorflow-core-platform:0.3.0",
+  ivy"org.tensorflow:tensorflow-framework:0.3.0"
 )
 
 trait JvmModule extends CommonModule {
@@ -209,8 +209,8 @@ val mantleLibs = List(
   ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
   // ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7",
   ivy"org.mongodb.scala::mongo-scala-driver:2.8.0",
-  ivy"org.tensorflow:tensorflow-core-platform:0.2.0",
-  ivy"org.tensorflow:tensorflow-framework:0.2.0"
+  ivy"org.tensorflow:tensorflow-core-platform:0.3.0",
+  ivy"org.tensorflow:tensorflow-framework:0.3.0"
 )
 
 def glog = {

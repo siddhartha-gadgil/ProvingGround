@@ -121,7 +121,7 @@ class GraphEmbeddingLogisitic(
     )
   )
 
-  val incidence: Placeholder[TFloat32] = tf.placeholder(TFloat32.DTYPE)
+  val incidence: Placeholder[TFloat32] = tf.placeholder(classOf[TFloat32])
 
   val loss: Neg[TFloat32] = tf.math.neg(
     tf.reduceSum(
@@ -202,8 +202,8 @@ class GraphEmbeddingLogisitic(
           },
           identity(_)
         )
-        val xd = tData.get(0).expect(TFloat32.DTYPE).data()
-        val yd = tData.get(1).expect(TFloat32.DTYPE).data()
+        val xd = tData.get(0).asInstanceOf[TFloat32]
+        val yd = tData.get(1).asInstanceOf[TFloat32]
         val points: Vector[(Float, Float)] =
           (0 until (numPoints))
             .map(n => (xd.getFloat(n), yd.getFloat(n)))
