@@ -22,6 +22,10 @@ object MonoidSession {
     reportProofsSimple(Vector(goal), goalOpt = Some(goal))
   )
   val sess = new HoTTWebSession(bots = bs, completionResponse = None)
+  def run() = {
+    sess.post(lp, Set())
+  }
+
   def main(args: Array[String]): Unit = {
     sess.post(lp, Set())
     while (Utils.running) {
