@@ -38,7 +38,7 @@ object JvmUtils {
       }
 
   import scribe._, writer._
-  import scribe.output.format.ASCIIOutputFormat
+  import scribe.output.format.{ASCIIOutputFormat, HTMLOutputFormat}
   var logger = Logger()
     .withHandler(
       writer = FileWriter().path(file.LogPath.daily()),
@@ -52,6 +52,10 @@ object JvmUtils {
     .withHandler(
       writer = FileWriter().path(file.LogPath.daily("debug")),
       minimumLevel = Some(Level.Debug)
+    )
+    .withHandler(
+      writer = FileWriter().path(file.LogPath.simple("snap-log.html")),
+      minimumLevel = Some(Level.Info)
     )
     .replace()
 
