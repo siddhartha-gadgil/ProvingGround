@@ -468,7 +468,7 @@ object HoTTBot {
               goalOpt.foreach { g =>
                 if (pfs.map(_._1).contains(g)) {
                   web.halt()
-                  Thread.sleep(30000L)
+                  Thread.sleep(3000L)
                   Utils.running = false
                 }
               }

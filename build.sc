@@ -338,6 +338,8 @@ object jvmcore extends JvmModule with SbtModule with PGPublish {
   def moduleDeps = Seq(core.jvm)
 
   def name = "ProvingGround--JVM-Core"
+
+  override def mainClass = Some("provingground.interface.CzSlRun")
 }
 object exploring extends JvmModule {
   override def moduleDeps = Seq(core.jvm, jvmcore, mantle, crust)
