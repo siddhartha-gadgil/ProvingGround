@@ -55,7 +55,13 @@ object JvmUtils {
     )
     .withHandler(
       writer = FileWriter().path(file.LogPath.simple("snap-log.html")),
-      minimumLevel = Some(Level.Info)
+      minimumLevel = Some(Level.Info),
+      outputFormat = HTMLOutputFormat
+    )
+    .withHandler(
+      writer = FileWriter().path(file.LogPath.simple("snap-debug.html")),
+      minimumLevel = Some(Level.Debug),
+      outputFormat = HTMLOutputFormat
     )
     .replace()
 
