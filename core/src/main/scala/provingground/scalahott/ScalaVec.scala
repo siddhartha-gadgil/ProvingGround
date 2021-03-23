@@ -12,19 +12,19 @@ import ScalaPolyRep._
   * @author gadgil
   */
 class ScalaVec[X](val basetyp: Typ[Term])(
-    implicit baserep: ScalaPolyRep[RepTerm[X], X]) {
+    implicit baserep: ScalaPolyRep[ScalaTerm[X], X]) {
   case class VecTyp(dim: Int) extends ScalaTyp[Vector[X]]
 
-  implicit object Rep extends ScalaPolyRep[RepTerm[Vector[X]], Vector[X]] {
+  implicit object Rep extends ScalaPolyRep[ScalaTerm[Vector[X]], Vector[X]] {
     def apply(typ: Typ[Term])(elem: Vector[X]) = typ match {
       case tp @ VecTyp(dim) if dim == elem.size => {
-        val pattern = new ScalaSym[RepTerm[Vector[X]], Vector[X]](tp)
+        val pattern = new ScalaSym[ScalaTerm[Vector[X]], Vector[X]](tp)
         Some(pattern(elem))
       }
       case _ => None
     }
 
-    def unapply(term: RepTerm[Vector[X]]) = term.typ match {
+    def unapply(term: ScalaTerm[Vector[X]]) = term.typ match {
       case tp: VecTyp => {
         val pattern = new ScalaSym[Term, Vector[X]](tp)
         pattern.unapply(term)
@@ -36,7 +36,7 @@ class ScalaVec[X](val basetyp: Typ[Term])(
   }
 
   implicit val nrep
-    : ScalaPolyRep[RepTerm[_root_.scala.Long], _root_.scala.Long] = poly(
+    : ScalaPolyRep[ScalaTerm[_root_.scala.Long], _root_.scala.Long] = poly(
     NatTypLong.rep)
 
   implicit val urep: ScalaPolyRep[Typ[Term], Typ[Term]] = poly(ScalaRep.UnivRep)
@@ -65,26 +65,26 @@ class ScalaVec[X](val basetyp: Typ[Term])(
         a +: v
   }
 
-  val m: RepTerm[Long] = NatTypLong.succ(n)
+  val m: ScalaTerm[Long] = NatTypLong.succ(n)
 
   private val constyp = n ~>: NatTypLong ->: (Vec(n) ->: Vec(m))
 
   import NatTypLong.rep
 
-  implicitly[ScalaPolyRep[RepTerm[Long], Long]]
+  implicitly[ScalaPolyRep[ScalaTerm[Long], Long]]
 
-  implicitly[ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]]
+  implicitly[ScalaPolyRep[ScalaTerm[Vector[X]], Vector[X]]]
 
   implicit val r: ScalaPolyRep[
-    FuncLike[RepTerm[_root_.scala.Long],
-             FuncLike[RepTerm[X],
-                      FuncLike[RepTerm[_root_.scala.`package`.Vector[X]],
-                               RepTerm[_root_.scala.`package`.Vector[X]]]]],
+    FuncLike[ScalaTerm[_root_.scala.Long],
+             FuncLike[ScalaTerm[X],
+                      FuncLike[ScalaTerm[_root_.scala.`package`.Vector[X]],
+                               ScalaTerm[_root_.scala.`package`.Vector[X]]]]],
     _root_.scala.Long => X => _root_.scala.`package`.Vector[X] => _root_.scala.`package`.Vector[
       X]] = depFuncPolyRep(
-    implicitly[ScalaPolyRep[RepTerm[Long], Long]],
+    implicitly[ScalaPolyRep[ScalaTerm[Long], Long]],
     implicitly[ScalaPolyRep[
-      FuncLike[RepTerm[X], FuncLike[RepTerm[Vector[X]], RepTerm[Vector[X]]]],
+      FuncLike[ScalaTerm[X], FuncLike[ScalaTerm[Vector[X]], ScalaTerm[Vector[X]]]],
       X => Vector[X] => Vector[X]]]
   )
 

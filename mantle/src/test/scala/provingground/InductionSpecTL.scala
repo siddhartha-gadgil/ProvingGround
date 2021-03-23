@@ -35,7 +35,8 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
   "recBBB" should "be function with the properly defined type" in {
     assert(
       recBBB.typ == (Bool ->: Bool) ->: (Bool ->: Bool) ->:
-        (Bool ->: Bool ->: Bool))
+        (Bool ->: Bool ->: Bool)
+    )
   }
 
   val not = recBoolBool(ff)(tt)
@@ -50,7 +51,8 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
   "Recursion function recBBB from Bool to Bool" should "when applied to constructors give defining data" in {
     assert(
       and(tt)(tt) == tt && and(tt)(ff) == ff && and(ff)(tt) == ff &&
-        and(ff)(ff) == ff)
+        and(ff)(ff) == ff
+    )
   }
 
   // Example: natural numbers
@@ -77,7 +79,8 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
   "Recursion function isEven from Nat to Bool" should "be defined properly" in {
     assert(
       isEven(zero) == tt && isEven(one) == ff && isEven(two) == tt &&
-        isEven(three) == ff)
+        isEven(three) == ff
+    )
   }
 
   val recNNN = NatInd.rec(Nat ->: Nat)
@@ -85,41 +88,49 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
   "recNNN" should "have the propely defined type" in {
     assert(
       recNNN.typ == (Nat ->: Nat) ->:
-        (Nat ->: (Nat ->: Nat) ->: (Nat ->: Nat)) ->: (Nat ->: (Nat ->: Nat)))
+        (Nat ->: (Nat ->: Nat) ->: (Nat ->: Nat)) ->: (Nat ->: (Nat ->: Nat))
+    )
   }
 
-  val m    = "m" :: Nat
-  val addn = "add(n)" :: Nat ->: Nat
-  val add  = recNNN(m :-> m)(n :-> (addn :-> (m :-> (succ(addn(m))))))
+  val m: Term    = "m" :: Nat
+  val addn: Func[Term,Term] = "add(n)" :: Nat ->: Nat
+  val add: Func[Term,Func[Term,Term]]  = recNNN(m :-> m)(n :-> (addn :-> (m :-> (succ(addn(m))))))
 
   "Recursion function add" should "be defined properly" in {
     assert(
       add(zero)(zero) == zero && add(zero)(one) == one &&
-        add(one)(zero) == one)
+        add(one)(zero) == one
+    )
     assert(add(two)(one) == three && add(two)(two) == four)
   }
 
   "Ackermann function recursively defined" should "give the correct values" in {
-    val ackm = "ack(m)" :: Nat ->: Nat
+    val ackm: Func[Term, Term] = "ack(m)" :: Nat ->: Nat
 
-    val ackmp1n = "ack(m+1)(n)" :: Nat
+    val ackmp1n: Term = "ack(m+1)(n)" :: Nat
 
-    val ack = recNNN(succ)(
-      m :-> (ackm :-> recNN(ackm(one))(n :-> (ackmp1n :-> (ackm(ackmp1n))))))
+    val ack: Func[Term, Func[Term, Term]] = recNNN(succ)(
+      m :-> (ackm :-> recNN(ackm(one))(n :-> (ackmp1n :-> (ackm(ackmp1n)))))
+    )
 
     assert(ack(two)(two) == seven)
     assert(ack(three)(one) == add(seven)(six))
   }
 
   "Fibonacci numbers" should "be defined fine avoiding name clashes" in {
-    val m1 = "m1" :: Nat
-    val m2 = "m2" :: Nat
+    val m1: Term = "m1" :: Nat
+    val m2: Term = "m2" :: Nat
 
-    val recNNNN = NatInd.rec(Nat ->: Nat ->: Nat)
-    val fibn    = "fib_aux(n,_,_)" :: Nat ->: Nat ->: Nat
-    val fib_aux = recNNNN(m1 :-> (m2 :-> m1))(
-      n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(add(m1)(m2))))))
-    val fib = n :-> fib_aux(n)(zero)(one)
+    val recNNNN: Func[Func[Term, Func[Term, Term]], Func[Func[
+      Term,
+      Func[Func[Term, Func[Term, Term]], Func[Term, Func[Term, Term]]]
+    ], Func[Term, Func[Term, Func[Term, Term]]]]] =
+      NatInd.rec(Nat ->: Nat ->: Nat)
+    val fibn: Func[Term,Func[Term,Term]] = "fib_aux(n,_,_)" :: Nat ->: Nat ->: Nat
+    val fib_aux: Func[Term,Func[Term,Func[Term,Term]]] = recNNNN(m1 :-> (m2 :-> m1))(
+      n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(add(m1)(m2)))))
+    )
+    val fib: Func[Term,Term] = n :-> fib_aux(n)(zero)(one)
 
     assert(fib(six) == eight)
   }
@@ -156,7 +167,8 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
           q :~> {
             natcases(("_" :: Nat) :-> (Type: Typ[Term]))(q) {
               natcases(("_" :: Nat) :-> (Type: Typ[Term]))(p)(A)(
-                l :-> (A ->: A))
+                l :-> (A ->: A)
+              )
             } {
               k :-> {
                 natcases(("_" :: Nat) :-> (Type: Typ[Term]))(p)(
@@ -200,7 +212,8 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
   val B    = "B" :: Type
   val List = "List" :: Type ->: Type
   val ListIndA = ("nil" ::: List(A)) |: ("cons" ::: A ->>: List(A) -->>: List(
-    A)) =: List(A)
+    A
+  )) =: List(A)
   val ListInd = A ~->: ListIndA
 
   "List as a parametrized type" should "have introduction rules substituting correctly" in {
@@ -212,7 +225,6 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
 
     assert(ListInd(A).rec(X).replace(A, B) == ListInd(B).rec(X))
   }
-
 
   it should "have correct definition for a simple map function" in {
     val nilA :: consA :: HNil = ListInd(A).intros
@@ -316,7 +328,9 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
     assert(countdown(zero) == nilv)
     assert(
       countdown(three) == consv(two)(three)(
-        consv(one)(two)(consv(zero)(one)(nilv))))
+        consv(one)(two)(consv(zero)(one)(nilv))
+      )
+    )
   }
 
   val W     = "Wec" :: Nat ->: Type
@@ -329,7 +343,9 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
     assert(countdownW(zero) == nilw)
     assert(
       countdownW(three) == consw(two)(three)(
-        consw(one)(two)(consw(zero)(one)(nilw))))
+        consw(one)(two)(consw(zero)(one)(nilw))
+      )
+    )
   }
 
   // Indexed Inductive types
@@ -366,10 +382,13 @@ class InductionSpecTL extends flatspec.AnyFlatSpec {
         (a :->
           (vn :->
             (concatVn :->
-              (m :~> (vm :-> vcons(add(n)(m))(a)(concatVn(m)(vm))))))))
+              (m :~> (vm :-> vcons(add(n)(m))(a)(concatVn(m)(vm)))))))
+    )
     assert(
       vconcat(two)(v2)(two)(v2) == vcons(three)(a1)(
-        vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))))
+        vcons(two)(a)(vcons(one)(a1)(vcons(zero)(a)(vnil)))
+      )
+    )
   }
 
   val VecN = "Vec(Nat)" :: Nat ->: Type

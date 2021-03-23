@@ -4,8 +4,6 @@ import provingground._
 
 import HoTT._
 
-
-
 object SimpleEvens {
   import Nats.{Nat => Nt, _}
   val isEven      = "isEven" :: Nt ->: Type
@@ -35,17 +33,19 @@ object SuccNOrNEven {
 
   import Nats.{Nat => _, _}
 
-  val claim = n :-> (isEven(n) || isEven(succ(n)))
+  val claim: Func[Term, PlusTyp[Term, Term]] = n :-> (isEven(n) || isEven(
+    succ(n)
+  ))
 
-  val base = claim(zero).incl1(zeroEven) !: claim(zero)
+  val base: Term = claim(zero).incl1(zeroEven) !: claim(zero)
 
-  val hyp1 = "n-is-Even" :: isEven(n)
+  val hyp1: Term = "n-is-Even" :: isEven(n)
 
-  val hyp2 = "(n+1)-is-Even" :: isEven(succ(n))
+  val hyp2: Term = "(n+1)-is-Even" :: isEven(succ(n))
 
-  val thm = n ~>: (claim(n))
+  val thm: GenFuncTyp[Term, Term] = n ~>: (claim(n))
 
-  val step = n :~> {
+  val step: FuncLike[Term, Func[Term, Term]] = n :~> {
     (claim(n).rec(claim(succ(n)))) {
       hyp1 :-> (claim(succ(n)).incl2(plusTwoEven(n)(hyp1)))
     } {
@@ -53,32 +53,35 @@ object SuccNOrNEven {
     }
   }
 
-  val inductor = NatInd.induc(claim)
+  val inductor: Func[Term, Func[
+    FuncLike[Term, Func[Term, Term]],
+    FuncLike[Term, Term]
+  ]] = NatInd.induc(claim)
 
-  val pf = inductor(base)(step) !: thm
+  val pf: FuncLike[Term, Term] = inductor(base)(step) !: thm
 }
 
 object LocalConstImpliesConst {
   import Nats.{Nat => Nt, _}
 
-  val A = "A" :: Type
+  val A: Typ[Term] = "A" :: Type
 
-  val f = "f" :: Nt ->: A
+  val f: Func[Term,Term] = "f" :: Nt ->: A
 
-  val ass = "assumption" :: n ~>: (f(n) =:= f(succ(n)))
+  val ass: FuncLike[Term,Equality[Term]] = "assumption" :: n ~>: (f(n) =:= f(succ(n)))
 
-  val claim = n :-> (f(zero) =:= f(n))
+  val claim: Func[Term,IdentityTyp[Term]] = n :-> (f(zero) =:= f(n))
 
-  val base = f(zero).refl
+  val base: Refl[Term] = f(zero).refl
 
-  val hyp = "hypothesis" :: (f(zero) =:= f(n))
-  val step = hyp :-> {
+  val hyp: Equality[Term] = "hypothesis" :: (f(zero) =:= f(n))
+  val step: Func[Equality[Term],Equality[Term]] = hyp :-> {
     IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n))
   }
 
-  val thm = n ~>: (claim(n))
+  val thm: GenFuncTyp[Term,Equality[Term]] = n ~>: (claim(n))
 
-  val inductor = NatInd.induc(claim)
+  val inductor: Func[Equality[Term],Func[FuncLike[Term,Func[Equality[Term],Equality[Term]]],FuncLike[Term,Equality[Term]]]] = NatInd.induc(claim)
 
-  val pf = inductor(base)(n :~> step) !: thm
+  val pf: FuncLike[Term,Equality[Term]] = inductor(base)(n :~> step) !: thm
 }

@@ -70,36 +70,36 @@ trait ScalaRep[+U <: Term with Subs[U], V] {
 
 import ScalaRep._
 
-trait RepTerm[A] extends Term with Subs[RepTerm[A]] {
-  val typ: Typ[RepTerm[A]]
+trait ScalaTerm[A] extends Term with Subs[ScalaTerm[A]] {
+  val typ: Typ[ScalaTerm[A]]
 }
 
-class ScalaTyp[A] extends Typ[RepTerm[A]] {
-  type Obj = RepTerm[A]
+class ScalaTyp[A] extends Typ[ScalaTerm[A]] {
+  type Obj = ScalaTerm[A]
 
   val typ: ScalaTypUniv[A] = ScalaTypUniv[A]()
 
-  def variable(name: AnySym): RepTerm[A] =
-    RepSymbObj[A, RepTerm[A]](name, this)
+  def variable(name: AnySym): ScalaTerm[A] =
+    RepSymbObj[A, ScalaTerm[A]](name, this)
 
-  def newobj: Typ[RepTerm[A]]  =
+  def newobj: Typ[ScalaTerm[A]]  =
     throw new IllegalArgumentException(
       s"trying to use the constant $this as a variable (or a component of one)"
     )
 
-  def subs(x: Term, y: Term): Typ[RepTerm[A]] = (x, y) match {
+  def subs(x: Term, y: Term): Typ[ScalaTerm[A]] = (x, y) match {
     case (xt: Typ[_], yt: Typ[_]) if (xt == this) =>
-      yt.asInstanceOf[Typ[RepTerm[A]]]
+      yt.asInstanceOf[Typ[ScalaTerm[A]]]
     case _ => this
   }
 
-  implicit val rep: ScalaRep[RepTerm[A], A] = SimpleRep(this)
+  implicit val rep: ScalaRep[ScalaTerm[A], A] = SimpleRep(this)
 }
 
 case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic {
-  override def subs(x: Term, y: Term): Typ[RepTerm[A]] = (x, y) match {
+  override def subs(x: Term, y: Term): Typ[ScalaTerm[A]] = (x, y) match {
     case (u: Typ[_], v: Typ[_]) if (u == this) =>
-      v.asInstanceOf[Typ[RepTerm[A]]]
+      v.asInstanceOf[Typ[ScalaTerm[A]]]
     case _ =>
       def symbobj(name: AnySym) = SymbScalaTyp[A](name.subs(x, y))
 
@@ -110,14 +110,14 @@ case class SymbScalaTyp[A](name: AnySym) extends ScalaTyp[A] with Symbolic {
 
 import ScalaUniv._
 
-case class ScalaTypUniv[A]() extends Typ[Typ[RepTerm[A]]] with BaseUniv {
+case class ScalaTypUniv[A]() extends Typ[Typ[ScalaTerm[A]]] with BaseUniv {
   lazy val typ = HigherUniv(this)
 
-  type Obj = Typ[RepTerm[A]]
+  type Obj = Typ[ScalaTerm[A]]
 
   def subs(x: Term, y: Term): ScalaTypUniv[A] = this
 
-  def newobj: Typ[Typ[RepTerm[A]]] =
+  def newobj: Typ[Typ[ScalaTerm[A]]] =
     throw new IllegalArgumentException(
       s"trying to use the constant $this as a variable (or a component of one)"
     )
@@ -274,19 +274,19 @@ object ScalaRep {
 
   implicit val UnivRep: ScalaRep[Typ[Term], Typ[Term]] = idRep(Type)
 
-  implicit def scalaUnivRep[A]: ScalaRep[Typ[RepTerm[A]], Typ[RepTerm[A]]] =
+  implicit def scalaUnivRep[A]: ScalaRep[Typ[ScalaTerm[A]], Typ[ScalaTerm[A]]] =
     idRep(ScalaTypUniv[A]())
 
   implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]): ScalaRep[U, U] =
     IdRep(typ)
 
-  implicit class ScalaTerm[U <: Term with Subs[U], W](elem: W)(
+  implicit class ScalaToTerm[U <: Term with Subs[U], W](elem: W)(
       implicit rep: ScalaRep[U, W]
   ) {
     def term: U = rep(elem)
   }
 
-  implicit class TermScala[U <: Term with Subs[U]](term: U) {
+  implicit class TermToScala[U <: Term with Subs[U]](term: U) {
     type Rep[W] = ScalaRep[U, W]
     def as[W: Rep]: Option[W] = implicitly[ScalaRep[U, W]].unapply(term)
   }
@@ -297,18 +297,18 @@ object ScalaRep {
   ): ScalaRep[Func[U, X], V => Y] =
     FuncRep(domrep, codomrep)
 
-  case class RepSymbObj[A, +U <: RepTerm[A] with Subs[U]](
+  case class RepSymbObj[A, +U <: ScalaTerm[A] with Subs[U]](
       name: AnySym,
       typ: Typ[U]
-  ) extends RepTerm[A]
+  ) extends ScalaTerm[A]
       with Symbolic {
     // override def toString = name.toString + " : (" + typ.toString + ")"
 
     def newobj: RepSymbObj[A, U] =
-      RepSymbObj(new InnerSym[RepTerm[A]](this), typ)
+      RepSymbObj(new InnerSym[ScalaTerm[A]](this), typ)
 
-    def subs(x: Term, y: Term): RepTerm[A] =
-      if (x == this) y.asInstanceOf[RepTerm[A]]
+    def subs(x: Term, y: Term): ScalaTerm[A] =
+      if (x == this) y.asInstanceOf[ScalaTerm[A]]
       else {
         def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym)
         symSubs(symbobj)(x, y)(name)

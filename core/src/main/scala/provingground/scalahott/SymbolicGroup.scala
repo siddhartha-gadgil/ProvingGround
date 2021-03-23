@@ -13,7 +13,7 @@ import cats.kernel._, cats.implicits._, cats.syntax._
 class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
   val group = implicitly[Group[A]]
 
-  type LocalTerm = RepTerm[A]
+  type LocalTerm = ScalaTerm[A]
 
   type Op = Func[LocalTerm, Func[LocalTerm, LocalTerm]]
 
@@ -121,9 +121,9 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
   case object mul extends Func[LocalTerm, Func[LocalTerm, LocalTerm]] { w =>
     val dom: SymbolicGroup[A] = self
 
-    val codom: FuncTyp[LocalTerm, RepTerm[A]] = self ->: self
+    val codom: FuncTyp[LocalTerm, ScalaTerm[A]] = self ->: self
 
-    val typ: FuncTyp[LocalTerm, Func[LocalTerm, RepTerm[A]]] = dom ->: codom
+    val typ: FuncTyp[LocalTerm, Func[LocalTerm, ScalaTerm[A]]] = dom ->: codom
 
     def subs(x: Term, y: Term): mul.type = this
 
@@ -144,7 +144,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
   }
 
   implicit val groupStructure: Group[LocalTerm] = new Group[LocalTerm] {
-    val empty: RepTerm[A] = e
+    val empty: ScalaTerm[A] = e
 
     def combine(x: LocalTerm, y: LocalTerm): LocalTerm = mul(x)(y)
 
@@ -166,7 +166,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
     val n                                          = "n" :: NatTyp
     val fng                                        = "f(n)(g)" :: self
     val step                                       = n :-> (fng :-> mul(fng)(g))
-    val recFn: Func[NatRing.LocalTerm, RepTerm[A]] = Rec(e, step)
+    val recFn: Func[NatRing.LocalTerm, ScalaTerm[A]] = Rec(e, step)
     g :-> recFn
   }
   object Theorems {

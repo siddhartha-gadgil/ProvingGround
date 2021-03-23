@@ -34,28 +34,28 @@ sealed abstract class LinNormBound(val word: Word, val bound: Rational) {
 
 object LinNormBound {
   // Some variables
-  val g: RepTerm[Word] = "g" :: FreeGroup
-  val h: RepTerm[Word] = "h" :: FreeGroup
-  val n: RepTerm[SafeLong] = "n" :: NatTyp
-  val x: RepTerm[Rational] = "x" :: QTyp
-  val y: RepTerm[Rational] = "y" :: QTyp
+  val g: ScalaTerm[Word] = "g" :: FreeGroup
+  val h: ScalaTerm[Word] = "h" :: FreeGroup
+  val n: ScalaTerm[SafeLong] = "n" :: NatTyp
+  val x: ScalaTerm[Rational] = "x" :: QTyp
+  val y: ScalaTerm[Rational] = "y" :: QTyp
 
   // The length function
-  val l: Func[RepTerm[Word], RepTerm[Rational]] = "l" :: FreeGroup ->: QTyp
+  val l: Func[ScalaTerm[Word], ScalaTerm[Rational]] = "l" :: FreeGroup ->: QTyp
 
   // Notation
-  val upbound: FuncLike[RepTerm[Word], FuncLike[RepTerm[Rational], Pos]] = g :~> (x :~> leq(l(g))(x))
+  val upbound: FuncLike[ScalaTerm[Word], FuncLike[ScalaTerm[Rational], Pos]] = g :~> (x :~> leq(l(g))(x))
   val pos: Pos = Pos(l(FreeGroup.e))
 
   // The axioms
-  lazy val triang: FuncLike[RepTerm[Word], FuncLike[RepTerm[Word], PosWit]] =
+  lazy val triang: FuncLike[ScalaTerm[Word], FuncLike[ScalaTerm[Word], PosWit]] =
     "triangle-inequality" :: (
       g ~>: (h ~>: (
         (leq(l(g |+| h))(l(g) + l(h)))
       ))
     )
 
-  lazy val conjInv: FuncLike[RepTerm[Word], FuncLike[RepTerm[Word], Equality[RepTerm[Rational]]]] =
+  lazy val conjInv: FuncLike[ScalaTerm[Word], FuncLike[ScalaTerm[Word], Equality[ScalaTerm[Rational]]]] =
     "conjugacy-invariance" :: (
       g ~>: (
         h ~>: (
@@ -64,12 +64,12 @@ object LinNormBound {
       )
     )
 
-  lazy val symmetry: FuncLike[RepTerm[Word], Equality[RepTerm[Rational]]] =
+  lazy val symmetry: FuncLike[ScalaTerm[Word], Equality[ScalaTerm[Rational]]] =
     "symmetry" :: g ~>: {
       l(g) =:= l(g.inverse)
     }
 
-  lazy val powerBound: FuncLike[RepTerm[Word], FuncLike[RepTerm[Rational], FuncLike[RepTerm[SafeLong], FuncLike[PosWit, PosWit]]]] =
+  lazy val powerBound: FuncLike[ScalaTerm[Word], FuncLike[ScalaTerm[Rational], FuncLike[ScalaTerm[SafeLong], FuncLike[PosWit, PosWit]]]] =
     "homogeneity" :: (
       g ~>: (
         x ~>: (
@@ -82,13 +82,13 @@ object LinNormBound {
       )
     )
 
-  lazy val gen: Func[RepTerm[SafeLong], RepTerm[Word]] = (NatRing.LocalTyp.rep -->: FreeGroup.rep)((n: SafeLong) =>
+  lazy val gen: Func[ScalaTerm[SafeLong], ScalaTerm[Word]] = (NatRing.LocalTyp.rep -->: FreeGroup.rep)((n: SafeLong) =>
     Word(Vector(n.toInt)))
 
   val NtoQ: Func[NatRing.LocalTerm, QField.LocalTerm] = NatRing.incl(QField)
   val nr: QField.LocalTerm = NtoQ(n)
 
-  lazy val genBound: FuncLike[RepTerm[SafeLong], PosWit] =
+  lazy val genBound: FuncLike[ScalaTerm[SafeLong], PosWit] =
     "generator-bound" :: (
       n ~>: (
         leq(l(gen(n)))(rat(1))
@@ -98,7 +98,7 @@ object LinNormBound {
   lazy val expvars : Vector[Term] = Vector(l, triang, conjInv, symmetry, powerBound, genBound)
 
   // Derived lemmas in HoTT
-  lazy val triangBound: FuncLike[RepTerm[Word], FuncLike[RepTerm[Word], FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[PosWit, FuncLike[PosWit, PosWit]]]]]] = {
+  lazy val triangBound: FuncLike[ScalaTerm[Word], FuncLike[ScalaTerm[Word], FuncLike[ScalaTerm[Rational], FuncLike[ScalaTerm[Rational], FuncLike[PosWit, FuncLike[PosWit, PosWit]]]]]] = {
     val b1  = "b1" :: leq(l(g))(x)
     val b2  = "b2" :: leq(l(h))(y)
     val res = triang(g)(h) + b1 + b2: PosWit
@@ -108,7 +108,7 @@ object LinNormBound {
     )))))
   }
 
-  lazy val invBound: FuncLike[RepTerm[Word], FuncLike[RepTerm[Rational], FuncLike[PosWit, PosWit]]] = {
+  lazy val invBound: FuncLike[ScalaTerm[Word], FuncLike[ScalaTerm[Rational], FuncLike[PosWit, PosWit]]] = {
     val hyp = "hyp" :: (leq(l(g))(x))
     val bx  = y :-> leq(y)(x)
     g :~> (

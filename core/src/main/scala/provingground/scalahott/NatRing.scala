@@ -193,7 +193,7 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
     val n    = "n" :: LocalTyp
     val fn   = "f(n)" :: r.LocalTyp
     val step: Func[Nat with Subs[Nat], Func[
-      RepTerm[A] with Subs[RepTerm[A]],
+      ScalaTerm[A] with Subs[ScalaTerm[A]],
       r.LocalTerm
     ]] = n :-> (fn :-> r
       .sum(fn)(r.Literal(base.one)))

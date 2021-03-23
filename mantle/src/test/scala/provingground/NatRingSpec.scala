@@ -10,21 +10,21 @@ import spire.math.SafeLong
 
 object NatRingSpec {
 
-  val x: RepTerm[SafeLong] = "x " :: NatRing.LocalTyp
+  val x: ScalaTerm[SafeLong] = "x " :: NatRing.LocalTyp
 
-  val y: RepTerm[SafeLong] = "y" :: NatRing.LocalTyp
+  val y: ScalaTerm[SafeLong] = "y" :: NatRing.LocalTyp
 
-  val z: RepTerm[SafeLong] = "z" :: NatRing.LocalTyp
+  val z: ScalaTerm[SafeLong] = "z" :: NatRing.LocalTyp
 
   val nr: CRing[NatRing.LocalTerm] = implicitly[CRing[NatRing.LocalTerm]]
 
   nr.plus(x, y)
 
-  val xPy: RepTerm[SafeLong] = x + y
+  val xPy: ScalaTerm[SafeLong] = x + y
 
-  lazy val xPyPz: RepTerm[SafeLong] = x + (y + z)
+  lazy val xPyPz: ScalaTerm[SafeLong] = x + (y + z)
 
-  lazy val xPyPzl: RepTerm[SafeLong] = (x + y) + z
+  lazy val xPyPzl: ScalaTerm[SafeLong] = (x + y) + z
 }
 
 class NatRingSpec extends flatspec.AnyFlatSpec {

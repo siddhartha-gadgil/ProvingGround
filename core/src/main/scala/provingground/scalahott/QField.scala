@@ -95,12 +95,12 @@ object QField extends SymbolicField[Rational] {
     def variable(sym: AnySym) = SymbPosWit(sym, value)
   }
 
-  val x: RepTerm[Rational] = "x" :: LocalTyp
+  val x: ScalaTerm[Rational] = "x" :: LocalTyp
 
-  val y: RepTerm[Rational] = "y" :: LocalTyp
+  val y: ScalaTerm[Rational] = "y" :: LocalTyp
 
   lazy val leq
-      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], Pos]] = x :~> (y :~> Pos(
+      : FuncLike[ScalaTerm[Rational], FuncLike[ScalaTerm[Rational], Pos]] = x :~> (y :~> Pos(
     y - x
   ))
 
@@ -108,22 +108,22 @@ object QField extends SymbolicField[Rational] {
   //
   // val posprod = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x * y))))
 
-  val dichotomy: FuncLike[RepTerm[Rational], Term] =
+  val dichotomy: FuncLike[ScalaTerm[Rational], Term] =
     "positivity-dichotomy" :: (x ~>: (Pos(x) || Pos(-x)))
 
   val posAndNegPos
-      : FuncLike[RepTerm[Rational], FuncLike[Pos, FuncLike[Pos, Equality[
-        RepTerm[Rational]
+      : FuncLike[ScalaTerm[Rational], FuncLike[Pos, FuncLike[Pos, Equality[
+        ScalaTerm[Rational]
       ]]]] =
     "positive-and-negation-positive" :: (
       x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
     )
 
-  val squarePositive: FuncLike[RepTerm[Rational], PosWit] =
+  val squarePositive: FuncLike[ScalaTerm[Rational], PosWit] =
     "square-positive" :: x ~>: Pos(x * x)
 
-  val sumPositive: FuncLike[RepTerm[Rational], FuncLike[
-    RepTerm[Rational],
+  val sumPositive: FuncLike[ScalaTerm[Rational], FuncLike[
+    ScalaTerm[Rational],
     Func[PosWit, Func[PosWit, PosWit]]
   ]] =
     "sum-positive" :: x ~>: (y ~>: (Pos(x) ->: Pos(y) ->: Pos(x + y)))
@@ -149,16 +149,16 @@ object QField extends SymbolicField[Rational] {
     case _ => None
   }
 
-  val z: RepTerm[Rational] = "z" :: LocalTyp
+  val z: ScalaTerm[Rational] = "z" :: LocalTyp
 
-  val w: RepTerm[Rational] = "w" :: LocalTyp
+  val w: ScalaTerm[Rational] = "w" :: LocalTyp
 
   import IdentityTyp.transport
 
   val transpEqL
-      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[
-        RepTerm[Rational],
-        Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]
+      : FuncLike[ScalaTerm[Rational], FuncLike[ScalaTerm[Rational], FuncLike[
+        ScalaTerm[Rational],
+        Func[Equality[ScalaTerm[Rational]], Func[PosWit, PosWit]]
       ]]] =
     x :~> (
       y :~> (z :~> (transport(w :-> (leq(w)(x)))(y)(z)))
@@ -171,9 +171,9 @@ object QField extends SymbolicField[Rational] {
     )
 
   val transpEqR
-      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[
-        RepTerm[Rational],
-        Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]
+      : FuncLike[ScalaTerm[Rational], FuncLike[ScalaTerm[Rational], FuncLike[
+        ScalaTerm[Rational],
+        Func[Equality[ScalaTerm[Rational]], Func[PosWit, PosWit]]
       ]]] =
     x :~> (
       y :~> (z :~> (transport(w :-> (leq(x)(w)))(y)(z)))

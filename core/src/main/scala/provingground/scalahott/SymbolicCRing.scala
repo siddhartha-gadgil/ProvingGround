@@ -16,7 +16,7 @@ import spire.implicits._
   * More generally start with a spire CRing
   * Requires a commutative ring, but Pi's and Sigma's are written to allow rings and fields
   *
-  * Terms of type RepTerm[A] are created, i.e., terms with the refinement that they correspond to the scala type A.
+  * Terms of type ScalaTerm[A] are created, i.e., terms with the refinement that they correspond to the scala type A.
   *
   * Any term should be of the following forms:
   *
@@ -47,7 +47,7 @@ class SymbolicCRing[A: Ring] { self =>
 
   def negate(x: LocalTerm): LocalTerm = prod(minusone)(x)
 
-  type LocalTerm = RepTerm[A]
+  type LocalTerm = ScalaTerm[A]
 
   type Op = Func[LocalTerm, Func[LocalTerm, LocalTerm]]
 
@@ -643,10 +643,10 @@ object SymbolicCRing {
       domRing: SymbolicCRing[A],
       codomRing: SymbolicCRing[B],
       f: A => B
-  ) extends Func[RepTerm[A], RepTerm[B]] {
+  ) extends Func[ScalaTerm[A], ScalaTerm[B]] {
     def act(
-        arg: RepTerm[A]
-    ): RepTerm[B] = arg match {
+        arg: ScalaTerm[A]
+    ): ScalaTerm[B] = arg match {
       case domRing.Literal(x) => codomRing.Literal(f(x))
       case domRing.Comb(op, x, y) if op == domRing.sum =>
         codomRing.sum(act(x))(act(y))
@@ -659,13 +659,13 @@ object SymbolicCRing {
 
     val dom: domRing.LocalTyp.type = domRing.LocalTyp
 
-    val codom: Typ[RepTerm[B]] = codomRing.LocalTyp
+    val codom: Typ[ScalaTerm[B]] = codomRing.LocalTyp
 
-    val typ: FuncTyp[RepTerm[A], RepTerm[B]] = dom ->: codom
+    val typ: FuncTyp[ScalaTerm[A], ScalaTerm[B]] = dom ->: codom
 
-    def subs(x: Term, y: Term): Func[RepTerm[A], RepTerm[B]] = this
+    def subs(x: Term, y: Term): Func[ScalaTerm[A], ScalaTerm[B]] = this
 
-    def newobj: Func[RepTerm[A], RepTerm[B]] =
+    def newobj: Func[ScalaTerm[A], ScalaTerm[B]] =
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)"
       )

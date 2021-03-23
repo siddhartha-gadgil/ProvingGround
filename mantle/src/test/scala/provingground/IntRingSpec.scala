@@ -10,21 +10,21 @@ import spire.math.SafeLong
 
 object IntRingSpec {
 
-  val x: RepTerm[SafeLong] = "x " :: IntRing.LocalTyp
+  val x: ScalaTerm[SafeLong] = "x " :: IntRing.LocalTyp
 
-  val y: RepTerm[SafeLong] = "y" :: IntRing.LocalTyp
+  val y: ScalaTerm[SafeLong] = "y" :: IntRing.LocalTyp
 
-  val z: RepTerm[SafeLong] = "z" :: IntRing.LocalTyp
+  val z: ScalaTerm[SafeLong] = "z" :: IntRing.LocalTyp
 
   val nr: CRing[IntRing.LocalTerm] = implicitly[CRing[IntRing.LocalTerm]]
 
   nr.plus(x, y)
 
-  val xPy: RepTerm[SafeLong] = x + y
+  val xPy: ScalaTerm[SafeLong] = x + y
 
-  lazy val xPyPz: RepTerm[SafeLong] = x + (y + z)
+  lazy val xPyPz: ScalaTerm[SafeLong] = x + (y + z)
 
-  lazy val xPyPzl: RepTerm[SafeLong] = (x + y) + z
+  lazy val xPyPzl: ScalaTerm[SafeLong] = (x + y) + z
 }
 
 class IntRingSpec extends flatspec.AnyFlatSpec {
