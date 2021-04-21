@@ -1,6 +1,7 @@
 package provingground.learning
 
 import provingground._, HoTT._
+import math.{log, max, min}
 
 object BackTraceFromIndexed {
 
@@ -25,6 +26,16 @@ object BackTraceFromIndexed {
       (v, p) <- data
       (a, q) <- v
     } yield (a, p * q)).groupMapReduce(_._1)(_._2)(_ + _).toVector
+
+  /**
+    * score either of an ingredient in a statement or of the proof of a statement
+    *
+    * @param successProb generation probability of a proof or relative generation probability given ingredient
+    * @param prob generation probability, of statement in case of score of a proof
+    * @return
+    */
+  def score(successProb: Double, prob: Double): Double =
+    log(prob) / (log(successProb) + log(prob))
 
   @annotation.tailrec
   def greedyMinimalCover[A, B](
@@ -214,6 +225,7 @@ class BackTraceFromIndexed(
 
   import TermRandomVars.{variableToTermInContext, Terms, Typs}
 
+  // do not require the variable to be terms
   val termInContextIndexVec: Vector[((Term, Vector[Term]), Int)] =
     lhsExpressions.zipWithIndex.flatMap {
       case (FinalVal(variable), j) =>
@@ -286,6 +298,21 @@ class BackTraceFromIndexed(
     }
   }
 
+  def termInContextBackTraceIndices(
+      index: Int,
+      cutoff: Double
+  ): Vector[(Int, Double)] = {
+    val supportIndices =
+      traceBackWeighted(index, cutoff, 1.0)
+        .map(_._1)
+        .filter(indexToTermInContext.keySet.contains(_))
+    supportIndices.map { tc =>
+      val m = Map(index -> 1.0)
+      tc -> relativeProbability(index, m.get(_), cutoff)
+    }
+  }
+
+
   def proofsTraceBack(
       index: Int,
       cutoff: Double
@@ -294,7 +321,15 @@ class BackTraceFromIndexed(
       case (j, q) => (termInContextBackTrace(j, cutoff), q)
     })
 
-  def proofsOfRelatedTyps(
+  def proofsTraceBackIndices(
+      index: Int,
+      cutoff: Double
+  ) =
+    flattenWeights(typInContextInhabitants(index).map {
+      case (j, q) => (termInContextBackTraceIndices(j, cutoff), q)
+    })
+
+  def proofsOfRelatedTypsFromTrace(
       trace: Vector[((Term, Vector[Term]), Double)]
   ): Vector[(Int, Double)] =
     flattenWeights(trace.flatMap {
@@ -308,6 +343,9 @@ class BackTraceFromIndexed(
         })
     })
 
+  def proofsOfRelatedTyps(index: Int, cutoff: Double): Vector[(Int, Double)] =
+    proofsOfRelatedTypsFromTrace(termInContextBackTrace(index, cutoff))
+
   // older approach with trace back not using relative weights and/or not mapping to terms in context
 
   def traceBackTermsInContexts(
@@ -317,6 +355,24 @@ class BackTraceFromIndexed(
     traceBackWeighted(index, cutoff, 1.0).flatMap {
       case (j, p) => indexToTermInContext.get(j).map(t => (t, p))
     }
+
+  def termInContextIngredientScores(cutoff : Double): Map[(Int, Int),Double] = 
+    indexToTermInContext.keys.toVector.flatMap{i =>
+      val trace: Vector[(Int, Double)] = termInContextBackTraceIndices(i, cutoff)
+      trace.map{case (j, q) => ((i, j), score(q, probVec(i)))}
+    }.toMap
+
+  def typInContextProofScores(cutoff: Double): Map[(Int, Int),Double] =
+    typAsTypInContextIndexVec.map(_._2).flatMap{i =>
+      val trace: Vector[(Int, Double)] = proofsTraceBackIndices(i, cutoff)
+      trace.map{case (j, q) => ((i, j), score(q, probVec(i)))}
+    }.toMap
+
+  def relatedTypProofScores(cutoff: Double): Map[(Int, Int),Double] =
+    typAsTypInContextIndexVec.map(_._2).flatMap{i =>
+      val trace: Vector[(Int, Double)] = proofsOfRelatedTyps(i, cutoff)
+      trace.map{case (j, q) => ((i, j), score(q, probVec(i)))}
+    }.toMap
 
   val termToIndex: Map[Term, Int] = termIndexVec.toMap
 
