@@ -1,12 +1,13 @@
 package provingground.learning
 
 import org.tensorflow._
-import org.tensorflow.op._
+import org.tensorflow.op._, linalg.MatMul
 import org.tensorflow.types._
 import scala.util.Using
 import org.tensorflow.ndarray._
 import org.tensorflow.framework.optimizers._
 import IngredientsRepresentation._
+import provingground.JvmUtils
 
 object IngredientsRepresentation{
     def dataLookup(v: Operand[TFloat32], sess: Session): TFloat32 = {
@@ -18,58 +19,40 @@ object IngredientsRepresentation{
   val rnd = new scala.util.Random()
 }
 
-class IngredientsRepresentation(numPoints: Int, graph: Graph, epsilon: Float = 0.01f) {
+class IngredientsRepresentation(numPoints: Int, graph: Graph, dim: Int) {
   val tf = Ops.create(graph)
 
   val ones = tf.constant(Array.fill(numPoints)(1.0f))
 
-  val xs = tf.variable(
-    tf.constant(Array.fill(numPoints)(rnd.nextFloat() * 2.0f))
+  val vertexEmbed = tf.variable(
+    tf.constant(Array.fill(dim, numPoints)(rnd.nextFloat() * 2.0f))
   )
 
-  val ys = tf.variable(
-    tf.constant(Array.fill(numPoints)(rnd.nextFloat() * 2.0f))
+  val contextEmbed = tf.variable(
+    tf.constant(Array.fill(dim, numPoints)(rnd.nextFloat() * 2.0f))
   )
 
-  def rankOne(v: Operand[TFloat32], w: Operand[TFloat32]) =
-    tf.linalg.matMul(
-      tf.reshape(v, tf.constant(Array(numPoints, 1))),
-      tf.reshape(w, tf.constant(Array(1, numPoints)))
-    )
-
-  val xDiff = tf.math.squaredDifference(rankOne(xs, ones), rankOne(ones, xs))
-
-  val yDiff = tf.math.squaredDifference(rankOne(ys, ones), rankOne(ones, ys))
-
-  val totDiff = tf.math.add(xDiff, yDiff)
-
-  val oneMatrix = tf.constant(Array.fill(numPoints, numPoints)(1.0f))
-
-  val oneEpsMatrix =
-    tf.constant(Array.fill(numPoints, numPoints)(1.0f + epsilon))
-
-  val probs = tf.math.div(
-    oneMatrix,
-    tf.math.add(
-      oneEpsMatrix,
-      totDiff
-    )
+  val dotProds = tf.linalg.matMul(
+    vertexEmbed,
+    contextEmbed,
+    MatMul.transposeA(true).transposeB(false)
   )
 
-  val incidence = tf.placeholder(classOf[TFloat32])
+  val incidence = tf.placeholderWithDefault(
+    tf.constant(Array.fill(numPoints, numPoints)(1f)),
+    Shape.of(numPoints, numPoints)
+  )
 
-  val loss = tf.math.neg(
-    tf.reduceSum(
-      (
-        tf.math.add(
-          tf.math.mul(incidence, tf.math.log(probs)),
-          tf.math.mul(
-            tf.math.sub(oneMatrix, incidence),
-            tf.math.log(tf.math.sub(oneMatrix, probs))
-          )
-        )
+  // max(x, 0) - x * z + log(1 + exp(-abs(x)))
+  val loss = tf.math.add(
+    tf.math
+      .sub(
+        tf.math.maximum(dotProds, tf.constant(0f)),
+        tf.math.mul(dotProds, incidence)
       ),
-      tf.constant(Array(0, 1))
+    tf.math.log(
+      tf.math
+        .add(tf.constant(1f), tf.math.exp(tf.math.neg(tf.math.abs(dotProds))))
     )
   )
 
@@ -90,7 +73,7 @@ class IngredientsRepresentation(numPoints: Int, graph: Graph, epsilon: Float = 0
           .addTarget(minimize)
           .run()        
       }
-      println("Tuning complete")
+      JvmUtils.logger.info("Tuning complete")
       val tundedData = session
         .runner()
         .feed(incidence, incT)
@@ -99,13 +82,18 @@ class IngredientsRepresentation(numPoints: Int, graph: Graph, epsilon: Float = 0
         .get(0)
         .asInstanceOf[TFloat32]
 
-      println(tundedData.getFloat())
-      val txd = dataLookup(xs, session)
-      val tyd = dataLookup(ys, session)
-      val tpoints =
-        (0 until (inc.size)).map(n =>
-          (txd.getFloat(n) * 60f, tyd.getFloat(n) * 60f)
-        )
+      JvmUtils.logger.info(tundedData.getFloat().toString())
+
+      val tData = session
+        .runner()
+        .fetch(vertexEmbed)
+        .fetch(contextEmbed)
+        .run()
+      val vd = tData.get(0).asInstanceOf[TFloat32]
+      val cd = tData.get(1).asInstanceOf[TFloat32]
+      val vEmbedding = Vector.tabulate(dim, numPoints){case (i, j) => vd.get(i, j)}
+      val cEmbedding = Vector.tabulate(dim, numPoints){case (i, j) => cd.get(i, j)}
+      (vEmbedding ++ cEmbedding)
     }
   }
 
