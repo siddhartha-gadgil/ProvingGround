@@ -149,6 +149,25 @@ class BackTraceFromIndexed(
         .filter(_._2 > cutoff)
     }
 
+  def traceFromBase(
+      index: Int,
+      base: Int => Option[Double]
+  ): (Vector[Int], Double) =
+    base(index).map(p => (Vector(index), p)).getOrElse {
+      val rhs: SumIndexExpression = rhsIndexedExprs(index)
+      val bestProduct: ProductIndexExpression = rhs.terms.maxBy { prod =>
+        val numerator   = prod.indices.map(probVec(_)).fold(prod.constant)(_ * _)
+        val denominator = prod.negIndices.map(probVec).fold(1.0)(_ * _)
+        numerator / denominator
+      }
+      val weightedTraces = bestProduct.indices.map(j => traceFromBase(j, base))
+      val traces =
+        weightedTraces.flatMap(_._1).distinct
+      val denominator = bestProduct.negIndices.map(probVec).fold(1.0)(_ * _)
+      val numerator   = weightedTraces.map(_._2).fold(bestProduct.constant)(_ * _)
+      (traces, rhs.constantTerm + (numerator / denominator))
+    }
+
   /**
     * probability relative to a weighted set of the expression at an index; often all weights are 1 and the elements in the support are equivalent
     *
