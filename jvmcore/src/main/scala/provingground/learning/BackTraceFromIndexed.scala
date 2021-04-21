@@ -34,7 +34,7 @@ object BackTraceFromIndexed {
     * @param prob generation probability, of statement in case of score of a proof
     * @return
     */
-  def score(successProb: Double, prob: Double): Double = 
+  def score(successProb: Double, prob: Double): Double =
     if (successProb > 0.0) log(prob) / (log(successProb) + log(prob)) else 0.0
 
   @annotation.tailrec
@@ -163,20 +163,22 @@ class BackTraceFromIndexed(
   def traceFromBase(
       index: Int,
       base: Int => Option[Double]
-  ): (Vector[Int], Double) =
-    base(index).map(p => (Vector(index), p)).getOrElse {
+  ): (Vector[Int], Double, Int) =
+    base(index).map(p => (Vector(index), p, 0)).getOrElse {
       val rhs: SumIndexExpression = rhsIndexedExprs(index)
       val bestProduct: ProductIndexExpression = rhs.terms.maxBy { prod =>
         val numerator   = prod.indices.map(probVec(_)).fold(prod.constant)(_ * _)
         val denominator = prod.negIndices.map(probVec).fold(1.0)(_ * _)
         numerator / denominator
       }
-      val weightedTraces = bestProduct.indices.map(j => traceFromBase(j, base))
+      val weightedTraces =
+        bestProduct.indices.map(j => traceFromBase(j, base))
       val traces =
         weightedTraces.flatMap(_._1).distinct
+      val depth       = weightedTraces.map(_._3).max + 1
       val denominator = bestProduct.negIndices.map(probVec).fold(1.0)(_ * _)
       val numerator   = weightedTraces.map(_._2).fold(bestProduct.constant)(_ * _)
-      (traces, rhs.constantTerm + (numerator / denominator))
+      (traces, rhs.constantTerm + (numerator / denominator), depth)
     }
 
   /**
@@ -312,7 +314,6 @@ class BackTraceFromIndexed(
     }
   }
 
-
   def proofsTraceBack(
       index: Int,
       cutoff: Double
@@ -356,23 +357,30 @@ class BackTraceFromIndexed(
       case (j, p) => indexToTermInContext.get(j).map(t => (t, p))
     }
 
-  def termInContextIngredientScores(cutoff : Double): Map[(Int, Int),Double] = 
-    indexToTermInContext.keys.toVector.flatMap{i =>
-      val trace: Vector[(Int, Double)] = termInContextBackTraceIndices(i, cutoff)
-      trace.map{case (j, q) => ((i, j), score(q, probVec(i)))}
+  def termInContextIngredientScores(cutoff: Double): Map[(Int, Int), Double] =
+    indexToTermInContext.keys.toVector.flatMap { i =>
+      val trace: Vector[(Int, Double)] =
+        termInContextBackTraceIndices(i, cutoff)
+      trace.map { case (j, q) => ((i, j), score(q, probVec(i))) }
     }.toMap
 
-  def typInContextProofScores(cutoff: Double): Map[(Int, Int),Double] =
-    typAsTypInContextIndexVec.map(_._2).flatMap{i =>
-      val trace: Vector[(Int, Double)] = proofsTraceBackIndices(i, cutoff)
-      trace.map{case (j, q) => ((i, j), score(q, probVec(i)))}
-    }.toMap
+  def typInContextProofScores(cutoff: Double): Map[(Int, Int), Double] =
+    typAsTypInContextIndexVec
+      .map(_._2)
+      .flatMap { i =>
+        val trace: Vector[(Int, Double)] = proofsTraceBackIndices(i, cutoff)
+        trace.map { case (j, q) => ((i, j), score(q, probVec(i))) }
+      }
+      .toMap
 
-  def relatedTypProofScores(cutoff: Double): Map[(Int, Int),Double] =
-    typAsTypInContextIndexVec.map(_._2).flatMap{i =>
-      val trace: Vector[(Int, Double)] = proofsOfRelatedTyps(i, cutoff)
-      trace.map{case (j, q) => ((i, j), score(q, probVec(i)))}
-    }.toMap
+  def relatedTypProofScores(cutoff: Double): Map[(Int, Int), Double] =
+    typAsTypInContextIndexVec
+      .map(_._2)
+      .flatMap { i =>
+        val trace: Vector[(Int, Double)] = proofsOfRelatedTyps(i, cutoff)
+        trace.map { case (j, q) => ((i, j), score(q, probVec(i))) }
+      }
+      .toMap
 
   val termToIndex: Map[Term, Int] = termIndexVec.toMap
 
@@ -437,4 +445,25 @@ class BackTraceFromIndexed(
   def indexifyTypWeights(m: Map[Typ[Term], Double]): Map[Int, Double] =
     m.flatMap { case (x, p) => typToIndex.get(x).map(_ -> p) }
 
+  def nextMap(m: Map[Int, Double]): Map[Int,Double] = {
+    val support = m.keySet
+    val newSupportExpressions = rhsIndexedExprs.zipWithIndex.filter {
+      case (rhs, _) => rhs.indices.exists(support.contains(_))
+    }
+    newSupportExpressions
+      .map { case (rhs, j) => (j, rhs.evaluate(m)) }
+      .filter(_._2 > 0)
+      .toMap
+  }
+
+  import ExpressionEquationIndexifier.vecSum
+
+  def averagedNextMap(m: Map[Int, Double], p: Double): Map[Int,Double] = vecSum(
+    Vector(m.toVector.map{case (j, q) => (j, q * p)},
+     nextMap(m).toVector.map{case (j, q) => (j, q * (1.0 -p))}
+  )).toMap
+
+  @annotation.tailrec
+  final def forwardMap(m: Map[Int, Double], p: Double, depth: Int) : Map[Int, Double] = 
+    if (depth < 1) m else forwardMap(averagedNextMap(m, p), p, depth - 1)
 }
