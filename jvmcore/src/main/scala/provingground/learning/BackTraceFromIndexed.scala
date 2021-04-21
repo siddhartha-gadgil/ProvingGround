@@ -34,8 +34,8 @@ object BackTraceFromIndexed {
     * @param prob generation probability, of statement in case of score of a proof
     * @return
     */
-  def score(successProb: Double, prob: Double): Double =
-    log(prob) / (log(successProb) + log(prob))
+  def score(successProb: Double, prob: Double): Double = 
+    if (successProb > 0.0) log(prob) / (log(successProb) + log(prob)) else 0.0
 
   @annotation.tailrec
   def greedyMinimalCover[A, B](
