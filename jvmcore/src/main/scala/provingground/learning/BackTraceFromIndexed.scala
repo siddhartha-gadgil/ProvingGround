@@ -2,7 +2,7 @@ package provingground.learning
 
 import provingground._, HoTT._
 import math.{log, max, min}
-
+import ExpressionEquationIndexifier.vecSum
 object BackTraceFromIndexed {
 
   def relatedTypes(t: Term): Vector[Typ[Term]] =
@@ -163,8 +163,8 @@ class BackTraceFromIndexed(
   def traceFromBase(
       index: Int,
       base: Int => Option[Double]
-  ): (Vector[Int], Double, Int) =
-    base(index).map(p => (Vector(index), p, 0)).getOrElse {
+  ): (Vector[(Int, Double)], Double, Int) =
+    base(index).map(p => (Vector(index -> 1.0), p, 0)).getOrElse {
       val rhs: SumIndexExpression = rhsIndexedExprs(index)
       val bestProduct: ProductIndexExpression = rhs.terms.maxBy { prod =>
         val numerator   = prod.indices.map(probVec(_)).fold(prod.constant)(_ * _)
@@ -174,7 +174,7 @@ class BackTraceFromIndexed(
       val weightedTraces =
         bestProduct.indices.map(j => traceFromBase(j, base))
       val traces =
-        weightedTraces.flatMap(_._1).distinct
+        vecSum(weightedTraces.map(_._1))
       val depth       = weightedTraces.map(_._3).max + 1
       val denominator = bestProduct.negIndices.map(probVec).fold(1.0)(_ * _)
       val numerator   = weightedTraces.map(_._2).fold(bestProduct.constant)(_ * _)
@@ -455,8 +455,6 @@ class BackTraceFromIndexed(
       .filter(_._2 > 0)
       .toMap
   }
-
-  import ExpressionEquationIndexifier.vecSum
 
   def averagedNextMap(m: Map[Int, Double], p: Double): Map[Int,Double] = vecSum(
     Vector(m.toVector.map{case (j, q) => (j, q * p)},

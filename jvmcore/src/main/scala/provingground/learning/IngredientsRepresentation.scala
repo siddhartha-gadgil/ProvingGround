@@ -7,7 +7,7 @@ import scala.util.Using
 import org.tensorflow.ndarray._
 import org.tensorflow.framework.optimizers._
 import IngredientsRepresentation._
-import provingground.JvmUtils
+import provingground._, HoTT._
 
 object IngredientsRepresentation{
     def dataLookup(v: Operand[TFloat32], sess: Session): TFloat32 = {
