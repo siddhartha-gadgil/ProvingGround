@@ -34,7 +34,7 @@ trait ProofScorePredictor {
   /**
     * generation probability of term whose score as ingredient we seek
     */
-  lazy val termProb = tf.placeholderWithDefault(tf.constant(0.0f), Shape.of())
+  lazy val termProb: PlaceholderWithDefault[TFloat32] = tf.placeholderWithDefault(tf.constant(0.0f), Shape.of())
 
   /**
     * score of term as ingredient of statement
@@ -47,10 +47,10 @@ trait ProofScorePredictor {
   /**
     * score of the term as a proof of its type, essentially non-triviality
     */
-  lazy val termProofScore =
+  lazy val termProofScore: PlaceholderWithDefault[TFloat32] =
     tf.placeholderWithDefault(tf.constant(0.0f), Shape.of())
 
-  // representations
+  // representations, first entry should be the "fuzziness"
   lazy val termRepresentation: PlaceholderWithDefault[TFloat32] =
     tf.placeholderWithDefault(
       tf.constant(Array.fill(representationDimension)(0.0f)),
@@ -96,7 +96,7 @@ trait ProofScorePredictor {
   // output except the final sigmoid
   val preTopLayers: TFLayers
 
-  val prediction = preTopLayers.output(mergedVector)
+  val prediction = tf.reshape(preTopLayers.output(mergedVector), tf.constant(Array.emptyIntArray))
 
   val trueScore = tf.placeholderWithDefault(tf.constant(0f), Shape.of())
 
