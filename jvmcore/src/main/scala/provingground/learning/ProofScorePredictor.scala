@@ -20,9 +20,9 @@ case class TermStatementParameters(
     termProb: Double,
     termScoreInStatement: Double,
     termProofScore: Double,
-    termRep: Vector[Double],
+    termRep: Seq[Double],
     termRepFuzziness: Double,
-    statementRep: Vector[Double],
+    statementRep: Seq[Double],
     statementRepFuzziness: Double
 ) {
   val statementProbT: TFloat32 = TFloat32.scalarOf(statementProb.toFloat)
@@ -31,12 +31,18 @@ case class TermStatementParameters(
     TFloat32.scalarOf(termScoreInStatement.toFloat)
   val termProofScoreT: TFloat32 = TFloat32.scalarOf(termProofScore.toFloat)
 
+  val termRecSeq = (termRepFuzziness +: termRep).map(_.toFloat)
+
   val termRepresentationT: TFloat32 = TFloat32.tensorOf(
-    StdArrays.ndCopyOf((termRepFuzziness +: termRep).map(_.toFloat).toArray)
+    StdArrays.ndCopyOf(termRecSeq.toArray)
   )
+
+  val statRepSeq =
+    (statementRepFuzziness +: statementRep).map(_.toFloat)
+
   val statementRepresentationT: TFloat32 = TFloat32.tensorOf(
     StdArrays
-      .ndCopyOf((statementRepFuzziness +: statementRep).map(_.toFloat).toArray)
+      .ndCopyOf(statRepSeq.toArray)
   )
 }
 
@@ -68,6 +74,7 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
   val graph: Graph
   val representationDimension: Int
   val paramLayerDimension: Int
+  val batchSize: Int
 
   implicit lazy val tf: Ops = Ops.create(graph)
 
@@ -99,17 +106,56 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
   lazy val termProofScore: PlaceholderWithDefault[TFloat32] =
     tf.placeholderWithDefault(tf.constant(0.0f), Shape.of())
 
+  /**
+    * generation probability of type whose inhabitants we seek
+    */
+  lazy val statementProbBatch: PlaceholderWithDefault[TFloat32] =
+    tf.placeholderWithDefault(
+      tf.constant(Array.fill(batchSize, 1)(0.0f)),
+      Shape.of(batchSize, 1)
+    )
+
+  lazy val termProbBatch: PlaceholderWithDefault[TFloat32] =
+    tf.placeholderWithDefault(
+      tf.constant(Array.fill(batchSize, 1)(0.0f)),
+      Shape.of(batchSize, 1)
+    )
+
+  lazy val termScoreInStatementBatch: PlaceholderWithDefault[TFloat32] =
+    tf.placeholderWithDefault(
+      tf.constant(Array.fill(batchSize, 1)(0.0f)),
+      Shape.of(batchSize, 1)
+    )
+
+  lazy val termProofScoreBatch: PlaceholderWithDefault[TFloat32] =
+    tf.placeholderWithDefault(
+      tf.constant(Array.fill(batchSize, 1)(0.0f)),
+      Shape.of(batchSize, 1)
+    )
+
   // representations, first entry should be the "fuzziness"
   lazy val termRepresentation: PlaceholderWithDefault[TFloat32] =
     tf.placeholderWithDefault(
-      tf.constant(Array.fill(representationDimension)(0.0f)),
-      Shape.of(representationDimension)
+      tf.constant(Array.fill(representationDimension + 1)(0.0f)),
+      Shape.of(representationDimension + 1)
     )
 
   lazy val statementRepresentation: PlaceholderWithDefault[TFloat32] =
     tf.placeholderWithDefault(
-      tf.constant(Array.fill(representationDimension)(0.0f)),
-      Shape.of(representationDimension)
+      tf.constant(Array.fill(representationDimension + 1)(0.0f)),
+      Shape.of(representationDimension + 1)
+    )
+
+  lazy val termRepresentationBatch: PlaceholderWithDefault[TFloat32] =
+    tf.placeholderWithDefault(
+      tf.constant(Array.fill(representationDimension + 1, batchSize)(0.0f)),
+      Shape.of(representationDimension + 1, batchSize)
+    )
+
+  lazy val statementRepresentationBatch: PlaceholderWithDefault[TFloat32] =
+    tf.placeholderWithDefault(
+      tf.constant(Array.fill(representationDimension + 1, batchSize)(0.0f)),
+      Shape.of(representationDimension + 1, batchSize)
     )
 
   def paramFanOut: core.Variable[TFloat32] =
@@ -130,11 +176,19 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
   lazy val termScoreInStatementFan =
     tf.variable(tf.constant(termScoreInStatementFanInit))
 
-  lazy val paramMergedVector =
+  def row(op: Operand[TFloat32]) = tf.reshape(op, tf.constant(Array(batchSize)))
+
+  lazy val paramMergedSeq =
     (statementProbFan * statementProb) +
       (termProbFan * termProb) +
       (termProofScoreFan * termProofScore) +
       (termScoreInStatementFan + termScoreInStatement)
+
+  lazy val paramMergedMatrix = tf.linalg
+    .matMul(row(statementProbFan), statementProbBatch) +
+    tf.linalg.matMul(row(termProbFan), termProbBatch) +
+    tf.linalg.matMul(row(termProofScoreFan), termProofScoreBatch) +
+    tf.linalg.matMul(row(termScoreInStatementFan), termScoreInStatementFan)
 
   val paramLayers: TFLayers[ParamVars]
 
@@ -142,20 +196,27 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
 
   val statementRefLayers: TFLayers[StatRepVars]
 
-  val mergedVector = paramLayers.output(
-    tf.reshape(paramMergedVector, tf.constant(Array(paramLayerDimension, 1)))
+  val mergedSeq = paramLayers.output(
+    tf.reshape(paramMergedSeq, tf.constant(Array(paramLayerDimension, 1)))
   ) + termRepLayers
     .output(termRepresentation) + statementRefLayers.output(
     statementRepresentation
+  )
+
+  val mergedMatrix = paramLayers.output(paramMergedMatrix) + termRepLayers
+    .output(termRepresentationBatch) + statementRefLayers.output(
+    statementRepresentationBatch
   )
 
   // output except the final sigmoid
   val preTopLayers: TFLayers[TopVars]
 
   val prediction = tf.reshape(
-    preTopLayers.output(mergedVector),
+    preTopLayers.output(mergedSeq),
     tf.constant(Array.emptyIntArray)
   )
+
+  val predictionColumn = preTopLayers.output(mergedMatrix)
 
   def runnerWithData(
       data: TermStatementParameters,
@@ -176,7 +237,9 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
       tData.get(0).asInstanceOf[TFloat32].getFloat()
     }
 
-  def predictAll(fullData: Vector[TermStatementParameters]): Try[Vector[Float]] =
+  def predictAll(
+      fullData: Seq[TermStatementParameters]
+  ): Try[Seq[Float]] =
     Using(new Session(graph)) { session =>
       fullData.map { data =>
         val tData = runnerWithData(data, session).fetch(prediction).run()
@@ -246,7 +309,7 @@ trait ProofScoreLearner[ParamVars, TermRepVars, StatRepVars, TopVars]
       tData.get(0).asInstanceOf[TFloat32].getFloat()
     }
 
-  def fitAll(trainingData: Vector[(TermStatementParameters, Float)]) =
+  def fitAll(trainingData: Seq[(TermStatementParameters, Float)]) =
     Using(new Session(graph)) { session =>
       trainingData.foreach {
         case (data, trueValue) =>

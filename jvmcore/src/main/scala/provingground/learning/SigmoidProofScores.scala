@@ -16,7 +16,8 @@ class SigmoidProofScores[
     ps: ParamSizes,
     trs: TermRepSizes,
     sts: StatRepSizes,
-    topSizes: TopSizes
+    topSizes: TopSizes,
+    val batchSize: Int = 1
 )(
     implicit psS: SigmoidStacker[ParamSizes, ParamVars],
     trsS: SigmoidStacker[TermRepSizes, TermRepVars],
