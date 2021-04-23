@@ -12,6 +12,7 @@ import ProofScorePredictor._
 import TensorFlowSyntax._
 import scala.jdk.CollectionConverters._
 import TFLayers._
+import scala.util.Try
 //  The first attempt at predicting scores of ingredients in proofs on statements.
 
 case class TermStatementParameters(
@@ -169,11 +170,19 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
       .feed(termRepresentation, data.termRepresentationT)
       .feed(statementRepresentation, data.statementRepresentationT)
 
-  def predict(data: TermStatementParameters) = Using(new Session(graph)) {
-    session =>
+  def predict(data: TermStatementParameters): Try[Float] =
+    Using(new Session(graph)) { session =>
       val tData = runnerWithData(data, session).fetch(prediction).run()
       tData.get(0).asInstanceOf[TFloat32].getFloat()
-  }
+    }
+
+  def predictAll(fullData: Vector[TermStatementParameters]): Try[Vector[Float]] =
+    Using(new Session(graph)) { session =>
+      fullData.map { data =>
+        val tData = runnerWithData(data, session).fetch(prediction).run()
+        tData.get(0).asInstanceOf[TFloat32].getFloat()
+      }
+    }
 
   def ownVars(session: Session): TermStatementVariables = {
     val dataVec = session
@@ -226,5 +235,25 @@ trait ProofScoreLearner[ParamVars, TermRepVars, StatRepVars, TopVars]
   val optimizer = new Adam(graph)
 
   val minimize = optimizer.minimize(loss)
-}
 
+  def fit(data: TermStatementParameters, trueValue: Float) =
+    Using(new Session(graph)) { session =>
+      val tData = runnerWithData(data, session)
+        .feed(trueScore, TFloat32.scalarOf(trueValue))
+        .addTarget(minimize)
+        .fetch(loss)
+        .run()
+      tData.get(0).asInstanceOf[TFloat32].getFloat()
+    }
+
+  def fitAll(trainingData: Vector[(TermStatementParameters, Float)]) =
+    Using(new Session(graph)) { session =>
+      trainingData.foreach {
+        case (data, trueValue) =>
+          runnerWithData(data, session)
+            .feed(trueScore, TFloat32.scalarOf(trueValue))
+            .addTarget(minimize)
+            .run()
+      }
+    }
+}
