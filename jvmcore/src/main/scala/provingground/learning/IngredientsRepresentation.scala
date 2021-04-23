@@ -9,10 +9,10 @@ import org.tensorflow.framework.optimizers._
 import IngredientsRepresentation._
 import provingground._, HoTT._
 
-object IngredientsRepresentation{
-    def dataLookup(v: Operand[TFloat32], sess: Session): TFloat32 = {
+object IngredientsRepresentation {
+  def dataLookup(v: Operand[TFloat32], sess: Session): TFloat32 = {
     val result = sess.runner().fetch(v).run()
-    val data = result.get(0).asInstanceOf[TFloat32]
+    val data   = result.get(0).asInstanceOf[TFloat32]
     data
   }
 
@@ -71,7 +71,7 @@ class IngredientsRepresentation(numPoints: Int, graph: Graph, dim: Int) {
           .runner()
           .feed(incidence, incT)
           .addTarget(minimize)
-          .run()        
+          .run()
       }
       JvmUtils.logger.info("Tuning complete")
       val tundedData = session
@@ -91,8 +91,12 @@ class IngredientsRepresentation(numPoints: Int, graph: Graph, dim: Int) {
         .run()
       val vd = tData.get(0).asInstanceOf[TFloat32]
       val cd = tData.get(1).asInstanceOf[TFloat32]
-      val vEmbedding = Vector.tabulate(dim, numPoints){case (i, j) => vd.get(i, j)}
-      val cEmbedding = Vector.tabulate(dim, numPoints){case (i, j) => cd.get(i, j)}
+      val vEmbedding = Vector.tabulate(dim, numPoints) {
+        case (i, j) => vd.getFloat(i, j)
+      }
+      val cEmbedding = Vector.tabulate(dim, numPoints) {
+        case (i, j) => cd.getFloat(i, j)
+      }
       (vEmbedding ++ cEmbedding)
     }
   }

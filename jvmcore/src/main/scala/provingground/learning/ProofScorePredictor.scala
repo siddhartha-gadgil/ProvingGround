@@ -12,6 +12,31 @@ import ProofScorePredictor._
 import TensorFlowSyntax._
 //  The first attempt at predicting scores of ingredients in proofs on statements.
 
+case class TermStatementParameters(
+    statementProb: Double,
+    termProb: Double,
+    termScoreInStatement: Double,
+    termProofScore: Double,
+    termRep: Vector[Double],
+    termRepFuzziness: Double,
+    statementRep: Vector[Double],
+    statementRepFuzziness: Double
+) {
+  val statementProbT: TFloat32 = TFloat32.scalarOf(statementProb.toFloat)
+  val termProbT: TFloat32      = TFloat32.scalarOf(termProb.toFloat)
+  val termScoreInStatementT: TFloat32 =
+    TFloat32.scalarOf(termScoreInStatement.toFloat)
+  val termProofScoreT: TFloat32 = TFloat32.scalarOf(termProofScore.toFloat)
+
+  val termRepresentationT: TFloat32 = TFloat32.tensorOf(
+    StdArrays.ndCopyOf((termRepFuzziness +: termRep).map(_.toFloat).toArray)
+  )
+  val statementRepresentationT: TFloat32 = TFloat32.tensorOf(
+    StdArrays
+      .ndCopyOf((statementRepFuzziness +: statementRep).map(_.toFloat).toArray)
+  )
+}
+
 object ProofScorePredictor {
   val rnd = new scala.util.Random()
 }
@@ -34,7 +59,8 @@ trait ProofScorePredictor {
   /**
     * generation probability of term whose score as ingredient we seek
     */
-  lazy val termProb: PlaceholderWithDefault[TFloat32] = tf.placeholderWithDefault(tf.constant(0.0f), Shape.of())
+  lazy val termProb: PlaceholderWithDefault[TFloat32] =
+    tf.placeholderWithDefault(tf.constant(0.0f), Shape.of())
 
   /**
     * score of term as ingredient of statement
@@ -96,7 +122,10 @@ trait ProofScorePredictor {
   // output except the final sigmoid
   val preTopLayers: TFLayers
 
-  val prediction = tf.reshape(preTopLayers.output(mergedVector), tf.constant(Array.emptyIntArray))
+  val prediction = tf.reshape(
+    preTopLayers.output(mergedVector),
+    tf.constant(Array.emptyIntArray)
+  )
 
   val trueScore = tf.placeholderWithDefault(tf.constant(0f), Shape.of())
 
@@ -115,6 +144,22 @@ trait ProofScorePredictor {
   val optimizer = new Adam(graph)
 
   val minimize = optimizer.minimize(loss)
+
+  def runnerWithData(data: TermStatementParameters, session: Session): Session#Runner =
+    session
+      .runner()
+      .feed(statementProb, data.statementProbT)
+      .feed(termProb, data.termProbT)
+      .feed(termScoreInStatement, data.termScoreInStatementT)
+      .feed(termProofScore, data.termProofScoreT)
+      .feed(termRepresentation, data.termRepresentationT)
+      .feed(statementRepresentation, data.statementRepresentationT)
+
+  def predict(data: TermStatementParameters) = Using(new Session(graph)) {
+    session =>
+      val tData = runnerWithData(data, session).fetch(prediction).run()
+      tData.get(0).asInstanceOf[TFloat32].getFloat()
+  }
 
 }
 
