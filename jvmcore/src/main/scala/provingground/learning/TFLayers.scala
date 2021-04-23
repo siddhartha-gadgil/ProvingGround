@@ -1,6 +1,6 @@
 package provingground.learning
 
-import org.tensorflow._
+import org.tensorflow._, framework.activations._
 import org.tensorflow.op._, linalg.MatMul
 import org.tensorflow.types._
 import scala.util.Using
@@ -30,6 +30,11 @@ abstract class TFLayers[V](implicit tf: Ops) extends TFVars[V] {
       out: Int
   )(varInit: Array[Array[Float]] = TFLayers.randomMatix(outDim, out)) =
     this pipe (new TFLayers.SigmoidLayer(outDim, out)(varInit))
+
+  def stackReLU(
+      out: Int
+  )(varInit: Array[Array[Float]] = TFLayers.randomMatix(outDim, out)) =
+    this pipe (new TFLayers.ReLULayer(outDim, out)(varInit))
 
 }
 
@@ -105,6 +110,35 @@ object TFLayers {
         )
       )
   }
+
+  class ReLULayer(val inDim: Int, val outDim: Int)(
+      varInit: Array[Array[Float]] = randomMatix(inDim, outDim)
+  )(implicit tf: Ops)
+      extends TFLayers[Array[Array[Float]]] {
+    val matrix: core.Variable[TFloat32] = tf.variable(
+      tf.constant(
+        varInit
+      )
+    )
+
+    def getVars(session: Session): Array[Array[Float]] = {
+      val data =
+        session.runner().fetch(matrix).run().get(0).asInstanceOf[TFloat32]
+      getMatrix(inDim, outDim)(data)
+    }
+
+    val  relu = new ReLU[TFloat32](tf)
+    def output(input: Operand[TFloat32]): Operand[TFloat32] =
+      relu.call(
+        tf.reshape(
+          tf.linalg
+            .matMul(matrix, input),
+          tf.constant(Array(outDim))
+        )
+      )
+  }
+
+  
 }
 
 trait SigmoidStacker[Sizes, Vars] {
@@ -118,6 +152,12 @@ object SigmoidStacker {
       sizes: Sizes
   )(implicit stacker: SigmoidStacker[Sizes, Vars], tf: Ops): TFLayers[Vars] =
     stacker.build(sizes)
+
+  def stackWithData[Sizes, Vars](
+      sizes: Sizes,
+      data: Vars
+  )(implicit stacker: SigmoidStacker[Sizes, Vars], tf: Ops): TFLayers[Vars] =
+    stacker.buildWithData(sizes, data)
 
   implicit val pairStacker: SigmoidStacker[(Int, Int), Array[Array[Float]]] =
     new SigmoidStacker[(Int, Int), Array[Array[Float]]] {
@@ -154,5 +194,71 @@ object SigmoidStacker {
   def eg2(
       implicit tf: Ops
   ): TFLayers[(Array[Array[Float]], Array[Array[Float]])] = stack((2 -> 3) -> 5)
+
+  def eg3(
+      implicit tf: Ops
+  ): TFLayers[((Array[Array[Float]], Array[Array[Float]]), Array[Array[Float]])] = 
+  stack(1 -> 3 -> 4 -> 5)
+
+}
+
+trait ReLUStacker[Sizes, Vars] {
+  def build(sizes: Sizes)(implicit tf: Ops): TFLayers[Vars]
+
+  def buildWithData(sizes: Sizes, data: Vars)(implicit tf: Ops): TFLayers[Vars]
+}
+
+object ReLUStacker {
+  def stack[Sizes, Vars](
+      sizes: Sizes
+  )(implicit stacker: ReLUStacker[Sizes, Vars], tf: Ops): TFLayers[Vars] =
+    stacker.build(sizes)
+
+  def stackWithData[Sizes, Vars](
+      sizes: Sizes,
+      data: Vars
+  )(implicit stacker: ReLUStacker[Sizes, Vars], tf: Ops): TFLayers[Vars] =
+    stacker.buildWithData(sizes, data)
+
+  implicit val pairStacker: ReLUStacker[(Int, Int), Array[Array[Float]]] =
+    new ReLUStacker[(Int, Int), Array[Array[Float]]] {
+      def build(
+          sizes: (Int, Int)
+      )(implicit tf: Ops): TFLayers[Array[Array[Float]]] =
+        new TFLayers.ReLULayer(sizes._1, sizes._2)()
+
+      def buildWithData(sizes: (Int, Int), data: Array[Array[Float]])(
+          implicit tf: Ops
+      ): TFLayers[Array[Array[Float]]] =
+        new TFLayers.ReLULayer(sizes._1, sizes._2)(data)
+    }
+
+  def eg1(implicit tf: Ops): TFLayers[Array[Array[Float]]] = stack(2 -> 3)
+
+  implicit def appendStacker[InitSizes, InitVars](
+      implicit
+      init: ReLUStacker[InitSizes, InitVars]
+  ): ReLUStacker[(InitSizes, Int), (InitVars, Array[Array[Float]])] =
+    new ReLUStacker[(InitSizes, Int), (InitVars, Array[Array[Float]])] {
+      def build(sizes: (InitSizes, Int))(
+          implicit tf: Ops
+      ): TFLayers[(InitVars, Array[Array[Float]])] =
+        init.build(sizes._1).stackReLU(sizes._2)()
+
+      def buildWithData(
+          sizes: (InitSizes, Int),
+          data: (InitVars, Array[Array[Float]])
+      )(implicit tf: Ops): TFLayers[(InitVars, Array[Array[Float]])] =
+        init.buildWithData(sizes._1, data._1).stackReLU(sizes._2)(data._2)
+    }
+
+  def eg2(
+      implicit tf: Ops
+  ): TFLayers[(Array[Array[Float]], Array[Array[Float]])] = stack((2 -> 3) -> 5)
+
+  def eg3(
+      implicit tf: Ops
+  ): TFLayers[((Array[Array[Float]], Array[Array[Float]]), Array[Array[Float]])] = 
+  stack(1 -> 3 -> 4 -> 5)
 
 }
