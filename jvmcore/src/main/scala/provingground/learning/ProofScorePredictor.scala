@@ -156,24 +156,6 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
     tf.constant(Array.emptyIntArray)
   )
 
-  val trueScore = tf.placeholderWithDefault(tf.constant(0f), Shape.of())
-
-  val loss = tf.math.add(
-    tf.math
-      .sub(
-        tf.math.maximum(prediction, tf.constant(0f)),
-        tf.math.mul(prediction, trueScore)
-      ),
-    tf.math.log(
-      tf.math
-        .add(tf.constant(1f), tf.math.exp(tf.math.neg(tf.math.abs(prediction))))
-    )
-  )
-
-  val optimizer = new Adam(graph)
-
-  val minimize = optimizer.minimize(loss)
-
   def runnerWithData(
       data: TermStatementParameters,
       session: Session
@@ -225,96 +207,24 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
 
 }
 
-trait TFVars[V] {
-  def getVars(session: Session): V
-}
-abstract class TFLayers[V](implicit tf: Ops) extends TFVars[V] {
-  val inDim: Int
+trait ProofScoreLearner[ParamVars, TermRepVars, StatRepVars, TopVars]
+    extends ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars] {
+  val trueScore = tf.placeholderWithDefault(tf.constant(0f), Shape.of())
 
-  val outDim: Int
-
-  def output(input: Operand[TFloat32]): Operand[TFloat32]
-
-  def pipe[X](that: TFLayers[X]) = TFLayers.Composition(this, that)
-  def |[X](that: TFLayers[X])    = pipe(that)
-
-  def stackSigmoid(
-      out: Int
-  )(varInit: Array[Array[Float]] = TFLayers.randomMatix(outDim, out)) =
-    this pipe (new TFLayers.SigmoidLayer(outDim, out)(varInit))
-
-}
-
-object TFLayers {
-  def randomMatix(inDim: Int, outDim: Int): Array[Array[Float]] =
-    Array.fill(outDim, inDim)(rnd.nextGaussian().toFloat / inDim.toFloat)
-
-  def randomArray(dim: Int) = Array.fill(dim)(rnd.nextGaussian().toFloat)
-
-  def getMatrix(inDim: Int, outDim: Int)(data: TFloat32) =
-    Array.tabulate(outDim, inDim) { case (i, j) => data.getFloat(i, j) }
-
-  case class Composition[X, Y](first: TFLayers[X], second: TFLayers[Y])(
-      implicit tf: Ops
-  ) extends TFLayers[(X, Y)] {
-    val inDim: Int = first.inDim
-
-    val outDim: Int = second.outDim
-
-    def getVars(session: Session): (X, Y) =
-      (first.getVars(session), second.getVars(session))
-
-    def output(input: Operand[TFloat32]): Operand[TFloat32] =
-      first.output(second.output(input))
-  }
-
-  class LinearLayer(val inDim: Int, val outDim: Int)(
-      varInit: Array[Array[Float]] = randomMatix(inDim, outDim)
-  )(implicit tf: Ops)
-      extends TFLayers[Array[Array[Float]]] {
-    val matrix: core.Variable[TFloat32] = tf.variable(
-      tf.constant(
-        varInit
-      )
+  val loss = tf.math.add(
+    tf.math
+      .sub(
+        tf.math.maximum(prediction, tf.constant(0f)),
+        tf.math.mul(prediction, trueScore)
+      ),
+    tf.math.log(
+      tf.math
+        .add(tf.constant(1f), tf.math.exp(tf.math.neg(tf.math.abs(prediction))))
     )
+  )
 
-    def getVars(session: Session): Array[Array[Float]] = {
-      val data =
-        session.runner().fetch(matrix).run().get(0).asInstanceOf[TFloat32]
-      getMatrix(inDim, outDim)(data)
-    }
+  val optimizer = new Adam(graph)
 
-    def output(input: Operand[TFloat32]): Operand[TFloat32] =
-      tf.reshape(
-        tf.linalg
-          .matMul(matrix, input),
-        tf.constant(Array(outDim))
-      )
-  }
-
-  class SigmoidLayer(val inDim: Int, val outDim: Int)(
-      varInit: Array[Array[Float]] = randomMatix(inDim, outDim)
-  )(implicit tf: Ops)
-      extends TFLayers[Array[Array[Float]]] {
-    val matrix: core.Variable[TFloat32] = tf.variable(
-      tf.constant(
-        varInit
-      )
-    )
-
-    def getVars(session: Session): Array[Array[Float]] = {
-      val data =
-        session.runner().fetch(matrix).run().get(0).asInstanceOf[TFloat32]
-      getMatrix(inDim, outDim)(data)
-    }
-
-    def output(input: Operand[TFloat32]): Operand[TFloat32] =
-      tf.math.sigmoid(
-        tf.reshape(
-          tf.linalg
-            .matMul(matrix, input),
-          tf.constant(Array(outDim))
-        )
-      )
-  }
+  val minimize = optimizer.minimize(loss)
 }
+
