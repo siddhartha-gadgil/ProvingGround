@@ -10,6 +10,8 @@ import provingground._, HoTT._
 import org.tensorflow.op.core.{Shape => _, _}
 import ProofScorePredictor._
 import TensorFlowSyntax._
+import scala.jdk.CollectionConverters._
+import TFLayers._
 //  The first attempt at predicting scores of ingredients in proofs on statements.
 
 case class TermStatementParameters(
@@ -37,11 +39,31 @@ case class TermStatementParameters(
   )
 }
 
+case class TermStatementVariables(
+    statementProbFanInit: Array[Float],
+    termProbFanInit: Array[Float],
+    termProofScoreFanInit: Array[Float],
+    termScoreInStatementFanInit: Array[Float]
+)
+
+object TermStatementVariables {
+  def random(dim: Int): TermStatementVariables =
+    TermStatementVariables(
+      randomArray(dim),
+      randomArray(dim),
+      randomArray(dim),
+      randomArray(dim)
+    )
+}
+
 object ProofScorePredictor {
   val rnd = new scala.util.Random()
 }
 
-trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars] {
+trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
+    extends TFVars[
+      (TermStatementVariables, ParamVars, TermRepVars, StatRepVars, TopVars)
+    ] {
   val graph: Graph
   val representationDimension: Int
   val paramLayerDimension: Int
@@ -94,13 +116,18 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars] {
       tf.constant(Array.fill(paramLayerDimension)(rnd.nextGaussian().toFloat))
     )
 
-  lazy val statementProbFan = paramFanOut
+  val fanInit: TermStatementVariables
 
-  lazy val termProbFan = paramFanOut
+  import fanInit._
 
-  lazy val termProofScoreFan = paramFanOut
+  lazy val statementProbFan = tf.variable(tf.constant(statementProbFanInit))
 
-  lazy val termScoreInStatementFan = paramFanOut
+  lazy val termProbFan = tf.variable(tf.constant(termProbFanInit))
+
+  lazy val termProofScoreFan = tf.variable(tf.constant(termProofScoreFanInit))
+
+  lazy val termScoreInStatementFan =
+    tf.variable(tf.constant(termScoreInStatementFanInit))
 
   lazy val paramMergedVector =
     (statementProbFan * statementProb) +
@@ -166,6 +193,36 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars] {
       tData.get(0).asInstanceOf[TFloat32].getFloat()
   }
 
+  def ownVars(session: Session): TermStatementVariables = {
+    val dataVec = session
+      .runner()
+      .fetch(statementProbFan)
+      .fetch(termProbFan)
+      .fetch(termProofScoreFan)
+      .fetch(termScoreInStatementFan)
+      .run()
+      .asScala
+      .toVector
+      .map(_.asInstanceOf[TFloat32])
+
+    val v = dataVec.map(
+      tfl => Array.tabulate(paramLayerDimension)(j => tfl.getFloat(j))
+    )
+    TermStatementVariables(v(0), v(1), v(2), v(3))
+  }
+
+  def getVars(
+      session: Session
+  ): (TermStatementVariables, ParamVars, TermRepVars, StatRepVars, TopVars) = {
+    (
+      ownVars(session),
+      paramLayers.getVars(session),
+      termRepLayers.getVars(session),
+      statementRefLayers.getVars(session),
+      preTopLayers.getVars(session)
+    )
+  }
+
 }
 
 trait TFVars[V] {
@@ -191,6 +248,8 @@ abstract class TFLayers[V](implicit tf: Ops) extends TFVars[V] {
 object TFLayers {
   def randomMatix(inDim: Int, outDim: Int): Array[Array[Float]] =
     Array.fill(outDim, inDim)(rnd.nextGaussian().toFloat / inDim.toFloat)
+
+  def randomArray(dim: Int) = Array.fill(dim)(rnd.nextGaussian().toFloat)
 
   def getMatrix(inDim: Int, outDim: Int)(data: TFloat32) =
     Array.tabulate(outDim, inDim) { case (i, j) => data.getFloat(i, j) }
