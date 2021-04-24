@@ -31,10 +31,10 @@ case class TermStatementParameters(
     TFloat32.scalarOf(termScoreInStatement.toFloat)
   val termProofScoreT: TFloat32 = TFloat32.scalarOf(termProofScore.toFloat)
 
-  val termRecSeq = (termRepFuzziness +: termRep).map(_.toFloat)
+  val termRepSeq = (termRepFuzziness +: termRep).map(_.toFloat)
 
   val termRepresentationT: TFloat32 = TFloat32.tensorOf(
-    StdArrays.ndCopyOf(termRecSeq.toArray)
+    StdArrays.ndCopyOf(termRepSeq.toArray)
   )
 
   val statRepSeq =
@@ -44,6 +44,20 @@ case class TermStatementParameters(
     StdArrays
       .ndCopyOf(statRepSeq.toArray)
   )
+}
+
+object TermStatementParameters {
+  def column(seq: Seq[Double]): TFloat32 =
+    TFloat32.tensorOf(
+      StdArrays
+        .ndCopyOf(seq.map(x => Array(x.toFloat)).toArray)
+    )
+
+  def repMatrix(dim: Int, batchSize: Int, reps: Seq[Seq[Float]]): TFloat32 =
+    TFloat32.tensorOf(
+      StdArrays
+        .ndCopyOf(Array.tabulate(dim, batchSize) { case (i, j) => reps(j)(i) })
+    )
 }
 
 case class TermStatementVariables(
@@ -247,6 +261,43 @@ trait ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars]
       }
     }
 
+  import TermStatementParameters.{column, repMatrix}
+
+  def runnerWithDataSeq(
+      data: Seq[TermStatementParameters],
+      session: Session
+  ): Session#Runner =
+    session
+      .runner()
+      .feed(statementProb, column(data.map(_.statementProb)))
+      .feed(termProb, column(data.map(_.termProb)))
+      .feed(termScoreInStatement, column(data.map(_.termScoreInStatement)))
+      .feed(termProofScore, column(data.map(_.termProofScore)))
+      .feed(
+        termRepresentation,
+        repMatrix(
+          representationDimension + 1,
+          batchSize,
+          data.map(_.termRepSeq)
+        )
+      )
+      .feed(
+        statementRepresentation,
+        repMatrix(
+          representationDimension + 1,
+          batchSize,
+          data.map(_.statRepSeq)
+        )
+      )
+
+  def predictSeq(data: Seq[TermStatementParameters]): Try[Vector[Float]] =
+    Using(new Session(graph)) { session =>
+      val tData = runnerWithDataSeq(data, session).fetch(predictionColumn).run()
+      (0 until (data.size))
+        .map(j => tData.get(0).asInstanceOf[TFloat32].getFloat(0, j))
+        .toVector
+    }
+
   def ownVars(session: Session): TermStatementVariables = {
     val dataVec = session
       .runner()
@@ -283,6 +334,11 @@ trait ProofScoreLearner[ParamVars, TermRepVars, StatRepVars, TopVars]
     extends ProofScorePredictor[ParamVars, TermRepVars, StatRepVars, TopVars] {
   val trueScore = tf.placeholderWithDefault(tf.constant(0f), Shape.of())
 
+  val trueScoreColumn = tf.placeholderWithDefault(
+    tf.constant(Array.fill(1, batchSize)(0f)),
+    Shape.of(1, batchSize)
+  )
+
   val loss = tf.math.add(
     tf.math
       .sub(
@@ -298,6 +354,31 @@ trait ProofScoreLearner[ParamVars, TermRepVars, StatRepVars, TopVars]
   val optimizer = new Adam(graph)
 
   val minimize = optimizer.minimize(loss)
+
+  val batchedLoss =
+    tf.reduceSum(
+      tf.math.add(
+        tf.math
+          .sub(
+            tf.math
+              .maximum(
+                predictionColumn,
+                tf.constant(Array.fill(1, batchSize)(0f))
+              ),
+            tf.math.mul(predictionColumn, trueScoreColumn)
+          ),
+        tf.math.log(
+          tf.math
+            .add(
+              tf.constant(1f),
+              tf.math.exp(tf.math.neg(tf.math.abs(predictionColumn)))
+            )
+        )
+      ),
+      tf.constant(Array(0, 1))
+    )
+
+  val minimizeBatch = optimizer.minimize(batchedLoss)
 
   def fit(data: TermStatementParameters, trueValue: Float) =
     Using(new Session(graph)) { session =>
@@ -318,5 +399,23 @@ trait ProofScoreLearner[ParamVars, TermRepVars, StatRepVars, TopVars]
             .addTarget(minimize)
             .run()
       }
+    }
+
+  import TermStatementParameters.column
+
+  def fitSeq(
+      dataSeq: Seq[TermStatementParameters],
+      trueValue: Seq[Double],
+      epochs: Int
+  ) =
+    Using(new Session(graph)) { session =>
+      (1 to epochs).map { k =>
+        val tData = runnerWithDataSeq(dataSeq, session)
+          .feed(trueScoreColumn, column(trueValue))
+          .addTarget(minimizeBatch)
+          .fetch(batchedLoss)
+          .run()
+        tData.get(0).asInstanceOf[TFloat32].getFloat()
+      }.toVector
     }
 }
