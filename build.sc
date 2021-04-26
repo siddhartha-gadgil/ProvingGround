@@ -195,7 +195,7 @@ object trepplein extends SbtModule with PublishModule {
   )
 }
 
-object fol extends CommonModule
+object fol extends CommonModule with SbtModule
 
 val mantleLibs = List(
   ivy"com.lihaoyi::cask:0.7.3",

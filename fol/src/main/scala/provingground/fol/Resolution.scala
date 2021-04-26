@@ -139,7 +139,7 @@ object Resolution {
       CNF(for (a: Clause <- this.clauses; b <- that.clauses) yield (a | b))
     }
 
-    def subs(m: PartialFunction[Var, Term]): CNF =
+    def subs(m: PartialFunction[Var, Term]) =
       CNF(clauses map ((l: Clause) => l.subs(m)))
   }
 
