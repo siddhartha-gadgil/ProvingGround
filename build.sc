@@ -195,6 +195,8 @@ object trepplein extends SbtModule with PublishModule {
   )
 }
 
+object fol extends CommonModule
+
 val mantleLibs = List(
   ivy"com.lihaoyi::cask:0.7.3",
   ivy"org.scalameta::scalameta:4.3.0",

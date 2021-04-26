@@ -2,7 +2,7 @@ package provingground.fol
 
 import provingground.fol.Logic._
 import scala.util._
-import provingground.dynamics.Structures._
+// import provingground.dynamics.Structures._
 import scala.Option.option2Iterable
 
 /** A basic resolution theorem prover */
@@ -133,13 +133,13 @@ object Resolution {
   }
 
   case class CNF(clauses: Set[Clause]) {
-    def &(that: CNF) = CNF(this.clauses ++ that.clauses)
+    def &(that: CNF): CNF = CNF(this.clauses ++ that.clauses)
 
     def |(that: CNF) = {
-      CNF(for (a <- this.clauses; b <- that.clauses) yield (a | b))
+      CNF(for (a: Clause <- this.clauses; b <- that.clauses) yield (a | b))
     }
 
-    def subs(m: PartialFunction[Var, Term]) =
+    def subs(m: PartialFunction[Var, Term]): CNF =
       CNF(clauses map ((l: Clause) => l.subs(m)))
   }
 
