@@ -2,7 +2,7 @@ package provingground.fol
 
 import Formula.negate
 
-trait Literal {
+sealed trait Literal {
   val p: Formula
   def replaceFormula(p: Formula): Literal
   def subs(m: PartialFunction[Var, Term]): Literal

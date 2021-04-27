@@ -32,6 +32,11 @@ final case class DPLLState(
       )
 
   def model: Option[Set[Literal]] = DPLLState.getModel(this)
+
+  def modelMap: Option[Map[Formula,Boolean]] = model.map(ls => ls.map{
+      case NegLit(p) => p -> false
+      case PosLit(p) => p -> true
+  }.toMap)
 }
 
 object DPLLState {
