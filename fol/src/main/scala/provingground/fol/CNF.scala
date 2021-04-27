@@ -77,7 +77,7 @@ object CNF {
   def idVar: PartialFunction[Var, Term] = { case x: Var => x }
 
   def cnfRec(fmla: Formula, outerVars: List[Var]): CNF = fmla match {
-    // case p: Formula        => CNF(Set(Clause(Set(PosLit(p)))))
+    case p: SimpleFormula        => CNF(Set(Clause(Set(PosLit(p)))))
     case ConjFormula(p, "&", q)  => cnfRec(p, outerVars) & cnfRec(q, outerVars)
     case ConjFormula(p, "|", q)  => cnfRec(p, outerVars) | cnfRec(q, outerVars)
     case ConjFormula(p, "=>", q) => cnfRec(!p, outerVars) | cnfRec(q, outerVars)
@@ -85,7 +85,8 @@ object CNF {
       (cnfRec(p, outerVars) & cnfRec(q, outerVars)) |
         (cnfRec(!p, outerVars) & cnfRec(!q, outerVars))
     case NegFormula(NegFormula(p)) => cnfRec(p, outerVars)
-    // case NegFormula(p: Formula) => CNF(Set(Clause(Set(NegLit(p)))))
+    case NegFormula(p: SimpleFormula)    => CNF(Set(Clause(Set(NegLit(p)))))
+    // case NegFormula(p: Prop)    => CNF(Set(Clause(Set(NegLit(p)))))
     case NegFormula(p: Formula) => cnfRec(negate(p), outerVars)
 
     case UnivQuantFormula(x: Var, p) => cnfRec(p, x :: outerVars)
@@ -93,7 +94,7 @@ object CNF {
       val vars = outerVars
       val t    = new SkolemFunction(x, vars.length)(vars)
       cnfRec(p, outerVars) subs (Map(x -> t) orElse idVar)
-    case Prop(name) => atom(Prop(name))
+    // case Prop(name) => atom(Prop(name))
   }
 
   def atom(fmla: Formula) = CNF(Set(Clause(Set(PosLit(fmla)))))

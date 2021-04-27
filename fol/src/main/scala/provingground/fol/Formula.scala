@@ -137,7 +137,7 @@ object Formula {
   }
 
   def negate(fmla: Formula): Formula = fmla match {
-    case p: AtomicFormula         => NegFormula(p)
+    case p: SimpleFormula         => NegFormula(p)
     case NegFormula(p)            => p
     case ConjFormula(p, "&", q)   => negate(p) | negate(q)
     case ConjFormula(p, "|", q)   => negate(p) & negate(q)
@@ -145,7 +145,7 @@ object Formula {
     case ConjFormula(p, "<=>", q) => (p & negate(q)) | (q & negate(p))
     case ExQuantFormula(x, p)     => UnivQuantFormula(x, negate(p))
     case UnivQuantFormula(x, p)   => ExQuantFormula(x, negate(p))
-    case Prop(name) => NegFormula(Prop(name))
+    // case Prop(name) => NegFormula(Prop(name))
   }
 
 }
@@ -185,8 +185,10 @@ case class UnivQuantFormula(v: Var, p: Formula) extends Formula {
   override def toString = "ForAll " + v.toString + " " + p.toString
 }
 
+trait SimpleFormula extends Formula
+
 /** Atomic Formulas */
-trait AtomicFormula extends Formula {
+trait AtomicFormula extends SimpleFormula {
   val pred: Pred
   val params: List[Term]
 }
@@ -227,7 +229,7 @@ class FormulaVar(val freeVars: Set[Var]) extends Formula {
   def this() = this(Set())
 }
 
-case class Prop(name: String) extends Formula{
+case class Prop(name: String) extends SimpleFormula{
   def subs(xt: Var => Term): Formula = this
   
   val freeVars: Set[Var] = Set()

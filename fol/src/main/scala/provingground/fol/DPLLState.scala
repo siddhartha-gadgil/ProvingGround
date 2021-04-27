@@ -38,6 +38,9 @@ object DPLLState {
   def apply(cnf: CNF): DPLLState =
     DPLLState(cnf, Set(), Set(), cnf.varList)
 
+  def fromFormulas(formulas: Formula*): DPLLState =
+    apply(CNF.fromFormulas(formulas.toSet))
+
   def simplify(state: DPLLState): DPLLState =
     state.simplification.map(simplify(_)).getOrElse(state)
 
