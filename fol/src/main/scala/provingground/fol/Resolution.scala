@@ -43,14 +43,17 @@ object Resolution {
   def subTermSubs(t: Term) =
     SubTermSubsTerm(t, (p: Term) => p) :: subTermSubsRec(t)
 
-  def subTermSubsLit(l: Literal): List[SubTermSubsLit] = {
-    for (SplitList(head, t, tail) <- splitList(l.p.params);
-         st                       <- subTermSubs(t))
-      yield
-        SubTermSubsLit(
-          st.term,
-          (s: Term) => l(l.p.pred(head ::: List(st(t)) ::: tail))
-        )
+  def subTermSubsLit(l: Literal): List[SubTermSubsLit] = l.p match {
+    case af: AtomicFormula =>
+      for (SplitList(head, t, tail) <- splitList(af.params);
+           st                       <- subTermSubs(t))
+        yield
+          SubTermSubsLit(
+            st.term,
+            (s: Term) =>
+              l.replaceFormula(af.pred(head ::: List(st(t)) ::: tail))
+          )
+    case _ => List()
   }
 
   def paramodSet(eql: Literal, l: Literal): Set[Literal] = eql.p match {
@@ -91,11 +94,13 @@ object Resolution {
       }
 
   def mguFmla(
-      f: AtomicFormula,
-      g: AtomicFormula
-  ): Option[PartialFunction[Var, Term]] = {
-    if (f.pred != g.pred) None
-    else mguList(f.params, g.params)
+      x: Formula,
+      y: Formula
+  ): Option[PartialFunction[Var, Term]] = (x, y) match {
+    case (f: AtomicFormula, g: AtomicFormula) =>
+      if (f.pred != g.pred) None
+      else mguList(f.params, g.params)
+    case _ => None
   }
 
   case class SplitClause(one: Literal, rest: Set[Literal])
@@ -141,7 +146,10 @@ object Resolution {
     case x: Term => paraSubs(e, x).toSet
   }
 
-  def paraModulation(e: Formula, l: Literal): Set[Literal] = {
-    paramodList(e, l.p.params) map ((ts: List[Term]) => l(l.p.pred(ts)))
+  def paraModulation(e: Formula, l: Literal): Set[Literal] = l.p match {
+    case af: AtomicFormula => paramodList(e, af.params) map (
+        (ts: List[Term]) => l.replaceFormula(af.pred(ts))
+    )
+    case _ => Set()
   }
 }

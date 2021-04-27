@@ -9,4 +9,4 @@ val fmla1 = P implies Q
 negate(P)
 negate(negate(P))
 
-// CNF.fromFormula(P)
+CNF.fromFormula(P)

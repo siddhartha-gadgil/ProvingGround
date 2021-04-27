@@ -3,25 +3,25 @@ package provingground.fol
 import Formula.negate
 
 trait Literal {
-  val p: AtomicFormula
-  def apply(p: AtomicFormula): Literal
+  val p: Formula
+  def replaceFormula(p: Formula): Literal
   def subs(m: PartialFunction[Var, Term]): Literal
 
   val isPositive: Boolean
 }
 
-case class PosLit(p: AtomicFormula) extends Literal {
-  def apply(p: AtomicFormula): Literal = PosLit(p)
+case class PosLit(p: Formula) extends Literal {
+  def replaceFormula(p: Formula): Literal = PosLit(p)
   def subs(m: PartialFunction[Var, Term]): Literal =
-    PosLit(p.subs(m).asInstanceOf[AtomicFormula])
+    PosLit(p.subs(m).asInstanceOf[Formula])
 
   val isPositive: Boolean = true
 }
 
-case class NegLit(p: AtomicFormula) extends Literal {
-  def apply(p: AtomicFormula): Literal = NegLit(p)
+case class NegLit(p: Formula) extends Literal {
+  def replaceFormula(p: Formula): Literal = NegLit(p)
   def subs(m: PartialFunction[Var, Term]): Literal =
-    NegLit(p.subs(m).asInstanceOf[AtomicFormula])
+    NegLit(p.subs(m).asInstanceOf[Formula])
 
   val isPositive: Boolean = false
 }
@@ -49,7 +49,7 @@ object CNF {
   def idVar: PartialFunction[Var, Term] = { case x: Var => x }
 
   def cnfRec(fmla: Formula, outerVars: List[Var]): CNF = fmla match {
-    case p: AtomicFormula        => CNF(Set(Clause(Set(PosLit(p)))))
+    case p: Formula        => CNF(Set(Clause(Set(PosLit(p)))))
     case ConjFormula(p, "&", q)  => cnfRec(p, outerVars) & cnfRec(q, outerVars)
     case ConjFormula(p, "|", q)  => cnfRec(p, outerVars) | cnfRec(q, outerVars)
     case ConjFormula(p, "=>", q) => cnfRec(!p, outerVars) | cnfRec(q, outerVars)
@@ -57,7 +57,7 @@ object CNF {
       (cnfRec(p, outerVars) & cnfRec(q, outerVars)) |
         (cnfRec(!p, outerVars) & cnfRec(!q, outerVars))
     case NegFormula(NegFormula(p))    => cnfRec(p, outerVars)
-    case NegFormula(p: AtomicFormula) => CNF(Set(Clause(Set(NegLit(p)))))
+    case NegFormula(p: Formula) => CNF(Set(Clause(Set(NegLit(p)))))
     case NegFormula(p: Formula)       => cnfRec(negate(p), outerVars)
 
     case UnivQuantFormula(x: Var, p) => cnfRec(p, x :: outerVars)
@@ -68,7 +68,7 @@ object CNF {
     case Prop(name) => ???
   } 
 
-  def atom(fmla: AtomicFormula) = CNF(Set(Clause(Set(PosLit(fmla)))))
+  def atom(fmla: Formula) = CNF(Set(Clause(Set(PosLit(fmla)))))
 
   def fromFormula(fmla: Formula): CNF = cnfRec(fmla, fmla.freeVars.toList)
 }
