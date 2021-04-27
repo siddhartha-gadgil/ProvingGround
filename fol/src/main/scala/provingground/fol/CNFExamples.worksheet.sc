@@ -10,3 +10,6 @@ negate(P)
 negate(negate(P))
 
 CNF.fromFormula(P)
+CNF.fromFormula(fmla1) 
+CNF.fromFormula(P & Q)
+print(CNF.fromFormula((P implies Q) & (Q implies R)))
