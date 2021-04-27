@@ -71,6 +71,8 @@ case class CNF(clauses: Set[Clause]) {
     literals.find(lit => !literals.contains(lit.negate))
 
   def purgePure(pure: Literal) = CNF(clauses.filterNot(_.ls.contains(pure)))
+
+  def clean = CNF(clauses.filterNot(_.isTautology))
 }
 
 object CNF {
