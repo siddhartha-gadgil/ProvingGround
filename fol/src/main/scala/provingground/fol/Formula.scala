@@ -136,6 +136,18 @@ object Formula {
     fmlaZip(fmlaChain, base)
   }
 
+  def negate(fmla: Formula): Formula = fmla match {
+    case p: AtomicFormula         => NegFormula(p)
+    case NegFormula(p)            => p
+    case ConjFormula(p, "&", q)   => negate(p) | negate(q)
+    case ConjFormula(p, "|", q)   => negate(p) & negate(q)
+    case ConjFormula(p, "=>", q)  => p & negate(q)
+    case ConjFormula(p, "<=>", q) => (p & negate(q)) | (q & negate(p))
+    case ExQuantFormula(x, p)     => UnivQuantFormula(x, negate(p))
+    case UnivQuantFormula(x, p)   => ExQuantFormula(x, negate(p))
+    case Prop(name) => NegFormula(Prop(name))
+  }
+
 }
 
 /** Formulas built by Conjunctions and Negations */
@@ -185,7 +197,7 @@ case class AtomFormula(pred: Pred, params: List[Term]) extends AtomicFormula {
     AtomFormula(pred, params map (_.subs(xt)))
   val freeVars: Set[Var] = (params map (_.freeVars)) reduce (_ union _)
 
-  override def toString = pred.toString+params.mkString("(", ", ", ")")
+  override def toString = pred.toString + params.mkString("(", ", ", ")")
 }
 
 /** Equality formula; equality may also be given by conjunction formula */
@@ -215,6 +227,13 @@ class FormulaVar(val freeVars: Set[Var]) extends Formula {
   def this() = this(Set())
 }
 
+case class Prop(name: String) extends Formula{
+  def subs(xt: Var => Term): Formula = this
+  
+  val freeVars: Set[Var] = Set()
+  
+}
+
 /** Formula with an explicit list of Formula variables*/
 trait Schema extends Formula {
   import Formula._
@@ -241,4 +260,3 @@ trait Schema extends Formula {
     recFormula(formula, psubs)
   }
 }
-
