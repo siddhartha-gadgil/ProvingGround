@@ -37,7 +37,7 @@ object ResolutionTree {
       Node(positive.lift(m), negative.lift(m), mergeLiteral)
   }
 
-  def expand(
+  def expandStep(
       tree: ResolutionTree,
       inferTrees: Set[ResolutionTree]
   ): ResolutionTree =
@@ -51,6 +51,14 @@ object ResolutionTree {
           mergeLiteral
         )
     }).ensuring(_.result == tree.result)
+
+  def expand(
+      tree: ResolutionTree,
+      inferTrees: Set[ResolutionTree]
+  ): ResolutionTree = {
+    val nextTree = expandStep(tree, inferTrees)
+    if (nextTree == tree) nextTree else expand(nextTree, inferTrees)
+  }
 }
 
 case class SATModel(atoms: Set[Literal]) {

@@ -73,7 +73,7 @@ case class CNF(clauses: Set[Clause]) {
 
   def inferMap(lit: Literal) = {
     val result = inferFrom(lit).clauses
-    result.map { cl =>
+    (result -- clauses).map { cl =>
       if (clauses.contains(cl)) cl -> cl else cl -> (cl + lit.negate)
     }.toMap
   }
