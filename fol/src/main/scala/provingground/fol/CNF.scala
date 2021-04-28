@@ -44,6 +44,14 @@ case class Clause(ls: Set[Literal]) {
     Clause(ls map ((l: Literal) => l.subs(m)))
 
   def -(lit: Literal) = Clause(ls - lit)
+
+  def +(lit: Literal) = Clause(ls + lit)
+}
+
+object Clause {
+  val contradiction: Clause = Clause(Set())
+
+  def atom(lit: Literal): Clause = Clause(Set(lit))
 }
 
 case class CNF(clauses: Set[Clause]) {
@@ -63,6 +71,13 @@ case class CNF(clauses: Set[Clause]) {
   def inferFrom(lit: Literal): CNF =
     CNF(clauses.filterNot(cl => cl.ls.contains(lit)).map(_ - lit.negate))
 
+  def inferMap(lit: Literal) = {
+    val result = inferFrom(lit).clauses
+    clauses.map { cl =>
+      if (clauses.contains(cl)) cl -> cl else cl -> (cl + lit.negate)
+    }.toMap
+  }
+
   lazy val literals: Set[Literal] = clauses.flatMap(_.ls)
 
   lazy val varList = literals.map(_.p).toList
@@ -71,6 +86,10 @@ case class CNF(clauses: Set[Clause]) {
     literals.find(lit => !literals.contains(lit.negate))
 
   def purgePure(pure: Literal) = CNF(clauses.filterNot(_.ls.contains(pure)))
+
+  val pureLiterals: Set[Literal] = literals -- literals.map(_.negate)
+
+  val withoutPure: Set[Clause] = clauses.filter(_.ls.intersect(pureLiterals).isEmpty)
 
   def clean = CNF(clauses.filterNot(_.isTautology))
 }
@@ -86,8 +105,8 @@ object CNF {
     case ConjFormula(p, "<=>", q) =>
       (cnfRec(p, outerVars) & cnfRec(q, outerVars)) |
         (cnfRec(!p, outerVars) & cnfRec(!q, outerVars))
-    case NegFormula(NegFormula(p)) => cnfRec(p, outerVars)
-    case NegFormula(p: SimpleFormula)    => CNF(Set(Clause(Set(NegLit(p)))))
+    case NegFormula(NegFormula(p))    => cnfRec(p, outerVars)
+    case NegFormula(p: SimpleFormula) => CNF(Set(Clause(Set(NegLit(p)))))
     // case NegFormula(p: Prop)    => CNF(Set(Clause(Set(NegLit(p)))))
     case NegFormula(p: Formula) => cnfRec(negate(p), outerVars)
 

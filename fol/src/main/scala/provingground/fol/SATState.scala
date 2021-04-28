@@ -2,17 +2,17 @@ package provingground.fol
 
 import scala.collection.immutable
 
-final case class DPLLState(
+final case class SATState(
     cnf: CNF,
     assumed: Set[Literal],
     inferred: Set[Literal],
     freeVars: List[Formula]
 ) {
-  def simplification: Option[DPLLState] =
+  def simplification: Option[SATState] =
     cnf.findUnit
       .map(
         lit =>
-          DPLLState(
+          SATState(
             cnf.inferFrom(lit),
             assumed,
             inferred + lit,
@@ -22,7 +22,7 @@ final case class DPLLState(
       .orElse(
         cnf.findPure.map(
           pure =>
-            DPLLState(
+            SATState(
               cnf.purgePure(pure),
               assumed,
               inferred + pure,
@@ -31,27 +31,38 @@ final case class DPLLState(
         )
       )
 
-  def model: Option[Set[Literal]] = DPLLState.getModel(this)
+  lazy val purified: SATState = SATState(
+    CNF(cnf.withoutPure),
+    assumed,
+    inferred union cnf.pureLiterals,
+    freeVars.filter(fmla => !cnf.pureLiterals.map(_.p).contains(fmla))
+  )
 
-  def modelMap: Option[Map[Formula,Boolean]] = model.map(ls => ls.map{
-      case NegLit(p) => p -> false
-      case PosLit(p) => p -> true
-  }.toMap)
+  def model: Option[Set[Literal]] = SATState.getModel(this)
+
+  def modelMap: Option[Map[Formula, Boolean]] =
+    model.map(
+      ls =>
+        ls.map {
+          case NegLit(p) => p -> false
+          case PosLit(p) => p -> true
+        }.toMap
+    )
 }
 
-object DPLLState {
-  def apply(cnf: CNF): DPLLState =
-    DPLLState(cnf.clean, Set(), Set(), cnf.varList)
+object SATState {
+  def apply(cnf: CNF): SATState =
+    SATState(cnf.clean, Set(), Set(), cnf.varList)
 
-  def fromFormulas(formulas: Formula*): DPLLState =
+  def fromFormulas(formulas: Formula*): SATState =
     apply(CNF.fromFormulas(formulas.toSet).clean)
 
-  def simplify(state: DPLLState): DPLLState =
+  def simplify(state: SATState): SATState =
     state.simplification.map(simplify(_)).getOrElse(state)
 
   val rnd = new scala.util.Random()
 
-  def getModel(state: DPLLState): Option[Set[Literal]] =
+  def getModel(state: SATState): Option[Set[Literal]] =
     if (state.cnf.clauses.isEmpty) Some(state.assumed union state.inferred)
     else if (state.cnf.hasContradiction) None
     else
@@ -61,14 +72,14 @@ object DPLLState {
             if (rnd.nextDouble() < 0.5) PosLit(head)
             else
               NegLit(head)
-          val base = DPLLState(
+          val base = SATState(
             state.cnf.inferFrom(lit),
             state.assumed + lit,
             state.inferred,
             next
           )
           getModel(simplify(base)).orElse {
-            val base = DPLLState(
+            val base = SATState(
               state.cnf.inferFrom(lit.negate),
               state.assumed + lit.negate,
               state.inferred,
