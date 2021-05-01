@@ -1,11 +1,21 @@
 package provingground.fol
 
-sealed trait ResolutionTree {
+sealed trait SATSolution {
+  val getModel: Option[SATModel]
+
+  val getProof: Option[ResolutionTree]
+}
+
+sealed trait ResolutionTree extends SATSolution {
   val result: Clause
 
   def lift(m: Map[Clause, Clause]): ResolutionTree
 
   val isContradiction: Boolean = result == Clause.contradiction
+
+  val getModel: Option[SATModel]       = None
+  val getProof: Option[ResolutionTree] = Some(this)
+
 }
 
 object ResolutionTree {
@@ -61,9 +71,14 @@ object ResolutionTree {
   }
 }
 
-case class SATModel(atoms: Set[Literal]) {
+case class SATModel(atoms: Set[Literal]) extends SATSolution {
   val modelMap: Map[Formula, Boolean] = atoms.toVector.map {
     case NegLit(p) => p -> false
     case PosLit(p) => p -> true
   }.toMap
+
+  val getModel: Option[SATModel] = Some(this)
+
+  val getProof: Option[ResolutionTree] = None
+
 }

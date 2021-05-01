@@ -38,9 +38,9 @@ case class NQueens(n: Int) {
   val cnf: CNF =
     CNF.fromFormulas((rowsOccupied ++ rows ++ cols ++ diags).toSet)
 
-  val dpll: SATState = SATState(cnf)
+  val satState: SATState = SATState(cnf)
 
-  lazy val solutionMap = dpll.modelMap
+  lazy val solutionMap = satState.modelMap
 
   lazy val positions =
     solutionMap.map(

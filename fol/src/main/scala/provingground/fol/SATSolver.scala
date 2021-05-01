@@ -27,11 +27,11 @@ object SATSolver {
       }
       .getOrElse(state, Set())
 
-  def solve(state: SATState): Either[ResolutionTree, SATModel] =
+  def solve(state: SATState): SATSolution =
     if (state.cnf.clauses.isEmpty)
-      Right(SATModel(state.assumed union state.inferred))
+      (SATModel(state.assumed union state.inferred))
     else if (state.cnf.hasContradiction)
-      Left(ResolutionTree.Leaf(Clause.contradiction))
+      (ResolutionTree.Leaf(Clause.contradiction))
     else {
       // pprint.log(state)
       state.freeVars match {
@@ -53,8 +53,8 @@ object SATSolver {
           // pprint.log(refinedState)
           // pprint.log(inferTrees)
           solve(refinedState) match {
-            case Left(value: ResolutionTree) =>
-              val expandedTree = ResolutionTree.expand(value, inferTrees)
+            case (resolutionTree: ResolutionTree) =>
+              val expandedTree = ResolutionTree.expand(resolutionTree, inferTrees)
               val liftMap      = state.cnf.inferMap(lit)
               val liftedTree   = expandedTree.lift(liftMap)
               // pprint.log(value)
@@ -62,7 +62,7 @@ object SATSolver {
               // pprint.log(liftMap)
               // pprint.log(liftedTree)
               // pprint.log(liftedTree.result)
-              if (liftedTree.result == Clause.contradiction) Left(liftedTree)
+              if (liftedTree.result == Clause.contradiction) (liftedTree)
               else {
                 val baseNeg = SATState(
                   state.cnf.inferFrom(lit.negate),
@@ -79,9 +79,9 @@ object SATSolver {
                 // pprint.log(refinedState)
                 // pprint.log(inferTreesNeg)
                 solve(refinedStateNeg) match {
-                  case Left(valueNeg) =>
+                  case (treeNeg: ResolutionTree) =>
                     val expandedTreeNeg =
-                      ResolutionTree.expand(valueNeg, inferTreesNeg)
+                      ResolutionTree.expand(treeNeg, inferTreesNeg)
                     val liftMapNeg    = state.cnf.inferMap(lit.negate)
                     val liftedTreeNeg = expandedTreeNeg.lift(liftMapNeg)
                     // pprint.log(valueNeg)
@@ -90,14 +90,14 @@ object SATSolver {
                     // pprint.log(liftedTreeNeg)
                     // pprint.log(liftedTreeNeg.result)
                     if (liftedTreeNeg.result == Clause.contradiction)
-                      Left(liftedTreeNeg)
+                      (liftedTreeNeg)
                     else {
-                      Left(ResolutionTree.Node(liftedTreeNeg, liftedTree, lit))
+                      (ResolutionTree.Node(liftedTreeNeg, liftedTree, lit))
                     }
-                  case Right(value) => Right(value)
+                  case (value) => (value)
                 }
               }
-            case Right(value: SATModel) => Right(value)
+            case (model: SATModel) => (model)
           }
         case immutable.Nil =>
           throw new Exception(
