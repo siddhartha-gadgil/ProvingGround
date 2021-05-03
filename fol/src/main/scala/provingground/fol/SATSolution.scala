@@ -77,6 +77,8 @@ case class SATModel(atoms: Set[Literal]) extends SATSolution {
     case PosLit(p) => p -> true
   }.toMap
 
+  val positives: Set[Formula] = modelMap.filter(_._2).map(_._1).toSet
+
   val getModel: Option[SATModel] = Some(this)
 
   val getProof: Option[ResolutionTree] = None
