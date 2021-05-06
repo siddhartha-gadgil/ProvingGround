@@ -96,9 +96,57 @@ object BackTraceFromIndexed {
   }
 }
 
+trait DerivedIndices{
+  val  lhsExpressions: Vector[Expression]
+  import TermRandomVars._, GeneratorVariables._, Expression._
+
+  val termIndexVec: Vector[(Term, Int)] = lhsExpressions.zipWithIndex.collect {
+    case (FinalVal(Elem(t: Term, Terms)), j) => (t, j)
+  }
+
+  val typIndexVec: Vector[(Typ[Term], Int)] =
+    lhsExpressions.zipWithIndex.collect {
+      case (FinalVal(Elem(t: Typ[_], Typs)), j) => (t: Typ[Term], j)
+    }
+
+  import TermRandomVars.{variableToTermInContext, Terms, Typs}
+
+  // do not require the variable to be terms
+  val termInContextIndexVec: Vector[((Term, Vector[Term]), Int)] =
+    lhsExpressions.zipWithIndex.flatMap {
+      case (FinalVal(variable), j) =>
+        variableToTermInContext(variable, (_) => true).map(_ -> j)
+      case _ => None
+    }
+
+  val termAsTermInContextIndexVec: Vector[((Term, Vector[Term]), Int)] =
+    lhsExpressions.zipWithIndex.flatMap {
+      case (FinalVal(variable), j) =>
+        variableToTermInContext(variable, _ == Terms).map(_ -> j)
+      case _ => None
+    }
+
+  val typAsTypInContextIndexVec: Vector[((Typ[Term], Vector[Term]), Int)] =
+    lhsExpressions.zipWithIndex.flatMap {
+      case (FinalVal(variable), j) =>
+        variableToTermInContext(variable, _ == Typs).flatMap {
+          case (t, ctx) =>
+            typOpt(t).map(tp => (tp, ctx)).map(_ -> j)
+        }
+      case _ => None
+    }
+
+  val typAsTypsInContextIndexMap: Map[(Typ[Term], Vector[Term]), Int] =
+    typAsTypInContextIndexVec.toMap
+
+  val indexToTermInContext: Map[Int, (Term, Vector[Term])] =
+    termInContextIndexVec.map(ab => (ab._2, ab._1)).toMap
+
+}
+
 /**
-  * Computation of probabilities of elements in equations for other elements, and of upper bounds on distances,
-  * based on equations in indices.
+  * Computation of probabilities of elements in equations for other elements,
+  * based on equations in indices. 
   *
   * @param rhsExprs right-hand side of equation in terms of indices, with the left hand side being the index.
   * @param probVec vector of probabilies, i.e., probabilites as function of indices.
@@ -106,8 +154,8 @@ object BackTraceFromIndexed {
 class BackTraceFromIndexed(
     rhsIndexedExprs: Vector[SumIndexExpression],
     probVec: Vector[Double],
-    lhsExpressions: Vector[Expression]
-) {
+    val lhsExpressions: Vector[Expression]
+) extends DerivedIndices {
   import BackTraceFromIndexed._
 
   /**
@@ -216,46 +264,7 @@ class BackTraceFromIndexed(
 
   import TermRandomVars._, GeneratorVariables._, Expression._
 
-  val termIndexVec: Vector[(Term, Int)] = lhsExpressions.zipWithIndex.collect {
-    case (FinalVal(Elem(t: Term, Terms)), j) => (t, j)
-  }
-
-  val typIndexVec: Vector[(Typ[Term], Int)] =
-    lhsExpressions.zipWithIndex.collect {
-      case (FinalVal(Elem(t: Typ[_], Typs)), j) => (t: Typ[Term], j)
-    }
-
-  import TermRandomVars.{variableToTermInContext, Terms, Typs}
-
-  // do not require the variable to be terms
-  val termInContextIndexVec: Vector[((Term, Vector[Term]), Int)] =
-    lhsExpressions.zipWithIndex.flatMap {
-      case (FinalVal(variable), j) =>
-        variableToTermInContext(variable, (_) => true).map(_ -> j)
-      case _ => None
-    }
-
-  val termAsTermInContextIndexVec: Vector[((Term, Vector[Term]), Int)] =
-    lhsExpressions.zipWithIndex.flatMap {
-      case (FinalVal(variable), j) =>
-        variableToTermInContext(variable, _ == Terms).map(_ -> j)
-      case _ => None
-    }
-
-  val typAsTypInContextIndexVec: Vector[((Typ[Term], Vector[Term]), Int)] =
-    lhsExpressions.zipWithIndex.flatMap {
-      case (FinalVal(variable), j) =>
-        variableToTermInContext(variable, _ == Typs).flatMap {
-          case (t, ctx) =>
-            typOpt(t).map(tp => (tp, ctx)).map(_ -> j)
-        }
-      case _ => None
-    }
-
-  val typAsTypsInContextIndexMap: Map[(Typ[Term], Vector[Term]), Int] =
-    typAsTypInContextIndexVec.toMap
-
-  val typInContextInhabitants: Map[Int, Vector[(Int, Double)]] =
+  lazy val typInContextInhabitants: Map[Int, Vector[(Int, Double)]] =
     termAsTermInContextIndexVec
       .groupMap {
         case ((t, ctx), _) => (t.typ, ctx)
@@ -271,9 +280,6 @@ class BackTraceFromIndexed(
         case (i, js, total) => (i, js.map(j => j -> (probVec(j) / total)))
       }
       .toMap
-
-  val indexToTermInContext: Map[Int, (Term, Vector[Term])] =
-    termInContextIndexVec.map(ab => (ab._2, ab._1)).toMap
 
   /**
     * trace back mapping (as a partial quotient to term in context)
@@ -445,7 +451,7 @@ class BackTraceFromIndexed(
   def indexifyTypWeights(m: Map[Typ[Term], Double]): Map[Int, Double] =
     m.flatMap { case (x, p) => typToIndex.get(x).map(_ -> p) }
 
-  def nextMap(m: Map[Int, Double]): Map[Int,Double] = {
+  def nextMap(m: Map[Int, Double]): Map[Int, Double] = {
     val support = m.keySet
     val newSupportExpressions = rhsIndexedExprs.zipWithIndex.filter {
       case (rhs, _) => rhs.indices.exists(support.contains(_))
@@ -456,12 +462,19 @@ class BackTraceFromIndexed(
       .toMap
   }
 
-  def averagedNextMap(m: Map[Int, Double], p: Double): Map[Int,Double] = vecSum(
-    Vector(m.toVector.map{case (j, q) => (j, q * p)},
-     nextMap(m).toVector.map{case (j, q) => (j, q * (1.0 -p))}
-  )).toMap
+  def averagedNextMap(m: Map[Int, Double], p: Double): Map[Int, Double] =
+    vecSum(
+      Vector(
+        m.toVector.map { case (j, q)          => (j, q * p) },
+        nextMap(m).toVector.map { case (j, q) => (j, q * (1.0 - p)) }
+      )
+    ).toMap
 
   @annotation.tailrec
-  final def forwardMap(m: Map[Int, Double], p: Double, depth: Int) : Map[Int, Double] = 
+  final def forwardMap(
+      m: Map[Int, Double],
+      p: Double,
+      depth: Int
+  ): Map[Int, Double] =
     if (depth < 1) m else forwardMap(averagedNextMap(m, p), p, depth - 1)
 }
