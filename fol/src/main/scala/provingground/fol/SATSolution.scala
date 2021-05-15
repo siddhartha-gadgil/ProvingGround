@@ -69,6 +69,27 @@ object ResolutionTree {
     val nextTree = expandStep(tree, inferTrees)
     if (nextTree == tree) nextTree else expand(nextTree, inferTrees)
   }
+
+  def clauseToHTML(clause: Clause) =
+    if (clause.isContradiction) "<em>Contradiction</em>" else
+   clause.ls.toVector.map{
+      lit => lit match {
+        case PosLit(p) => p.toString()
+        case NegLit(p) => "&not;"+p.toString()
+      }
+    }.mkString("(", " &or; ", ")")
+
+  def toHMTL(tree: ResolutionTree) : String = tree match {
+    case Leaf(clause) => "<li>"+clauseToHTML(clause)+ " by assumption</li>" 
+    case Node(positive, negative, mergeLiteral) => 
+      s"""|<li>${clauseToHTML(tree.result)} <strong>from</strong> ${clauseToHTML(positive.result)} <strong>and</strong> ${clauseToHTML((negative.result))}, 
+          |<strong>using</strong>
+          |<ul>
+          |${toHMTL(positive)}
+          |${toHMTL(negative)}
+          |</ul>
+          |</li>""".stripMargin
+  }
 }
 
 case class SATModel(atoms: Set[Literal]) extends SATSolution {

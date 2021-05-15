@@ -1,0 +1,121 @@
+<ul><li><em>Contradiction</em> <strong>from</strong> (&not;QueenAt(1,0)) <strong>and</strong> (QueenAt(1,0)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(1,0)) <strong>from</strong> (&not;QueenAt(1,0) &or; QueenAt(0,0)) <strong>and</strong> (&not;QueenAt(0,0) &or; &not;QueenAt(1,0)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(1,0) &or; QueenAt(0,0)) <strong>from</strong> (&not;QueenAt(1,0) &or; &not;QueenAt(0,2)) <strong>and</strong> (&not;QueenAt(1,0) &or; QueenAt(0,0) &or; QueenAt(0,2)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(1,0) &or; &not;QueenAt(0,2)) <strong>from</strong> (&not;QueenAt(1,0) &or; QueenAt(2,2)) <strong>and</strong> (&not;QueenAt(0,2) &or; &not;QueenAt(2,2)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(1,0) &or; QueenAt(2,2)) <strong>from</strong> (&not;QueenAt(2,1) &or; &not;QueenAt(1,0)) <strong>and</strong> (&not;QueenAt(1,0) &or; QueenAt(2,1) &or; QueenAt(2,2)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(2,1) &or; &not;QueenAt(1,0)) by assumption</li>
+<li>(&not;QueenAt(1,0) &or; QueenAt(2,1) &or; QueenAt(2,2)) <strong>from</strong> (&not;QueenAt(2,0) &or; &not;QueenAt(1,0)) <strong>and</strong> (QueenAt(2,1) &or; QueenAt(2,2) &or; QueenAt(2,0)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(2,0) &or; &not;QueenAt(1,0)) by assumption</li>
+<li>(QueenAt(2,1) &or; QueenAt(2,2) &or; QueenAt(2,0)) by assumption</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>(&not;QueenAt(0,2) &or; &not;QueenAt(2,2)) by assumption</li>
+</ul>
+</li>
+<li>(&not;QueenAt(1,0) &or; QueenAt(0,0) &or; QueenAt(0,2)) <strong>from</strong> (&not;QueenAt(0,1) &or; &not;QueenAt(1,0)) <strong>and</strong> (QueenAt(0,0) &or; QueenAt(0,2) &or; QueenAt(0,1)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(0,1) &or; &not;QueenAt(1,0)) by assumption</li>
+<li>(QueenAt(0,0) &or; QueenAt(0,2) &or; QueenAt(0,1)) by assumption</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>(&not;QueenAt(0,0) &or; &not;QueenAt(1,0)) by assumption</li>
+</ul>
+</li>
+<li>(QueenAt(1,0)) <strong>from</strong> (QueenAt(1,0) &or; QueenAt(2,1)) <strong>and</strong> (&not;QueenAt(2,1) &or; QueenAt(1,0)), 
+<strong>using</strong>
+<ul>
+<li>(QueenAt(1,0) &or; QueenAt(2,1)) <strong>from</strong> (QueenAt(1,2) &or; QueenAt(1,0) &or; QueenAt(2,1)) <strong>and</strong> (&not;QueenAt(1,2) &or; QueenAt(2,1)), 
+<strong>using</strong>
+<ul>
+<li>(QueenAt(1,2) &or; QueenAt(1,0) &or; QueenAt(2,1)) <strong>from</strong> (QueenAt(1,2) &or; QueenAt(1,0) &or; &not;QueenAt(2,0)) <strong>and</strong> (QueenAt(1,2) &or; QueenAt(1,0) &or; QueenAt(2,0) &or; QueenAt(2,1)), 
+<strong>using</strong>
+<ul>
+<li>(QueenAt(1,2) &or; QueenAt(1,0) &or; &not;QueenAt(2,0)) <strong>from</strong> (QueenAt(1,1) &or; QueenAt(1,2) &or; QueenAt(1,0)) <strong>and</strong> (&not;QueenAt(2,0) &or; &not;QueenAt(1,1)), 
+<strong>using</strong>
+<ul>
+<li>(QueenAt(1,1) &or; QueenAt(1,2) &or; QueenAt(1,0)) by assumption</li>
+<li>(&not;QueenAt(2,0) &or; &not;QueenAt(1,1)) by assumption</li>
+</ul>
+</li>
+<li>(QueenAt(1,2) &or; QueenAt(1,0) &or; QueenAt(2,0) &or; QueenAt(2,1)) <strong>from</strong> (QueenAt(1,2) &or; QueenAt(1,0) &or; &not;QueenAt(2,2)) <strong>and</strong> (QueenAt(2,0) &or; QueenAt(2,2) &or; QueenAt(2,1)), 
+<strong>using</strong>
+<ul>
+<li>(QueenAt(1,2) &or; QueenAt(1,0) &or; &not;QueenAt(2,2)) <strong>from</strong> (QueenAt(1,1) &or; QueenAt(1,2) &or; QueenAt(1,0)) <strong>and</strong> (&not;QueenAt(2,2) &or; &not;QueenAt(1,1)), 
+<strong>using</strong>
+<ul>
+<li>(QueenAt(1,1) &or; QueenAt(1,2) &or; QueenAt(1,0)) by assumption</li>
+<li>(&not;QueenAt(2,2) &or; &not;QueenAt(1,1)) by assumption</li>
+</ul>
+</li>
+<li>(QueenAt(2,0) &or; QueenAt(2,2) &or; QueenAt(2,1)) by assumption</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>(&not;QueenAt(1,2) &or; QueenAt(2,1)) <strong>from</strong> (&not;QueenAt(1,2) &or; QueenAt(2,1) &or; QueenAt(0,1)) <strong>and</strong> (&not;QueenAt(0,1) &or; &not;QueenAt(1,2)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(1,2) &or; QueenAt(2,1) &or; QueenAt(0,1)) <strong>from</strong> (&not;QueenAt(1,2) &or; QueenAt(2,1) &or; &not;QueenAt(0,0)) <strong>and</strong> (&not;QueenAt(1,2) &or; QueenAt(0,0) &or; QueenAt(0,1)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(1,2) &or; QueenAt(2,1) &or; &not;QueenAt(0,0)) <strong>from</strong> (&not;QueenAt(1,2) &or; QueenAt(2,0) &or; QueenAt(2,1)) <strong>and</strong> (&not;QueenAt(0,0) &or; &not;QueenAt(2,0)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(1,2) &or; QueenAt(2,0) &or; QueenAt(2,1)) <strong>from</strong> (&not;QueenAt(2,2) &or; &not;QueenAt(1,2)) <strong>and</strong> (QueenAt(2,0) &or; QueenAt(2,2) &or; QueenAt(2,1)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(2,2) &or; &not;QueenAt(1,2)) by assumption</li>
+<li>(QueenAt(2,0) &or; QueenAt(2,2) &or; QueenAt(2,1)) by assumption</li>
+</ul>
+</li>
+<li>(&not;QueenAt(0,0) &or; &not;QueenAt(2,0)) by assumption</li>
+</ul>
+</li>
+<li>(&not;QueenAt(1,2) &or; QueenAt(0,0) &or; QueenAt(0,1)) <strong>from</strong> (&not;QueenAt(0,2) &or; &not;QueenAt(1,2)) <strong>and</strong> (QueenAt(0,0) &or; QueenAt(0,1) &or; QueenAt(0,2)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(0,2) &or; &not;QueenAt(1,2)) by assumption</li>
+<li>(QueenAt(0,0) &or; QueenAt(0,1) &or; QueenAt(0,2)) by assumption</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>(&not;QueenAt(0,1) &or; &not;QueenAt(1,2)) by assumption</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>(&not;QueenAt(2,1) &or; QueenAt(1,0)) <strong>from</strong> (&not;QueenAt(2,1) &or; QueenAt(1,1) &or; QueenAt(1,0)) <strong>and</strong> (&not;QueenAt(1,1) &or; &not;QueenAt(2,1)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(2,1) &or; QueenAt(1,1) &or; QueenAt(1,0)) <strong>from</strong> (&not;QueenAt(1,2) &or; &not;QueenAt(2,1)) <strong>and</strong> (QueenAt(1,1) &or; QueenAt(1,2) &or; QueenAt(1,0)), 
+<strong>using</strong>
+<ul>
+<li>(&not;QueenAt(1,2) &or; &not;QueenAt(2,1)) by assumption</li>
+<li>(QueenAt(1,1) &or; QueenAt(1,2) &or; QueenAt(1,0)) by assumption</li>
+</ul>
+</li>
+<li>(&not;QueenAt(1,1) &or; &not;QueenAt(2,1)) by assumption</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li></ul>

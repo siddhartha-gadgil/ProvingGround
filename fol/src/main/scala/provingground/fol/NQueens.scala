@@ -67,6 +67,11 @@ case class NQueens(n: Int) {
       .mkString("<table>\n", "\n", "\n</table>\n")
   }
 
+  def html(header: String = style): String = 
+    modelTable(header).getOrElse(
+      "<ul>"+ResolutionTree.toHMTL(solution.getProof.get)+"</ul>"
+    )
+
   lazy val proofOpt: Option[ResolutionTree] = solution.getProof
 
   lazy val positions =
