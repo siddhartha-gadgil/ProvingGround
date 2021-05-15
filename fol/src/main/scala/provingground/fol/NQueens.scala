@@ -40,17 +40,41 @@ case class NQueens(n: Int) {
 
   val satState: SATState = SATState(cnf)
 
-  lazy val solutionMap = satState.modelMap
+  lazy val solution: SATSolution = SATSolver.solve(satState)
+
+  lazy val modelOpt: Option[SATModel] = solution.getModel
+
+  val style = s"""|
+                |<style>
+                |    table {
+                |        border-collapse: collapse;
+                |      }
+                |      
+                |      td, th {
+                |        border: 1px solid #999;
+                |      }
+                |</style>
+                |""".stripMargin
+
+  def modelTable(header: String = style): Option[String] = modelOpt.map { model =>
+    val entries = Vector.tabulate(n, n) {
+      case (i, j) =>
+        if (model.modelMap(QueenAt(i, j))) "<td>&#9813;</td>"
+        else "<td>&nbsp;</td>"
+    }
+    header + entries
+      .map(_.mkString("<tr>", "", "</tr>"))
+      .mkString("<table>\n", "\n", "\n</table>\n")
+  }
+
+  lazy val proofOpt: Option[ResolutionTree] = solution.getProof
 
   lazy val positions =
-    solutionMap.map(
-      soln =>
-        soln.toVector
-          .filter(_._2)
-          .map(_._1)
-          .collect {
-            case QueenAt(row, col) => row -> col
-          }
-          .sortBy(_._1)
-    )
+    modelOpt.map { model =>
+      model.positives.toVector
+        .collect {
+          case QueenAt(row, col) => row -> col
+        }
+        .sortBy(_._1)
+    }
 }
