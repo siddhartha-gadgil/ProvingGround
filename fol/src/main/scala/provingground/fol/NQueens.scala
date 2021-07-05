@@ -67,6 +67,18 @@ case class NQueens(n: Int) {
       .mkString("<table>\n", "\n", "\n</table>\n")
   }
 
+  val modelText = modelOpt.map { model =>
+    val entries = Vector.tabulate(n, n) {
+      case (i, j) =>
+        if (model.modelMap(QueenAt(i, j))) "\u2655"
+        else " "
+    }
+    entries
+      .map(_.mkString("|"))
+      .mkString("\n","\n", "\n")
+  }
+
+
   def html(header: String = style): String = 
     modelTable(header).getOrElse(
       "<ul>"+ResolutionTree.toHMTL(solution.getProof.get)+"</ul>"
