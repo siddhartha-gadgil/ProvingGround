@@ -70,12 +70,13 @@ case class NQueens(n: Int) {
   val modelText = modelOpt.map { model =>
     val entries = Vector.tabulate(n, n) {
       case (i, j) =>
-        if (model.modelMap(QueenAt(i, j))) "\u2655"
-        else " "
+        if (model.modelMap(QueenAt(i, j))) " \u2655 "
+        else "   "
     }
+    val dashes = "-" * (4 * n + 1)
     entries
-      .map(_.mkString("|"))
-      .mkString("\n","\n", "\n")
+      .map(_.mkString("|","|","|"))
+      .mkString("\n"+dashes+"\n","\n"+dashes+"\n", "\n"+dashes+"\n")
   }
 
 
